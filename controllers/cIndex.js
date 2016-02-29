@@ -9,7 +9,8 @@ module.exports = {
 	getError: getError,
     getAyuda: getAyuda,
     AyudaVer: AyudaVer,
-    getNovedades: getNovedades
+    getNovedades: getNovedades,
+    updateMenuInfo: updateMenuInfo
 }
 
 function getInicio(req, res){
@@ -83,4 +84,15 @@ function getNovedades(req, res){
             novedades: novedades
         });  
     });  
+}
+
+function updateMenuInfo(req, res){
+    var params = req.params;
+    var id_menu = params.id_menu;
+    var accion = params.accion;
+
+    req.session.user.id_menu = id_menu;
+    req.session.user.accion = accion;
+    req.session.save();
+    res.send(1);
 }

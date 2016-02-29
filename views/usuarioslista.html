@@ -68,11 +68,25 @@
 			<a href='/usuariosborrar/{{ u.unica }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/>
 		</td>
 		<td>
-			<a href="/accesoslista/{{ u.unica }}"><button class="btn btn-success">Configurar accesos</button></a>
+			<a href="/accesoslista/{{ u.unica }}" class="menu" data-idmenu="42" data-accion="c"><button class="btn btn-success">Configurar accesos</button></a>
 		</td>
 	</tr>
 	{% endfor %}	 
   </table>
 </div>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+    // $('[data-submenu]').submenupicker();
 
+    $(".menu").on("click", function (){
+        var id_menu = $(this).data("idmenu");
+        var accion = $(this).data("accion");
+        $.post("/updatemenuinfo/"+id_menu+"/"+accion, function(data, textStatus, xhr) {
+            /*optional stuff to do after success */
+            console.log(data)
+            console.log(textStatus)
+            console.log(xhr)
+        });
+    });
+</script>
 {% endblock %}

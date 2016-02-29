@@ -22,7 +22,7 @@
 			<td><input type="text" class="datepicker form-control" name="hasta" id="hasta" style="width: 100px;" readonly></td>
 			<td style="width:5px;"></td>
 			<td><button type="button" name="filtrar" id="filtrar" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></td>
-			<!-- <td><button type="button" name="imprimir" id="imprimir" class="btn btn-default"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></td> -->
+			<td><button type="button" name="imprimir" id="imprimir" class="btn btn-default"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></td>
 		</tr>	
 		</table>
 	</div>
@@ -193,8 +193,8 @@
 		});
 	});	
 
-	// $("#imprimir").on("click", function (){
-	// 	alert("imprimir!!!")
-	// });
+	$("#imprimir").on("click", function (){
+		window.print();
+	});
 </script>
 {% endblock %}

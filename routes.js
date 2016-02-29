@@ -19,6 +19,9 @@ var cConsumoxFechas = require('./controllers/cConsumoxFechas');
 
 
 var mEventos = require('./models/mEventos');
+var mAccesos = require('./models/mAccesos');
+var mAyuda = require('./models/mAyuda');
+
 // var cPruebaSQL = require('./controllers/cPruebaSQL');
 var cRandom = require('./controllers/cRandom');
 
@@ -46,6 +49,67 @@ function auth (req, res, next) {
 	}
 }
 
+function acceso (req, res, next){
+	// console.log("adentro")
+	// ver como hacer esta funcion para que sea ejecutada desdes de los "auth" como verificador de acceso,
+	// puede ser que se envien parametros con req y res, o que envie parametros comunes, más el NEXT
+	// se me ocurre hacer una sola funcion con parametro 'accion' o sino hacer 4 funciones, una para cada uno a,b,m,c
+	// console.log(req.session.user)
+	var id_usuario = req.session.user.unica;
+	var id_menu = req.session.user.id_menu;
+	var accion = req.session.user.accion;
+
+	mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
+		if (user[0].es_supervisor){
+			next();
+		}else{
+			mAccesos.verificarAcceso(id_usuario, id_menu, accion, function (acceso){
+				console.log(acceso)
+				if (accion == "c")
+					var acceso = acceso[0].c;
+
+				if (accion == "a")
+					var acceso = acceso[0].a;
+
+				if (accion == "m")
+					var acceso = acceso[0].m;
+
+				if (accion == "b")
+					var acceso = acceso[0].b;
+
+				var acciontxt = "";
+				if (acceso == 1){
+					next();
+				}else{
+					var nombre_usuario = req.session.user.usuario;
+					if (accion == 'a'){
+						acciontxt = "al Alta";
+					}else{
+						if (accion == 'b'){
+							acciontxt = "a dar de Baja";
+						}else{
+							if (accion == 'm'){
+								acciontxt = "a Modificar";
+							}else{
+								if (accion == 'c'){
+									acciontxt = "a Consultar";
+								}else{
+									console.log("asd");
+								}
+							}
+						}
+					}
+					mAyuda.getAyuda(id_menu, function (ayuda){
+						res.render("error", {
+							error: nombre_usuario+": No tiene acceso "+acciontxt+" en el menú id "+id_menu+" llamado '"+ayuda[0].titulo+"'"
+						});
+					});
+				}
+			});
+		}
+	});	
+}
+
 module.exports = function(app) {
 	app.get('/', cAdmin.getLogin);
 	app.get('/login', cAdmin.getLogin)
@@ -53,105 +117,107 @@ module.exports = function(app) {
 	app.get('/logout', logout);
 	app.get('/inicio', auth, cIndex.getInicio);
 	app.get('/error', cIndex.getError);
+	app.post('/updatemenuinfo/:id_menu/:accion', auth, cIndex.updateMenuInfo);
 	//ayuda
 	app.get('/ayuda', cIndex.getAyuda);
 	app.get('/ayudaver/:id', cIndex.AyudaVer);
 	//novedades
 	app.get('/listanovedades', cIndex.getNovedades);
 	//usuarios
-	app.get('/usuarioslista', auth, cUsuario.getUsuarios);
-	app.get('/usuariosalta', auth, cUsuario.getUsuariosAlta);
-	app.post('/usuariosalta', auth, cUsuario.putUsuario);
-	app.get('/usuariosmodificar/:id', auth, cUsuario.getUsuarioModificar);
-	app.post('/usuariosmodificar', auth, cUsuario.postUsuarioModificar);
-	app.get('/usuariosborrar/:id', auth, cUsuario.getDelUsuario);
+	app.get('/usuarioslista', auth, acceso, cUsuario.getUsuarios);
+	app.get('/usuariosalta', auth, acceso, cUsuario.getUsuariosAlta);
+	app.post('/usuariosalta', auth, acceso, cUsuario.putUsuario);
+	app.get('/usuariosmodificar/:id', auth, acceso, cUsuario.getUsuarioModificar);
+	app.post('/usuariosmodificar', auth, acceso, cUsuario.postUsuarioModificar);
+	app.get('/usuariosborrar/:id', auth, acceso, cUsuario.getDelUsuario);
 	//configurar accesos
 	app.get('/accesoslista/:id', auth, cAccesos.getAccesos);
-	app.post('/accesoslista', auth, cAccesos.postAccesos);	
+	app.post('/accesoslista', auth, cAccesos.postAccesos);
+	app.post("/updateacceso/:id_usuario/:id_menu/:acceso_short/:value", auth, cAccesos.updateAcceso);
 	//unidades de medida "umed"
-	app.get('/umedlista', auth, cUmed.getAllUmed);
-	app.get('/umedalta', auth, cUmed.getAlta);
+	app.get('/umedlista', auth, acceso, cUmed.getAllUmed);
+	app.get('/umedalta', auth, acceso, cUmed.getAlta);
 	app.post('/umedalta', auth, cUmed.postAlta);
-	app.get('/umedmodificar/:id', auth, cUmed.getModificar);
+	app.get('/umedmodificar/:id', auth, acceso, cUmed.getModificar);
 	app.post('/umedactualizar', auth, cUmed.postModificar);
-	app.get('/umedborrar/:id', auth, cUmed.getDelUmed);
+	app.get('/umedborrar/:id', auth, acceso, cUmed.getDelUmed);
 	//rubros
-	app.get('/rubroslista', auth, cRubros.getLista);
-	app.get('/rubrosalta', auth, cRubros.getAlta);
+	app.get('/rubroslista', auth, acceso, cRubros.getLista);
+	app.get('/rubrosalta', auth, acceso, cRubros.getAlta);
 	app.post('/rubrosalta', auth, cRubros.postAlta);
-	app.get('/rubrosmodificar/:id', auth, cRubros.getModificar);
+	app.get('/rubrosmodificar/:id', auth, acceso, cRubros.getModificar);
 	app.post('/rubrosmodificar', auth, cRubros.postModificar);
-	app.get('/rubrosborrar/:id', auth, cRubros.getDel);
+	app.get('/rubrosborrar/:id', auth, acceso, cRubros.getDel);
 	app.get('/getRubrosPorGrupo/:id_grupo', auth, cRubros.getRubrosPorGrupo);
 	//grupos de rubros
-	app.get('/rubrosgruposlista', auth, cRubrosGrupos.getLista);
-	app.get('/rubrosgruposalta', auth, cRubrosGrupos.getAlta);
+	app.get('/rubrosgruposlista', auth, acceso, cRubrosGrupos.getLista);
+	app.get('/rubrosgruposalta', auth, acceso, cRubrosGrupos.getAlta);
 	app.post('/rubrosgruposalta', auth, cRubrosGrupos.postAlta);
-	app.get('/rubrosgruposmodificar/:id', auth, cRubrosGrupos.getModificar);
+	app.get('/rubrosgruposmodificar/:id', auth, acceso, cRubrosGrupos.getModificar);
 	app.post('/rubrosgruposmodificar', auth, cRubrosGrupos.postModificar);
-	app.get('/rubrosgruposborrar/:id', auth, cRubrosGrupos.getDel);
+	app.get('/rubrosgruposborrar/:id', auth, acceso, cRubrosGrupos.getDel);
 	//repuestos
-	app.get('/repuestoslista', auth, cRepuestos.getLista);
-	app.get('/repuestosalta', auth, cRepuestos.getAlta);
+	app.get('/repuestoslista', auth, acceso, cRepuestos.getLista);
+	app.get('/repuestosalta', auth, acceso, cRepuestos.getAlta);
 	app.post('/repuestosalta', auth, cRepuestos.postAlta);
-	app.get('/repuestosmodificar/:id', auth, cRepuestos.getModificar);
+	app.get('/repuestosmodificar/:id', auth, acceso, cRepuestos.getModificar);
 	app.post('/repuestosmodificar', auth, cRepuestos.postModificar);
-	app.get('/repuestosborrar/:id', auth, cRepuestos.getDel);
+	app.get('/repuestosborrar/:id', auth, acceso, cRepuestos.getDel);
 	app.get('/getCantRepuestosEnRubro/:id_rubro', auth, cRepuestos.getCantRepuestosEnRubroById);
 	//vehiculos
-	app.get('/vehiculoslista', auth, cVehiculos.getLista);
-	app.get('/vehiculosalta', auth, cVehiculos.getAlta);
+	app.get('/vehiculoslista', auth, acceso, cVehiculos.getLista);
+	app.get('/vehiculosalta', auth, acceso, cVehiculos.getAlta);
 	app.post('/vehiculosalta', auth, cVehiculos.postAlta);
-	app.get('/vehiculosmodificar/:id', auth, cVehiculos.getModificar);
+	app.get('/vehiculosmodificar/:id', auth, acceso, cVehiculos.getModificar);
 	app.post('/vehiculosmodificar', auth, cVehiculos.postModificar);
-	app.get('/vehiculosborrar/:id', auth, cVehiculos.getDel);
-	app.get('/vehiculosver/:id', auth, cVehiculos.getVer);
+	app.get('/vehiculosborrar/:id', auth, acceso, cVehiculos.getDel);
+	app.get('/vehiculosver/:id', auth, acceso, cVehiculos.getVer);
 	//proveedores
-	app.get('/proveedoreslista', auth, cProveedores.getLista);
-	app.get('/proveedoresalta', auth, cProveedores.getAlta);
+	app.get('/proveedoreslista', auth, acceso, cProveedores.getLista);
+	app.get('/proveedoresalta', auth, acceso, cProveedores.getAlta);
 	app.post('/proveedoresalta', auth, cProveedores.postAlta);
-	app.get('/proveedoresmodificar/:id', auth, cProveedores.getModificar);
+	app.get('/proveedoresmodificar/:id', auth, acceso, cProveedores.getModificar);
 	app.post('/proveedoresmodificar', auth, cProveedores.postModificar);
-	app.get('/proveedoresborrar/:id', auth, cProveedores.getDel);
+	app.get('/proveedoresborrar/:id', auth, acceso, cProveedores.getDel);
 	app.get('/proveedoresver/:id', auth, cProveedores.getVer);
 	//agenda
-	app.get('/agendalista', auth, cAgenda.getLista);
-	app.get('/agendaalta', auth, cAgenda.getAlta);
+	app.get('/agendalista', auth, acceso, cAgenda.getLista);
+	app.get('/agendaalta', auth, acceso, cAgenda.getAlta);
 	app.post('/agendaalta', auth, cAgenda.postAlta);
-	app.get('/agendamodificar/:id', auth, cAgenda.getModificar);
+	app.get('/agendamodificar/:id', auth, acceso, cAgenda.getModificar);
 	app.post('/agendamodificar', auth, cAgenda.postModificar);
-	app.get('/agendaborrar/:id', auth, cAgenda.getDel);
+	app.get('/agendaborrar/:id', auth, acceso, cAgenda.getDel);
 	app.get('/agendaupdatehecho/:id/:valor', auth, cAgenda.updateHecho);
 	//otrosgastos
 	app.get("/otrosgastoslista", auth, cOtrosGastos.getLista);
-	app.get("/otrosgastosalta", auth, cOtrosGastos.getAlta),
+	app.get("/otrosgastosalta", auth, acceso, cOtrosGastos.getAlta),
 	app.post("/otrosgastosalta", auth, cOtrosGastos.postAlta);
-	app.get("/otrosgastosmodificar/:id", auth, cOtrosGastos.getModificar);
+	app.get("/otrosgastosmodificar/:id", auth, acceso, cOtrosGastos.getModificar);
 	app.post("/otrosgastosmodificar", auth, cOtrosGastos.postModificar);
-	app.get("/otrosgastosborrar/:id", auth, cOtrosGastos.getDel);
+	app.get("/otrosgastosborrar/:id", auth, acceso, cOtrosGastos.getDel);
 	//combustibles - planilla diaria
-	app.get("/planilladiarialista", auth, cPlanillaDiaria.getLista);
-	app.get("/planilladiariaalta", auth, cPlanillaDiaria.getAlta);
+	app.get("/planilladiarialista", auth, acceso, cPlanillaDiaria.getLista);
+	app.get("/planilladiariaalta", auth, acceso, cPlanillaDiaria.getAlta);
 	app.post("/planilladiariaalta", auth, cPlanillaDiaria.postAlta);
-	app.get("/planilladiariamodificar/:id", auth, cPlanillaDiaria.getModificar);
+	app.get("/planilladiariamodificar/:id", auth, acceso, cPlanillaDiaria.getModificar);
 	app.post("/planilladiariamodificar", auth, cPlanillaDiaria.postModificar);
-	app.get("/planilladiariaborrar/:id", auth, cPlanillaDiaria.getDel);
+	app.get("/planilladiariaborrar/:id", auth, acceso, cPlanillaDiaria.getDel);
 	app.get("/getplanilladiariabyfecha/:fecha", auth, cPlanillaDiaria.getByFecha);
 	app.get("/planilladiariaverfechascondatos", auth, cPlanillaDiaria.getVerFechasConDatos);
 	app.get("/getplanilladiariadfechascondatos/:desde/:hasta", auth, cPlanillaDiaria.getFechasConDatos);
 	//Tank - Carga gas oil a tanque
-	app.get("/tanklista", auth, cTank.getLista);
-	app.get("/tankalta", auth, cTank.getAlta);
+	app.get("/tanklista", auth, acceso, cTank.getLista);
+	app.get("/tankalta", auth, acceso, cTank.getAlta);
 	app.post("/tankalta", auth, cTank.postAlta);
-	app.get("/tankmodificar/:id", auth, cTank.getModificar);
+	app.get("/tankmodificar/:id", auth, acceso, cTank.getModificar);
 	app.post("/tankmodificar", auth, cTank.postModificar);
-	app.get("/tankborrar/:id", auth, cTank.getDel);
+	app.get("/tankborrar/:id", auth, acceso, cTank.getDel);
 	app.get("/gettankentrefechas/:desde/:hasta", auth, cTank.getTankEntreFechas);
 	//consulta stock gasoil en tanque
-	app.get("/stockgasoilentanque", auth, cStockGasoilEnTanque.getIndex);
+	app.get("/stockgasoilentanque", auth, acceso, cStockGasoilEnTanque.getIndex);
 	app.get("/getstock/:id_tanque/:fecha", auth, cStockGasoilEnTanque.getStock);
 	//consulta consumo x fechas
-	app.get("/consumoxfechas", auth, cConsumoxFechas.getIndex);
+	app.get("/consumoxfechas", auth, acceso, cConsumoxFechas.getIndex);
 	app.get("/getconsumoentrefechas/:desde/:hasta", auth, cConsumoxFechas.getConsumoEntreFechas);
 
 
