@@ -1,0 +1,57 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/codigosie_modificar">
+		<table align="center" class="table table-striped">
+			<input hidden name="id" id="id" value="{{ codigo.id }}">
+			<tr>
+				<td>Nombre:</td>
+				<td><input type="text" name="nombre" id="nombre" class="form-control" value="{{ codigo.nombre }}"><div class="aviso">Quedan <span id="charsLeftNombre"></span> caraceteres.</div></td>
+			</tr> 
+			<tr>
+				<td>Tipo:</td>
+				<td>
+					<select class="form-control" name="tipo" id="tipo">
+						{% if codigo.tipo == 'I' %}
+							<option selected value="I">Ingreso</option>
+							<option value="E">Egreso</option>
+						{% else %}
+							<option value="I">Ingreso</option>
+							<option selected value="E">Egreso</option>
+						{% endif %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Activo:</td>
+				<td>
+					{% if codigo.activo == 1 %}
+						<input type="checkbox" name="activo" id="activo" checked>
+					{% else %}
+						<input type="checkbox" name="activo" id="activo">
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()"></td>
+				<td><input type="submit" value="Guardar"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script type="text/javascript">
+	$('#nombre').limit('40','#charsLeftNombre');
+	$(function() {
+    	
+	});
+</script>
+{% endblock %}

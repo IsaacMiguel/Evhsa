@@ -35,7 +35,7 @@
       <a class="navbar-brand" href="/inicio" style="padding-top: 3px;margin-left: 5px;"><img src="/uploads/evhsalogochico.jpg"></a>
     </div>
     <!-- 
-        PARA LOS USUARIOS QUE NO TIENEN PERMISO PONERLE "CLASS=DISABLED" EN EL <li> MENU
+        PARA LOS USUARIOS QUE NO TIENEN PERMISO PONERLE "CLASS=DISABLED" EN EL <li> MENU ??
     -- >
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -112,6 +112,14 @@
             <li><a href="/inicio" class="menu" data-idmenu="41" data-accion="c">Abreviaturas</a></li>
           </ul>
         </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administracion<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/codigosie_lista" class="menu" data-idmenu="43" data-accion="c">Códigos de Ingresos/Egresos [ABM]</a></li>
+            <li><a href="/ingegr_lista" class="menu" data-idmenu="44" data-accion="c" id="btnIngEgrLista">Ingesos / Egresos Diarios [ABM]</a></li>
+            <li><a href="/" class="menu" data-idmenu="45" data-accion="c">Reporte</a></li>
+          </ul>
+        </li>
         <li class="dropdown"><a href="/random">Interno</a></li>
         <li class="dropdown"><a href="/ayuda">Ayuda</a></li>
         <li class="dropdown"><a href="/logout">Logout</a></li>
@@ -139,7 +147,7 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap-submenu.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<!-- <script src="/js/bootstrap-datepicker.js"></script> -->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="/js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript">
@@ -155,6 +163,43 @@
                 console.log(xhr)
             });
         });
+
+        $("#btnIngEgrLista").on("click", function (){
+            if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                var storage = localStorage;
+                console.log(storage.length);                   
+                   
+                localStorage.clear();
+
+                var myDate = new Date(); 
+                myDate.setFullYear(myDate.getFullYear());
+                day = myDate.getDate();
+                if (day<10)
+                    day = "0"+day;
+                month = myDate.getMonth()+1;
+                if (month<10)
+                    month = "0"+month
+                Today = day + "/" + month + "/" + myDate.getFullYear();
+                PrimeroDeMes = "01/"+month+'/'+myDate.getFullYear();
+
+                var objDatos = {"fecha_01": PrimeroDeMes, "fecha_hoy": Today}
+
+                var objDatos_stringified = JSON.stringify(objDatos);
+
+                // if (storage.length == 0){
+                storage.setItem('objDatos', objDatos_stringified);
+                // }
+                
+            } else { 
+                alert('No soporta LocalStorage. Actualize el navegador !!'); 
+            }
+
+           
+
+
+        });
+
     });
 </script>
 </body>

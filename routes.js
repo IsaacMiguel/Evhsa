@@ -15,6 +15,8 @@ var cPlanillaDiaria = require('./controllers/cPlanillaDiaria');
 var cTank = require('./controllers/cTank');
 var cStockGasoilEnTanque = require('./controllers/cStockGasoilEnTanque');
 var cConsumoxFechas = require('./controllers/cConsumoxFechas');
+var cCodigosIE = require('./controllers/cCodigosIE');
+var cIngegr = require('./controllers/cIngegr');
 
 
 
@@ -219,12 +221,28 @@ module.exports = function(app) {
 	//consulta consumo x fechas
 	app.get("/consumoxfechas", auth, acceso, cConsumoxFechas.getIndex);
 	app.get("/getconsumoentrefechas/:desde/:hasta", auth, cConsumoxFechas.getConsumoEntreFechas);
+	//administracion - codigos ingreso egreso
+	app.get("/codigosie_lista", auth, acceso, cCodigosIE.getLista);
+	app.get("/codigosie_alta", auth, acceso, cCodigosIE.getAlta);
+	app.post("/codigosie_alta", auth, cCodigosIE.postAlta);
+	app.get("/codigosie_modificar/:id", auth, acceso, cCodigosIE.getModificar);
+	app.post("/codigosie_modificar", auth, cCodigosIE.postModificar);
+	app.get("/codigosie_borrar/:id", auth, acceso, cCodigosIE.getDel);
+	// administracion - ingresos y egresos "ingegr"
+	app.get("/ingegr_lista", auth, acceso, cIngegr.getLista);
+	app.get("/ingegr_getDesdeHasta/:desde/:hasta", auth, cIngegr.getDesdeHasta);
+	app.get("/ingegr_alta", auth, acceso, cIngegr.getAlta);
+	app.post("/ingegr_alta", auth, cIngegr.postAlta);
+	app.get("/ingegr_modificar/:id", auth, acceso, cIngegr.getModificar);
+	app.post("/ingegr_modificar", auth, cIngegr.postModificar);
+	app.get("/ingegr_borrar/:id", auth, cIngegr.getDel);
+
 
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
 	// //random
-	app.get('/random', auth, cRandom.getRandom);
+	app.get('/random', auth, acceso, cRandom.getRandom);
 	app.get('/updateRepuestosConIdRubroFk', auth, cRandom.updateRepuestosConIdRubroFk);
 	app.get("/updateTablaVehiculosConFive", auth, cRandom.updateTablaVehiculosConFive);
 	app.get("/updateTablaSecr", auth, cRandom.updateTablaSecrConOperariosTemp);

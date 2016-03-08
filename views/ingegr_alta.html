@@ -1,0 +1,67 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/ingegr_alta">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Fecha:</td>
+				<td><input type="text" readonly class="form-control datepicker" name="fecha" id="fecha"></td>
+			</tr>
+			<tr>
+				<td>Codigo:</td>
+				<td>
+					<select id="codigo" name="codigo" class="form-control">
+						{% for c in codigos %}
+							<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Importe:</td>
+				<td><input type="text" name="importe" id="importe" class="form-control" onkeypress="return Numy1Punto(event, this)"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()"></td>
+				<td><input type="submit" value="Agregar"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<!-- <script src="/js/bootstrap-datepicker.js"></script> -->
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script type="text/javascript">
+	if('localStorage' in window && window['localStorage'] !== null) {
+		var objDatos = localStorage.getItem('objDatos');
+		var objDatos_parsed = JSON.parse(objDatos);
+
+		var PrimeroDeMes = objDatos_parsed.fecha_01;
+		var Today = objDatos_parsed.fecha_hoy;
+		// console.log("Pr: "+PrimeroDeMes)
+		// console.log("To: "+Today);
+
+		$(".datepicker").datepicker({
+			dateFormat: 'dd/mm/yy',
+			minDate: PrimeroDeMes,
+			maxDate: Today
+		});
+
+	}else{
+		// event.preventDefault();
+		alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");				
+	}
+	
+	$(function() {
+
+	});
+</script>
+
+{% endblock %}

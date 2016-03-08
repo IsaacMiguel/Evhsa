@@ -1,0 +1,209 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+		<tr>	
+			<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
+			<td><a href="/ingegr_alta"><button type="button" class="btn btn-success" id="btnNuevoRegistro">Nuevo Registro</button></a></td>
+			<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>			
+			<td><input type="text" class="datepicker form-control" name="fecha_desde" id="fecha_desde" readonly style="width: 150px"></td>
+			<td><input type="text" class="datepicker form-control" name="fecha_hasta" id="fecha_hasta" readonly style="width: 150px"></td>
+			<td><button type="button" name="filtrar" id="filtrar" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></td>
+		</tr>	
+		</table>
+	</div>
+	<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+		      </div>
+		      <div class="modal-body" id="modal-body">
+		        {{ ayuda.texto }}
+		      </div>
+		      <div class="modal-footer" id="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	<!-- Fin Modal -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr>
+			  				<th colspan="2">Opciones</th> 
+							<th>ID</th>
+							<th>Fecha</th>
+							<th>Importe</th>		
+							<th>Codigo I/E</th>
+							<th>Tipo</th>
+							<th>Operador</th>
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tablaingegr"/>
+			  			[[#.]]
+							<tr>
+								<td><a href="/ingegr_modificar/[[id]]"><button class="btn btn-warning mod" title="Modificar"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button></a></td>
+			  					<td><a href="/ingegr_borrar/[[id]]"><button class="btn btn-danger" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></a></td>				
+								<td>[[ id ]]</td>
+								<td>[[ fechaf ]]</td>
+								<td>
+									[[#tipovalue]]
+										<span class="glyphicon glyphicon-plus-sign" style="font-size: 19px;"></span> $ [[ importe ]]</td>
+									[[/tipovalue]]
+									[[^tipovalue]]
+										<span class="glyphicon glyphicon-minus-sign" style="font-size: 19px;"></span> $ [[ importe ]]</td>
+									[[/tipovalue]]
+								<td>[[ id_codigoie_fk ]] - [[ codigotxt ]]</td>
+								<td>[[ tipotxt ]]</td>
+								<td>[[ operadortxt ]]</td>
+							</tr>
+						[[/.]]
+			  		</script>
+				</table>
+			</div> 			
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<!-- <script src="/js/bootstrap-datepicker.js"></script> -->
+<script type="text/javascript" src="/js/mustache.js"></script>
+<script type="text/javascript" src="/js/mustache-wax.js"></script>
+<script type="text/javascript">
+
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	if('localStorage' in window && window['localStorage'] !== null) {
+		var objDatos = localStorage.getItem('objDatos');
+		var objDatos_parsed = JSON.parse(objDatos);
+
+		var PrimeroDeMes = objDatos_parsed.fecha_01;
+		var Today = objDatos_parsed.fecha_hoy;
+
+		$("#fecha_desde").val(PrimeroDeMes);
+		$("#fecha_hasta").val(Today);
+	}else{
+		// event.preventDefault();
+		alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");				
+	}
+
+		
+
+	$(function() {		
+	    console.log( "ready!" );
+
+		var fecha_desde = $("#fecha_desde").val();
+		var fecha_hasta = $("#fecha_hasta").val();
+
+		var desde = encodeURIComponent(fecha_desde)
+		var hasta = encodeURIComponent(fecha_hasta);
+
+	    $.getJSON('/ingegr_getDesdeHasta/'+desde+"/"+hasta, function (data){
+			// console.log(data);
+			if (data.length != 0){
+				$('#tbodylisto > tr').remove();
+				var template = $('#tablaingegr').html();
+				Mustache.tags =['[[',']]'];
+				var html = Mustache.to_html(template, data);
+				//console.log(html);
+				$('#tbodylisto').html(html);
+			}else{
+				//hacer que aca muestre error de que no se encontro nada en la busqueda
+				console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+				$('#tbodylisto > tr').remove();					
+				$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+			}
+		});
+
+		
+
+	    $("#filtrar").on("click", function (){
+	    	console.log("filtrar");
+	    	var fecha_desde = $("#fecha_desde").val();
+			var fecha_hasta = $("#fecha_hasta").val();
+
+			var desde = encodeURIComponent(fecha_desde)
+			var hasta = encodeURIComponent(fecha_hasta);
+
+		    $.getJSON('/ingegr_getDesdeHasta/'+desde+"/"+hasta, function (data){
+				// console.log(data);
+				if (data.length != 0){
+					$('#tbodylisto > tr').remove();
+					var template = $('#tablaingegr').html();
+					Mustache.tags =['[[',']]'];
+					var html = Mustache.to_html(template, data);
+					//console.log(html);
+					$('#tbodylisto').html(html);
+				}else{
+					//hacer que aca muestre error de que no se encontro nada en la busqueda
+					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+					$('#tbodylisto > tr').remove();					
+					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+				}
+			});
+	    });
+
+	    $("#btnNuevoRegistro").on("click", function (){
+			if('localStorage' in window && window['localStorage'] !== null) {
+				var objDatos = localStorage.getItem('objDatos');
+				var objDatos_parsed = JSON.parse(objDatos);
+
+				var fecha_desde = $("#fecha_desde").val();
+				var fecha_hasta = $("#fecha_hasta").val();
+
+				objDatos_parsed.fecha_01 = fecha_desde;
+				objDatos_parsed.fecha_hoy = fecha_hasta;
+
+				// alert(objDatos_parsed)
+				var objDatos_stringified = JSON.stringify(objDatos_parsed);		
+				localStorage.setItem('objDatos', objDatos_stringified);
+			}else{
+				// event.preventDefault();
+				alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");				
+			}
+	    });
+
+	    $(document).on("click",".mod",function(){ 
+	    	if('localStorage' in window && window['localStorage'] !== null) {
+				var objDatos = localStorage.getItem('objDatos');
+				var objDatos_parsed = JSON.parse(objDatos);
+
+				var fecha_desde = $("#fecha_desde").val();
+				var fecha_hasta = $("#fecha_hasta").val();
+				console.log(fecha_desde+" "+fecha_hasta)
+				objDatos_parsed.fecha_01 = fecha_desde;
+				objDatos_parsed.fecha_hoy = fecha_hasta;
+
+				var objDatos_stringified = JSON.stringify(objDatos_parsed);		
+				console.log(objDatos_stringified)
+				localStorage.setItem('objDatos', objDatos_stringified);
+			}else{
+				// event.preventDefault();
+				alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");				
+			}
+	    });
+	});
+
+
+</script>
+{% endblock %}

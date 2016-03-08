@@ -6,7 +6,8 @@ module.exports = {
 	getById: getById,
 	update: update,
 	del: del,
-	getLastNumero: getLastNumero
+	getLastNumero: getLastNumero,
+	verificarNumero: verificarNumero
 }
 
 function getAll(cb){
@@ -37,4 +38,8 @@ function del(id_proveedor, cb){
 
 function getLastNumero(cb){
 	conn("select max(numero) as numero from proveedores", cb);
+}
+
+function verificarNumero(nro_prov, cb){
+	conn("select * from proveedores where numero = "+nro_prov, cb);
 }
