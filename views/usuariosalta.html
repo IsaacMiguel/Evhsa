@@ -32,7 +32,7 @@
 			</tr>
 			<tr>
 				<td>Fecha de alta:</td>
-				<td><input type="text" class="form-control datepicker" readonly name="alta" required></td>
+				<td><input type="text" class="form-control datepicker" readonly name="alta" id="alta" required></td>
 			</tr>
 			<tr>
 				<td>Fecha de baja:</td>
@@ -61,16 +61,23 @@
 	});
 	
 	var myDate = new Date(); 
-	myDate.setFullYear(myDate.getFullYear() + 5);
-	year = myDate.getFullYear();
-	month = myDate.getMonth()+1;
-	day = myDate.getDate();
+	// myDate.setFullYear(myDate.getFullYear());
+	var year = myDate.getFullYear()+5;
+	var year1 = myDate.getFullYear();
+	var month = myDate.getMonth()+1;
+	var day = myDate.getDate();
+	var day1 = myDate.getDate()-1;
 	if (month<10)
 		month = "0"+month;
 	if (day<10)
 		day = "0"+day;
+	if (day1<10)
+		day1 = "0"+day1;
 	myDate =  day +"/"+month+"/"+year;
-	$("#baja").val(myDate)
+	Today = day1+"/"+month+"/"+year1;
+	
+	$("#baja").val(myDate);
+	$("#alta").val(Today);
 </script>
 
-{% endblock %}
+{% endblock %
