@@ -128,9 +128,9 @@ module.exports = function(app) {
 	//usuarios
 	app.get('/usuarioslista', auth, acceso, cUsuario.getUsuarios);
 	app.get('/usuariosalta', auth, acceso, cUsuario.getUsuariosAlta);
-	app.post('/usuariosalta', auth, acceso, cUsuario.putUsuario);
+	app.post('/usuariosalta', auth, cUsuario.putUsuario);
 	app.get('/usuariosmodificar/:id', auth, acceso, cUsuario.getUsuarioModificar);
-	app.post('/usuariosmodificar', auth, acceso, cUsuario.postUsuarioModificar);
+	app.post('/usuariosmodificar', auth, cUsuario.postUsuarioModificar);
 	app.get('/usuariosborrar/:id', auth, acceso, cUsuario.getDelUsuario);
 	//configurar accesos
 	app.get('/accesoslista/:id', auth, cAccesos.getAccesos);
@@ -235,7 +235,7 @@ module.exports = function(app) {
 	app.post("/ingegr_alta", auth, cIngegr.postAlta);
 	app.get("/ingegr_modificar/:id", auth, acceso, cIngegr.getModificar);
 	app.post("/ingegr_modificar", auth, cIngegr.postModificar);
-	app.get("/ingegr_borrar/:id", auth, cIngegr.getDel);
+	app.get("/ingegr_borrar/:id", auth, acceso, cIngegr.getDel);
 
 
 

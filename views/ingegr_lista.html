@@ -13,11 +13,11 @@
 		<table>
 		<tr>	
 			<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
-			<td><a href="/ingegr_alta"><button type="button" class="btn btn-success" id="btnNuevoRegistro">Nuevo Registro</button></a></td>
+			<td><a href="/ingegr_alta"><button type="button" class="btn btn-success menu" data-idmenu="44" data-accion="a" id="btnNuevoRegistro">Nuevo Registro</button></a></td>
 			<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>			
-			<td><input type="text" class="datepicker form-control" name="fecha_desde" id="fecha_desde" readonly style="width: 150px"></td>
-			<td><input type="text" class="datepicker form-control" name="fecha_hasta" id="fecha_hasta" readonly style="width: 150px"></td>
-			<td><button type="button" name="filtrar" id="filtrar" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></td>
+			<td><input type="text" class="datepicker form-control" name="fecha_desde" id="fecha_desde" title="Fecha Desde" readonly style="width: 150px"></td>
+			<td><input type="text" class="datepicker form-control" name="fecha_hasta" id="fecha_hasta" title="Fecha Hasta" readonly style="width: 150px"></td>
+			<td><button type="button" name="filtrar" id="filtrar" class="btn btn-default" title="Filtrar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></td>
 		</tr>	
 		</table>
 	</div>
@@ -60,8 +60,8 @@
 			  		<script type="text/template" id="tablaingegr"/>
 			  			[[#.]]
 							<tr>
-								<td><a href="/ingegr_modificar/[[id]]"><button class="btn btn-warning mod" title="Modificar"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button></a></td>
-			  					<td><a href="/ingegr_borrar/[[id]]"><button class="btn btn-danger" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></a></td>				
+								<td><a href="/ingegr_modificar/[[id]]"><button class="btn btn-warning mod menu" data-idmenu="44" data-accion="m" title="Modificar"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button></a></td>
+			  					<td><a href="/ingegr_borrar/[[id]]"><button class="btn btn-danger menu" data-idmenu="44" data-accion="b" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></a></td>				
 								<td>[[ id ]]</td>
 								<td>[[ fechaf ]]</td>
 								<td>

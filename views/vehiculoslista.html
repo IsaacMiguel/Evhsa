@@ -13,7 +13,7 @@
 		<table>
 		<tr>	
 			<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-			<td><a href="/vehiculosalta"><button type="button" class="btn btn-success">Agregar Nuevo</button></a></td>
+			<td><a href="/vehiculosalta"><button type="button" class="btn btn-success menu" data-idmenu="40" data-accion="a">Agregar Nuevo</button></a></td>
 			<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 		</tr>	
 		</table>
@@ -60,10 +60,10 @@
 							<td>{% if v.tipo == 'C' %}Colectivo{% else %}Otro{% endif %}</td>
 							<td>{% if v.fecha_alta != '0000-00-00' %}{{ v.fecha_alta_f }}{% else %} {% endif %}</td>
 							<td><a href="/vehiculosver/{{ v.id }}"><button class="btn btn-default">Ver</button></a></td>
-							<td><a href="/vehiculosmodificar/{{ v.id }}"><button class="btn btn-warning">Modificar</button></a></td>
-							<td><a href='/vehiculosborrar/{{ v.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>
+							<td><a href="/vehiculosmodificar/{{ v.id }}"><button class="btn btn-warning menu" data-idmenu="40" data-accion="m">Modificar</button></a></td>
+							<td><a href='/vehiculosborrar/{{ v.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="40" data-accion="m">Eliminar</button><a/></td>
 						</tr>
-						{% endfor %}
+					{% endfor %}
 		  		</tbody>
 			</table>				
 		</div><!--div col xs12 -->

@@ -13,7 +13,7 @@
 		<table>
 		<tr>	
 			<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-			<td><a href="/rubrosalta"><button type="button" class="btn btn-success">Agregar Nuevo</button></a></td>
+			<td><a href="/rubrosalta"><button type="button" class="btn btn-success menu" data-idmenu="2" data-accion="a">Agregar Nuevo</button></a></td>
 			<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 		</tr>	
 		</table>
@@ -55,10 +55,10 @@
 							<td>{{ r.codigo }}</td>
 							<td>{{ r.nombre }}</td>
 							<td>[{{ r.codigogrupo }}] - {{ r.grupotxt }}</td>
-							<td><a href="/rubrosmodificar/{{ r.id }}"><button class="btn btn-warning">Modificar</button></a></td>
-							<td><a href='/rubrosborrar/{{ r.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>
+							<td><a href="/rubrosmodificar/{{ r.id }}"><button class="btn btn-warning menu" data-idmenu="2" data-accion="m">Modificar</button></a></td>
+							<td><a href='/rubrosborrar/{{ r.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="2" data-accion="b">Eliminar</button><a/></td>
 						</tr>
-						{% endfor %}
+					{% endfor %}
 		  		</tbody>
 			</table>				
 		</div><!--div col xs12 -->

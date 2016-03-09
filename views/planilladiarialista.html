@@ -13,7 +13,7 @@
 		<table>
 		<tr>	
 			<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-			<td><a href="/planilladiariaalta"><button type="button" class="btn btn-success">Agregar Nuevo</button></a></td>
+			<td><a href="/planilladiariaalta"><button type="button" class="btn btn-success menu" data-idmenu="25" data-accion="a">Agregar Nuevo</button></a></td>
 			<td><a href="/planilladiariaverfechascondatos"><button type="button" class="btn btn-default">Buscar fechas con datos</button></a></td>
 			<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 			<td style="float: right;">
@@ -85,12 +85,8 @@
 							<td>[[agua]] Lt.</td>
 							<td>$ [[val_total]]</td>
 							<td>[[tanquetxt]]</td>
-							<td>
-								<a href="/planilladiariamodificar/[[id]]" class="btn btn-warning"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-							</td>
-							<td>
-								<a href="/planilladiariaborrar/[[id]]" class="btn btn-danger" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-							</td>
+							<td><a href="/planilladiariamodificar/[[id]]" class="btn btn-warning menu" data-idmenu="25" data-accion="m"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></td>
+							<td><a href="/planilladiariaborrar/[[id]]" class="btn btn-danger menu" data-idmenu="25" data-accion="b" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
 						</tr>	
 					[[/.]]						
 				</script>		  		

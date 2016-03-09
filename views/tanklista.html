@@ -13,7 +13,7 @@
 		<table>
 		<tr>	
 			<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-			<td><a href="/tankalta"><button type="button" class="btn btn-success">Agregar Nuevo</button></a></td>
+			<td><a href="/tankalta"><button type="button" class="btn btn-success menu" data-idmenu="26" data-accion="a">Agregar Nuevo</button></a></td>
 			<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 			<td style="width:50px;"></td>
 			<td>Desde:</td>
@@ -73,8 +73,8 @@
 								<td>[[ litros ]]</td>
 								<td>[[ valor_litro ]]</td>
 								<td>[[ tanquetxt ]]</td>
-								<td><a href="/tankmodificar/[[ id ]]"><button class="btn btn-warning">Modificar</button></a></td>
-								<td><a href='/tankborrar/[[ id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>
+								<td><a href="/tankmodificar/[[ id ]]"><button class="btn btn-warning menu" data-idmenu="26" data-accion="m">Modificar</button></a></td>
+								<td><a href='/tankborrar/[[ id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="26" data-accion="m">Eliminar</button><a/></td>
 							</tr>
 						[[/.]]						
 					</script>
