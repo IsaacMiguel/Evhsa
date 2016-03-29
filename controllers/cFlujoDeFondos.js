@@ -352,7 +352,7 @@ function getGeneracion_Excel(req, res){
 
 							//este tiene una url acá pero en el server es otra....
 							conf.stylesXmlFile = "C:/Users/Administrador/Documents/Proyectos/Evhsa/style.xml";
-							//conf.stylesXmlFile = "C:/Users/Administrador/Documents/Proyectos/Evhsa/style.xml";
+							//conf.stylesXmlFile = "C:/Users/leandro/Documents/Evhsa-master/style.xml";
 
 							conf.cols = [{caption:'FLUJO DE FONDOS', type:'string'},
 						    {caption:'EVHSA', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
