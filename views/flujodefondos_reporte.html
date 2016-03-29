@@ -1,0 +1,324 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+.container {
+	width: 90% !important;
+	margin-left: 5% !important;
+	margin-right: 5% !important;
+}
+
+body {
+	background-color: #eee !important;
+}
+</style>
+<link href="/css/flujodefondos_reporte.css" rel="stylesheet">
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<input hidden id="anio" name="anio" value="{{ anio }}">
+<input hidden id="mes" name="mes" value="{{ mes }}">
+<div class="panel panel-primary">
+	<!-- Default panel contents -->
+	<div class="panel-heading clearfix">
+		<h1 class="pull-left">Flujo de Fondos - EVHSA</h1>
+		<button id="btnExport" class="btn btn-default btn-lg pull-right" style="margin-top: 15px !important;" title="Descargar Excel"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></button>
+	</div>
+	<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
+		<table class="table table-striped ingresos">
+			<tr>
+				<th style="padding-bottom: 8px !important; padding-top: 8px !important;"><h2><b>INGRESOS</b></h2></th>
+				<th><h4>01</h4></th>
+				<th><h4>02</h4></th>
+				<th><h4>03</h4></th>
+				<th><h4>04</h4></th>
+				<th><h4>05</h4></th>
+				<th><h4>06</h4></th>
+				<th><h4>07</h4></th>
+				<th><h4>08</h4></th>
+				<th><h4>09</h4></th>
+				<th><h4>10</h4></th>
+				<th><h4>11</h4></th>
+				<th><h4>12</h4></th>
+				<th><h4>13</h4></th>
+				<th><h4>14</h4></th>
+				<th><h4>15</h4></th>
+				<th><h4>16</h4></th>
+				<th><h4>17</h4></th>
+				<th><h4>18</h4></th>
+				<th><h4>19</h4></th>
+				<th><h4>20</h4></th>
+				<th><h4>21</h4></th>
+				<th><h4>22</h4></th>
+				<th><h4>23</h4></th>
+				<th><h4>24</h4></th>
+				<th><h4>25</h4></th>
+				<th><h4>26</h4></th>
+				<th><h4>27</h4></th>
+				<th><h4>28</h4></th>
+				<th><h4>29</h4></th>
+				<th><h4>30</h4></th>
+				<th><h4>31</h4></th>
+			</tr>
+			{% for i in ingresos %}
+				<tr>
+					<td style="text-align: left !important; font-size: 16px;">{{ i.codigotxt }}</td>
+					<td><p class="suma01">{{ i.suma01 }}</p></td>
+					<td><p class="suma02">{{ i.suma02 }}</p></td>
+					<td><p class="suma03">{{ i.suma03 }}</p></td>
+					<td><p class="suma04">{{ i.suma04 }}</p></td>
+					<td><p class="suma05">{{ i.suma05 }}</p></td>
+					<td><p class="suma06">{{ i.suma06 }}</p></td>
+					<td><p class="suma07">{{ i.suma07 }}</p></td>
+					<td><p class="suma08">{{ i.suma08 }}</p></td>
+					<td><p class="suma09">{{ i.suma09 }}</p></td>
+					<td><p class="suma10">{{ i.suma10 }}</p></td>
+					<td><p class="suma11">{{ i.suma11 }}</p></td>
+					<td><p class="suma12">{{ i.suma12 }}</p></td>
+					<td><p class="suma13">{{ i.suma13 }}</p></td>
+					<td><p class="suma14">{{ i.suma14 }}</p></td>
+					<td><p class="suma15">{{ i.suma15 }}</p></td>
+					<td><p class="suma16">{{ i.suma16 }}</p></td>
+					<td><p class="suma17">{{ i.suma17 }}</p></td>
+					<td><p class="suma18">{{ i.suma18 }}</p></td>
+					<td><p class="suma19">{{ i.suma19 }}</p></td>
+					<td><p class="suma20">{{ i.suma20 }}</p></td>
+					<td><p class="suma21">{{ i.suma21 }}</p></td>
+					<td><p class="suma22">{{ i.suma22 }}</p></td>
+					<td><p class="suma23">{{ i.suma23 }}</p></td>
+					<td><p class="suma24">{{ i.suma24 }}</p></td>
+					<td><p class="suma25">{{ i.suma25 }}</p></td>
+					<td><p class="suma26">{{ i.suma26 }}</p></td>
+					<td><p class="suma27">{{ i.suma27 }}</p></td>
+					<td><p class="suma28">{{ i.suma28 }}</p></td>
+					<td><p class="suma29">{{ i.suma29 }}</p></td>
+					<td><p class="suma30">{{ i.suma30 }}</p></td>
+					<td><p class="suma31">{{ i.suma31 }}</p></td>
+				</tr>
+			{% endfor %}
+			<tr>
+				<td style="text-align: left !important;"><b>TOTAL DE INGRESOS</b></td>
+				<td>{{ total_ingresos.total01 }}</td>
+				<td>{{ total_ingresos.total02 }}</td>
+				<td>{{ total_ingresos.total03 }}</td>
+				<td>{{ total_ingresos.total04 }}</td>
+				<td>{{ total_ingresos.total05 }}</td>
+				<td>{{ total_ingresos.total06 }}</td>
+				<td>{{ total_ingresos.total07 }}</td>
+				<td>{{ total_ingresos.total08 }}</td>
+				<td>{{ total_ingresos.total09 }}</td>
+				<td>{{ total_ingresos.total10 }}</td>
+				<td>{{ total_ingresos.total11 }}</td>
+				<td>{{ total_ingresos.total12 }}</td>
+				<td>{{ total_ingresos.total13 }}</td>
+				<td>{{ total_ingresos.total14 }}</td>
+				<td>{{ total_ingresos.total15 }}</td>
+				<td>{{ total_ingresos.total16 }}</td>
+				<td>{{ total_ingresos.total17 }}</td>
+				<td>{{ total_ingresos.total18 }}</td>
+				<td>{{ total_ingresos.total19 }}</td>
+				<td>{{ total_ingresos.total20 }}</td>
+				<td>{{ total_ingresos.total21 }}</td>
+				<td>{{ total_ingresos.total22 }}</td>
+				<td>{{ total_ingresos.total23 }}</td>
+				<td>{{ total_ingresos.total24 }}</td>
+				<td>{{ total_ingresos.total25 }}</td>
+				<td>{{ total_ingresos.total26 }}</td>
+				<td>{{ total_ingresos.total27 }}</td>
+				<td>{{ total_ingresos.total28 }}</td>
+				<td>{{ total_ingresos.total29 }}</td>
+				<td>{{ total_ingresos.total30 }}</td>
+				<td>{{ total_ingresos.total31 }}</td>
+			</tr>
+			<tr>
+				<td style="test-align: left; padding-bottom: 8px !important; padding-top: 8px !important;"><h2><b>EGRESOS</b></h2></td>
+				<td colspan="31"></td>
+			</tr>
+			{% for e in egresos %}
+				<tr>
+					<td style="text-align: left !important; font-size: 16px;">{{ e.codigotxt }}</td>
+					<td><p class="suma01">{{ e.suma01 }}</p></td>
+					<td><p class="suma02">{{ e.suma02 }}</p></td>
+					<td><p class="suma03">{{ e.suma03 }}</p></td>
+					<td><p class="suma04">{{ e.suma04 }}</p></td>
+					<td><p class="suma05">{{ e.suma05 }}</p></td>
+					<td><p class="suma06">{{ e.suma06 }}</p></td>
+					<td><p class="suma07">{{ e.suma07 }}</p></td>
+					<td><p class="suma08">{{ e.suma08 }}</p></td>
+					<td><p class="suma09">{{ e.suma09 }}</p></td>
+					<td><p class="suma10">{{ e.suma10 }}</p></td>
+					<td><p class="suma11">{{ e.suma11 }}</p></td>
+					<td><p class="suma12">{{ e.suma12 }}</p></td>
+					<td><p class="suma13">{{ e.suma13 }}</p></td>
+					<td><p class="suma14">{{ e.suma14 }}</p></td>
+					<td><p class="suma15">{{ e.suma15 }}</p></td>
+					<td><p class="suma16">{{ e.suma16 }}</p></td>
+					<td><p class="suma17">{{ e.suma17 }}</p></td>
+					<td><p class="suma18">{{ e.suma18 }}</p></td>
+					<td><p class="suma19">{{ e.suma19 }}</p></td>
+					<td><p class="suma20">{{ e.suma20 }}</p></td>
+					<td><p class="suma21">{{ e.suma21 }}</p></td>
+					<td><p class="suma22">{{ e.suma22 }}</p></td>
+					<td><p class="suma23">{{ e.suma23 }}</p></td>
+					<td><p class="suma24">{{ e.suma24 }}</p></td>
+					<td><p class="suma25">{{ e.suma25 }}</p></td>
+					<td><p class="suma26">{{ e.suma26 }}</p></td>
+					<td><p class="suma27">{{ e.suma27 }}</p></td>
+					<td><p class="suma28">{{ e.suma28 }}</p></td>
+					<td><p class="suma29">{{ e.suma29 }}</p></td>
+					<td><p class="suma30">{{ e.suma30 }}</p></td>
+					<td><p class="suma31">{{ e.suma31 }}</p></td>
+				</tr>
+			{% endfor %}
+			<tr>
+				<td style="text-align: left !important;"><b>TOTAL DE EGRESOS</b></td>
+				<td>{{ total_egresos.total01 }}</td>
+				<td>{{ total_egresos.total02 }}</td>
+				<td>{{ total_egresos.total03 }}</td>
+				<td>{{ total_egresos.total04 }}</td>
+				<td>{{ total_egresos.total05 }}</td>
+				<td>{{ total_egresos.total06 }}</td>
+				<td>{{ total_egresos.total07 }}</td>
+				<td>{{ total_egresos.total08 }}</td>
+				<td>{{ total_egresos.total09 }}</td>
+				<td>{{ total_egresos.total10 }}</td>
+				<td>{{ total_egresos.total11 }}</td>
+				<td>{{ total_egresos.total12 }}</td>
+				<td>{{ total_egresos.total13 }}</td>
+				<td>{{ total_egresos.total14 }}</td>
+				<td>{{ total_egresos.total15 }}</td>
+				<td>{{ total_egresos.total16 }}</td>
+				<td>{{ total_egresos.total17 }}</td>
+				<td>{{ total_egresos.total18 }}</td>
+				<td>{{ total_egresos.total19 }}</td>
+				<td>{{ total_egresos.total20 }}</td>
+				<td>{{ total_egresos.total21 }}</td>
+				<td>{{ total_egresos.total22 }}</td>
+				<td>{{ total_egresos.total23 }}</td>
+				<td>{{ total_egresos.total24 }}</td>
+				<td>{{ total_egresos.total25 }}</td>
+				<td>{{ total_egresos.total26 }}</td>
+				<td>{{ total_egresos.total27 }}</td>
+				<td>{{ total_egresos.total28 }}</td>
+				<td>{{ total_egresos.total29 }}</td>
+				<td>{{ total_egresos.total30 }}</td>
+				<td>{{ total_egresos.total31 }}</td>
+			</tr>
+			<tr>
+				<td style="text-align: left !important;"><b>SALDO DIARIO</b></td>
+				<td>{{ saldos_diarios.saldo01 }}</td>
+				<td>{{ saldos_diarios.saldo02 }}</td>
+				<td>{{ saldos_diarios.saldo03 }}</td>
+				<td>{{ saldos_diarios.saldo04 }}</td>
+				<td>{{ saldos_diarios.saldo05 }}</td>
+				<td>{{ saldos_diarios.saldo06 }}</td>
+				<td>{{ saldos_diarios.saldo07 }}</td>
+				<td>{{ saldos_diarios.saldo08 }}</td>
+				<td>{{ saldos_diarios.saldo09 }}</td>
+				<td>{{ saldos_diarios.saldo10 }}</td>
+				<td>{{ saldos_diarios.saldo11 }}</td>
+				<td>{{ saldos_diarios.saldo12 }}</td>
+				<td>{{ saldos_diarios.saldo13 }}</td>
+				<td>{{ saldos_diarios.saldo14 }}</td>
+				<td>{{ saldos_diarios.saldo15 }}</td>
+				<td>{{ saldos_diarios.saldo16 }}</td>
+				<td>{{ saldos_diarios.saldo17 }}</td>
+				<td>{{ saldos_diarios.saldo18 }}</td>
+				<td>{{ saldos_diarios.saldo19 }}</td>
+				<td>{{ saldos_diarios.saldo20 }}</td>
+				<td>{{ saldos_diarios.saldo21 }}</td>
+				<td>{{ saldos_diarios.saldo22 }}</td>
+				<td>{{ saldos_diarios.saldo23 }}</td>
+				<td>{{ saldos_diarios.saldo24 }}</td>
+				<td>{{ saldos_diarios.saldo25 }}</td>
+				<td>{{ saldos_diarios.saldo26 }}</td>
+				<td>{{ saldos_diarios.saldo27 }}</td>
+				<td>{{ saldos_diarios.saldo28 }}</td>
+				<td>{{ saldos_diarios.saldo29 }}</td>
+				<td>{{ saldos_diarios.saldo30 }}</td>
+				<td>{{ saldos_diarios.saldo31 }}</td>
+			</tr>
+			<tr>
+				<td style="text-align: left !important;"><b>SALDO INICIAL</b></td>
+				<td>{{ saldo_inicial.saldoi01 }}</td>
+				<td>{{ saldo_inicial.saldoi02 }}</td>
+				<td>{{ saldo_inicial.saldoi03 }}</td>
+				<td>{{ saldo_inicial.saldoi04 }}</td>
+				<td>{{ saldo_inicial.saldoi05 }}</td>
+				<td>{{ saldo_inicial.saldoi06 }}</td>
+				<td>{{ saldo_inicial.saldoi07 }}</td>
+				<td>{{ saldo_inicial.saldoi08 }}</td>
+				<td>{{ saldo_inicial.saldoi09 }}</td>
+				<td>{{ saldo_inicial.saldoi10 }}</td>
+				<td>{{ saldo_inicial.saldoi11 }}</td>
+				<td>{{ saldo_inicial.saldoi12 }}</td>
+				<td>{{ saldo_inicial.saldoi13 }}</td>
+				<td>{{ saldo_inicial.saldoi14 }}</td>
+				<td>{{ saldo_inicial.saldoi15 }}</td>
+				<td>{{ saldo_inicial.saldoi16 }}</td>
+				<td>{{ saldo_inicial.saldoi17 }}</td>
+				<td>{{ saldo_inicial.saldoi18 }}</td>
+				<td>{{ saldo_inicial.saldoi19 }}</td>
+				<td>{{ saldo_inicial.saldoi20 }}</td>
+				<td>{{ saldo_inicial.saldoi21 }}</td>
+				<td>{{ saldo_inicial.saldoi22 }}</td>
+				<td>{{ saldo_inicial.saldoi23 }}</td>
+				<td>{{ saldo_inicial.saldoi24 }}</td>
+				<td>{{ saldo_inicial.saldoi25 }}</td>
+				<td>{{ saldo_inicial.saldoi26 }}</td>
+				<td>{{ saldo_inicial.saldoi27 }}</td>
+				<td>{{ saldo_inicial.saldoi28 }}</td>
+				<td>{{ saldo_inicial.saldoi29 }}</td>
+				<td>{{ saldo_inicial.saldoi30 }}</td>
+				<td>{{ saldo_inicial.saldoi31 }}</td>
+			</tr>
+			<tr>
+				<td style="text-align: left !important;"><b>DEFICIT / SUPERAVIT</b></td>
+				<td>{{ deficit.def01 }}</td>
+				<td>{{ deficit.def02 }}</td>
+				<td>{{ deficit.def03 }}</td>
+				<td>{{ deficit.def04 }}</td>
+				<td>{{ deficit.def05 }}</td>
+				<td>{{ deficit.def06 }}</td>
+				<td>{{ deficit.def07 }}</td>
+				<td>{{ deficit.def08 }}</td>
+				<td>{{ deficit.def09 }}</td>
+				<td>{{ deficit.def10 }}</td>
+				<td>{{ deficit.def11 }}</td>
+				<td>{{ deficit.def12 }}</td>
+				<td>{{ deficit.def13 }}</td>
+				<td>{{ deficit.def14 }}</td>
+				<td>{{ deficit.def15 }}</td>
+				<td>{{ deficit.def16 }}</td>
+				<td>{{ deficit.def17 }}</td>
+				<td>{{ deficit.def18 }}</td>
+				<td>{{ deficit.def19 }}</td>
+				<td>{{ deficit.def20 }}</td>
+				<td>{{ deficit.def21 }}</td>
+				<td>{{ deficit.def22 }}</td>
+				<td>{{ deficit.def23 }}</td>
+				<td>{{ deficit.def24 }}</td>
+				<td>{{ deficit.def25 }}</td>
+				<td>{{ deficit.def26 }}</td>
+				<td>{{ deficit.def27 }}</td>
+				<td>{{ deficit.def28 }}</td>
+				<td>{{ deficit.def29 }}</td>
+				<td>{{ deficit.def30 }}</td>
+				<td>{{ deficit.def31 }}</td>
+			</tr>
+		</table>
+	</div>	
+</div>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+$("#btnExport").on("click", function (){
+	var anio = $("#anio").val();
+	var mes = $("#mes").val();
+
+	url = "/flujodefondos_generacion_excel/"+anio+"/"+mes;
+	window.location = url;
+});
+</script>
+{% endblock %}

@@ -17,6 +17,9 @@ var cStockGasoilEnTanque = require('./controllers/cStockGasoilEnTanque');
 var cConsumoxFechas = require('./controllers/cConsumoxFechas');
 var cCodigosIE = require('./controllers/cCodigosIE');
 var cIngegr = require('./controllers/cIngegr');
+var cFlujoDeFondos = require('./controllers/cFlujoDeFondos');
+
+
 
 var mEventos = require('./models/mEventos');
 var mAccesos = require('./models/mAccesos');
@@ -234,6 +237,9 @@ module.exports = function(app) {
 	app.get("/ingegr_modificar/:id", auth, acceso, cIngegr.getModificar);
 	app.post("/ingegr_modificar", auth, cIngegr.postModificar);
 	app.get("/ingegr_borrar/:id", auth, acceso, cIngegr.getDel);
+	app.get("/flujodefondos_index", auth, acceso, cFlujoDeFondos.getIndex);
+	app.post("/flujodefondos_generacion", auth, cFlujoDeFondos.postGeneracion);
+	app.get("/flujodefondos_generacion_excel/:anio/:mes", auth, cFlujoDeFondos.getGeneracion_Excel);
 
 
 
