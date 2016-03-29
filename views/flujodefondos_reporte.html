@@ -65,72 +65,72 @@ body {
 			{% for i in ingresos %}
 				<tr>
 					<td style="text-align: left !important; font-size: 16px;">{{ i.codigotxt }}</td>
-					<td><p class="suma01">{{ i.suma01 }}</p></td>
-					<td><p class="suma02">{{ i.suma02 }}</p></td>
-					<td><p class="suma03">{{ i.suma03 }}</p></td>
-					<td><p class="suma04">{{ i.suma04 }}</p></td>
-					<td><p class="suma05">{{ i.suma05 }}</p></td>
-					<td><p class="suma06">{{ i.suma06 }}</p></td>
-					<td><p class="suma07">{{ i.suma07 }}</p></td>
-					<td><p class="suma08">{{ i.suma08 }}</p></td>
-					<td><p class="suma09">{{ i.suma09 }}</p></td>
-					<td><p class="suma10">{{ i.suma10 }}</p></td>
-					<td><p class="suma11">{{ i.suma11 }}</p></td>
-					<td><p class="suma12">{{ i.suma12 }}</p></td>
-					<td><p class="suma13">{{ i.suma13 }}</p></td>
-					<td><p class="suma14">{{ i.suma14 }}</p></td>
-					<td><p class="suma15">{{ i.suma15 }}</p></td>
-					<td><p class="suma16">{{ i.suma16 }}</p></td>
-					<td><p class="suma17">{{ i.suma17 }}</p></td>
-					<td><p class="suma18">{{ i.suma18 }}</p></td>
-					<td><p class="suma19">{{ i.suma19 }}</p></td>
-					<td><p class="suma20">{{ i.suma20 }}</p></td>
-					<td><p class="suma21">{{ i.suma21 }}</p></td>
-					<td><p class="suma22">{{ i.suma22 }}</p></td>
-					<td><p class="suma23">{{ i.suma23 }}</p></td>
-					<td><p class="suma24">{{ i.suma24 }}</p></td>
-					<td><p class="suma25">{{ i.suma25 }}</p></td>
-					<td><p class="suma26">{{ i.suma26 }}</p></td>
-					<td><p class="suma27">{{ i.suma27 }}</p></td>
-					<td><p class="suma28">{{ i.suma28 }}</p></td>
-					<td><p class="suma29">{{ i.suma29 }}</p></td>
-					<td><p class="suma30">{{ i.suma30 }}</p></td>
-					<td><p class="suma31">{{ i.suma31 }}</p></td>
+					<td>{% if i.suma01 != 0 %}{{ i.suma01 }}{% else %}<font color="#a6a6a6">{{ i.suma01 }}</font>{% endif %}</td>
+					<td>{% if i.suma02 != 0 %}{{ i.suma02 }}{% else %}<font color="#a6a6a6">{{ i.suma02 }}</font>{% endif %}</td>
+					<td>{% if i.suma03 != 0 %}{{ i.suma03 }}{% else %}<font color="#a6a6a6">{{ i.suma03 }}</font>{% endif %}</td>
+					<td>{% if i.suma04 != 0 %}{{ i.suma04 }}{% else %}<font color="#a6a6a6">{{ i.suma04 }}</font>{% endif %}</td>
+					<td>{% if i.suma05 != 0 %}{{ i.suma05 }}{% else %}<font color="#a6a6a6">{{ i.suma05 }}</font>{% endif %}</td>
+					<td>{% if i.suma06 != 0 %}{{ i.suma06 }}{% else %}<font color="#a6a6a6">{{ i.suma06 }}</font>{% endif %}</td>
+					<td>{% if i.suma07 != 0 %}{{ i.suma07 }}{% else %}<font color="#a6a6a6">{{ i.suma07 }}</font>{% endif %}</td>
+					<td>{% if i.suma08 != 0 %}{{ i.suma08 }}{% else %}<font color="#a6a6a6">{{ i.suma08 }}</font>{% endif %}</td>
+					<td>{% if i.suma09 != 0 %}{{ i.suma09 }}{% else %}<font color="#a6a6a6">{{ i.suma09 }}</font>{% endif %}</td>
+					<td>{% if i.suma10 != 0 %}{{ i.suma10 }}{% else %}<font color="#a6a6a6">{{ i.suma10 }}</font>{% endif %}</td>
+					<td>{% if i.suma11 != 0 %}{{ i.suma11 }}{% else %}<font color="#a6a6a6">{{ i.suma11 }}</font>{% endif %}</td>
+					<td>{% if i.suma12 != 0 %}{{ i.suma12 }}{% else %}<font color="#a6a6a6">{{ i.suma12 }}</font>{% endif %}</td>
+					<td>{% if i.suma13 != 0 %}{{ i.suma13 }}{% else %}<font color="#a6a6a6">{{ i.suma13 }}</font>{% endif %}</td>
+					<td>{% if i.suma14 != 0 %}{{ i.suma14 }}{% else %}<font color="#a6a6a6">{{ i.suma14 }}</font>{% endif %}</td>
+					<td>{% if i.suma15 != 0 %}{{ i.suma15 }}{% else %}<font color="#a6a6a6">{{ i.suma15 }}</font>{% endif %}</td>
+					<td>{% if i.suma16 != 0 %}{{ i.suma16 }}{% else %}<font color="#a6a6a6">{{ i.suma16 }}</font>{% endif %}</td>
+					<td>{% if i.suma17 != 0 %}{{ i.suma17 }}{% else %}<font color="#a6a6a6">{{ i.suma17 }}</font>{% endif %}</td>
+					<td>{% if i.suma18 != 0 %}{{ i.suma18 }}{% else %}<font color="#a6a6a6">{{ i.suma18 }}</font>{% endif %}</td>
+					<td>{% if i.suma19 != 0 %}{{ i.suma19 }}{% else %}<font color="#a6a6a6">{{ i.suma19 }}</font>{% endif %}</td>
+					<td>{% if i.suma20 != 0 %}{{ i.suma20 }}{% else %}<font color="#a6a6a6">{{ i.suma20 }}</font>{% endif %}</td>
+					<td>{% if i.suma21 != 0 %}{{ i.suma21 }}{% else %}<font color="#a6a6a6">{{ i.suma21 }}</font>{% endif %}</td>
+					<td>{% if i.suma22 != 0 %}{{ i.suma22 }}{% else %}<font color="#a6a6a6">{{ i.suma22 }}</font>{% endif %}</td>
+					<td>{% if i.suma23 != 0 %}{{ i.suma23 }}{% else %}<font color="#a6a6a6">{{ i.suma23 }}</font>{% endif %}</td>
+					<td>{% if i.suma24 != 0 %}{{ i.suma24 }}{% else %}<font color="#a6a6a6">{{ i.suma24 }}</font>{% endif %}</td>
+					<td>{% if i.suma25 != 0 %}{{ i.suma25 }}{% else %}<font color="#a6a6a6">{{ i.suma25 }}</font>{% endif %}</td>
+					<td>{% if i.suma26 != 0 %}{{ i.suma26 }}{% else %}<font color="#a6a6a6">{{ i.suma26 }}</font>{% endif %}</td>
+					<td>{% if i.suma27 != 0 %}{{ i.suma27 }}{% else %}<font color="#a6a6a6">{{ i.suma27 }}</font>{% endif %}</td>
+					<td>{% if i.suma28 != 0 %}{{ i.suma28 }}{% else %}<font color="#a6a6a6">{{ i.suma28 }}</font>{% endif %}</td>
+					<td>{% if i.suma29 != 0 %}{{ i.suma29 }}{% else %}<font color="#a6a6a6">{{ i.suma29 }}</font>{% endif %}</td>
+					<td>{% if i.suma30 != 0 %}{{ i.suma30 }}{% else %}<font color="#a6a6a6">{{ i.suma30 }}</font>{% endif %}</td>
+					<td>{% if i.suma31 != 0 %}{{ i.suma31 }}{% else %}<font color="#a6a6a6">{{ i.suma31 }}</font>{% endif %}</td>
 				</tr>
 			{% endfor %}
 			<tr>
 				<td style="text-align: left !important;"><b>TOTAL DE INGRESOS</b></td>
-				<td>{{ total_ingresos.total01 }}</td>
-				<td>{{ total_ingresos.total02 }}</td>
-				<td>{{ total_ingresos.total03 }}</td>
-				<td>{{ total_ingresos.total04 }}</td>
-				<td>{{ total_ingresos.total05 }}</td>
-				<td>{{ total_ingresos.total06 }}</td>
-				<td>{{ total_ingresos.total07 }}</td>
-				<td>{{ total_ingresos.total08 }}</td>
-				<td>{{ total_ingresos.total09 }}</td>
-				<td>{{ total_ingresos.total10 }}</td>
-				<td>{{ total_ingresos.total11 }}</td>
-				<td>{{ total_ingresos.total12 }}</td>
-				<td>{{ total_ingresos.total13 }}</td>
-				<td>{{ total_ingresos.total14 }}</td>
-				<td>{{ total_ingresos.total15 }}</td>
-				<td>{{ total_ingresos.total16 }}</td>
-				<td>{{ total_ingresos.total17 }}</td>
-				<td>{{ total_ingresos.total18 }}</td>
-				<td>{{ total_ingresos.total19 }}</td>
-				<td>{{ total_ingresos.total20 }}</td>
-				<td>{{ total_ingresos.total21 }}</td>
-				<td>{{ total_ingresos.total22 }}</td>
-				<td>{{ total_ingresos.total23 }}</td>
-				<td>{{ total_ingresos.total24 }}</td>
-				<td>{{ total_ingresos.total25 }}</td>
-				<td>{{ total_ingresos.total26 }}</td>
-				<td>{{ total_ingresos.total27 }}</td>
-				<td>{{ total_ingresos.total28 }}</td>
-				<td>{{ total_ingresos.total29 }}</td>
-				<td>{{ total_ingresos.total30 }}</td>
-				<td>{{ total_ingresos.total31 }}</td>
+				<td>{% if total_ingresos.total01 != 0 %}{{ total_ingresos.total01 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total01 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total02 != 0 %}{{ total_ingresos.total02 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total02 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total03 != 0 %}{{ total_ingresos.total03 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total03 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total04 != 0 %}{{ total_ingresos.total04 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total04 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total05 != 0 %}{{ total_ingresos.total05 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total05 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total06 != 0 %}{{ total_ingresos.total06 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total06 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total07 != 0 %}{{ total_ingresos.total07 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total07 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total08 != 0 %}{{ total_ingresos.total08 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total08 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total09 != 0 %}{{ total_ingresos.total09 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total09 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total10 != 0 %}{{ total_ingresos.total10 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total10 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total11 != 0 %}{{ total_ingresos.total11 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total11 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total12 != 0 %}{{ total_ingresos.total12 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total12 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total13 != 0 %}{{ total_ingresos.total13 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total13 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total14 != 0 %}{{ total_ingresos.total14 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total14 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total15 != 0 %}{{ total_ingresos.total15 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total15 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total16 != 0 %}{{ total_ingresos.total16 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total16 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total17 != 0 %}{{ total_ingresos.total17 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total17 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total18 != 0 %}{{ total_ingresos.total18 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total18 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total19 != 0 %}{{ total_ingresos.total19 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total19 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total20 != 0 %}{{ total_ingresos.total20 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total20 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total21 != 0 %}{{ total_ingresos.total21 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total21 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total22 != 0 %}{{ total_ingresos.total22 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total22 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total23 != 0 %}{{ total_ingresos.total23 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total23 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total24 != 0 %}{{ total_ingresos.total24 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total24 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total25 != 0 %}{{ total_ingresos.total25 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total25 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total26 != 0 %}{{ total_ingresos.total26 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total26 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total27 != 0 %}{{ total_ingresos.total27 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total27 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total28 != 0 %}{{ total_ingresos.total28 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total28 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total29 != 0 %}{{ total_ingresos.total29 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total29 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total30 != 0 %}{{ total_ingresos.total30 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total30 }}</font>{% endif %}</td>
+				<td>{% if total_ingresos.total31 != 0 %}{{ total_ingresos.total31 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total31 }}</font>{% endif %}</td>
 			</tr>
 			<tr>
 				<td style="test-align: left; padding-bottom: 8px !important; padding-top: 8px !important;"><h2><b>EGRESOS</b></h2></td>
@@ -139,140 +139,140 @@ body {
 			{% for e in egresos %}
 				<tr>
 					<td style="text-align: left !important; font-size: 16px;">{{ e.codigotxt }}</td>
-					<td><p class="suma01">{{ e.suma01 }}</p></td>
-					<td><p class="suma02">{{ e.suma02 }}</p></td>
-					<td><p class="suma03">{{ e.suma03 }}</p></td>
-					<td><p class="suma04">{{ e.suma04 }}</p></td>
-					<td><p class="suma05">{{ e.suma05 }}</p></td>
-					<td><p class="suma06">{{ e.suma06 }}</p></td>
-					<td><p class="suma07">{{ e.suma07 }}</p></td>
-					<td><p class="suma08">{{ e.suma08 }}</p></td>
-					<td><p class="suma09">{{ e.suma09 }}</p></td>
-					<td><p class="suma10">{{ e.suma10 }}</p></td>
-					<td><p class="suma11">{{ e.suma11 }}</p></td>
-					<td><p class="suma12">{{ e.suma12 }}</p></td>
-					<td><p class="suma13">{{ e.suma13 }}</p></td>
-					<td><p class="suma14">{{ e.suma14 }}</p></td>
-					<td><p class="suma15">{{ e.suma15 }}</p></td>
-					<td><p class="suma16">{{ e.suma16 }}</p></td>
-					<td><p class="suma17">{{ e.suma17 }}</p></td>
-					<td><p class="suma18">{{ e.suma18 }}</p></td>
-					<td><p class="suma19">{{ e.suma19 }}</p></td>
-					<td><p class="suma20">{{ e.suma20 }}</p></td>
-					<td><p class="suma21">{{ e.suma21 }}</p></td>
-					<td><p class="suma22">{{ e.suma22 }}</p></td>
-					<td><p class="suma23">{{ e.suma23 }}</p></td>
-					<td><p class="suma24">{{ e.suma24 }}</p></td>
-					<td><p class="suma25">{{ e.suma25 }}</p></td>
-					<td><p class="suma26">{{ e.suma26 }}</p></td>
-					<td><p class="suma27">{{ e.suma27 }}</p></td>
-					<td><p class="suma28">{{ e.suma28 }}</p></td>
-					<td><p class="suma29">{{ e.suma29 }}</p></td>
-					<td><p class="suma30">{{ e.suma30 }}</p></td>
-					<td><p class="suma31">{{ e.suma31 }}</p></td>
+					<td>{% if e.suma01 != 0 %}{{ e.suma01 }}{% else %}<font color="#a6a6a6">{{ e.suma01 }}</font>{% endif %}</td>
+					<td>{% if e.suma02 != 0 %}{{ e.suma02 }}{% else %}<font color="#a6a6a6">{{ e.suma02 }}</font>{% endif %}</td>
+					<td>{% if e.suma03 != 0 %}{{ e.suma03 }}{% else %}<font color="#a6a6a6">{{ e.suma03 }}</font>{% endif %}</td>
+					<td>{% if e.suma04 != 0 %}{{ e.suma04 }}{% else %}<font color="#a6a6a6">{{ e.suma04 }}</font>{% endif %}</td>
+					<td>{% if e.suma05 != 0 %}{{ e.suma05 }}{% else %}<font color="#a6a6a6">{{ e.suma05 }}</font>{% endif %}</td>
+					<td>{% if e.suma06 != 0 %}{{ e.suma06 }}{% else %}<font color="#a6a6a6">{{ e.suma06 }}</font>{% endif %}</td>
+					<td>{% if e.suma07 != 0 %}{{ e.suma07 }}{% else %}<font color="#a6a6a6">{{ e.suma07 }}</font>{% endif %}</td>
+					<td>{% if e.suma08 != 0 %}{{ e.suma08 }}{% else %}<font color="#a6a6a6">{{ e.suma08 }}</font>{% endif %}</td>
+					<td>{% if e.suma09 != 0 %}{{ e.suma09 }}{% else %}<font color="#a6a6a6">{{ e.suma09 }}</font>{% endif %}</td>
+					<td>{% if e.suma10 != 0 %}{{ e.suma10 }}{% else %}<font color="#a6a6a6">{{ e.suma10 }}</font>{% endif %}</td>
+					<td>{% if e.suma11 != 0 %}{{ e.suma11 }}{% else %}<font color="#a6a6a6">{{ e.suma11 }}</font>{% endif %}</td>
+					<td>{% if e.suma12 != 0 %}{{ e.suma12 }}{% else %}<font color="#a6a6a6">{{ e.suma12 }}</font>{% endif %}</td>
+					<td>{% if e.suma13 != 0 %}{{ e.suma13 }}{% else %}<font color="#a6a6a6">{{ e.suma13 }}</font>{% endif %}</td>
+					<td>{% if e.suma14 != 0 %}{{ e.suma14 }}{% else %}<font color="#a6a6a6">{{ e.suma14 }}</font>{% endif %}</td>
+					<td>{% if e.suma15 != 0 %}{{ e.suma15 }}{% else %}<font color="#a6a6a6">{{ e.suma15 }}</font>{% endif %}</td>
+					<td>{% if e.suma16 != 0 %}{{ e.suma16 }}{% else %}<font color="#a6a6a6">{{ e.suma16 }}</font>{% endif %}</td>
+					<td>{% if e.suma17 != 0 %}{{ e.suma17 }}{% else %}<font color="#a6a6a6">{{ e.suma17 }}</font>{% endif %}</td>
+					<td>{% if e.suma18 != 0 %}{{ e.suma18 }}{% else %}<font color="#a6a6a6">{{ e.suma18 }}</font>{% endif %}</td>
+					<td>{% if e.suma19 != 0 %}{{ e.suma19 }}{% else %}<font color="#a6a6a6">{{ e.suma19 }}</font>{% endif %}</td>
+					<td>{% if e.suma20 != 0 %}{{ e.suma20 }}{% else %}<font color="#a6a6a6">{{ e.suma20 }}</font>{% endif %}</td>
+					<td>{% if e.suma21 != 0 %}{{ e.suma21 }}{% else %}<font color="#a6a6a6">{{ e.suma21 }}</font>{% endif %}</td>
+					<td>{% if e.suma22 != 0 %}{{ e.suma22 }}{% else %}<font color="#a6a6a6">{{ e.suma22 }}</font>{% endif %}</td>
+					<td>{% if e.suma23 != 0 %}{{ e.suma23 }}{% else %}<font color="#a6a6a6">{{ e.suma23 }}</font>{% endif %}</td>
+					<td>{% if e.suma24 != 0 %}{{ e.suma24 }}{% else %}<font color="#a6a6a6">{{ e.suma24 }}</font>{% endif %}</td>
+					<td>{% if e.suma25 != 0 %}{{ e.suma25 }}{% else %}<font color="#a6a6a6">{{ e.suma25 }}</font>{% endif %}</td>
+					<td>{% if e.suma26 != 0 %}{{ e.suma26 }}{% else %}<font color="#a6a6a6">{{ e.suma26 }}</font>{% endif %}</td>
+					<td>{% if e.suma27 != 0 %}{{ e.suma27 }}{% else %}<font color="#a6a6a6">{{ e.suma27 }}</font>{% endif %}</td>
+					<td>{% if e.suma28 != 0 %}{{ e.suma28 }}{% else %}<font color="#a6a6a6">{{ e.suma28 }}</font>{% endif %}</td>
+					<td>{% if e.suma29 != 0 %}{{ e.suma29 }}{% else %}<font color="#a6a6a6">{{ e.suma29 }}</font>{% endif %}</td>
+					<td>{% if e.suma30 != 0 %}{{ e.suma30 }}{% else %}<font color="#a6a6a6">{{ e.suma30 }}</font>{% endif %}</td>
+					<td>{% if e.suma31 != 0 %}{{ e.suma31 }}{% else %}<font color="#a6a6a6">{{ e.suma31 }}</font>{% endif %}</td>
 				</tr>
 			{% endfor %}
 			<tr>
 				<td style="text-align: left !important;"><b>TOTAL DE EGRESOS</b></td>
-				<td>{{ total_egresos.total01 }}</td>
-				<td>{{ total_egresos.total02 }}</td>
-				<td>{{ total_egresos.total03 }}</td>
-				<td>{{ total_egresos.total04 }}</td>
-				<td>{{ total_egresos.total05 }}</td>
-				<td>{{ total_egresos.total06 }}</td>
-				<td>{{ total_egresos.total07 }}</td>
-				<td>{{ total_egresos.total08 }}</td>
-				<td>{{ total_egresos.total09 }}</td>
-				<td>{{ total_egresos.total10 }}</td>
-				<td>{{ total_egresos.total11 }}</td>
-				<td>{{ total_egresos.total12 }}</td>
-				<td>{{ total_egresos.total13 }}</td>
-				<td>{{ total_egresos.total14 }}</td>
-				<td>{{ total_egresos.total15 }}</td>
-				<td>{{ total_egresos.total16 }}</td>
-				<td>{{ total_egresos.total17 }}</td>
-				<td>{{ total_egresos.total18 }}</td>
-				<td>{{ total_egresos.total19 }}</td>
-				<td>{{ total_egresos.total20 }}</td>
-				<td>{{ total_egresos.total21 }}</td>
-				<td>{{ total_egresos.total22 }}</td>
-				<td>{{ total_egresos.total23 }}</td>
-				<td>{{ total_egresos.total24 }}</td>
-				<td>{{ total_egresos.total25 }}</td>
-				<td>{{ total_egresos.total26 }}</td>
-				<td>{{ total_egresos.total27 }}</td>
-				<td>{{ total_egresos.total28 }}</td>
-				<td>{{ total_egresos.total29 }}</td>
-				<td>{{ total_egresos.total30 }}</td>
-				<td>{{ total_egresos.total31 }}</td>
+				<td>{% if total_egresos.total01 != 0 %}{{ total_egresos.total01 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total01 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total02 != 0 %}{{ total_egresos.total02 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total02 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total03 != 0 %}{{ total_egresos.total03 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total03 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total04 != 0 %}{{ total_egresos.total04 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total04 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total05 != 0 %}{{ total_egresos.total05 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total05 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total06 != 0 %}{{ total_egresos.total06 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total06 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total07 != 0 %}{{ total_egresos.total07 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total07 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total08 != 0 %}{{ total_egresos.total08 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total08 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total09 != 0 %}{{ total_egresos.total09 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total09 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total10 != 0 %}{{ total_egresos.total10 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total10 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total11 != 0 %}{{ total_egresos.total11 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total11 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total12 != 0 %}{{ total_egresos.total12 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total12 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total13 != 0 %}{{ total_egresos.total13 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total13 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total14 != 0 %}{{ total_egresos.total14 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total14 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total15 != 0 %}{{ total_egresos.total15 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total15 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total16 != 0 %}{{ total_egresos.total16 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total16 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total17 != 0 %}{{ total_egresos.total17 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total17 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total18 != 0 %}{{ total_egresos.total18 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total18 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total19 != 0 %}{{ total_egresos.total19 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total19 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total20 != 0 %}{{ total_egresos.total20 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total20 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total21 != 0 %}{{ total_egresos.total21 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total21 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total22 != 0 %}{{ total_egresos.total22 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total22 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total23 != 0 %}{{ total_egresos.total23 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total23 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total24 != 0 %}{{ total_egresos.total24 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total24 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total25 != 0 %}{{ total_egresos.total25 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total25 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total26 != 0 %}{{ total_egresos.total26 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total26 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total27 != 0 %}{{ total_egresos.total27 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total27 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total28 != 0 %}{{ total_egresos.total28 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total28 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total29 != 0 %}{{ total_egresos.total29 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total29 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total30 != 0 %}{{ total_egresos.total30 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total30 }}</font>{% endif %}</td>
+				<td>{% if total_egresos.total31 != 0 %}{{ total_egresos.total31 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total31 }}</font>{% endif %}</td>
 			</tr>
 			<tr>
 				<td style="text-align: left !important;"><b>SALDO DIARIO</b></td>
-				<td>{{ saldos_diarios.saldo01 }}</td>
-				<td>{{ saldos_diarios.saldo02 }}</td>
-				<td>{{ saldos_diarios.saldo03 }}</td>
-				<td>{{ saldos_diarios.saldo04 }}</td>
-				<td>{{ saldos_diarios.saldo05 }}</td>
-				<td>{{ saldos_diarios.saldo06 }}</td>
-				<td>{{ saldos_diarios.saldo07 }}</td>
-				<td>{{ saldos_diarios.saldo08 }}</td>
-				<td>{{ saldos_diarios.saldo09 }}</td>
-				<td>{{ saldos_diarios.saldo10 }}</td>
-				<td>{{ saldos_diarios.saldo11 }}</td>
-				<td>{{ saldos_diarios.saldo12 }}</td>
-				<td>{{ saldos_diarios.saldo13 }}</td>
-				<td>{{ saldos_diarios.saldo14 }}</td>
-				<td>{{ saldos_diarios.saldo15 }}</td>
-				<td>{{ saldos_diarios.saldo16 }}</td>
-				<td>{{ saldos_diarios.saldo17 }}</td>
-				<td>{{ saldos_diarios.saldo18 }}</td>
-				<td>{{ saldos_diarios.saldo19 }}</td>
-				<td>{{ saldos_diarios.saldo20 }}</td>
-				<td>{{ saldos_diarios.saldo21 }}</td>
-				<td>{{ saldos_diarios.saldo22 }}</td>
-				<td>{{ saldos_diarios.saldo23 }}</td>
-				<td>{{ saldos_diarios.saldo24 }}</td>
-				<td>{{ saldos_diarios.saldo25 }}</td>
-				<td>{{ saldos_diarios.saldo26 }}</td>
-				<td>{{ saldos_diarios.saldo27 }}</td>
-				<td>{{ saldos_diarios.saldo28 }}</td>
-				<td>{{ saldos_diarios.saldo29 }}</td>
-				<td>{{ saldos_diarios.saldo30 }}</td>
-				<td>{{ saldos_diarios.saldo31 }}</td>
+				<td>{% if saldos_diarios.saldo01 != 0 %}{{ saldos_diarios.saldo01 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo01 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo02 != 0 %}{{ saldos_diarios.saldo02 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo02 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo03 != 0 %}{{ saldos_diarios.saldo03 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo03 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo04 != 0 %}{{ saldos_diarios.saldo04 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo04 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo05 != 0 %}{{ saldos_diarios.saldo05 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo05 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo06 != 0 %}{{ saldos_diarios.saldo06 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo06 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo07 != 0 %}{{ saldos_diarios.saldo07 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo07 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo08 != 0 %}{{ saldos_diarios.saldo08 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo08 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo09 != 0 %}{{ saldos_diarios.saldo09 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo09 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo10 != 0 %}{{ saldos_diarios.saldo10 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo10 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo11 != 0 %}{{ saldos_diarios.saldo11 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo11 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo12 != 0 %}{{ saldos_diarios.saldo12 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo12 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo13 != 0 %}{{ saldos_diarios.saldo13 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo13 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo14 != 0 %}{{ saldos_diarios.saldo14 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo14 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo15 != 0 %}{{ saldos_diarios.saldo15 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo15 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo16 != 0 %}{{ saldos_diarios.saldo16 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo16 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo17 != 0 %}{{ saldos_diarios.saldo17 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo17 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo18 != 0 %}{{ saldos_diarios.saldo18 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo18 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo19 != 0 %}{{ saldos_diarios.saldo19 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo19 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo20 != 0 %}{{ saldos_diarios.saldo20 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo20 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo21 != 0 %}{{ saldos_diarios.saldo21 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo21 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo22 != 0 %}{{ saldos_diarios.saldo22 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo22 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo23 != 0 %}{{ saldos_diarios.saldo23 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo23 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo24 != 0 %}{{ saldos_diarios.saldo24 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo24 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo25 != 0 %}{{ saldos_diarios.saldo25 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo25 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo26 != 0 %}{{ saldos_diarios.saldo26 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo26 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo27 != 0 %}{{ saldos_diarios.saldo27 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo27 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo28 != 0 %}{{ saldos_diarios.saldo28 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo28 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo29 != 0 %}{{ saldos_diarios.saldo29 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo29 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo30 != 0 %}{{ saldos_diarios.saldo30 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo30 }}</font>{% endif %}</td>
+				<td>{% if saldos_diarios.saldo31 != 0 %}{{ saldos_diarios.saldo31 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo31 }}</font>{% endif %}</td>
 			</tr>
 			<tr>
 				<td style="text-align: left !important;"><b>SALDO INICIAL</b></td>
-				<td>{{ saldo_inicial.saldoi01 }}</td>
-				<td>{{ saldo_inicial.saldoi02 }}</td>
-				<td>{{ saldo_inicial.saldoi03 }}</td>
-				<td>{{ saldo_inicial.saldoi04 }}</td>
-				<td>{{ saldo_inicial.saldoi05 }}</td>
-				<td>{{ saldo_inicial.saldoi06 }}</td>
-				<td>{{ saldo_inicial.saldoi07 }}</td>
-				<td>{{ saldo_inicial.saldoi08 }}</td>
-				<td>{{ saldo_inicial.saldoi09 }}</td>
-				<td>{{ saldo_inicial.saldoi10 }}</td>
-				<td>{{ saldo_inicial.saldoi11 }}</td>
-				<td>{{ saldo_inicial.saldoi12 }}</td>
-				<td>{{ saldo_inicial.saldoi13 }}</td>
-				<td>{{ saldo_inicial.saldoi14 }}</td>
-				<td>{{ saldo_inicial.saldoi15 }}</td>
-				<td>{{ saldo_inicial.saldoi16 }}</td>
-				<td>{{ saldo_inicial.saldoi17 }}</td>
-				<td>{{ saldo_inicial.saldoi18 }}</td>
-				<td>{{ saldo_inicial.saldoi19 }}</td>
-				<td>{{ saldo_inicial.saldoi20 }}</td>
-				<td>{{ saldo_inicial.saldoi21 }}</td>
-				<td>{{ saldo_inicial.saldoi22 }}</td>
-				<td>{{ saldo_inicial.saldoi23 }}</td>
-				<td>{{ saldo_inicial.saldoi24 }}</td>
-				<td>{{ saldo_inicial.saldoi25 }}</td>
-				<td>{{ saldo_inicial.saldoi26 }}</td>
-				<td>{{ saldo_inicial.saldoi27 }}</td>
-				<td>{{ saldo_inicial.saldoi28 }}</td>
-				<td>{{ saldo_inicial.saldoi29 }}</td>
-				<td>{{ saldo_inicial.saldoi30 }}</td>
-				<td>{{ saldo_inicial.saldoi31 }}</td>
+				<td>{% if saldo_inicial.saldoi01 != 0 %}{{ saldo_inicial.saldoi01 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi01 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi02 != 0 %}{{ saldo_inicial.saldoi02 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi02 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi03 != 0 %}{{ saldo_inicial.saldoi03 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi03 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi04 != 0 %}{{ saldo_inicial.saldoi04 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi04 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi05 != 0 %}{{ saldo_inicial.saldoi05 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi05 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi06 != 0 %}{{ saldo_inicial.saldoi06 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi06 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi07 != 0 %}{{ saldo_inicial.saldoi07 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi07 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi08 != 0 %}{{ saldo_inicial.saldoi08 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi08 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi09 != 0 %}{{ saldo_inicial.saldoi09 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi09 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi10 != 0 %}{{ saldo_inicial.saldoi10 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi10 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi11 != 0 %}{{ saldo_inicial.saldoi11 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi11 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi12 != 0 %}{{ saldo_inicial.saldoi12 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi12 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi13 != 0 %}{{ saldo_inicial.saldoi13 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi13 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi14 != 0 %}{{ saldo_inicial.saldoi14 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi14 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi15 != 0 %}{{ saldo_inicial.saldoi15 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi15 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi16 != 0 %}{{ saldo_inicial.saldoi16 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi16 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi17 != 0 %}{{ saldo_inicial.saldoi17 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi17 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi18 != 0 %}{{ saldo_inicial.saldoi18 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi18 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi19 != 0 %}{{ saldo_inicial.saldoi19 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi19 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi20 != 0 %}{{ saldo_inicial.saldoi20 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi20 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi21 != 0 %}{{ saldo_inicial.saldoi21 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi21 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi22 != 0 %}{{ saldo_inicial.saldoi22 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi22 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi23 != 0 %}{{ saldo_inicial.saldoi23 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi23 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi24 != 0 %}{{ saldo_inicial.saldoi24 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi24 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi25 != 0 %}{{ saldo_inicial.saldoi25 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi25 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi26 != 0 %}{{ saldo_inicial.saldoi26 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi26 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi27 != 0 %}{{ saldo_inicial.saldoi27 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi27 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi28 != 0 %}{{ saldo_inicial.saldoi28 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi28 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi29 != 0 %}{{ saldo_inicial.saldoi29 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi29 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi30 != 0 %}{{ saldo_inicial.saldoi30 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi30 }}</font>{% endif %}</td>
+				<td>{% if saldo_inicial.saldoi31 != 0 %}{{ saldo_inicial.saldoi31 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi31 }}</font>{% endif %}</td>
 			</tr>
 			<tr>
 				<td style="text-align: left !important;"><b>DEFICIT / SUPERAVIT</b></td>
