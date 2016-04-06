@@ -26,7 +26,7 @@ function changeDate(date){
 function getUsuarios(req, res){
     req.session.nromenu = 1;
     mAyuda.getAyudaTexto(req.session.nromenu, function (ayuda){
-        mUsuarios.getAllUsuarios(function (usuarios){
+        mUsuarios.getAllUsuarios_OrderByUsuario(function (usuarios){
             res.render('usuarioslista', {
                 pagename: 'Archivo de Usuarios/Operarios',
                 usuarios: usuarios,

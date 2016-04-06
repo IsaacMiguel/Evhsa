@@ -2,6 +2,7 @@ var conn = require('../config/db').conn;
 
 module.exports = {
 	getAllUsuarios: getAllUsuarios,
+	getAllUsuarios_OrderByUsuario: getAllUsuarios_OrderByUsuario,
 	insertUsuario: insertUsuario,
 	getUsuarioPorID: getUsuarioPorID,
 	updateUsuario: updateUsuario,
@@ -13,6 +14,10 @@ module.exports = {
 
 function getAllUsuarios(cb){
 	conn('select * from secr', cb);
+}
+
+function getAllUsuarios_OrderByUsuario(cb){
+	conn("select * from secr order by usuario", cb);
 }
 
 function getUsuarioPorID(id, cb){
