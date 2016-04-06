@@ -19,6 +19,7 @@ var cCodigosIE = require('./controllers/cCodigosIE');
 var cIngegr = require('./controllers/cIngegr');
 var cFlujoDeFondos = require('./controllers/cFlujoDeFondos');
 var cConjunto = require('./controllers/cConjunto');
+var cEquipos = require('./controllers/cEquipos');
 
 
 
@@ -257,6 +258,10 @@ module.exports = function(app) {
 	// app.get("/conjunto_formacioncoche", auth, acceso, cConjunto.getFormacionCoche);
 	// app.get("/conjunto_neumaticos_ubicacion", auth, acceso, cConjunto.getNeumaticos_Ubicacion);
 	// app.get("/conjunto_neumaticos_resumen", auth, acceso, cConjunto.getNeumaticos_Resumen);
+
+	//EQUIPOS
+	app.get("/equipos_lista", auth, acceso, cEquipos.getLista);
+
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
