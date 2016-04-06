@@ -245,13 +245,14 @@ module.exports = function(app) {
 	app.get("/conjuntos_alta", auth, acceso, cConjunto.getAlta);
 	app.get("/conjunto_buscar_repuesto_por_codigo/:codigo", auth, cConjunto.getBuscar_Repuesto_x_Codigo);
 	app.get("/conjunto_buscar_repuesto_por_codigo_y_serie/:codigo/:serie", auth, cConjunto.getBuscar_Repuesto_x_Codigo_y_Serie);
-		app.get("/conjunto_verificar_codigoyserie/:codigo/:serie", auth, cConjunto.getVerificar_CodigoySerie);
-		// app.get("/conjunto_ficha_verificar_codigoyserie/:codigo/:serie", auth, cConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie);
+	app.get("/conjunto_verificar_codigoyserie/:codigo/:serie", auth, cConjunto.getVerificar_CodigoySerie);
+	// app.get("/conjunto_ficha_verificar_codigoyserie/:codigo/:serie", auth, cConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie);
 	app.post("/conjuntos_alta", auth, acceso, cConjunto.postAlta);
 	app.get("/conjunto_buscarfichaxcodigo", auth, acceso, cConjunto.getBuscar_Ficha_x_Codigo);
 	app.get("/conjunto_verficha/:codigo/:serie", auth, acceso, cConjunto.getVerFicha);
 	app.get("/conjunto_definicion_buscarxcodigo/:codigo", auth, cConjunto.getBuscar_ConjuntoDefinicion_xCodigo);
 	app.get("/conjunto_ficha_alta/:codigo/:serie", auth, acceso, cConjunto.getConjunto_Ficha_Alta);
+	app.post('/conjunto_ficha_alta', auth, cConjunto.postConjuntoFicha_Alta);
 	// app.post("/conjunto_buscarfichaxlistado", auth, acceso, cConjunto.getBuscar_Ficha_x_Listado);
 	// app.get("/conjunto_formacioncoche", auth, acceso, cConjunto.getFormacionCoche);
 	// app.get("/conjunto_neumaticos_ubicacion", auth, acceso, cConjunto.getNeumaticos_Ubicacion);

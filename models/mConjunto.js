@@ -8,7 +8,8 @@ module.exports = {
 	del: del,
 	getBuscar_x_CodigoySerie: getBuscar_x_CodigoySerie,
 	getBuscar_ConjuntoFicha_x_CodigoySerie: getBuscar_ConjuntoFicha_x_CodigoySerie,
-	getBuscar_ConjuntoDefinicion_xCodigo: getBuscar_ConjuntoDefinicion_xCodigo
+	getBuscar_ConjuntoDefinicion_xCodigo: getBuscar_ConjuntoDefinicion_xCodigo,
+	insertMovimiento: insertMovimiento
 }
 
 function getAll(cb){
@@ -58,4 +59,12 @@ function getBuscar_ConjuntoDefinicion_xCodigo(codigo, cb){
 		"from conjunto_definicion "+
 		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
 		"where conjunto_definicion.codigo = '"+codigo+"'", cb);
+}
+
+function insertMovimiento(codigo, serie, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, kms, tipo_cubiertas, mm, suma_estadistica, cb){
+	conn("INSERT INTO conjunto_ficha(codigo, serie, fecha_movimiento, numero_coche_sacado_fk, destino, numero_coche_colocado_fk, "+
+		"codigo_ubicacion_actual_fk, valor, memo, codigo_ubicacion_neumatico_fk, imputa, responsable_reparacion, responsable_rotura, km, "+
+		"codigo_tipo_cubierta_fk, est, mm) VALUES ('"+codigo+"', '"+serie+"', '"+fecha_movimiento+"', "+coche_sacado+", '"+destino+"', "+
+		coche_colocado+", '"+ubicacion_actual+"', "+costo+", '"+detalle+"', '"+ubicacion_neumatico+"', "+imputado+", '"+
+		responsable_reparacion+"', '"+responsable_rotura+"', "+kms+", "+tipo_cubiertas+", '"+suma_estadistica+"', "+mm+"); ", cb);
 }

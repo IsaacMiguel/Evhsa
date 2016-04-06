@@ -11,12 +11,12 @@
   		<table>
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-				<td><a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicio.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicion.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo</button></a></td>
 				<!-- <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td> -->
 			</tr>	
 		</table>
   	</div>
-	<table style="width: 100%;">
+	<table style="width: 100%; margin-left: 15px;">
 		<tr>	
 			<th>Codigo de Pañol:</th>
 			<td><input type="text" id="codigo" name="codigo" class="form-control" readonly style="width: 130px; text-align: center; text-transform:uppercase" value="{{ conjunto_definicion.codigo }}"></td>
@@ -81,7 +81,7 @@
 					<td>{{ cf.valor }}</td>
 					<td>{{ cf.imputado }}</td>  <!-- imputador a coche(mostrar numero de coche) -->
 					<td>{{ cf.ubicacionneumaticotxt }}</td>
-					<td>{{ cf.responsable_reparación }}</td>
+					<td>{{ cf.responsable_reparacion }}</td>
 					<td>{{ cf.responsable_rotura }}</td>
 					<td>{{ cf.Kms }}</td>
 					<td>{{ cf.tipocubiertatxt }}</td>

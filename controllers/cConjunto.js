@@ -2,6 +2,9 @@ var mConjunto = require('../models/mConjunto');
 var mAyuda = require('../models/mAyuda');
 var mRepuestos = require('../models/mRepuestos');
 var mUbicaciones = require('../models/mUbicaciones');
+var mVehiculos = require('../models/mVehiculos');
+var mUbicacionesNeumaticos = require('../models/mUbicacionesNeumaticos');
+var mTipoCubierta = require('../models/mTipoCubierta');
 
 module.exports = {
 	getAlta: getAlta,
@@ -13,7 +16,8 @@ module.exports = {
 	getVerFicha: getVerFicha,
 	getBuscar_Ficha_x_Codigo: getBuscar_Ficha_x_Codigo,
 	getBuscar_ConjuntoDefinicion_xCodigo: getBuscar_ConjuntoDefinicion_xCodigo,
-	getConjunto_Ficha_Alta: getConjunto_Ficha_Alta
+	getConjunto_Ficha_Alta: getConjunto_Ficha_Alta,
+	postConjuntoFicha_Alta: postConjuntoFicha_Alta
 }
 
 function changeDate(date){
@@ -109,11 +113,11 @@ function getVerFicha(req, res){
 	var serie = params.serie;
 
 	mConjunto.getBuscar_x_CodigoySerie(codigo, serie, function (conjunto_definicion){
-		mConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie(codigo, serie, function (conjunto_ficha){
+		mConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie(codigo, serie, function (conjunto_fichas){
 			res.render("conjunto_verficha", {
 				pagename: "Ficha completa de Conjunto",
 				conjunto_definicion: conjunto_definicion[0],
-				conjunto_ficha: conjunto_ficha
+				conjunto_fichas: conjunto_fichas
 			});
 		});
 	});
@@ -133,10 +137,71 @@ function getConjunto_Ficha_Alta(req, res){
 	var codigo = params.codigo;
 	var serie = params.serie;
 
-	res.render("conjunto_ficha_alta", {
-		pagename: "Alta de Movimiento",
-		codigo: codigo,
-		serie: serie
+	mRepuestos.getByCodigo(codigo, function (rep){
+		mVehiculos.getAll(function (vehiculos){
+			mUbicacionesNeumaticos.getAll(function (ubicaciones_neumaticos){
+				mTipoCubierta.getAll(function (tipo_cubiertas){
+					mUbicaciones.getAll(function (ubicaciones){
+						res.render("conjunto_ficha_alta", {
+							pagename: "Alta de Movimiento",
+							codigo: codigo,
+							serie: serie,
+							rep: rep[0],
+							vehiculos: vehiculos,
+							ubicaciones_neumaticos: ubicaciones_neumaticos,
+							tipo_cubiertas: tipo_cubiertas,
+							ubicaciones: ubicaciones
+						});
+					});
+				});
+			});
+		});		
+	});
+}
+
+function postConjuntoFicha_Alta(req, res){
+	var params = req.body;
+	// console.log(params)
+	var codigo = params.codigo;
+	// var denominacion = params.denominacion;
+	var serie = params.serie;
+	var fecha_movimiento = params.fecha_movimiento;
+	fecha_movimiento = changeDate(fecha_movimiento);
+	var coche_sacado = params.coche_sacado;
+	var coche_colocado = params.coche_colocado;
+	var ubicacion_actual = params.ubicacion_actual;
+	var destino = params.destino;
+	var detalle = params.detalle;
+	var costo = params.costo;
+	var imputado = params.imputado;
+	var ubicacion_neumatico = params.ubicacion_neumatico;
+	var responsable_reparacion = params.responsable_reparacion;
+	var responsable_rotura = params.responsable_rotura;
+	var kms = params.kms;
+	var tipo_cubiertas = params.tipo_cubiertas;
+	var mm = params.mm;
+	var suma_estadistica = params.suma_estadistica;
+
+	switch(ubicacion_actual) {
+	    case 'A':
+	    	coche_colocado = 0;
+	    	break;
+	    case 'C':
+	    	break;
+	    case 'P':	    	
+	    	coche_colocado = 0;
+	    	break;
+	    case 'T':	    	
+	    	coche_colocado = 0;
+	    	break;
+	    case 'B':
+	    	coche_colocado = 0;
+	    	break;
+	    default:
+	}
+
+	mConjunto.insertMovimiento(codigo, serie, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, kms, tipo_cubiertas, mm, suma_estadistica, function (){
+		res.redirect("conjunto_verficha/"+codigo+"/"+serie);
 	});
 }
 

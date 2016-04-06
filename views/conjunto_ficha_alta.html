@@ -10,15 +10,6 @@
 <div class="panel panel-default">
 	<form method="post" id="formalta" action="/conjunto_ficha_alta">
 		<table align="center" class="table table-striped">
-			<!-- Fecha, 
-			sacado coche, 
-			colocado coche, 
-			ubicación actual, 
-			detalle, 
-			Costo, 
-			imputado a coche (mostrar numero de coche), 
-			ubicación neumático, 
-			 -->
 			<tr>
 				<td>Codigo del Conjunto:</td>
 				<td>
@@ -27,7 +18,7 @@
 			</tr>
 			<tr>
 				<td>Denominacion:</td>
-				<td><input type="text" id="denominacion" name="denominacion" readonly class="form-control" value="{{ conjunto_ficha.denominacion }}"></td>
+				<td><input type="text" id="denominacion" name="denominacion" readonly class="form-control" value="{{ rep.nombre }}"></td>
 			</tr>
 			<tr>
 				<td>Codigo Asignado por EVHSA:</td>
@@ -40,9 +31,20 @@
 				<td><input type="text" style="width: 150px !important;" class="datepicker form-control" id="fecha_movimiento" name="fecha_movimiento" readonly></td>
 			</tr>
 			<tr>
+				<td>Ubicacion Actual:</td>
+				<td>
+					<select class="form-control" id="ubicacion_actual" name="ubicacion_actual">
+						{% for u in ubicaciones %}
+							<option value="{{ u.codigo }}">{{ u.descripcion }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td>Sacado de Coche::</td>
 				<td>
 					<select class="form-control" id="coche_sacado" name="coche_sacado">
+						<option value="0">No se usa</option>
 						{% for v in vehiculos %}
 							<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
 						{% endfor %}
@@ -53,6 +55,7 @@
 				<td>Colocado en Coche:</td>
 				<td>
 					<select class="form-control" id="coche_colocado" name="coche_colocado">
+						<option value="0">No se usa</option>
 						{% for v in vehiculos %}
 							<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
 						{% endfor %}
@@ -60,16 +63,16 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Ubicacion Actual:</td>
-				<td></td>
+				<td>Destino:</td>
+				<td><input type="text" id="destino" name="destino" class="form-control"><div class="aviso">Quedan <span id="charsLeftDestino"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Detalle:</td>
-				<td><input type="text" class="form-control" id="detalle" name="detalle"></td>
+				<td><input type="text" class="form-control" id="detalle" name="detalle"><div class="aviso">Quedan <span id="charsLeftDetalle"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Costo:</td>
-				<td><input type="text" id="costo" name="costo" class="form-control"></td>
+				<td><input type="text" id="costo" name="costo" class="form-control" onkeypress="return Validate8EntY2Dec(event,this)"></td>
 			</tr>
 			<tr>
 				<td>Imputado a Coche:</td>
@@ -91,35 +94,38 @@
 					</select>
 				</td>
 			</tr>
-			<!-- responsable reparación, 
-			responsable rotura, 
-			kms, 
-			estado cubierta, 
-			mm cubierta, 
-			suma en estadística. -->
 			<tr>
 				<td>Responsable de Reparacion:</td>
-				<td></td>
+				<td><input type="text" id="responsable_reparacion" name="responsable_reparacion" class="form-control"><div class="aviso">Quedan <span id="charsLeftResponsableReparacion"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Responsable de Rotura:</td>
-				<td></td>
+				<td><input type="text" id="responsable_rotura" name="responsable_rotura" class="form-control"><div class="aviso">Quedan <span id="charsLeftResponsableRotura"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Kms:</td>
-				<td></td>
+				<td><input type="text" id="kms" name="kms" class="form-control" onKeyPress="return soloNumeros(event)" maxlength="6"></td>
 			</tr>
 			<tr>
 				<td>Estado de Cubiertas:</td>
-				<td></td>
+				<td>
+					<select class="form-control" id="tipo_cubiertas" name="tipo_cubiertas">
+						{% for t in tipo_cubiertas %}
+							<option value="{{ t.codigo }}">{{ t.descripcion }}</option>
+						{% endfor %}
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td>MMs de Cubierta:</td>
-				<td></td>
+				<td><input type="text" id="mm" name="mm" class="form-control" onKeyPress="return soloNumeros(event)" maxlength="2"></td>
 			</tr>
 			<tr>
 				<td>Suma en Estadistica?:</td>
-				<td></td>
+				<td>
+					<input type="radio" name="suma_estadistica" id="suma_estadistica" value="si" checked> Si
+  					<input type="radio" name="suma_estadistica" id="suma_estadistica" value="no"> No<br>
+  				</td>
 			</tr>
 			<tr>
 				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>
@@ -131,23 +137,50 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
-<script src="/js/jquery.autotab.min.js"></script>
+<!-- <script src="/js/jquery.autotab.min.js"></script> -->
 <script type="text/javascript">
-	$('#codigo1').autotab({ maxlength: 4, target: '#codigo2'});
-	$('#codigo2').autotab({ maxlength: 3, target: '#serie'});
-	$('#proveedor').autotab({ maxlength: 25, target: '#valor'});
-	// $('#valor').autotab({ maxlength: 10, target: '#ubicacion'});
-
-	$('#serie').limit('20','#charsLeftSerie');
-	$('#proveedor').limit('25','#charsLeftProveedor');
-	$('#chasis').limit('18','#charsLeftChasis');
-	$('#ubicacion').limit('40','#charsLeftUbicacion');
-
+	$('#detalle').limit('500','#charsLeftDetalle');
+	$('#responsable_reparacion').limit('20','#charsLeftResponsableReparacion');
+	$('#responsable_rotura').limit('20','#charsLeftResponsableRotura');
+	$("#destino").limit("27", "#charsLeftDestino");
+	
 	$(".datepicker").datepicker({
 		dateFormat: 'dd/mm/yy',
 		onSelect: function() {
 		    $("#proveedor").focus();
 		  }
 	});
+
+	$("#ubicacion_actual").on("change", function (){
+		var ubicacion = $("#ubicacion_actual").val();
+		// Anexo
+		// Coche
+		// Pañol
+		// Taller
+		// Baja
+		switch(ubicacion) {
+		    case 'A':
+		    	// $("#coche_sacado").val();
+		    	$("#coche_colocado").val(0);
+		    	break;
+		    case 'C':
+		    	// $("#coche_sacado").val();
+		    	// $("#coche_colocado").val();
+		    	break;
+		    case 'P':
+		    	// $("#coche_sacado").val();
+		    	$("#coche_colocado").val(0);
+		    	break;
+		    case 'T':
+		    	// $("#coche_sacado").val();
+		    	$("#coche_colocado").val(0);
+		    	break;
+		    case 'B':
+		    	// $("#coche_sacado").val(0);
+		    	$("#coche_colocado").val(0);
+		    	break;
+		    default:
+		}
+	});	
 </script>
 {% endblock %}
