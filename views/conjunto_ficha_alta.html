@@ -1,0 +1,153 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/conjunto_ficha_alta.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/conjunto_ficha_alta">
+		<table align="center" class="table table-striped">
+			<!-- Fecha, 
+			sacado coche, 
+			colocado coche, 
+			ubicación actual, 
+			detalle, 
+			Costo, 
+			imputado a coche (mostrar numero de coche), 
+			ubicación neumático, 
+			 -->
+			<tr>
+				<td>Codigo del Conjunto:</td>
+				<td>
+					<input type="text" id="codigo" name="codigo" readonly class="form-control codigo" style="width: 150px; text-align: center;" value="{{ codigo }}">
+				</td>
+			</tr>
+			<tr>
+				<td>Denominacion:</td>
+				<td><input type="text" id="denominacion" name="denominacion" readonly class="form-control" value="{{ conjunto_ficha.denominacion }}"></td>
+			</tr>
+			<tr>
+				<td>Codigo Asignado por EVHSA:</td>
+				<td>
+					<input type="text" id="serie" name="serie" readonly style="" class="form-control" value="{{ serie }}">
+				</td>
+			</tr>
+			<tr>
+				<td>Fecha de Movimiento:</td>
+				<td><input type="text" style="width: 150px !important;" class="datepicker form-control" id="fecha_movimiento" name="fecha_movimiento" readonly></td>
+			</tr>
+			<tr>
+				<td>Sacado de Coche::</td>
+				<td>
+					<select class="form-control" id="coche_sacado" name="coche_sacado">
+						{% for v in vehiculos %}
+							<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Colocado en Coche:</td>
+				<td>
+					<select class="form-control" id="coche_colocado" name="coche_colocado">
+						{% for v in vehiculos %}
+							<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Ubicacion Actual:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Detalle:</td>
+				<td><input type="text" class="form-control" id="detalle" name="detalle"></td>
+			</tr>
+			<tr>
+				<td>Costo:</td>
+				<td><input type="text" id="costo" name="costo" class="form-control"></td>
+			</tr>
+			<tr>
+				<td>Imputado a Coche:</td>
+				<td>
+					<select class="form-control" id="imputado" name="imputado">
+						{% for v in vehiculos %}
+							<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Ubicacion Neumatico:</td>
+				<td>
+					<select class="form-control" id="ubicacion_neumatico" name="ubicacion_neumatico">
+						{% for u in ubicaciones_neumaticos %}
+							<option value="{{ u.codigo }}">{{ u.descripcion }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<!-- responsable reparación, 
+			responsable rotura, 
+			kms, 
+			estado cubierta, 
+			mm cubierta, 
+			suma en estadística. -->
+			<tr>
+				<td>Responsable de Reparacion:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Responsable de Rotura:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Kms:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Estado de Cubiertas:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>MMs de Cubierta:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Suma en Estadistica?:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>
+				<td><input type="submit" value="Agregar" class="btn btn-default"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script type="text/javascript">
+	$('#codigo1').autotab({ maxlength: 4, target: '#codigo2'});
+	$('#codigo2').autotab({ maxlength: 3, target: '#serie'});
+	$('#proveedor').autotab({ maxlength: 25, target: '#valor'});
+	// $('#valor').autotab({ maxlength: 10, target: '#ubicacion'});
+
+	$('#serie').limit('20','#charsLeftSerie');
+	$('#proveedor').limit('25','#charsLeftProveedor');
+	$('#chasis').limit('18','#charsLeftChasis');
+	$('#ubicacion').limit('40','#charsLeftUbicacion');
+
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy',
+		onSelect: function() {
+		    $("#proveedor").focus();
+		  }
+	});
+</script>
+{% endblock %}

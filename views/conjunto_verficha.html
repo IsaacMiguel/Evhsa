@@ -1,0 +1,102 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+  	<div class="panel-heading">
+  		<table>
+			<tr>	
+				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicio.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo</button></a></td>
+				<!-- <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td> -->
+			</tr>	
+		</table>
+  	</div>
+	<table style="width: 100%;">
+		<tr>	
+			<th>Codigo de Pañol:</th>
+			<td><input type="text" id="codigo" name="codigo" class="form-control" readonly style="width: 130px; text-align: center; text-transform:uppercase" value="{{ conjunto_definicion.codigo }}"></td>
+			<td style="width: 10px;"></td>
+			<th>Codigo Asignado por EVHSA:</th>
+			<td><input type="text" id="serie" name="serie" style="width: 200px;" class="form-control" readonly value="{{ conjunto_definicion.serie }}"></td>
+		</tr>
+		<tr>
+			<th>Denominacion:</th>
+			<td><input type="text" id="denominacion" name="denominacion" class="form-control" readonly style="width: 350px;" value="{{ conjunto_definicion.denominacion }}"></td>
+			<td style="width: 10px;"></td>
+			<th>Pert. a Chasis:</th>
+			<td><input type="text" id="chasis" name="chasis" style="width: 200px;" class="form-control" readonly value="{{ conjunto_definicion.chasis }}"></td>
+		</tr>
+		<tr>
+			<td colspan="5">
+				<table style="width: 100%;">
+					<th>Fecha de Compra:</th>
+					<td><input type="text" id="fecha_compra" name="fecha_compra" class="form-control" readonly style="width: 100px; text-align: center;" value="{{ conjunto_definicion.fecha_compra_f }}"></td>
+					<td style="width:10px;"></td>
+					<th>Proveedor:</th>
+					<td><input type="text" id="proveedor" name="proveedor" class="form-control" readonly style="width: 250px; text-align: center;" value="{{ conjunto_definicion.proveedor }}"></td>
+					<td style="width: 10px;"></td>
+					<th>Valor:</th>
+					<td><input type="text" readonly id="valor" name="valor" class="form-control" readonly style="width: 100px; text-align: center;" value="{{ conjunto_definicion.valor }}" ></td>
+				</table>
+			</td>				
+		</tr>
+		<!-- ubicacion de identificacion -->
+		<tr>
+			<th>Ubicacion de Identificacion:</th>
+			<td><input type="text" name="ubicacion" id="ubicacion" class="form-control" readonly value="{{ conjunto_definicion.identificacion }}"></td>
+		</tr>
+	</table>
+	<!-- tabla para conjuntos_fichas -->
+	<div id="mainHolder" style="overflow: scroll; max-height: 400px;">
+		<table class="table">		
+			<tr>
+				<th>Fecha</th>
+				<th>Sacado Coche</th>
+				<th>Coloc. Coche</th>
+				<th>Ubicacion Actual</th>
+				<th>Detalle</th>
+				<th>Costo $</th>
+				<th>Costo</th>
+				<th>Imputado a Coche</th>  <!-- (mostrar numero de coche) -->
+				<th>Ubicación Neumático</th>
+				<th>Responsable Reparación</th>
+				<th>Responsable Rotura</th>
+				<th>Kms</th>
+				<th>Estado Cubierta</th>
+				<th>MM Cubierta</th>
+				<th>Suma en Estadística</th>
+			</tr>		
+			{% for cf in conjunto_fichas %}
+				<tr>
+					<td>{{ cf.fecha_movimiento_f }}</td>
+					<td>{{ cf.numero_coche_sacado_fk }}</td>
+					<td>{{ cf.numero_coche_colocado_fk }}</td>
+					<td>{{ cf.ubicacion_actual }}</td>
+					<td>{{ cf.memo }}</td>
+					<td>{{ cf.valor }}</td>
+					<td>{{ cf.imputado }}</td>  <!-- imputador a coche(mostrar numero de coche) -->
+					<td>{{ cf.ubicacionneumaticotxt }}</td>
+					<td>{{ cf.responsable_reparación }}</td>
+					<td>{{ cf.responsable_rotura }}</td>
+					<td>{{ cf.Kms }}</td>
+					<td>{{ cf.tipocubiertatxt }}</td>
+					<td>{{ cf.mm }}</td>
+					<td>{% if cf.est == 1 %}Si{% else %}No{% endif %}</td>
+				</tr>
+			{% endfor %}		
+		</table>
+	</div>
+	<table style="width: 100%;">
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+</div>
+{% endblock %}

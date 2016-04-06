@@ -6,6 +6,7 @@ module.exports = {
 	getById: getById,
 	getCantRepuestosEnRubroById: getCantRepuestosEnRubroById,
 	getByCodigo: getByCodigo,
+	getByCodigo_y_Serie: getByCodigo_y_Serie,
 	update: update,
 	del: del,
 	getRubroEnRepById: getRubroEnRepById,
@@ -33,6 +34,10 @@ function getCantRepuestosEnRubroById(id_rubro, cb){
 
 function getByCodigo(codigo, cb){
 	conn("select * from repuestos where codigo = '"+codigo+"'", cb);
+}
+
+function getByCodigo_y_Serie(codigo, serie, cb){
+	conn("select * from repuestos where codigo='"+codigo+"' AND serie = '"+serie+"'", cb);
 }
 
 function update(id_repuesto, codigo, nombre, stock, valor, calle, modulo, estante, minimo, maximo, descripcion, marca, observaciones, puntopedido, id_rubro, cb){
