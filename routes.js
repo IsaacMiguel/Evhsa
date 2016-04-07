@@ -261,6 +261,8 @@ module.exports = function(app) {
 
 	//EQUIPOS
 	app.get("/equipos_lista", auth, acceso, cEquipos.getLista);
+	app.get("/equipos_alta", auth, acceso, cEquipos.getAlta);
+	app.post("/equipos_alta", auth, cEquipos.postAlta);
 
 
 	//pruebasql
