@@ -1,0 +1,15 @@
+input[type=date]{
+	width: 30%;
+}
+
+input[type=number]{
+	width: 20%;
+}
+
+#tipo{
+	width: 10%;
+}
+
+#nro_coche{
+	width: 15%;
+}
