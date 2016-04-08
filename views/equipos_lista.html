@@ -66,7 +66,7 @@
 							<td>{{ e.km }}</td>
 
 							<td><a href="/equipos_ver/{{ e.id }}"><button class="btn btn-default">Ver</button></a></td>
-							<td><a href="/equipos_modificar/{{ e.id }}"><button class="btn btn-warning menu" data-idmenu="37" data-accion="m">Modificar</button></a></td>
+							<td><a href="/equipos_modificar/{{ e.id }}"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
 							<td><a href='/equipos_eliminar/{{ e.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
 						</tr>
 						{% endfor %}
