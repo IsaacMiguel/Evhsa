@@ -23,7 +23,7 @@
 				<td>
 					<select id="nro_coche" name="nro_coche" class="form-control" >
 						{% for v in vehiculos %}
-							<option value="{{ v.id }}">{{ v.numero }}</option>
+							<option value="{{ v.numero }}">{{ v.numero }}  {{ v.dominio }} {{ v.marca }} {{ v.modelo }}</option>
 						{% endfor %}
 					</select>
 				</td>

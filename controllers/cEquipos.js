@@ -2,16 +2,16 @@
 var mEquipos = require('../models/mEquipos');
 var mVehiculos = require('../models/mVehiculos');
 
-var utils = require('../public/utilities/utils').changeDate2;
+var utils = require('../public/js/main').changeDate2;
 
 module.exports = {
 	getLista : getLista,
 	getAlta : getAlta,
 	postAlta : postAlta,
-	getEquipo : getEquipo,
-	getModificarEquipo : getModificarEquipo,
-	postModificarEquipo : postModificarEquipo,
-	deleteEquipo : deleteEquipo
+	getVer : getVer,
+	getModificar : getModificar,
+	postModificar : postModificar,
+	getDelete : getDelete
 }
 
 function getLista (req, res) {
@@ -24,7 +24,7 @@ function getLista (req, res) {
 }
 
 function getAlta (req, res) {
-	mVehiculos.getVehiculo(function (vehiculos) {
+	mVehiculos.getDataVehiculos(function (vehiculos) {
 		res.render('equipos_alta', {
 			pagename : 'Alta de Equipos',
 			vehiculos : vehiculos
@@ -61,24 +61,22 @@ function postAlta (req, res) {
 	});
 }
 
-function getEquipo (req, res) {
+function getVer (req, res) {
 	mEquipos.getById(req.params.id, function (equipo) {
-		utils(equipo[0].fecha_sacado, function (fsacado) {
-			utils(equipo[0].fecha_colocacion, function (fcolocacion) {
-				res.render('equipo_ver', {
-					pagename : 'Ver Equipo',
-					equipo : equipo[0],
-					fcolocacion : fcolocacion,
-					fsacado : fsacado
-				});
+		fcolocacion = utils(equipo[0].fecha_sacado);
+		fsacado = utils(equipo[0].fecha_colocacion);
+			res.render('equipo_ver', {
+				pagename : 'Ver Equipo',
+				equipo : equipo[0],
+				fcolocacion : fcolocacion,
+				fsacado : fsacado
 			});
-		});
 	});
 }
 
-function getModificarEquipo (req, res) {
+function getModificar (req, res) {
 	mEquipos.getById(req.params.id, function (equipo) {
-		mVehiculos.getVehiculo(function (vehiculos) {
+		mVehiculos.getDataVehiculos(function (vehiculos) {
 			res.render('equipo_modificar', {
 				pagename : 'Modificar Equipo',
 				equipo : equipo[0],
@@ -88,7 +86,7 @@ function getModificarEquipo (req, res) {
 	});
 }
 
-function postModificarEquipo (req, res) {
+function postModificar (req, res) {
 	var params = req.body;
 
 	var observaciones = params.observaciones;
@@ -113,13 +111,13 @@ function postModificarEquipo (req, res) {
 		'resultado' : resultado
 		};
 
-	mEquipos.updateEquipo(data, function () {
+	mEquipos.update(data, function () {
 		res.redirect("equipos_lista");
 	});
 }
 
-function deleteEquipo (req, res) {
-	mEquipos.delEquipo(req.params.id, function () {
+function getDelete (req, res) {
+	mEquipos.del(req.params.id, function () {
 		res.redirect("equipos_lista");
 	});
 }

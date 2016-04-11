@@ -4,8 +4,8 @@ module.exports = {
 	getAll : getAll,
 	insert : insert,
 	getById : getById,
-	updateEquipo : updateEquipo,
-	delEquipo : delEquipo
+	update : update,
+	del : del
 }
 
 function getAll (cb) {
@@ -26,7 +26,7 @@ function getById (id, cb) {
 	conn("select * from equipos where id=" + id, cb);
 }
 
-function updateEquipo (d, cb) {
+function update (d, cb) {
 	conn("update equipos set" +
 		" numero=" + d.numero +
 		", denominacion='" + d.denominacion + "'" +
@@ -43,6 +43,6 @@ function updateEquipo (d, cb) {
 	" where id=" + d.id, cb);
 }
 
-function delEquipo (id, cb) {
+function del (id, cb) {
 	conn("delete from equipos where id=" + id, cb);
 }

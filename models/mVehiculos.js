@@ -8,7 +8,7 @@ module.exports = {
 	update: update,
 	getByNumero: getByNumero,
 	del: del,
-	getVehiculo : getVehiculo
+	getDataVehiculos : getDataVehiculos
 }
 
 function getAll(cb){
@@ -49,6 +49,6 @@ function del(id, cb){
 	conn("delete from vehiculos where id = "+id, cb);
 }
 
-function getVehiculo(cb) {
-	conn("select id, numero from vehiculos", cb);
+function getDataVehiculos(cb) {
+	conn("select id, numero, dominio, marca, modelo from vehiculos", cb);
 }

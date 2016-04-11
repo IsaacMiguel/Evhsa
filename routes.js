@@ -263,10 +263,10 @@ module.exports = function(app) {
 	app.get("/equipos_lista", auth, acceso, cEquipos.getLista);
 	app.get("/equipos_alta", auth, acceso, cEquipos.getAlta);
 	app.post("/equipos_alta", auth, cEquipos.postAlta);
-	app.get("/equipos_ver/:id", auth, acceso, cEquipos.getEquipo);
-	app.get("/equipos_modificar/:id", auth, acceso, cEquipos.getModificarEquipo);
-	app.post("/equipos_modificar", auth, cEquipos.postModificarEquipo);
-	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.deleteEquipo);
+	app.get("/equipos_ver/:id", auth, acceso, cEquipos.getVer);
+	app.get("/equipos_modificar/:id", auth, acceso, cEquipos.getModificar);
+	app.post("/equipos_modificar", auth, cEquipos.postModificar);
+	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
 
 
 

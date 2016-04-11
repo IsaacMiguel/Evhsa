@@ -138,3 +138,5 @@ function Validate8EntY2Dec(e, field) {
     // other key
     return false
 }//onkeypress="return Validate8EntY2Dec(event,this)"
+
+exports.changeDate2 = changeDate2;
