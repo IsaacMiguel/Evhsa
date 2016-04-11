@@ -46,7 +46,7 @@ function postLogin(req, res){
 				if (user.clave === form.password) {
 					if ( entreFechas(user.alta, user.baja) ) {
 						if (user.activa == 1){
-
+							// req.session.user = null;
 							req.session.user = user;
 							req.session.auth = true;
 

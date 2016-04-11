@@ -10,7 +10,7 @@
   	<div class="panel-heading">
   		<table>
 			<tr>	
-				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/conjunto_buscarfichaxcodigo"></a><button type="button" class="btn btn-primary">Atras</button></a></td>
 				<td><a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicion.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo</button></a></td>
 				<!-- <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td> -->
 			</tr>	
@@ -19,7 +19,7 @@
 	<table style="width: 100%; margin-left: 15px;">
 		<tr>	
 			<th>Codigo de Pañol:</th>
-			<td><input type="text" id="codigo" name="codigo" class="form-control" readonly style="width: 130px; text-align: center; text-transform:uppercase" value="{{ conjunto_definicion.codigo }}"></td>
+			<td style="display: inline-block;"><input type="text" id="codigo" name="codigo" class="form-control" readonly style="width: 130px; text-align: center; text-transform:uppercase" value="{{ conjunto_definicion.codigo }}"></td>
 			<td style="width: 10px;"></td>
 			<th>Codigo Asignado por EVHSA:</th>
 			<td><input type="text" id="serie" name="serie" style="width: 200px;" class="form-control" readonly value="{{ conjunto_definicion.serie }}"></td>
@@ -47,8 +47,13 @@
 		</tr>
 		<!-- ubicacion de identificacion -->
 		<tr>
-			<th>Ubicacion de Identificacion:</th>
-			<td><input type="text" name="ubicacion" id="ubicacion" class="form-control" readonly value="{{ conjunto_definicion.identificacion }}"></td>
+			<td colspan="5">
+				<table style="width: 100%;">
+					<th style="width: 200px;">Ubicacion de Identificacion:</th>
+					<td><input type="text" name="ubicacion" id="ubicacion" class="form-control" readonly value="{{ conjunto_definicion.identificacion }}"></td>
+					<td style="width: 30% !important; text-align: center;">{% if es_neumatico == 1 %}&nbsp;&nbsp;<span>(ES NEUMATICO)</span>{% else %}{% endif %}</td>
+				</table>
+			</td>
 		</tr>
 	</table>
 	<!-- tabla para conjuntos_fichas -->
@@ -61,8 +66,7 @@
 				<th>Ubicacion Actual</th>
 				<th>Detalle</th>
 				<th>Costo $</th>
-				<th>Costo</th>
-				<th>Imputado a Coche</th>  <!-- (mostrar numero de coche) -->
+				<th>Imputado a Coche</th>
 				<th>Ubicación Neumático</th>
 				<th>Responsable Reparación</th>
 				<th>Responsable Rotura</th>
@@ -74,18 +78,18 @@
 			{% for cf in conjunto_fichas %}
 				<tr>
 					<td>{{ cf.fecha_movimiento_f }}</td>
-					<td>{{ cf.numero_coche_sacado_fk }}</td>
-					<td>{{ cf.numero_coche_colocado_fk }}</td>
+					<td>{% if cf.numero_coche_sacado_fk != 0 %}{{ cf.numero_coche_sacado_fk }}{% else %}{% endif %}</td>
+					<td>{% if cf.numero_coche_colocado_fk != 0 %}{{ cf.numero_coche_colocado_fk }}{% else %}{% endif %}</td>
 					<td>{{ cf.ubicacion_actual }}</td>
 					<td>{{ cf.memo }}</td>
-					<td>{{ cf.valor }}</td>
-					<td>{{ cf.imputado }}</td>  <!-- imputador a coche(mostrar numero de coche) -->
-					<td>{{ cf.ubicacionneumaticotxt }}</td>
+					<td>{% if cf.valor != 0 %}{{ cf.valor }}{% else %}{% endif %}</td>
+					<td>{% if cf.imputa != 0 %}{{ cf.imputa }}{% else %}{% endif %}</td> <!-- imputado a coche(mostrar numero de coche) -->
+					<td>{% if cf.codigo_ubicacion_neumatico_fk != 'NN' %}{{ cf.ubicacionneumaticotxt }}{% else %}--{% endif %}</td>
 					<td>{{ cf.responsable_reparacion }}</td>
 					<td>{{ cf.responsable_rotura }}</td>
-					<td>{{ cf.Kms }}</td>
-					<td>{{ cf.tipocubiertatxt }}</td>
-					<td>{{ cf.mm }}</td>
+					<td>{% if cf.km != 0 %}{{ cf.km }}{% else %}{% endif %}</td>
+					<td>{% if cf.codigo_tipo_cubierta_fk != 0 %}{{ cf.tipocubiertatxt }}{% else %}--{% endif %}</td>
+					<td>{% if cf.mm != 0 %}{{ cf.mm }}{% else %}{% endif %}</td>
 					<td>{% if cf.est == 1 %}Si{% else %}No{% endif %}</td>
 				</tr>
 			{% endfor %}		

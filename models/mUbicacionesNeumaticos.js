@@ -5,5 +5,5 @@ module.exports = {
 }
 
 function getAll(cb){
-	conn('select * from ubicaciones_neumaticos', cb);
+	conn('select * from ubicaciones_neumaticos order by id', cb);
 }

@@ -10,10 +10,16 @@
 <div class="panel panel-default">
 	<form method="post" id="formalta" action="/conjunto_ficha_alta">
 		<table align="center" class="table table-striped">
+			<input hidden id="es_neumatico" name="es_neumatico" value="{{ es_neumatico }}">
 			<tr>
 				<td>Codigo del Conjunto:</td>
 				<td>
-					<input type="text" id="codigo" name="codigo" readonly class="form-control codigo" style="width: 150px; text-align: center;" value="{{ codigo }}">
+					<table>
+						<tr>
+							<td><input type="text" id="codigo" name="codigo" readonly class="form-control codigo" style="width: 150px; text-align: center;" value="{{ codigo }}"></td>
+							<td>{% if es_neumatico == 1 %}&nbsp;&nbsp;&nbsp;(ES NEUMATICO){% else %}{% endif %}</td>
+						</tr>
+					</table>					
 				</td>
 			</tr>
 			<tr>
@@ -62,6 +68,7 @@
 					</select>
 				</td>
 			</tr>
+			<!-- HASTA ACA SON OBLIGATORIOS -->
 			<tr>
 				<td>Destino:</td>
 				<td><input type="text" id="destino" name="destino" class="form-control"><div class="aviso">Quedan <span id="charsLeftDestino"></span> caraceteres.</div></td>
@@ -78,13 +85,14 @@
 				<td>Imputado a Coche:</td>
 				<td>
 					<select class="form-control" id="imputado" name="imputado">
+						<option value="0">No se usa</option>
 						{% for v in vehiculos %}
 							<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
 						{% endfor %}
 					</select>
 				</td>
 			</tr>
-			<tr>
+			<tr id="tr_ubicacion_neumatico" style="display:none">
 				<td>Ubicacion Neumatico:</td>
 				<td>
 					<select class="form-control" id="ubicacion_neumatico" name="ubicacion_neumatico">
@@ -102,21 +110,22 @@
 				<td>Responsable de Rotura:</td>
 				<td><input type="text" id="responsable_rotura" name="responsable_rotura" class="form-control"><div class="aviso">Quedan <span id="charsLeftResponsableRotura"></span> caraceteres.</div></td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td>Kms:</td>
 				<td><input type="text" id="kms" name="kms" class="form-control" onKeyPress="return soloNumeros(event)" maxlength="6"></td>
-			</tr>
-			<tr>
+			</tr> -->
+
+			{% if es_neumatico == 0 %}<tr style="display:none">{% else %}<tr>{% endif %}
 				<td>Estado de Cubiertas:</td>
 				<td>
 					<select class="form-control" id="tipo_cubiertas" name="tipo_cubiertas">
 						{% for t in tipo_cubiertas %}
-							<option value="{{ t.codigo }}">{{ t.descripcion }}</option>
+							<option value="{{ t.codigo }}" selected>{{ t.descripcion }}</option>
 						{% endfor %}
 					</select>
 				</td>
 			</tr>
-			<tr>
+			{% if es_neumatico == 0 %}<tr style="display:none">{% else %}<tr>{% endif %}
 				<td>MMs de Cubierta:</td>
 				<td><input type="text" id="mm" name="mm" class="form-control" onKeyPress="return soloNumeros(event)" maxlength="2"></td>
 			</tr>
@@ -143,13 +152,25 @@
 	$('#responsable_reparacion').limit('20','#charsLeftResponsableReparacion');
 	$('#responsable_rotura').limit('20','#charsLeftResponsableRotura');
 	$("#destino").limit("27", "#charsLeftDestino");
-	
+
 	$(".datepicker").datepicker({
 		dateFormat: 'dd/mm/yy',
 		onSelect: function() {
 		    $("#proveedor").focus();
 		  }
 	});
+
+	var myDate = new Date(); 
+	myDate.setFullYear(myDate.getFullYear());
+	year = myDate.getFullYear();
+	month = myDate.getMonth()+1;
+	day = myDate.getDate();
+	if (month<10)
+		month = "0"+month;
+	if (day<10)
+		day = "0"+day;
+	myDate =  day +"/"+month+"/"+year;
+	$("#fecha_movimiento").val(myDate)
 
 	$("#ubicacion_actual").on("change", function (){
 		var ubicacion = $("#ubicacion_actual").val();
@@ -158,26 +179,37 @@
 		// Pañol
 		// Taller
 		// Baja
+		var es_neumatico = $("#es_neumatico").val();
 		switch(ubicacion) {
 		    case 'A':
-		    	// $("#coche_sacado").val();
+		    	// $("#coche_sacado").val(); style="display:none"
 		    	$("#coche_colocado").val(0);
+		    	$("#tr_ubicacion_neumatico").css("display", "none");
+		    	$("#tipo_cubiertas").val(0);
 		    	break;
 		    case 'C':
 		    	// $("#coche_sacado").val();
 		    	// $("#coche_colocado").val();
+		    	if (es_neumatico == 1)
+		    		$("#tr_ubicacion_neumatico").toggle();
 		    	break;
 		    case 'P':
 		    	// $("#coche_sacado").val();
 		    	$("#coche_colocado").val(0);
+		    	$("#tr_ubicacion_neumatico").css("display", "none");
+		    	$("#tipo_cubiertas").val(0);
 		    	break;
 		    case 'T':
 		    	// $("#coche_sacado").val();
 		    	$("#coche_colocado").val(0);
+		    	$("#tr_ubicacion_neumatico").css("display", "none");
+		    	$("#tipo_cubiertas").val(0);
 		    	break;
 		    case 'B':
 		    	// $("#coche_sacado").val(0);
 		    	$("#coche_colocado").val(0);
+		    	$("#tr_ubicacion_neumatico").css("display", "none");
+		    	$("#tipo_cubiertas").val(0);
 		    	break;
 		    default:
 		}

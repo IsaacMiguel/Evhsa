@@ -17,7 +17,7 @@
 						<!-- PONER QUE SALTE DEL CODIGO1 AL CODIGO2 AL FINALIZAR 4 CARACTERES -->
 						<tr>
 							<td>
-								<input type="text" id="codigo1" name="codigo1" required class="form-control codigo" style="width: 70px; text-align: center;">
+								<input type="text" id="codigo1" name="codigo1" required class="form-control codigo" style="width: 70px; text-align: center;  text-transform:uppercase">
 							</td>
 							<td>.</td>
 							<td>
@@ -46,11 +46,11 @@
 			</tr>
 			<tr>
 				<td>Proveedor:</td>
-				<td><input type="text" id="proveedor" name="proveedor" required class="form-control"><div class="aviso">Quedan <span id="charsLeftProveedor"></span> caraceteres.</div></td>
+				<td><input type="text" id="proveedor" name="proveedor" class="form-control"><div class="aviso">Quedan <span id="charsLeftProveedor"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Valor $:</td>
-				<td><input type="text" id="valor" name="valor" required class="form-control" onkeypress="return Validate8EntY2Dec(event,this)"></td>
+				<td><input type="text" id="valor" name="valor" class="form-control" onkeypress="return Validate8EntY2Dec(event,this)"></td>
 			</tr>
 			<tr>
 				<td>Ubica. del Codigo EVHSA:</td>
@@ -60,12 +60,19 @@
 				<td>Experimental (S/N):</td>
 				<td>
 					<input type="radio" name="experimental" id="experimental" value="si" checked> Si
-  					<input type="radio" name="experimental" id="experimental" value="no"> No<br>
+  					<input type="radio" name="experimental" id="experimental" value="no"> No
+				</td>
+			</tr>
+			<tr>
+				<td>Es Neumatico? (S/N):</td>
+				<td>
+					<input type="radio" name="es_neumatico" id="es_neumatico" value="1"> Si
+  					<input type="radio" name="es_neumatico" id="es_neumatico" value="0" checked> No
 				</td>
 			</tr>
 			<tr>
 				<td>Pertenece al Chasis N°:</td>
-				<td><input type="text" id="chasis" name="chasis" required class="form-control"><div class="aviso">Quedan <span id="charsLeftChasis"></span> caraceteres.</div></td>
+				<td><input type="text" id="chasis" name="chasis" class="form-control"><div class="aviso">Quedan <span id="charsLeftChasis"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>
@@ -96,10 +103,24 @@
 		  }
 	});
 
+	var myDate = new Date(); 
+	myDate.setFullYear(myDate.getFullYear());
+	year = myDate.getFullYear();
+	month = myDate.getMonth()+1;
+	day = myDate.getDate();
+	if (month<10)
+		month = "0"+month;
+	if (day<10)
+		day = "0"+day;
+	myDate =  day +"/"+month+"/"+year;
+	$("#fecha_compra").val(myDate)
+
 	$(".codigo").focusout(function (){
 		var codigo1 = $("#codigo1").val();
 		var codigo2 = $("#codigo2").val();
 		var codigo = codigo1 + "."+ codigo2;
+		codigo = codigo.toUpperCase();
+
 		if (codigo1.length > 0){
 			if (codigo1.length == 4 && codigo2.length == 3){
 				$.getJSON("/conjunto_buscar_repuesto_por_codigo/"+codigo, function (repuesto){
@@ -119,6 +140,7 @@
 		var codigo2 = $("#codigo2").val();
 		var codigo = codigo1 + "."+ codigo2;
 		var serie = $("#serie").val();
+		codigo = codigo.toUpperCase();
 
 		if (codigo1.length > 0){
 			if (codigo1.length == 4 && codigo2.length == 3 && serie.length > 0){
@@ -173,6 +195,7 @@
 		var codigo2 = $("#codigo2").val();
 		var codigo = codigo1 + "."+ codigo2;
 		var serie = $("#serie").val();
+		codigo = codigo.toUpperCase();
 
 		if (codigo1.length > 0){
 			if (codigo1.length == 4 && codigo2.length == 3 && serie.length > 0){

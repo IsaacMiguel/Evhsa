@@ -3,7 +3,7 @@ var conn = require('../config/db').conn;
 module.exports = {
 	getAll: getAll,
 	getById: getById,
-	insert: insert,
+	insertDefinicion: insertDefinicion,
 	update: update,
 	del: del,
 	getBuscar_x_CodigoySerie: getBuscar_x_CodigoySerie,
@@ -20,9 +20,10 @@ function getById(id, cb){
 	conn("select * from conjunto_definicion where id = "+id, cb);
 }
 
-function insert(codigo, serie, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, cb){
-	conn("insert into conjunto_definicion(codigo, serie, fecha_compra, proveedor, valor, identificacion, experimental, chasis) "+
-		"values('"+codigo+"', '"+serie+"', '"+fecha_compra+"', '"+proveedor+"', "+valor+", '"+ubicacion+"', '"+experimental+"', '"+chasis+"')", cb);
+function insertDefinicion(codigo, serie, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, es_neumatico, cb){
+	conn("insert into conjunto_definicion(codigo, serie, fecha_compra, proveedor, valor, identificacion, experimental, chasis, es_neumatico) "+
+		"values('"+codigo+"', '"+serie+"', '"+fecha_compra+"', '"+proveedor+"', "+valor+", '"+ubicacion+"', '"+experimental+"', '"
+			+chasis+"', "+es_neumatico+")", cb);
 }
 
 function update(id, codigo, nombre, id_grupo, cb){
@@ -61,10 +62,10 @@ function getBuscar_ConjuntoDefinicion_xCodigo(codigo, cb){
 		"where conjunto_definicion.codigo = '"+codigo+"'", cb);
 }
 
-function insertMovimiento(codigo, serie, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, kms, tipo_cubiertas, mm, suma_estadistica, cb){
+function insertMovimiento(codigo, serie, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, tipo_cubiertas, mm, suma_estadistica, cb){
 	conn("INSERT INTO conjunto_ficha(codigo, serie, fecha_movimiento, numero_coche_sacado_fk, destino, numero_coche_colocado_fk, "+
-		"codigo_ubicacion_actual_fk, valor, memo, codigo_ubicacion_neumatico_fk, imputa, responsable_reparacion, responsable_rotura, km, "+
-		"codigo_tipo_cubierta_fk, est, mm) VALUES ('"+codigo+"', '"+serie+"', '"+fecha_movimiento+"', "+coche_sacado+", '"+destino+"', "+
+		"codigo_ubicacion_actual_fk, valor, memo, codigo_ubicacion_neumatico_fk, imputa, responsable_reparacion, responsable_rotura, "+
+		"codigo_tipo_cubierta_fk, est, mm, km) VALUES ('"+codigo+"', '"+serie+"', '"+fecha_movimiento+"', "+coche_sacado+", '"+destino+"', "+
 		coche_colocado+", '"+ubicacion_actual+"', "+costo+", '"+detalle+"', '"+ubicacion_neumatico+"', "+imputado+", '"+
-		responsable_reparacion+"', '"+responsable_rotura+"', "+kms+", "+tipo_cubiertas+", '"+suma_estadistica+"', "+mm+"); ", cb);
+		responsable_reparacion+"', '"+responsable_rotura+"', '"+tipo_cubiertas+"', '"+suma_estadistica+"', "+mm+", 0); ", cb);
 }

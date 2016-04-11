@@ -84,13 +84,17 @@ function postAlta(req, res){
 	var fecha_compra = params.fecha_compra;
 	var proveedor = params.proveedor;
 	var valor = params.valor;
+	if (valor == '')
+		valor = 0;
 	var ubicacion = params.ubicacion;
 	var experimental = params.experimental;
 	var chasis = params.chasis;
+	codigo = codigo.toUpperCase();
+	var es_neumatico = params.es_neumatico;
 
 	fecha_compra = changeDate(fecha_compra);
 
-	mConjunto.insert(codigo, serie, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, function (){
+	mConjunto.insertDefinicion(codigo, serie, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, es_neumatico, function (){
 		res.render('conjunto_alta', {
 			pagename: 'Alta de Conjunto'
 		});
@@ -117,7 +121,8 @@ function getVerFicha(req, res){
 			res.render("conjunto_verficha", {
 				pagename: "Ficha completa de Conjunto",
 				conjunto_definicion: conjunto_definicion[0],
-				conjunto_fichas: conjunto_fichas
+				conjunto_fichas: conjunto_fichas,
+				es_neumatico: conjunto_definicion[0].es_neumatico
 			});
 		});
 	});
@@ -137,31 +142,36 @@ function getConjunto_Ficha_Alta(req, res){
 	var codigo = params.codigo;
 	var serie = params.serie;
 
-	mRepuestos.getByCodigo(codigo, function (rep){
-		mVehiculos.getAll(function (vehiculos){
-			mUbicacionesNeumaticos.getAll(function (ubicaciones_neumaticos){
-				mTipoCubierta.getAll(function (tipo_cubiertas){
-					mUbicaciones.getAll(function (ubicaciones){
-						res.render("conjunto_ficha_alta", {
-							pagename: "Alta de Movimiento",
-							codigo: codigo,
-							serie: serie,
-							rep: rep[0],
-							vehiculos: vehiculos,
-							ubicaciones_neumaticos: ubicaciones_neumaticos,
-							tipo_cubiertas: tipo_cubiertas,
-							ubicaciones: ubicaciones
+	//seguir aca, mostrar si es neumatico en el alta y poner condicionales en los campos que afecta
+
+	mConjunto.getBuscar_x_CodigoySerie(codigo, serie, function (conjunto_definicion){
+		mRepuestos.getByCodigo(codigo, function (rep){
+			mVehiculos.getAll(function (vehiculos){
+				mUbicacionesNeumaticos.getAll(function (ubicaciones_neumaticos){
+					mTipoCubierta.getAll(function (tipo_cubiertas){
+						mUbicaciones.getAll(function (ubicaciones){
+							res.render("conjunto_ficha_alta", {
+								pagename: "Alta de Movimiento",
+								codigo: codigo,
+								serie: serie,
+								es_neumatico: conjunto_definicion[0].es_neumatico,
+								rep: rep[0],
+								vehiculos: vehiculos,
+								ubicaciones_neumaticos: ubicaciones_neumaticos,
+								tipo_cubiertas: tipo_cubiertas,
+								ubicaciones: ubicaciones
+							});
 						});
 					});
 				});
-			});
-		});		
-	});
+			});		
+		});
+	});	
 }
 
 function postConjuntoFicha_Alta(req, res){
 	var params = req.body;
-	// console.log(params)
+	console.log(params)
 	var codigo = params.codigo;
 	// var denominacion = params.denominacion;
 	var serie = params.serie;
@@ -173,14 +183,21 @@ function postConjuntoFicha_Alta(req, res){
 	var destino = params.destino;
 	var detalle = params.detalle;
 	var costo = params.costo;
+	if (costo == '')
+		costo = 0;
 	var imputado = params.imputado;
 	var ubicacion_neumatico = params.ubicacion_neumatico;
 	var responsable_reparacion = params.responsable_reparacion;
 	var responsable_rotura = params.responsable_rotura;
-	var kms = params.kms;
+	// var kms = params.kms;
+	// if (kms == '')
+	// kms = 0;
 	var tipo_cubiertas = params.tipo_cubiertas;
 	var mm = params.mm;
+	if (mm == '')
+		mm = 0;
 	var suma_estadistica = params.suma_estadistica;
+	var es_neumatico = params.es_neumatico;
 
 	switch(ubicacion_actual) {
 	    case 'A':
@@ -200,7 +217,12 @@ function postConjuntoFicha_Alta(req, res){
 	    default:
 	}
 
-	mConjunto.insertMovimiento(codigo, serie, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, kms, tipo_cubiertas, mm, suma_estadistica, function (){
+	if (es_neumatico == 0){
+		tipo_cubiertas = 0;
+		mm == 0;
+	}
+
+	mConjunto.insertMovimiento(codigo, serie, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, tipo_cubiertas, mm, suma_estadistica, function (){
 		res.redirect("conjunto_verficha/"+codigo+"/"+serie);
 	});
 }

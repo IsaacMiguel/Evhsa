@@ -31,6 +31,7 @@ var mAyuda = require('./models/mAyuda');
 var cRandom = require('./controllers/cRandom');
 
 function logout (req, res) {
+	console.log(req.cookies);
 	fecha = new Date();
 	day = fecha.getDate();
 	month = fecha.getMonth();
@@ -40,9 +41,16 @@ function logout (req, res) {
 		month = "0" + month;
 	fecha = fecha.getFullYear() + "/"+month+"/"+day+" "+fecha.getHours()+":"+fecha.getMinutes()
 	mEventos.add(req.session.user.unica, fecha, "Logout", "", function(){
-	});
-	req.session = null;
-	return res.redirect('/');
+		req.session.destroy(function (err) {
+			console.log("session destroyed executed")
+			if (!err){
+				res.clearCookie('connect.sid', { path: '/' });
+		 		res.redirect('/');
+		 	}else{
+		 		console.log(err);
+		 	}
+		});	
+	});	
 }
 
 // Verifica que este logueado
@@ -60,59 +68,120 @@ function acceso (req, res, next){
 	// puede ser que se envien parametros con req y res, o que envie parametros comunes, más el NEXT
 	// se me ocurre hacer una sola funcion con parametro 'accion' o sino hacer 4 funciones, una para cada uno a,b,m,c
 	// console.log(req.session.user)
+	// usuarios 1
+	// administracion 43, 44 y 45	
 	var id_usuario = req.session.user.unica;
 	var id_menu = req.session.user.id_menu;
 	var accion = req.session.user.accion;
+	console.log(id_usuario)
+	console.log(id_menu)
 
-	mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
-		if (user[0].es_supervisor){
-			next();
-		}else{
-			mAccesos.verificarAcceso(id_usuario, id_menu, accion, function (acceso){
-				console.log(acceso)
-				if (accion == "c")
-					var acceso = acceso[0].c;
+	if (id_menu != 1 && id_menu != 43 && id_menu != 44 && id_menu != 45 ){
+		mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
+			if (user[0].tiene_permiso){
+				next();
+			}else{
+				mAccesos.verificarAcceso(id_usuario, id_menu, accion, function (acceso){
+					console.log(acceso)
+					if (accion == "c")
+						var acceso = acceso[0].c;
 
-				if (accion == "a")
-					var acceso = acceso[0].a;
+					if (accion == "a")
+						var acceso = acceso[0].a;
 
-				if (accion == "m")
-					var acceso = acceso[0].m;
+					if (accion == "m")
+						var acceso = acceso[0].m;
 
-				if (accion == "b")
-					var acceso = acceso[0].b;
+					if (accion == "b")
+						var acceso = acceso[0].b;
 
-				var acciontxt = "";
-				if (acceso == 1){
-					next();
-				}else{
-					var nombre_usuario = req.session.user.usuario;
-					if (accion == 'a'){
-						acciontxt = "al Alta";
+					var acciontxt = "";
+					if (acceso == 1){
+						next();
 					}else{
-						if (accion == 'b'){
-							acciontxt = "a dar de Baja";
+						var nombre_usuario = req.session.user.usuario;
+						if (accion == 'a'){
+							acciontxt = "al Alta";
 						}else{
-							if (accion == 'm'){
-								acciontxt = "a Modificar";
+							if (accion == 'b'){
+								acciontxt = "a dar de Baja";
 							}else{
-								if (accion == 'c'){
-									acciontxt = "a Consultar";
+								if (accion == 'm'){
+									acciontxt = "a Modificar";
 								}else{
-									console.log("asd");
+									if (accion == 'c'){
+										acciontxt = "a Consultar";
+									}else{
+										console.log("asd");
+									}
 								}
 							}
 						}
-					}
-					mAyuda.getAyuda(id_menu, function (ayuda){
-						res.render("error", {
-							error: nombre_usuario+": No tiene acceso "+acciontxt+" en el menú id "+id_menu+" llamado '"+ayuda[0].titulo+"'"
+						mAyuda.getAyuda(id_menu, function (ayuda){
+							res.render("error", {
+								error: nombre_usuario+": No tiene acceso "+acciontxt+" en el menú id "+id_menu+" llamado '"+ayuda[0].titulo+"'"
+							});
 						});
-					});
-				}
-			});
+					}
+				});
+			}
+		});
+	}else{
+		//hacer que verifique que segun para cada menu, tiene la palabra en los niveles de usuario
+		// para modulo usuario tiene que tener "claves"
+		// para los de administracion tiene que tener la palabra "admin"
+		// usuarios 1
+		// administracion 43, 44 y 45	
+		switch (id_menu){
+		    case '1':
+		    	// usuarios
+		    	mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
+					if (user[0].tiene_permiso){
+						next();
+					}else{
+				        mAccesos.VerificarNivelClaves(id_usuario, function (user){
+							if (user[0].tiene_permiso){
+								next();
+							}else{
+								mAyuda.getAyuda(id_menu, function (ayuda){
+									var nombre_usuario = req.session.user.usuario;
+									res.render("error", {
+										error: nombre_usuario+": No tiene acceso al modulo de Usuarios."
+									});
+								});
+							}
+						});
+					}
+				});
+		        break;
+		    case '43':
+		    case '44':
+		    case '45':
+			    mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
+					if (user[0].tiene_permiso){
+						next();
+					}else{
+				        mAccesos.VerificarNivelAdministracion(id_usuario, function (user){
+							if (user[0].tiene_permiso){
+								next();
+							}else{
+								mAyuda.getAyuda(id_menu, function (ayuda){
+									var nombre_usuario = req.session.user.usuario;
+									res.render("error", {
+										error: nombre_usuario+": No tiene acceso al modulo de Administracion."
+									});
+								});
+							}
+						});
+				    }
+				});
+		        break;
+		    default:
+		        res.render("error", {
+					error: "Error inesperado por favor reportelo para que llegue a los programadores."
+				});
 		}
-	});	
+	}
 }
 
 module.exports = function(app) {
