@@ -21,7 +21,10 @@ module.exports = {
 	getFichas_x_Filtro: getFichas_x_Filtro,
 	getModificar: getModificar,
 	getDel: getDel,
-	postModificar: postModificar
+	postModificar: postModificar,
+	getFicha_Modificar: getFicha_Modificar,
+	postFicha_Modificar: postFicha_Modificar,
+	getFicha_Del: getFicha_Del
 }
 
 function changeDate(date){
@@ -166,7 +169,6 @@ function postConjuntoFicha_Alta(req, res){
 	var params = req.body;
 	console.log(params)
 	var codigo = params.codigo;
-	// var denominacion = params.denominacion;
 	var serie = params.serie;
 	var fecha_movimiento = params.fecha_movimiento;
 	fecha_movimiento = changeDate(fecha_movimiento);
@@ -182,9 +184,6 @@ function postConjuntoFicha_Alta(req, res){
 	var ubicacion_neumatico = params.ubicacion_neumatico;
 	var responsable_reparacion = params.responsable_reparacion;
 	var responsable_rotura = params.responsable_rotura;
-	// var kms = params.kms;
-	// if (kms == '')
-	// kms = 0;
 	var tipo_cubiertas = params.tipo_cubiertas;
 	var mm = params.mm;
 	if (mm == '')
@@ -314,9 +313,7 @@ function postModificar(req, res){
 	fecha_compra = changeDate(fecha_compra);
 
 	mConjunto.updateDefinicion(id, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, es_neumatico, function (){
-		res.render('conjunto_alta', {
-			pagename: 'Alta de Conjunto'
-		});
+		res.redirect("conjunto_buscarfichaxlistado");
 	});
 }
 
@@ -324,21 +321,117 @@ function postModificar(req, res){
 function getDel(req, res){
 	var params = req.params;
 	var id = params.id;
-	// mConjunto.getById(id, function (rubro){
-	//   	rubro = rubro[0];
-	//   	mRepuestos.getRubroEnRepById(id, function (rubroEnRep){
-	  		console.log("rubroEnRep.length")
-	//   		if (rubroEnRep.length == 0){
-	//   			mBorro.add(req.session.user.usuario,"Rubro", "Borra. Nombre Rubro: "+ rubro.nombre + ", id: " + id ,function(){
-	// 		  		mConjunto.del(id, function(){
-	// 		    		res.redirect('/rubroslista'); 
-	// 		  		});
-	// 			});
-	//   		}else{
-	//   			res.render('error', {
-	//       			error: "No se puede eliminar este Rubro. Posee registros en la base de datos 'Repuestos'."
-	//       		});
-	//   		}
-	//   	});
-	// }); 
+
+	// console.log("rubroEnRep.length")
+	// traer la definicion, para sacar codigo y serie,
+	// que se fije en conjunto_fichas si tiene 'movimientos',
+	// si tiene, alerta que no se puede borrar porque tiene movimientos y que se dirija al listado de movimientos y elimine todos
+	// si no tiene, borra.
+
+	mConjunto.getById(id, function (conjunto){
+		conjunto = conjunto[0];
+		mConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie(conjunto.codigo, conjunto.serie, function (conjunto_ficha){
+			// console.log(conjunto_ficha.length)
+			// console.log("conjunto_ficha.length")
+			if (conjunto_ficha.length > 0){
+
+				res.render("error", {
+					error: "El Conjunto no puede ser eliminado porque posee movimientos. Elimine todos los movimientos y vuelva a intentarlo."
+				});
+			}else{
+				mConjunto.del(id, function (){
+					res.redirect("conjunto_buscarfichaxlistado")
+				});
+			}
+		});
+	});
+}
+
+function getFicha_Modificar(req, res){
+	var params = req.params;
+	var id = params.id;
+
+	mConjunto.getBuscar_ConjuntoFicha_ById(id, function (ficha){
+		var codigo = ficha[0].codigo;
+		var serie = ficha[0].serie;
+		mConjunto.getBuscar_x_CodigoySerie(codigo, serie, function (conjunto_definicion){
+			mRepuestos.getByCodigo(codigo, function (rep){
+				mVehiculos.getAll(function (vehiculos){
+					mUbicacionesNeumaticos.getAll(function (ubicaciones_neumaticos){
+						mTipoCubierta.getAll(function (tipo_cubiertas){
+							mUbicaciones.getAll(function (ubicaciones){
+								res.render("conjunto_ficha_modificar", {
+									ficha: ficha[0],
+									es_neumatico: conjunto_definicion[0].es_neumatico,
+									vehiculos: vehiculos,
+									ubicaciones_neumaticos: ubicaciones_neumaticos,
+									tipo_cubiertas: tipo_cubiertas,
+									ubicaciones: ubicaciones
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+}
+
+function postFicha_Modificar(req, res){
+	var params = req.body;
+	var id = params.id;
+	var codigo = params.codigo;
+	var serie = params.serie;
+	var fecha_movimiento = params.fecha_movimiento;
+	fecha_movimiento = changeDate(fecha_movimiento);
+	var coche_sacado = params.coche_sacado;
+	var coche_colocado = params.coche_colocado;
+	var ubicacion_actual = params.ubicacion_actual;
+	var destino = params.destino;
+	var detalle = params.detalle;
+	var costo = params.costo;
+	if (costo == '')
+		costo = 0;
+	var imputado = params.imputado;
+	var ubicacion_neumatico = params.ubicacion_neumatico;
+	var responsable_reparacion = params.responsable_reparacion;
+	var responsable_rotura = params.responsable_rotura;
+	var tipo_cubiertas = params.tipo_cubiertas;
+	var mm = params.mm;
+	if (mm == '')
+		mm = 0;
+	var suma_estadistica = params.suma_estadistica;
+	var es_neumatico = params.es_neumatico;
+
+	switch(ubicacion_actual) {
+	    case 'A':
+	    	coche_colocado = 0;
+	    	break;
+	    case 'C':
+	    	break;
+	    case 'P':	    	
+	    	coche_colocado = 0;
+	    	break;
+	    case 'T':	    	
+	    	coche_colocado = 0;
+	    	break;
+	    case 'B':
+	    	coche_colocado = 0;
+	    	break;
+	    default:
+	}
+
+	if (es_neumatico == 0){
+		tipo_cubiertas = 0;
+		mm == 0;
+	}
+
+	mConjunto.updateMovimiento(id, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, tipo_cubiertas, mm, suma_estadistica, function (){
+		res.redirect("conjunto_verficha/"+codigo+"/"+serie);
+	});
+
+}
+
+function getFicha_Del(req, res){
+
 }

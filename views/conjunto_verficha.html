@@ -60,6 +60,7 @@
 	<div id="mainHolder" style="overflow: scroll; max-height: 400px;">
 		<table class="table">		
 			<tr>
+				<th colspan="2">Opciones</th>
 				<th>Fecha</th>
 				<th>Sacado Coche</th>
 				<th>Coloc. Coche</th>
@@ -77,6 +78,20 @@
 			</tr>		
 			{% for cf in conjunto_fichas %}
 				<tr>
+					<td>
+						<a href="/conjunto_ficha_modificar/{{ cf.id }}" data-idmenu="17" data-accion="m">
+							<button class="btn btn-warning modificar" id="modificar" title="Modificar">
+								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							</button>
+						</a>
+					</td>
+					<td>
+						<a href="/conjunto_ficha_borrar/{{ cf.id }}" data-idmenu="17" data-accion="b">
+  							<button class="btn btn-danger borrar" id="borrar" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar">
+	  							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+	  						</button>
+	  					</a>
+					</td>
 					<td>{{ cf.fecha_movimiento_f }}</td>
 					<td>{% if cf.numero_coche_sacado_fk != 0 %}{{ cf.numero_coche_sacado_fk }}{% else %}{% endif %}</td>
 					<td>{% if cf.numero_coche_colocado_fk != 0 %}{{ cf.numero_coche_colocado_fk }}{% else %}{% endif %}</td>

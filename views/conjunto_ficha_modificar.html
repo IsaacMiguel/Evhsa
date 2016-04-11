@@ -1,0 +1,245 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/conjunto_ficha_modificar.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formmodificar" action="/conjunto_ficha_modificar">
+		<input hidden id="id" name="id" value="{{ ficha.id }}">
+		<table align="center" class="table table-striped">
+			<input hidden id="es_neumatico" name="es_neumatico" value="{{ es_neumatico }}">
+			<tr>
+				<td>Codigo del Conjunto:</td>
+				<td>
+					<table>
+						<tr>
+							<td><input type="text" id="codigo" name="codigo" readonly class="form-control codigo" style="width: 150px; text-align: center;" value="{{ ficha.codigo }}"></td>
+							<td>{% if es_neumatico == 1 %}&nbsp;&nbsp;&nbsp;(ES NEUMATICO){% else %}{% endif %}</td>
+						</tr>
+					</table>					
+				</td>
+			</tr>
+			<tr>
+				<td>Denominacion:</td>
+				<td><input type="text" id="denominacion" name="denominacion" readonly class="form-control" value="{{ ficha.nombre }}"></td>
+			</tr>
+			<tr>
+				<td>Codigo Asignado por EVHSA:</td>
+				<td>
+					<input type="text" id="serie" name="serie" readonly style="" class="form-control" value="{{ ficha.serie }}">
+				</td>
+			</tr>
+			<tr>
+				<td>Fecha de Movimiento:</td>
+				<td><input type="text" style="width: 150px !important;" class="datepicker form-control" id="fecha_movimiento" name="fecha_movimiento" readonly value="{{ ficha.fecha_movimiento_f }}"></td>
+			</tr>
+			<tr>
+				<td>Ubicacion Actual:</td>
+				<td>
+					<select class="form-control" id="ubicacion_actual" name="ubicacion_actual">
+						{% for u in ubicaciones %}
+							{% if u.codigo == ficha.codigo_ubicacion_actual_fk %}
+								<option selected value="{{ u.codigo }}">{{ u.descripcion }}</option>
+							{% else %}
+								<option value="{{ u.codigo }}">{{ u.descripcion }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Sacado de Coche::</td>
+				<td>
+					<select class="form-control" id="coche_sacado" name="coche_sacado">
+						{% if ficha.numero_coche_sacado_fk == 0 %}
+							<option selected value="0">No se usa</option>
+						{% else %}
+							<option value="0">No se usa</option>
+						{% endif %}
+						{% for v in vehiculos %}
+							{% if v.numero == ficha.numero_coche_sacado_fk %}
+								<option selected value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+							{% else %}
+								<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Colocado en Coche:</td>
+				<td>
+					<select class="form-control" id="coche_colocado" name="coche_colocado">
+						{% if ficha.numero_coche_colocado_fk == 0 %}
+							<option selected value="0">No se usa</option>
+						{% else %}
+							<option value="0">No se usa</option>
+						{% endif %}
+						{% for v in vehiculos %}
+							{% if v.numero == ficha.numero_coche_colocado_fk %}
+								<option selected value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+							{% else %}
+								<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<!-- HASTA ACA SON OBLIGATORIOS -->
+			<tr>
+				<td>Destino:</td>
+				<td><input type="text" id="destino" name="destino" class="form-control" value="{{ ficha.destino }}"><div class="aviso">Quedan <span id="charsLeftDestino"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Detalle:</td>
+				<td><input type="text" class="form-control" id="detalle" name="detalle" value="{{ ficha.memo }}"><div class="aviso">Quedan <span id="charsLeftDetalle"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Costo:</td>
+				<td><input type="text" id="costo" name="costo" class="form-control" value="{{ ficha.valor }}" onkeypress="return Validate8EntY2Dec(event,this)"></td>
+			</tr>
+			<tr>
+				<td>Imputado a Coche:</td>
+				<td>
+					<select class="form-control" id="imputado" name="imputado">
+						{% if ficha.imputa == 0 %}
+							<option selected value="0">No se usa</option>
+						{% else %}
+							<option value="0">No se usa</option>
+						{% endif %}
+						{% for v in vehiculos %}
+							{% if v.numero == ficha.imputa %}
+								<option selected value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+							{% else %}
+								<option value="{{ v.numero }}">[{{v.numero}}] {{v.dominio}} {{v.marca}} {{v.modelo}}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr id="tr_ubicacion_neumatico" style="display:none">
+				<td>Ubicacion Neumatico:</td>
+				<td>
+					<select class="form-control" id="ubicacion_neumatico" name="ubicacion_neumatico">
+						{% for u in ubicaciones_neumaticos %}
+							{% if u.codigo == ficha.codigo_ubicacion_neumatico_fk %}
+								<option selected value="{{ u.codigo }}">{{ u.descripcion }}</option>
+							{% else %}
+								<option value="{{ u.codigo }}">{{ u.descripcion }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Responsable de Reparacion:</td>
+				<td><input type="text" id="responsable_reparacion" name="responsable_reparacion" class="form-control" value="{{ ficha.responsable_reparacion }}"><div class="aviso">Quedan <span id="charsLeftResponsableReparacion"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Responsable de Rotura:</td>
+				<td><input type="text" id="responsable_rotura" name="responsable_rotura" class="form-control" value="{{ ficha.responsable_rotura }}"><div class="aviso">Quedan <span id="charsLeftResponsableRotura"></span> caraceteres.</div></td>
+			</tr>
+			<!-- <tr>
+				<td>Kms:</td>
+				<td><input type="text" id="kms" name="kms" class="form-control" onKeyPress="return soloNumeros(event)" maxlength="6"></td>
+			</tr> -->
+
+			{% if es_neumatico == 0 %}<tr style="display:none">{% else %}<tr>{% endif %}
+				<td>Estado de Cubiertas:</td>
+				<td>
+					<select class="form-control" id="tipo_cubiertas" name="tipo_cubiertas">
+						{% for t in tipo_cubiertas %}
+							{% if t.codigo == ficha.codigo_tipo_cubierta_fk %}
+								<option value="{{ t.codigo }}" selected>{{ t.descripcion }}</option>
+							{% else %}
+								<option value="{{ t.codigo }}">{{ t.descripcion }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			{% if es_neumatico == 0 %}<tr style="display:none">{% else %}<tr>{% endif %}
+				<td>MMs de Cubierta:</td>
+				<td><input type="text" id="mm" name="mm" class="form-control" onKeyPress="return soloNumeros(event)" maxlength="2" value="{{ ficha.mm }}"></td>
+			</tr>
+			<tr>
+				<td>Suma en Estadistica?:</td>
+				<td>
+					{% if ficha.est == 's' %}
+						<input type="radio" name="suma_estadistica" id="suma_estadistica" value="si" checked> Si
+	  					<input type="radio" name="suma_estadistica" id="suma_estadistica" value="no"> No<br>
+	  				{% else %}
+	  					<input type="radio" name="suma_estadistica" id="suma_estadistica" value="si"> Si
+	  					<input type="radio" name="suma_estadistica" id="suma_estadistica" value="no" checked> No<br>
+	  				{% endif %}
+  				</td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>
+				<td><input type="submit" value="Actualizar" class="btn btn-default"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<!-- <script src="/js/jquery.autotab.min.js"></script> -->
+<script type="text/javascript">
+	$('#detalle').limit('500','#charsLeftDetalle');
+	$('#responsable_reparacion').limit('20','#charsLeftResponsableReparacion');
+	$('#responsable_rotura').limit('20','#charsLeftResponsableRotura');
+	$("#destino").limit("27", "#charsLeftDestino");
+
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	$("#ubicacion_actual").on("change", function (){
+		var ubicacion = $("#ubicacion_actual").val();
+		// Anexo
+		// Coche
+		// Pañol
+		// Taller
+		// Baja
+		var es_neumatico = $("#es_neumatico").val();
+		switch(ubicacion) {
+		    case 'A':
+		    	// $("#coche_sacado").val(); style="display:none"
+		    	$("#coche_colocado").val(0);
+		    	$("#tr_ubicacion_neumatico").css("display", "none");
+		    	$("#tipo_cubiertas").val(0);
+		    	break;
+		    case 'C':
+		    	// $("#coche_sacado").val();
+		    	// $("#coche_colocado").val();
+		    	if (es_neumatico == 1)
+		    		$("#tr_ubicacion_neumatico").toggle();
+		    	break;
+		    case 'P':
+		    	// $("#coche_sacado").val();
+		    	$("#coche_colocado").val(0);
+		    	$("#tr_ubicacion_neumatico").css("display", "none");
+		    	$("#tipo_cubiertas").val(0);
+		    	break;
+		    case 'T':
+		    	// $("#coche_sacado").val();
+		    	$("#coche_colocado").val(0);
+		    	$("#tr_ubicacion_neumatico").css("display", "none");
+		    	$("#tipo_cubiertas").val(0);
+		    	break;
+		    case 'B':
+		    	// $("#coche_sacado").val(0);
+		    	$("#coche_colocado").val(0);
+		    	$("#tr_ubicacion_neumatico").css("display", "none");
+		    	$("#tipo_cubiertas").val(0);
+		    	break;
+		    default:
+		}
+	});	
+</script>
+{% endblock %}

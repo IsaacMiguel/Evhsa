@@ -14,8 +14,9 @@ module.exports = {
 	getAllBajas: getAllBajas,
 	getAll_xCodigo: getAll_xCodigo,
 	getAllActivas_xCodigo: getAllActivas_xCodigo,
-	getAllBajas_xCodigo: getAllBajas_xCodigo
-
+	getAllBajas_xCodigo: getAllBajas_xCodigo,
+	getBuscar_ConjuntoFicha_ById: getBuscar_ConjuntoFicha_ById,
+	updateMovimiento: updateMovimiento
 }
 
 function getAll(cb){
@@ -39,8 +40,8 @@ function insertDefinicion(codigo, serie, fecha_compra, proveedor, valor, ubicaci
 }
 
 function updateDefinicion(id, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, es_neumatico, cb){
-	conn("UPDATE `evhsa`.`conjunto_definicion` SET	fecha_compra = "+fecha_compra+", proveedor = , "+proveedor+", valor = "+valor+", "+
-		"identificacion = "+ubicacion+", experimental = "+experimental+", es_neumatico = "+es_neumatico+", chasis = "+chasis+
+	conn("UPDATE `evhsa`.`conjunto_definicion` SET fecha_compra = '"+fecha_compra+"', proveedor = '"+proveedor+"', valor = "+valor+", "+
+		"identificacion = '"+ubicacion+"', experimental = '"+experimental+"', es_neumatico = "+es_neumatico+", chasis = '"+chasis+"' "+
 		" WHERE id = "+id, cb);
 }
 
@@ -122,4 +123,26 @@ function getAllBajas_xCodigo(codigo, cb){
 		"FROM conjunto_definicion "+
 		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
 		"WHERE fecha_baja != '' AND conjunto_definicion.codigo like '%"+codigo+"%'", cb);
+}
+
+function getBuscar_ConjuntoFicha_ById(id, cb){
+	conn("select conjunto_ficha.*, ubicaciones.descripcion as ubicacion_actual, "+
+		"repuestos.nombre as nombre, "+
+		"DATE_FORMAT(conjunto_ficha.fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, "+
+		"ubicaciones_neumaticos.descripcion as ubicacionneumaticotxt, "+
+		"tipo_cubierta.descripcion as tipocubiertatxt "+
+		"FROM conjunto_ficha "+
+		"LEFT JOIN ubicaciones on ubicaciones.codigo = conjunto_ficha.codigo_ubicacion_actual_fk "+
+		"LEFT JOIN ubicaciones_neumaticos ON ubicaciones_neumaticos.codigo = conjunto_ficha.codigo_ubicacion_neumatico_fk "+
+		"LEFT JOIN tipo_cubierta ON tipo_cubierta.codigo = conjunto_ficha.codigo_tipo_cubierta_fk "+
+		"LEFT JOIN repuestos ON repuestos.codigo = conjunto_ficha.codigo "+
+		"where conjunto_ficha.id = "+id, cb);
+}
+
+function updateMovimiento(id, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, tipo_cubiertas, mm, suma_estadistica, cb){
+	conn("UPDATE evhsa.conjunto_ficha SET  fecha_movimiento = '"+fecha_movimiento+"', numero_coche_sacado_fk = "+coche_sacado+
+		", destino = '"+destino+"', numero_coche_colocado_fk = "+coche_colocado+", codigo_ubicacion_actual_fk = '"+ubicacion_actual+"', "+
+		"valor = "+costo+", memo = '"+detalle+"', codigo_ubicacion_neumatico_fk = '"+ubicacion_neumatico+"', imputa = "+imputado+", "+
+		"responsable_reparacion = '"+responsable_reparacion+"', responsable_rotura = '"+responsable_rotura+"', km = 0, "+
+		"codigo_tipo_cubierta_fk = '"+tipo_cubiertas+"', est = '"+suma_estadistica+"', mm = "+mm+" WHERE id = "+id, cb)
 }

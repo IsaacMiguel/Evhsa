@@ -120,13 +120,6 @@
 	$('#codigo_num_grupo').autotab({ maxlength: 3, target: '#codigo_num_repuesto'});
 	$('#codigo_num_repuesto').autotab({ maxlength: 3, target: '#btnFiltrar'});
 
-	// function parseSwig(input, data) {
-	// 	var output = swig.render(input, { locals: { 
-	// 		data: data
-	// 	}});
-	// 	return output;
-	// }
-
 	swig.setDefaults({
     	varControls: ['[[', ']]'],
     	tagControls: ['[%', '%]']
@@ -137,14 +130,11 @@
 		var codigo_letra = $("#codigo_letra").val();
 		var codigo_num_grupo = $("#codigo_num_grupo").val();
 		var codigo_num_repuesto = $("#codigo_num_repuesto").val();
-		var codigo = "nocode"//codigo_letra + codigo_num_grupo + "." + codigo_num_repuesto;
-		var valido = true;
-
-		// IMPLEMENTAR MASK PARA EL CODIGO O PREGUNTAR A LEA COMO INGRESAN AHORA
+		var codigo = "nocode"
 
 		// si el primero o el segundo estan vacios, pero el 3ro tiene algo, buscar NADA y vaciar el 3ro, con .val("")
 		// agregar el left a la busqueda = where left(codigo, length) like '%ads%'
-		console.log(codigo)
+		// console.log(codigo)
 		if (codigo_letra.length == 1){
 			if (codigo_num_grupo.length == 3){
 				if (codigo_num_repuesto.length == 3){
@@ -170,31 +160,25 @@
 
 		codigo = codigo.toUpperCase();
 
-		// if (codigo == '.')
-		// 	codigo = "nocode";
+		$.getJSON('/getFichasFiltro/'+opcion+'/'+codigo, function (data){
+			// console.log(data);
+			if (data.length != 0){
+				$('#tbodylisto > tr').remove();
+				var template = $('#tablafichas').html();
+				// Mustache.tags =['[[',']]'];
+				// var html = Mustache.to_html(template, data);
+				//console.log(html);
 
-		console.log(codigo)
-		if (valido){
-			$.getJSON('/getFichasFiltro/'+opcion+'/'+codigo, function (data){
-				// console.log(data);
-				if (data.length != 0){
-					$('#tbodylisto > tr').remove();
-					var template = $('#tablafichas').html();
-					// Mustache.tags =['[[',']]'];
-					// var html = Mustache.to_html(template, data);
-					//console.log(html);
+				var output = parseSwig(template, data);
 
-					var output = parseSwig(template, data);
-
-					$('#tbodylisto').html(output);
-				}else{
-					//hacer que aca muestre error de que no se encontro nada en la busqueda
-					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
-					$('#tbodylisto > tr').remove();					
-					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-				}
-			});
-		}		
+				$('#tbodylisto').html(output);
+			}else{
+				//hacer que aca muestre error de que no se encontro nada en la busqueda
+				console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+				$('#tbodylisto > tr').remove();					
+				$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+			}
+		});	
 	});
 </script>
 {% endblock %}

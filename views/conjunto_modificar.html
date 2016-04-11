@@ -14,7 +14,7 @@
 			<tr>
 				<td>Codigo del Conjunto:</td>
 				<td>
-					<input type="text" id="codigo" name="codigo" readonly class="form-control codigo" style="width: 170px; text-align: center;  text-transform:uppercase" value="{{ conjunto.codigo }}">
+					<input type="text" id="codigo" name="codigo" readonly class="form-control" style="width: 170px; text-align: center;  text-transform:uppercase" value="{{ conjunto.codigo }}">
 				</td>
 			</tr>
 			<tr>
@@ -94,130 +94,7 @@
 	$('#ubicacion').limit('40','#charsLeftUbicacion');
 
 	$(".datepicker").datepicker({
-		dateFormat: 'dd/mm/yy',
-		onSelect: function() {
-		    $("#proveedor").focus();
-		  }
-	});
-
-	var myDate = new Date(); 
-	myDate.setFullYear(myDate.getFullYear());
-	year = myDate.getFullYear();
-	month = myDate.getMonth()+1;
-	day = myDate.getDate();
-	if (month<10)
-		month = "0"+month;
-	if (day<10)
-		day = "0"+day;
-	myDate =  day +"/"+month+"/"+year;
-	$("#fecha_compra").val(myDate)
-
-	$(".codigo").focusout(function (){
-		var codigo1 = $("#codigo1").val();
-		var codigo2 = $("#codigo2").val();
-		var codigo = codigo1 + "."+ codigo2;
-		codigo = codigo.toUpperCase();
-
-		if (codigo1.length > 0){
-			if (codigo1.length == 4 && codigo2.length == 3){
-				$.getJSON("/conjunto_buscar_repuesto_por_codigo/"+codigo, function (repuesto){
-			   		console.log(repuesto);
-			   		$("#denominacion").val(repuesto.nombre)
-			  	});
-			}else{
-				console.log("codigo1 length menor a 4 y/o codigo2 length menor a 3");
-			}
-		}else{
-			console.log("codigo1 length menor o igual a 0");
-		}
-	});
-	
-	$("#serie").focusout(function (){
-		var codigo1 = $("#codigo1").val();
-		var codigo2 = $("#codigo2").val();
-		var codigo = codigo1 + "."+ codigo2;
-		var serie = $("#serie").val();
-		codigo = codigo.toUpperCase();
-
-		if (codigo1.length > 0){
-			if (codigo1.length == 4 && codigo2.length == 3 && serie.length > 0){
-				$.getJSON("/conjunto_verificar_codigoyserie/"+codigo+"/"+serie, function (repuesto){
-			   		console.log(repuesto);
-			   		if (repuesto[0] != null){
-			   			$("#serie").focus();
-			   			console.log("repetido!")
-			   			$("#ok").hide();
-			   			$("#error").show();
-			   		}else{
-			   			console.log("no repetido!")
-			   			$("#error").hide();
-			   			$("#ok").show();
-			   		}
-			  	});
-			}else{
-				console.log("codigo1 length menor a 4 y/o codigo2 length menor a 3");
-			}
-		}else{
-			console.log("codigo1 length menor o igual a 0");
-		}
-	});
-
-	$("#serie").on("input", function (){
-		// console.log("uno cualquier cosa que se yo")
-		var serie = $("#serie").val();
-		if (serie.length != 20){
-			$("#ok").hide();
-			$("#error").hide();
-		}
-	});
-
-	$(".codigo").on("input", function (){
-		console.log("uno cualquier cosa que se yo")
-		var codigo1 = $("#codigo1").val();
-		var codigo2 = $("#codigo2").val();
-		if (codigo1.length != 4 || codigo2.length != 3){
-			$("#denominacion").val("");
-		}
-	});
-
-	$("#serie").on("input", function (){
-		var serie = $("#serie").val();
-		if (serie.length == 20){
-			$("#fecha_compra").focus();
-		}
-	});
-
-	$("#formalta").submit(function (){
-		var codigo1 = $("#codigo1").val();
-		var codigo2 = $("#codigo2").val();
-		var codigo = codigo1 + "."+ codigo2;
-		var serie = $("#serie").val();
-		codigo = codigo.toUpperCase();
-
-		if (codigo1.length > 0){
-			if (codigo1.length == 4 && codigo2.length == 3 && serie.length > 0){
-				$.getJSON("/conjunto_verificar_codigoyserie/"+codigo+"/"+serie, function (repuesto){
-			   		console.log(repuesto);
-			   		if (repuesto[0] != null){
-			   			event.preventDefault();
-			   			$("#serie").focus();
-			   			console.log("repetido!")
-			   			$("#ok").hide();
-			   			$("#error").show();
-			   		}else{
-			   			console.log("no repetido!")
-			   			$("#error").hide();
-			   			$("#ok").show();
-			   		}
-			  	});
-			}else{
-				console.log("codigo1 length menor a 4 y/o codigo2 length menor a 3");
-				event.preventDefault();
-			}
-		}else{
-			console.log("codigo1 length menor o igual a 0");
-			event.preventDefault();
-		}
+		dateFormat: 'dd/mm/yy'
 	});
 </script>
 {% endblock %}

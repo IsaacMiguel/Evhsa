@@ -73,8 +73,8 @@ function acceso (req, res, next){
 	var id_usuario = req.session.user.unica;
 	var id_menu = req.session.user.id_menu;
 	var accion = req.session.user.accion;
-	console.log(id_usuario)
-	console.log(id_menu)
+	// console.log(id_usuario)
+	// console.log(id_menu)
 
 	if (id_menu != 1 && id_menu != 43 && id_menu != 44 && id_menu != 45 ){
 		mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
@@ -328,6 +328,9 @@ module.exports = function(app) {
 	app.get("/conjunto_modificar/:id", auth, acceso, cConjunto.getModificar);
 	app.post("/conjunto_modificar", auth, cConjunto.postModificar);
 	app.get("/conjunto_borrar/:id", auth, acceso, cConjunto.getDel);
+	app.get("/conjunto_ficha_modificar/:id", auth, acceso, cConjunto.getFicha_Modificar);
+	app.post("/conjunto_ficha_modificar", auth, cConjunto.postFicha_Modificar);
+	app.get("/conjunto_ficha_borrar/:id", auth, acceso, cConjunto.getFicha_Del);
 	// app.get("/conjunto_formacioncoche", auth, acceso, cConjunto.getFormacionCoche);
 	// app.get("/conjunto_neumaticos_ubicacion", auth, acceso, cConjunto.getNeumaticos_Ubicacion);
 	// app.get("/conjunto_neumaticos_resumen", auth, acceso, cConjunto.getNeumaticos_Resumen);
