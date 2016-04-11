@@ -1,0 +1,67 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/equipos.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">		
+	<table align="center" class="table table-striped">
+		<tr>
+			<td>Numero:</td>
+			<td>{{ equipo.numero }}</td>
+		</tr>
+		<tr>
+			<td>Denominación:</td>
+			<td>{{ equipo.denominacion }}</td>
+		</tr>
+		<tr>
+			<td>N° Coche:</td>
+			<td>{{ equipo.numero_coche_fk }}</td>
+		</tr>
+		<tr>
+			<td>Fecha Colocación:</td>
+			<td>{{ fcolocacion }}</td>
+		</tr>
+		<tr>
+			<td>total:</td>
+			<td>{{ equipo.total }}</td>
+		</tr>
+		<tr>
+			<td>responsable:</td>
+			<td>{{ equipo.responsable }}</td>
+		</tr>
+		<tr>
+			<td>tipo:</td>
+			<td>{{ equipo.tipo }}</td>
+		</tr>
+		<tr>
+			<td>Fecha Sacado:</td>
+			<td>{{ fsacado }}</td>
+		</tr>
+		<tr>
+			<td>Km:</td>
+			<td>{{ equipo.km }}</td>
+		</tr>
+		<tr>
+			<td>Observaciones:</td>
+			<td>{{ equipo.observaciones }}</td>
+		</tr>
+		<tr>
+			<td>Resultado:</td>
+			<td>{{ equipo.resultado }}</td>
+		</tr>
+		<tr>
+			<td><input type="button" value="Atras" onclick="history.back()"></td>
+			<td></td>
+		</tr>
+	</table>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+</script>
+
+{% endblock %}
