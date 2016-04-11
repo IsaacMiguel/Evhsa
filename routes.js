@@ -340,6 +340,7 @@ module.exports = function(app) {
 	app.get("/equipos_modificar/:id", auth, acceso, cEquipos.getModificar);
 	app.post("/equipos_modificar", auth, cEquipos.postModificar);
 	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
+	app.get("/equipos_filtrar/:opcion/:buscar", auth, acceso, cEquipos.getEquiposFiltro);
 
 
 
