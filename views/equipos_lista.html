@@ -13,7 +13,7 @@
 		<table>
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-				<td><a href="#"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><a href="/equipos_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 			</tr>	
 		</table>
@@ -58,16 +58,16 @@
 							<td>{{ e.numero }}</td>
 							<td>{{ e.denominacion }}</td>
 							<td>{{ e.numero_coche_fk }}</td>
-							<td>{{ e.fecha_colocacion }}</td>
+							<td>{{ e.f_colocacion }}</td>
 							<td>{{ e.total }}</td>
 							<td>{{ e.responsable }}</td>
 							<td>{{ e.tipo }}</td>
-							<td>{{ e.fecha_sacado }}</td>
+							<td>{{ e.f_sacado }}</td>
 							<td>{{ e.km }}</td>
 
-							<td><a href="/proveedoresver/{{ e.id }}"><button class="btn btn-default">Ver</button></a></td>
-							<td><a href="/proveedoresmodificar/{{ e.id }}"><button class="btn btn-warning menu" data-idmenu="37" data-accion="m">Modificar</button></a></td>
-							<td><a href='/proveedoresborrar/{{ e.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+							<td><a href="/equipos_ver/{{ e.id }}"><button class="btn btn-default">Ver</button></a></td>
+							<td><a href="/equipos_modificar/{{ e.id }}"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
+							<td><a href='/equipos_eliminar/{{ e.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
 						</tr>
 						{% endfor %}
 		  		</tbody>

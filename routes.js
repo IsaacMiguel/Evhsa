@@ -261,6 +261,13 @@ module.exports = function(app) {
 
 	//EQUIPOS
 	app.get("/equipos_lista", auth, acceso, cEquipos.getLista);
+	app.get("/equipos_alta", auth, acceso, cEquipos.getAlta);
+	app.post("/equipos_alta", auth, cEquipos.postAlta);
+	app.get("/equipos_ver/:id", auth, acceso, cEquipos.getVer);
+	app.get("/equipos_modificar/:id", auth, acceso, cEquipos.getModificar);
+	app.post("/equipos_modificar", auth, cEquipos.postModificar);
+	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
+
 
 
 	//pruebasql
