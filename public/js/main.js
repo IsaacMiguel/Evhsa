@@ -178,8 +178,7 @@ function parseSwig(input, data) {
     return output;
 }
 
-// exports.changeDate2 = changeDate2;
-
-// module.exports = {
-//     changeDate2: changeDate2
-// }
+function maxLengthCheck(object) {
+    if (object.value.length > object.maxLength)
+      object.value = object.value.slice(0, object.maxLength)
+}
