@@ -1,0 +1,200 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/conjunto_buscarfichaxlista.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/conjuntos_alta"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 100%;">
+					<table class="pull-right">
+						<tr>
+							<td>Filtrar&nbsp;</td>
+							<td>
+								<select class="form-control" id="filtro" name="filtro">
+									<option value="1">Todas las fichas</option>
+									<option value="2">Activas</option>
+									<option value="3">Bajas</option>
+								</select>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>&nbsp;Filtrar por código:</td>
+										<td><input type="text" class="form-control" name="codigo_letra" id="codigo_letra" onkeydown="return lettersOnly(event)"></td>
+										<td><input type="text" class="form-control" name="codigo_num_grupo" id="codigo_num_grupo" onkeydown="return isNumberKey(event)"></td>
+										<td><b>.</b></td>
+										<td><input type="text" class="form-control" name="codigo_num_repuesto" id="codigo_num_repuesto" onkeydown="return isNumberKey(event)"></td>
+										<td>&nbsp;</td>
+									</tr>
+								</table>
+							</td>
+							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
+						</tr>
+					</table>					
+				</td>
+			</tr>	
+		</table>
+	</div>
+	<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+		      </div>
+		      <div class="modal-body">
+		        {{ ayuda.texto }}
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	<!-- Fin Modal -->
+	<!-- código pañol – código evhsa – denominación – fecha comprado - valor -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr>
+			  				<th colspan="2">Opciones</th>
+							<th>Codigo Pañol</th>
+							<th>Codigo Evhsa</th>
+							<th>Denominacion</th>
+							<th>Comprado</th>
+							<th>Valor</th>
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+
+			  		</tbody>
+			  		<script type="text/template" id="tablafichas" />
+			  			[% for f in data %]
+			  				<tr>
+			  					<td style="padding-right: 4px;">
+									<a href="/conjunto_modificar/[[ f.id ]]" data-idmenu="17" data-accion="m">
+										<button class="btn btn-warning modificar" id="modificar" title="Modificar">
+											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+										</button>
+									</a>
+								</td>
+								<td style="padding-right: 4px; padding-left: 0px;">
+			  						<a href="/conjunto_borrar/[[ f.id ]]" data-idmenu="17" data-accion="b">
+			  							<button class="btn btn-danger borrar" id="borrar" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar">
+				  							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+				  						</button>
+				  					</a>
+			  					</td>
+			  					<td>[[ f.codigo ]]</td>
+			  					<td>[[ f.serie ]]</td>
+			  					<td>[[ f.denominacion ]]</td>
+			  					<td>[[ f.fecha_compra_f ]]</td>
+			  					<td>$ [[ f.valor ]]</td>
+			  				</tr>
+			  			[% endfor %]
+			  		</script>
+				</table>	
+			</div>			
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/swig.min.js"></script>
+<script type="text/javascript">
+	$('#codigo_letra').autotab({ maxlength: 1, target: '#codigo_num_grupo'});
+	$('#codigo_num_grupo').autotab({ maxlength: 3, target: '#codigo_num_repuesto'});
+	$('#codigo_num_repuesto').autotab({ maxlength: 3, target: '#btnFiltrar'});
+
+	// function parseSwig(input, data) {
+	// 	var output = swig.render(input, { locals: { 
+	// 		data: data
+	// 	}});
+	// 	return output;
+	// }
+
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
+
+	$("#btnFiltrar").on("click", function (){
+		var opcion = $("#filtro").val();
+		var codigo_letra = $("#codigo_letra").val();
+		var codigo_num_grupo = $("#codigo_num_grupo").val();
+		var codigo_num_repuesto = $("#codigo_num_repuesto").val();
+		var codigo = "nocode"//codigo_letra + codigo_num_grupo + "." + codigo_num_repuesto;
+		var valido = true;
+
+		// IMPLEMENTAR MASK PARA EL CODIGO O PREGUNTAR A LEA COMO INGRESAN AHORA
+
+		// si el primero o el segundo estan vacios, pero el 3ro tiene algo, buscar NADA y vaciar el 3ro, con .val("")
+		// agregar el left a la busqueda = where left(codigo, length) like '%ads%'
+		console.log(codigo)
+		if (codigo_letra.length == 1){
+			if (codigo_num_grupo.length == 3){
+				if (codigo_num_repuesto.length == 3){
+					// todo
+					codigo = codigo_letra + codigo_num_grupo + "." + codigo_num_repuesto;
+				}else {					
+					// solo primeros dos y vaciar 3ro
+					codigo = codigo_letra + codigo_num_grupo + "."
+					$("#codigo_num_repuesto").val("");
+				}
+			}else{
+				// solo letra y vaciar 2do y 3ro
+				codigo = codigo_letra ;
+				$("#codigo_num_grupo").val("");
+				$("#codigo_num_repuesto").val("");				
+			}
+		}else{
+			//no busca nada, limpiar 2do y 3ro
+			$("#codigo_num_grupo").val("");
+			$("#codigo_num_repuesto").val("");
+			codigo = "nocode";
+		}
+
+		codigo = codigo.toUpperCase();
+
+		// if (codigo == '.')
+		// 	codigo = "nocode";
+
+		console.log(codigo)
+		if (valido){
+			$.getJSON('/getFichasFiltro/'+opcion+'/'+codigo, function (data){
+				console.log(data);
+				if (data.length != 0){
+					$('#tbodylisto > tr').remove();
+					var template = $('#tablafichas').html();
+					// Mustache.tags =['[[',']]'];
+					// var html = Mustache.to_html(template, data);
+					//console.log(html);
+
+					var output = parseSwig(template, data);
+
+					$('#tbodylisto').html(output);
+				}else{
+					//hacer que aca muestre error de que no se encontro nada en la busqueda
+					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+					$('#tbodylisto > tr').remove();					
+					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+				}
+			});
+		}		
+	});
+</script>
+{% endblock %}

@@ -5,74 +5,71 @@
 {% endblock %}
 
 {% block content %}
-<link href="/css/conjunto_alta.css" rel="stylesheet">
+<link href="/css/conjunto_modificar.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
-	<form method="post" id="formalta" action="/conjuntos_alta">
+	<form method="post" id="formmodificar" action="/conjunto_modificar">
+		<input hidden id="id" name="id" value="{{ conjunto.id }}">
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Codigo del Conjunto:</td>
 				<td>
-					<table style="display: inline-block;">
-						<!-- PONER QUE SALTE DEL CODIGO1 AL CODIGO2 AL FINALIZAR 4 CARACTERES -->
-						<tr>
-							<td>
-								<input type="text" id="codigo1" name="codigo1" required class="form-control codigo" style="width: 70px; text-align: center;  text-transform:uppercase">
-							</td>
-							<td>.</td>
-							<td>
-								<input type="text" id="codigo2" name="codigo2" required class="form-control codigo" style="width: 70px; text-align: center;" onkeydown="return soloNumeros(event)">
-							</td>
-						</tr>
-					</table>
+					<input type="text" id="codigo" name="codigo" readonly class="form-control codigo" style="width: 170px; text-align: center;  text-transform:uppercase" value="{{ conjunto.codigo }}">
 				</td>
 			</tr>
 			<tr>
 				<td>Denominacion:</td>
-				<td><input type="text" id="denominacion" name="denominacion" readonly class="form-control"></td>
+				<td><input type="text" id="denominacion" name="denominacion" readonly class="form-control" value="{{ conjunto.denominacion }}"></td>
 			</tr>
 			<tr>
 				<td>Codigo Asignado por EVHSA:</td>
 				<td>
-					<input type="text" id="serie" name="serie" required style="width: 70% !important; display: inline-block;" class="form-control">&nbsp;&nbsp;
-					<span style="display: none" id="ok" class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
-					<span style="display: none" id="error" class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
-					<div class="aviso">Quedan <span id="charsLeftSerie"></span> caraceteres.</div>
+					<input type="text" id="serie" name="serie" readonly style="width: 250px;" class="form-control" value="{{ conjunto.serie }}">
 				</td>
 			</tr>
 			<tr>
 				<td>Fecha de Compra:</td>
-				<td><input type="text" style="width: 150px !important;" class="datepicker form-control" id="fecha_compra" name="fecha_compra" readonly></td>
+				<td><input type="text" style="width: 150px !important;" class="datepicker form-control" id="fecha_compra" name="fecha_compra" readonly value="{{ conjunto.fecha_compra_f }}"></td>
 			</tr>
 			<tr>
 				<td>Proveedor:</td>
-				<td><input type="text" id="proveedor" name="proveedor" class="form-control"><div class="aviso">Quedan <span id="charsLeftProveedor"></span> caraceteres.</div></td>
+				<td><input type="text" id="proveedor" name="proveedor" class="form-control" value="{{ conjunto.proveedor }}"><div class="aviso">Quedan <span id="charsLeftProveedor"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Valor $:</td>
-				<td><input type="text" id="valor" name="valor" class="form-control" onkeypress="return Validate8EntY2Dec(event,this)"></td>
+				<td><input type="text" id="valor" name="valor" class="form-control" onkeypress="return Validate8EntY2Dec(event,this)" value="{{ conjunto.valor }}"></td>
 			</tr>
 			<tr>
 				<td>Ubica. del Codigo EVHSA:</td>
-				<td><input type="text" class="form-control" name="ubicacion" id="ubicacion"><div class="aviso">Quedan <span id="charsLeftUbicacion"></span> caraceteres.</div></td>
+				<td><input type="text" class="form-control" name="ubicacion" id="ubicacion" value="{{ conjunto.identificacion }}"><div class="aviso">Quedan <span id="charsLeftUbicacion"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Experimental (S/N):</td>
 				<td>
-					<input type="radio" name="experimental" id="experimental" value="si" checked> Si
-  					<input type="radio" name="experimental" id="experimental" value="no"> No
+					{% if conjunto.experimental == 's' %}
+						<input type="radio" name="experimental" id="experimental" value="si" checked> Si
+	  					<input type="radio" name="experimental" id="experimental" value="no"> No
+	  				{% else %}
+	  					<input type="radio" name="experimental" id="experimental" value="si"> Si
+	  					<input type="radio" name="experimental" id="experimental" value="no" checked> No
+	  				{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>Es Neumatico? (S/N):</td>
 				<td>
-					<input type="radio" name="es_neumatico" id="es_neumatico" value="1"> Si
-  					<input type="radio" name="es_neumatico" id="es_neumatico" value="0" checked> No
+					{% if conjunto.experimental == '0' %}
+						<input type="radio" name="es_neumatico" id="es_neumatico" value="1"> Si
+	  					<input type="radio" name="es_neumatico" id="es_neumatico" value="0" checked> No
+	  				{% else %}
+	  					<input type="radio" name="es_neumatico" id="es_neumatico" value="1" checked> Si
+	  					<input type="radio" name="es_neumatico" id="es_neumatico" value="0"> No
+	  				{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>Pertenece al Chasis N°:</td>
-				<td><input type="text" id="chasis" name="chasis" class="form-control"><div class="aviso">Quedan <span id="charsLeftChasis"></span> caraceteres.</div></td>
+				<td><input type="text" id="chasis" name="chasis" class="form-control" value="{{ conjunto.chasis }}"><div class="aviso">Quedan <span id="charsLeftChasis"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>

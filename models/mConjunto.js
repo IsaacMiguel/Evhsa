@@ -4,20 +4,32 @@ module.exports = {
 	getAll: getAll,
 	getById: getById,
 	insertDefinicion: insertDefinicion,
-	update: update,
+	updateDefinicion: updateDefinicion,
 	del: del,
 	getBuscar_x_CodigoySerie: getBuscar_x_CodigoySerie,
 	getBuscar_ConjuntoFicha_x_CodigoySerie: getBuscar_ConjuntoFicha_x_CodigoySerie,
 	getBuscar_ConjuntoDefinicion_xCodigo: getBuscar_ConjuntoDefinicion_xCodigo,
-	insertMovimiento: insertMovimiento
+	insertMovimiento: insertMovimiento,
+	getAllActivas: getAllActivas,
+	getAllBajas: getAllBajas,
+	getAll_xCodigo: getAll_xCodigo,
+	getAllActivas_xCodigo: getAllActivas_xCodigo,
+	getAllBajas_xCodigo: getAllBajas_xCodigo
+
 }
 
 function getAll(cb){
-	conn('select * from conjunto_definicion', cb);
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"FROM conjunto_definicion "+
+		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo ", cb);
 }
 
 function getById(id, cb){
-	conn("select * from conjunto_definicion where id = "+id, cb);
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"FROM conjunto_definicion "+
+		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo where conjunto_definicion.id = "+id, cb);
 }
 
 function insertDefinicion(codigo, serie, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, es_neumatico, cb){
@@ -26,8 +38,10 @@ function insertDefinicion(codigo, serie, fecha_compra, proveedor, valor, ubicaci
 			+chasis+"', "+es_neumatico+")", cb);
 }
 
-function update(id, codigo, nombre, id_grupo, cb){
-	conn("update conjunto_definicion set codigo = '"+codigo+"', nombre = '"+nombre+"', id_grupo_fk="+id_grupo+" where id = "+id, cb);
+function updateDefinicion(id, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, es_neumatico, cb){
+	conn("UPDATE `evhsa`.`conjunto_definicion` SET	fecha_compra = "+fecha_compra+", proveedor = , "+proveedor+", valor = "+valor+", "+
+		"identificacion = "+ubicacion+", experimental = "+experimental+", es_neumatico = "+es_neumatico+", chasis = "+chasis+
+		" WHERE id = "+id, cb);
 }
 
 function del(id, cb){
@@ -68,4 +82,44 @@ function insertMovimiento(codigo, serie, fecha_movimiento, coche_sacado, coche_c
 		"codigo_tipo_cubierta_fk, est, mm, km) VALUES ('"+codigo+"', '"+serie+"', '"+fecha_movimiento+"', "+coche_sacado+", '"+destino+"', "+
 		coche_colocado+", '"+ubicacion_actual+"', "+costo+", '"+detalle+"', '"+ubicacion_neumatico+"', "+imputado+", '"+
 		responsable_reparacion+"', '"+responsable_rotura+"', '"+tipo_cubiertas+"', '"+suma_estadistica+"', "+mm+", 0); ", cb);
+}
+
+function getAllActivas(cb){
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"FROM conjunto_definicion "+
+		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
+		"WHERE fecha_baja = ''", cb);
+}
+
+function getAllBajas(cb){
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"FROM conjunto_definicion "+
+		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
+		"WHERE fecha_baja != ''", cb);
+}
+
+function getAll_xCodigo(codigo, cb){
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"FROM conjunto_definicion "+
+		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
+		"WHERE conjunto_definicion.codigo like '%"+codigo+"%'", cb);
+}
+
+function getAllActivas_xCodigo(codigo, cb){
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"FROM conjunto_definicion "+
+		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
+		"WHERE fecha_baja = '' AND conjunto_definicion.codigo like '%"+codigo+"%'", cb);
+}
+
+function getAllBajas_xCodigo(codigo, cb){
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"FROM conjunto_definicion "+
+		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
+		"WHERE fecha_baja != '' AND conjunto_definicion.codigo like '%"+codigo+"%'", cb);
 }

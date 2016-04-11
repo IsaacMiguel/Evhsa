@@ -323,7 +323,11 @@ module.exports = function(app) {
 	app.get("/conjunto_definicion_buscarxcodigo/:codigo", auth, cConjunto.getBuscar_ConjuntoDefinicion_xCodigo);
 	app.get("/conjunto_ficha_alta/:codigo/:serie", auth, acceso, cConjunto.getConjunto_Ficha_Alta);
 	app.post('/conjunto_ficha_alta', auth, cConjunto.postConjuntoFicha_Alta);
-	// app.post("/conjunto_buscarfichaxlistado", auth, acceso, cConjunto.getBuscar_Ficha_x_Listado);
+	app.get("/conjunto_buscarfichaxlistado", auth, acceso, cConjunto.getBuscar_Ficha_x_Listado);
+	app.get("/getFichasFiltro/:opcion/:codigo", auth, cConjunto.getFichas_x_Filtro);
+	app.get("/conjunto_modificar/:id", auth, acceso, cConjunto.getModificar);
+	app.post("/conjunto_modificar", auth, cConjunto.postModificar);
+	app.get("/conjunto_borrar/:id", auth, acceso, cConjunto.getDel);
 	// app.get("/conjunto_formacioncoche", auth, acceso, cConjunto.getFormacionCoche);
 	// app.get("/conjunto_neumaticos_ubicacion", auth, acceso, cConjunto.getNeumaticos_Ubicacion);
 	// app.get("/conjunto_neumaticos_resumen", auth, acceso, cConjunto.getNeumaticos_Resumen);

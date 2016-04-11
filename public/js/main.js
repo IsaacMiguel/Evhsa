@@ -1,7 +1,10 @@
+// ONKEYPRESS NO ANDA, USAR ONKEYDOWN
+
 function soloNumeros(e){
 	var key = window.Event ? e.which : e.keyCode
 	return (key >= 48 && key <= 57)
 }//onKeyPress="return soloNumeros(event)"
+// NO ANDA =( mas abajo esta isNumber
 
 function changeDate(date){
 	// input: dd/mm/yyyy
@@ -138,3 +141,40 @@ function Validate8EntY2Dec(e, field) {
     // other key
     return false
 }//onkeypress="return Validate8EntY2Dec(event,this)"
+
+function lettersOnly(evt) {
+    evt = (evt) ? evt : event;
+    var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode :((evt.which) ? evt.which : 0));
+    if (charCode > 31 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122)) {
+        // alert("Enter letters only.");
+        return false;
+    }
+    return true;
+}//onkeypress="return lettersOnly(event)"
+
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}//onkeypress="return isNumber(event)"
+
+function isNumberKey(evt)
+{
+    var e = evt || window.event; //window.event is safer, thanks @ThiefMaster
+    var charCode = e.which || e.keyCode;                        
+    if (charCode > 31 && (charCode < 47 || charCode > 57))
+        return false;
+    if (e.shiftKey) return false;
+        return true;
+}//onkeypress="return isNumberKey(event)"
+
+// PARA EL SWIG CUANDO SE USA CON AJAX EN LAS VISTAS
+function parseSwig(input, data) {
+    var output = swig.render(input, { locals: { 
+        data: data
+    }});
+    return output;
+}

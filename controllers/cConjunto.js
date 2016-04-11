@@ -11,13 +11,17 @@ module.exports = {
 	getBuscar_Repuesto_x_Codigo: getBuscar_Repuesto_x_Codigo,
 	getBuscar_Repuesto_x_Codigo_y_Serie: getBuscar_Repuesto_x_Codigo_y_Serie,
 	getVerificar_CodigoySerie: getVerificar_CodigoySerie,
-	// getBuscar_ConjuntoFicha_x_CodigoySerie: getBuscar_ConjuntoFicha_x_CodigoySerie,
 	postAlta: postAlta,
 	getVerFicha: getVerFicha,
 	getBuscar_Ficha_x_Codigo: getBuscar_Ficha_x_Codigo,
 	getBuscar_ConjuntoDefinicion_xCodigo: getBuscar_ConjuntoDefinicion_xCodigo,
 	getConjunto_Ficha_Alta: getConjunto_Ficha_Alta,
-	postConjuntoFicha_Alta: postConjuntoFicha_Alta
+	postConjuntoFicha_Alta: postConjuntoFicha_Alta,
+	getBuscar_Ficha_x_Listado: getBuscar_Ficha_x_Listado,
+	getFichas_x_Filtro: getFichas_x_Filtro,
+	getModificar: getModificar,
+	getDel: getDel,
+	postModificar: postModificar
 }
 
 function changeDate(date){
@@ -62,17 +66,6 @@ function getVerificar_CodigoySerie(req, res){
 		res.send(conjunto);
 	});
 }
-
-// function getBuscar_ConjuntoFicha_x_CodigoySerie(req, res){
-// 	var params = req.params;
-// 	var codigo = params.codigo;
-// 	var serie = params.serie;
-
-// 	mConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie(codigo, serie, function (conjunto_ficha){
-// 		res.send(conjunto_ficha);
-// 	});
-// }
-
 
 function postAlta(req, res){
 	var params = req.body;
@@ -227,27 +220,125 @@ function postConjuntoFicha_Alta(req, res){
 	});
 }
 
+function getBuscar_Ficha_x_Listado(req, res){
+	res.render("conjunto_buscarfichaxlista", {
+		pagename: "Buscar Fichas por Listado"
+	});
+}
 
+function getFichas_x_Filtro(req, res){
+	var params = req.params;
+	var opcion = params.opcion;
+	var codigo = params.codigo;
+	console.log(params)
+
+	if (codigo != "NOCODE"){
+		switch (opcion){
+			case 1:
+				mConjunto.getAll_xCodigo(codigo, function (fichas){
+					res.send(fichas);
+				});
+				break;
+			case 2:
+				mConjunto.getAllActivas_xCodigo(codigo, function (fichas){
+					res.send(fichas);
+				});
+				break;
+			case 3:
+				mConjunto.getAllBajas_xCodigo(codigo, function (fichas){
+					res.send(fichas);
+				});
+				break;
+			default:
+				mConjunto.getAll_xCodigo(codigo, function (fichas){
+					res.send(fichas);
+				});
+				break;
+		}
+	}else{
+		// get fichas por codigo solo
+		switch (opcion){
+			case 1:
+				mConjunto.getAll(function (fichas){
+					res.send(fichas);
+				});
+				break;
+			case 2:
+				mConjunto.getAllActivas(function (fichas){
+					res.send(fichas);
+				});
+				break;
+			case 3:
+				mConjunto.getAllBajas(function (fichas){
+					res.send(fichas);
+				});
+				break;
+			default:
+				mConjunto.getAll(function (fichas){
+					res.send(fichas);
+				});
+				break;
+		}
+	}
+
+}
+
+function getModificar(req, res){
+	var params = req.params;
+	var id = params.id;
+
+	mConjunto.getById(id, function (conjunto){
+		res.render("conjunto_modificar", {
+			conjunto: conjunto[0]
+		});
+	});
+}
+
+function postModificar(req, res){
+	var params = req.body;
+	var id = params.id;
+	var codigo = params.codigo;
+	var denominacion = params.denominacion;
+	var serie = params.serie;
+	var fecha_compra = params.fecha_compra;
+	var proveedor = params.proveedor;
+	var valor = params.valor;
+	if (valor == '')
+		valor = 0;
+	var ubicacion = params.ubicacion;
+	var experimental = params.experimental;
+	var chasis = params.chasis;
+	codigo = codigo.toUpperCase();
+	var es_neumatico = params.es_neumatico;
+
+	fecha_compra = changeDate(fecha_compra);
+
+	mConjunto.updateDefinicion(id, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, es_neumatico, function (){
+		res.render('conjunto_alta', {
+			pagename: 'Alta de Conjunto'
+		});
+	});
+}
 
 // 
 function getDel(req, res){
 	var params = req.params;
 	var id = params.id;
-	mConjunto.getById(id, function (rubro){
-	  	rubro = rubro[0];
-	  	mRepuestos.getRubroEnRepById(id, function (rubroEnRep){
-	  		// console.log(rubroEnRep.length)
-	  		if (rubroEnRep.length == 0){
-	  			mBorro.add(req.session.user.usuario,"Rubro", "Borra. Nombre Rubro: "+ rubro.nombre + ", id: " + id ,function(){
-			  		mConjunto.del(id, function(){
-			    		res.redirect('/rubroslista'); 
-			  		});
-				});
-	  		}else{
-	  			res.render('error', {
-	      			error: "No se puede eliminar este Rubro. Posee registros en la base de datos 'Repuestos'."
-	      		});
-	  		}
-	  	});
-	}); 
+	// mConjunto.getById(id, function (rubro){
+	//   	rubro = rubro[0];
+	//   	mRepuestos.getRubroEnRepById(id, function (rubroEnRep){
+	  		console.log("rubroEnRep.length")
+	//   		if (rubroEnRep.length == 0){
+	//   			mBorro.add(req.session.user.usuario,"Rubro", "Borra. Nombre Rubro: "+ rubro.nombre + ", id: " + id ,function(){
+	// 		  		mConjunto.del(id, function(){
+	// 		    		res.redirect('/rubroslista'); 
+	// 		  		});
+	// 			});
+	//   		}else{
+	//   			res.render('error', {
+	//       			error: "No se puede eliminar este Rubro. Posee registros en la base de datos 'Repuestos'."
+	//       		});
+	//   		}
+	//   	});
+	// }); 
 }
