@@ -176,7 +176,7 @@
 		console.log(codigo)
 		if (valido){
 			$.getJSON('/getFichasFiltro/'+opcion+'/'+codigo, function (data){
-				console.log(data);
+				// console.log(data);
 				if (data.length != 0){
 					$('#tbodylisto > tr').remove();
 					var template = $('#tablafichas').html();

@@ -178,4 +178,8 @@ function parseSwig(input, data) {
     return output;
 }
 
-exports.changeDate2 = changeDate2;
+// exports.changeDate2 = changeDate2;
+
+// module.exports = {
+//     changeDate2: changeDate2
+// }
