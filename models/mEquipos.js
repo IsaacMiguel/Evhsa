@@ -23,7 +23,7 @@ function insert (d, cb) {
 }
 
 function getById (id, cb) {
-	conn("select * from equipos where id=" + id, cb);
+	conn("select *, DATE_FORMAT(fecha_colocacion, '%d/%m/%Y') as f_colocacion, DATE_FORMAT(fecha_sacado, '%d/%m/%Y') as f_sacado from equipos where id=" + id, cb);
 }
 
 function update (d, cb) {
