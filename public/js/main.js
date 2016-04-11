@@ -4,7 +4,6 @@ function soloNumeros(e){
 	var key = window.Event ? e.which : e.keyCode
 	return (key >= 48 && key <= 57)
 }//onKeyPress="return soloNumeros(event)"
-// NO ANDA =( mas abajo esta isNumber
 
 function changeDate(date){
 	// input: dd/mm/yyyy
@@ -142,7 +141,6 @@ function Validate8EntY2Dec(e, field) {
     return false
 }//onkeypress="return Validate8EntY2Dec(event,this)"
 
-<<<<<<< HEAD
 function lettersOnly(evt) {
     evt = (evt) ? evt : event;
     var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode :((evt.which) ? evt.which : 0));
