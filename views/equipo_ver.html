@@ -19,11 +19,23 @@
 		</tr>
 		<tr>
 			<td>N° Coche:</td>
-			<td>{{ equipo.numero_coche_fk }}</td>
+			<td>
+				{% if equipo.numero_coche_fk == 0 %}
+					Sin coche asignado
+				{% else %}
+					{{ equipo.numero_coche_fk }}
+				{% endif %}	
+			</td>
 		</tr>
 		<tr>
 			<td>Fecha Colocación:</td>
-			<td>{{ fcolocacion }}</td>
+			<td>
+				{% if equipo.f_colocacion != '00/00/0000' %}
+					{{ equipo.f_colocacion }}
+				{% else %}
+					
+				{% endif %}
+			</td>
 		</tr>
 		<tr>
 			<td>total:</td>
@@ -39,7 +51,13 @@
 		</tr>
 		<tr>
 			<td>Fecha Sacado:</td>
-			<td>{{ fsacado }}</td>
+			<td>
+				{% if equipo.f_sacado != '00/00/0000' %}
+					{{ equipo.f_sacado }}
+				{% else %}
+					
+				{% endif %}
+			</td>
 		</tr>
 		<tr>
 			<td>Km:</td>

@@ -22,6 +22,7 @@
 				<td>N° Coche:</td>
 				<td>
 					<select id="nro_coche" name="nro_coche" class="form-control" >
+						<option value="0" selected>Sin coche asignado</option>
 						{% for v in vehiculos %}
 							<option value="{{ v.numero }}">{{ v.numero }}  {{ v.dominio }} {{ v.marca }} {{ v.modelo }}</option>
 						{% endfor %}
@@ -30,37 +31,37 @@
 			</tr>
 			<tr>
 				<td>Fecha Colocación:</td>
-				<td><input type="date" id="f_colocacion" name="f_colocacion" required class="form-control"></td>
+				<td><input type="date" id="f_colocacion" name="f_colocacion" class="form-control"></td>
 			</tr>
 			<tr>
 				<td>Total:</td>
-				<td><input type="number" step="any" id="total" name="total" required class="form-control"><div class="aviso">Quedan <span id="charsLeftTotal"></span> caraceteres.</div></td>
+				<td><input type="number" step="any" id="total" name="total" class="form-control"><div class="aviso">Quedan <span id="charsLeftTotal"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Responsable:</td>
-				<td><input type="text" id="responsable" name="responsable" required class="form-control"><div class="aviso">Quedan <span id="charsLeftResponsable"></span> caraceteres.</div></td>
+				<td><input type="text" id="responsable" name="responsable" class="form-control"><div class="aviso">Quedan <span id="charsLeftResponsable"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Tipo:</td>
-				<td><input type="text" id="tipo" name="tipo" required class="form-control"><div class="aviso">Quedan <span id="charsLeftTipo"></span> caraceteres.</div></td>
+				<td><input type="text" id="tipo" name="tipo" class="form-control"><div class="aviso">Quedan <span id="charsLeftTipo"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Fecha Sacado:</td>
-				<td><input type="date" id="f_sacado" name="f_sacado" required class="form-control"></td>
+				<td><input type="date" id="f_sacado" name="f_sacado" class="form-control"></td>
 			</tr>
 			<tr>
 				<td>Km:</td>
-				<td><input type="number" id="km" name="km" required class="form-control"><div class="aviso">Quedan <span id="charsLeftKm"></span> caraceteres.</div></td>
+				<td><input type="number" id="km" name="km" class="form-control"><div class="aviso">Quedan <span id="charsLeftKm"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Observaciones:</td>
-				<td><textarea rows="10" cols="50" id="observaciones" name="observaciones" required class="form-control">
+				<td><textarea rows="10" cols="50" id="observaciones" name="observaciones" class="form-control">
 					
 				</textarea><div class="aviso">Quedan <span id="charsLeftObservaciones"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Resultado:</td>
-				<td><textarea rows="10" cols="50" id="resultado" name="resultado" required class="form-control">
+				<td><textarea rows="10" cols="50" id="resultado" name="resultado" class="form-control">
 					
 				</textarea><div class="aviso">Quedan <span id="charsLeftResultado"></span> caraceteres.</div></td>
 			</tr>

@@ -23,6 +23,12 @@
 				<td>N° Coche:</td>
 				<td>
 					<select id="nro_coche" name="nro_coche" class="form-control" >
+						{% if v.id == 0 %}
+							<option value="0" selected>Sin coche asignado</option>
+						{% else %}
+							<option value="0">Sin coche asignado</option>
+						{% endif %}
+
 						{% for v in vehiculos %}
 							{% if v.id == equipo.numero_coche_fk %}
 								<option value="{{ v.id }}" selected>{{ v.numero }}</option>
@@ -35,37 +41,37 @@
 			</tr>
 			<tr>
 				<td>Fecha Colocación:</td>
-				<td><input type="date" id="f_colocacion" name="f_colocacion" required class="form-control" value="{{ equipo.fecha_colocacion }}"></td>
+				<td><input type="date" id="f_colocacion" name="f_colocacion" class="form-control" value="{{ equipo.fecha_colocacion }}"></td>
 			</tr>
 			<tr>
 				<td>Total:</td>
-				<td><input type="number" step="any" id="total" name="total" required class="form-control" value="{{ equipo.total }}"><div class="aviso">Quedan <span id="charsLeftTotal"></span> caraceteres.</div></td>
+				<td><input type="number" step="any" id="total" name="total" class="form-control" value="{{ equipo.total }}"><div class="aviso">Quedan <span id="charsLeftTotal"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Responsable:</td>
-				<td><input type="text" id="responsable" name="responsable" required class="form-control" value="{{ equipo.responsable }}"><div class="aviso">Quedan <span id="charsLeftResponsable"></span> caraceteres.</div></td>
+				<td><input type="text" id="responsable" name="responsable" class="form-control" value="{{ equipo.responsable }}"><div class="aviso">Quedan <span id="charsLeftResponsable"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>tipo:</td>
-				<td><input type="text" id="tipo" name="tipo" required class="form-control" value="{{ equipo.tipo }}"><div class="aviso">Quedan <span id="charsLeftTipo"></span> caraceteres.</div></td>
+				<td><input type="text" id="tipo" name="tipo" class="form-control" value="{{ equipo.tipo }}"><div class="aviso">Quedan <span id="charsLeftTipo"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Fecha Sacado:</td>
-				<td><input type="date" id="f_sacado" name="f_sacado" required class="form-control" value="{{ equipo.fecha_sacado }}"></td>
+				<td><input type="date" id="f_sacado" name="f_sacado" class="form-control" value="{{ equipo.fecha_sacado }}"></td>
 			</tr>
 			<tr>
 				<td>Km:</td>
-				<td><input type="number" id="km" name="km" required class="form-control" value="{{ equipo.km }}"><div class="aviso">Quedan <span id="charsLeftKm"></span> caraceteres.</div></td>
+				<td><input type="number" id="km" name="km" class="form-control" value="{{ equipo.km }}"><div class="aviso">Quedan <span id="charsLeftKm"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Observaciones:</td>
-				<td><textarea rows="10" cols="50" id="observaciones" name="observaciones" required class="form-control">
+				<td><textarea rows="10" cols="50" id="observaciones" name="observaciones" class="form-control">
 					{{ equipo.observaciones }}
 				</textarea><div class="aviso">Quedan <span id="charsLeftObservaciones"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Resultado:</td>
-				<td><textarea rows="10" cols="50" id="resultado" name="resultado" required class="form-control">
+				<td><textarea rows="10" cols="50" id="resultado" name="resultado" class="form-control">
 					{{ equipo.resultado }}
 				</textarea><div class="aviso">Quedan <span id="charsLeftResultado"></span> caraceteres.</div></td>
 			</tr>

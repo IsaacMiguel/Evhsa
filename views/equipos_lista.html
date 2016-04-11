@@ -15,6 +15,34 @@
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
 				<td><a href="/equipos_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 100%;">
+					<table class="pull-right">
+						<tr>
+							<td>Filtrar&nbsp;</td>
+							<td>
+								<select class="form-control" id="filtro" name="filtro">
+									<option value="1">Listado completo</option>
+									<option value="2">Fecha de colocación</option>
+									<option value="3">Tipo</option>
+									<option value="4">Fecha de sacado</option>
+									<option value="5">N° de coche</option>
+								</select>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<div id="load_input">
+												
+											</div>
+										<td>
+									</tr>
+								</table>
+							</td>
+							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
+						</tr>
+					</table>					
+				</td>
 			</tr>	
 		</table>
 	</div>
@@ -52,17 +80,35 @@
 						<th>Km</th>
 					</tr>
 		  		</thead>
-		  		<tbody>
+		  		<tbody id="tbodylisto">
 		  			{% for e in equipos %}
 						<tr>
 							<td>{{ e.numero }}</td>
 							<td>{{ e.denominacion }}</td>
-							<td>{{ e.numero_coche_fk }}</td>
-							<td>{{ e.f_colocacion }}</td>
+							<td>
+								{% if e.numero_coche_fk == 0 %}
+									S/A
+								{% else %}
+									{{ e.numero_coche_fk }}
+								{% endif %}
+							</td>
+							<td>
+								{% if e.f_colocacion != '00/00/0000' %}
+									{{ e.f_colocacion }}
+								{% else %}
+									
+								{% endif %}
+							</td>
 							<td>{{ e.total }}</td>
 							<td>{{ e.responsable }}</td>
 							<td>{{ e.tipo }}</td>
-							<td>{{ e.f_sacado }}</td>
+							<td>
+								{% if e.f_sacado != '00/00/0000' %}
+									{{ e.f_sacado }}
+								{% else %}
+									
+								{% endif %}
+							</td>
 							<td>{{ e.km }}</td>
 
 							<td><a href="/equipos_ver/{{ e.id }}"><button class="btn btn-default">Ver</button></a></td>
@@ -71,8 +117,130 @@
 						</tr>
 						{% endfor %}
 		  		</tbody>
+		  		<script type="text/template" id="tabla_equipos">
+		  			[% for e in equipos %]
+						<tr>
+							<td>[[ e.numero ]]</td>
+							<td>[[ e.denominacion ]]</td>
+							<td>
+								[% if e.numero_coche_fk == 0 %]
+									S/A
+								[% else %]
+									[[ e.numero_coche_fk ]]
+								[% endif %]
+							</td>
+							<td>
+								[% if e.f_colocacion != '00/00/0000' %]
+									[[ e.f_colocacion ]]
+								[% else %]
+									
+								[% endif %]
+							</td>
+							<td>[[ e.total ]]</td>
+							<td>[[ e.responsable ]]</td>
+							<td>[[ e.tipo ]]</td>
+							<td>
+								[% if e.f_sacado != '00/00/0000' %]
+									[[ e.f_sacado ]]
+								[% else %]
+									
+								[% endif %]
+							</td>
+							<td>[[ e.km ]]</td>
+
+							<td><a href="/equipos_ver/[[ e.id ]]"><button class="btn btn-default">Ver</button></a></td>
+							<td><a href="/equipos_modificar/[[ e.id ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
+							<td><a href='/equipos_eliminar/[[ e.id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+						</tr>
+						[% endfor %]
+		  		</script>
+
 			</table>				
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/swig.min.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
+
+    $('#filtro').on('change', function () {
+    	var o_filtrado = $('#filtro option:selected'). val();
+
+    	// <input type="text" class="form-control" name="busqueda_filtro" id="busqueda_filtro">
+
+    	switch(o_filtrado) {
+    		case '1':
+    			var input = '';
+    			$('#load_input').html(input);
+
+    			break;
+
+    		case '2':
+    			var input = '<input type="date" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
+    			$('#load_input').html(input);
+
+    			break;
+
+    		case '3':
+    			var input = '<input type="text" maxlength="1" onkeydown="return lettersOnly(event)" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
+    			$('#load_input').html(input);
+
+    			break;
+
+    		case '4':
+    			var input = '<input type="date" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
+    			$('#load_input').html(input);
+
+    			break;
+
+    		case '5':
+    			var input = '<input type="number" class="form-control" maxlength="5" oninput="maxLengthCheck(this)" name="busqueda_filtro" id="busqueda_filtro">';
+    			$('#load_input').html(input);
+
+    			break;
+    	}
+    });
+
+	$("#btnFiltrar").on("click", function (){
+		var opcion_filtrado = $('#filtro option:selected').val();
+		var buscar = $('#busqueda_filtro').val();
+		var valido = false;
+
+		if (opcion_filtrado == 1) {
+			buscar = 1;
+			valido = true;
+		}else if (buscar != ''){
+			valido = true
+		}else{
+			alert("Ingrese busqueda para filtrar!")
+		}
+
+		if (valido == true) {
+			$.getJSON('/equipos_filtrar/'+opcion_filtrado+'/'+buscar, function (data){
+				if (data.length != 0){
+					$('#tbodylisto > tr').remove();
+					var template = $('#tabla_equipos').html();
+
+					var output = parseSwig(template, data);
+
+					$('#tbodylisto').html(output);
+				}else{
+					//hacer que aca muestre error de que no se encontro nada en la busqueda
+					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+					$('#tbodylisto > tr').remove();					
+					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+				}
+			});
+		}
+
+		valido = false;
+	});
+</script>
 {% endblock %}
