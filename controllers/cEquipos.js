@@ -32,13 +32,15 @@ function getAlta (req, res) {
 
 function postAlta (req, res) {
 	var params = req.body;
+	var total = params.total;
+	var km = params.km;
 
 	if (params.total == '') {
-		var total = 0;
+		total = 0;
 	}
 
 	if (params.km == '') {
-		var km = 0;
+		km = 0;
 	}
 
 	var observaciones = params.observaciones;
@@ -51,13 +53,13 @@ function postAlta (req, res) {
 		'numero' : params.numero,
 		'denominacion' : params.denominacion,
 		'numero_coche_fk' : params.nro_coche,
-		'fecha_colocacion' : params.f_colocacion,
+		'fecha_colocacion' : params.fecha_colocacion,
 		'total' : total,
 		'unica_operador_fk' : req.session.user.unica,
 		'responsable' : params.responsable,
 		'observaciones' : observaciones,
 		'tipo' : params.tipo,
-		'fecha_sacado' : params.f_sacado,
+		'fecha_sacado' : params.fecha_sacado,
 		'km' : km,
 		'resultado' : resultado
 		};
@@ -90,13 +92,15 @@ function getModificar (req, res) {
 
 function postModificar (req, res) {
 	var params = req.body;
+	var total = params.total;
+	var km = params.km;
 
 	if (params.total == '') {
-		var total = 0;
+		total = 0;
 	}
 
 	if (params.km == '') {
-		var km = 0;
+		km = 0;
 	}
 
 	var observaciones = params.observaciones;
@@ -110,13 +114,13 @@ function postModificar (req, res) {
 		'numero' : params.numero,
 		'denominacion' : params.denominacion,
 		'numero_coche_fk' : params.nro_coche,
-		'fecha_colocacion' : params.f_colocacion,
+		'fecha_colocacion' : params.fecha_colocacion,
 		'total' : total,
 		'unica_operador_fk' : req.session.user.unica,
 		'responsable' : params.responsable,
 		'observaciones' : observaciones,
 		'tipo' : params.tipo,
-		'fecha_sacado' : params.f_sacado,
+		'fecha_sacado' : params.fecha_sacado,
 		'km' : km,
 		'resultado' : resultado
 		};
