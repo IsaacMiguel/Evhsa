@@ -8,7 +8,8 @@ module.exports = {
 	updateRepuestosConIdRubroFk: updateRepuestosConIdRubroFk,
 	updateTablaVehiculosConFive: updateTablaVehiculosConFive,
 	updateTablaSecrConOperariosTemp: updateTablaSecrConOperariosTemp,
-	updateOtrosGastos: updateOtrosGastos
+	updateOtrosGastos: updateOtrosGastos,
+	updateEquipos : updateEquipos
 }
 
 function getRandom(req, res){
@@ -247,6 +248,88 @@ function updateOtrosGastos(req, res){
 			}
 
 			query = "INSERT INTO otrosgastos(`fecha`, `descripcion`, `cantidad`, `id_destino_fk`, `id_vehiculo_fk`, `total`, `id_usuario_fk`, `memo`, `empresa`) VALUES('"+temp_fecha+"','"+temp_descripcion+"', "+temp_cantidad+", "+temp_destino+", "+temp_coche+", "+temp_total+", "+id_usuario_fk+", '"+temp_memo+"', '"+temp_empresa+"')"
+			connection.query(query, function (err, rows, fields) {
+				if (err) {
+					throw err;
+			    	console.log(err);
+				}else{
+					// cb(rows);					
+					console.log(query);
+					console.log("updated !");
+					callback();
+				}					    
+			});
+
+		}, function (err) {
+			if (err) { 
+				throw err; 
+			}else{
+				res.send("finished");
+				connection.end();
+				// return cb();
+			}				
+		});
+	});
+
+}
+
+function updateEquipos (req, res) {
+	var connection = mysql.createConnection({
+	    user: 'root',
+	    password: 'root',
+	    host: '192.168.56.1',
+	    port: '81',
+	    database: 'evhsa',
+	    dateStrings : true
+ 	});
+
+	connection.connect();
+
+	mRandom.getEquipos_temp(function (equipos_temp) {
+		console.log(equipos_temp.length)
+
+		async.eachSeries(equipos_temp, function (equipo, callback) {
+			var numero = equipo.EQ_NUME;
+			var denominacion = equipo.EQ_DENO;
+			var numero_coche_fk = equipo.EQ_COCHE;
+			var fecha_colocacion = equipo.EQ_FECO;
+			var total = equipo.EQ_TOTAL;
+			var unica_operador_fk = equipo.EQ_OPER;
+			var responsable = equipo.EQ_RESPO;
+			var observaciones = equipo.EQ_OBSE;
+			var tipo = equipo.EQ_TIPO;
+			var fecha_sacado = equipo.EQ_FESA;
+			var km = equipo.EQ_KM;
+			var resultado = equipo.RESU;
+
+			var query = "INSERT INTO equipos(" +
+				"numero, " +
+				"denominacion, " +
+				"numero_coche_fk, " +
+				"fecha_colocacion, " +
+				"total, " +
+				"unica_operador_fk, " +
+				"responsable, " +
+				"observaciones, " +
+				"tipo, " +
+				"fecha_sacado, " +
+				"km, " +
+				"resultado) " +
+					"VALUES( " +
+						numero + ", " +
+						"'" + denominacion + ", " +
+					  numero_coche_fk	+ ", " +
+						"'" + fecha_colocacion + ", " +
+						total + ", " +
+						unica_operador_fk + ", " +
+						"'" + responsable + ", " +
+						"'" + observaciones + ", " +
+						"'" + tipo + ", " +
+						"'" + fecha_sacado + ", " +
+						km + ", " +
+						"'" + resultado + ", " +
+				")";
+
 			connection.query(query, function (err, rows, fields) {
 				if (err) {
 					throw err;

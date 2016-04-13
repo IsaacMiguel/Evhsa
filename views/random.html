@@ -26,6 +26,9 @@
 		  		<tr>
 		  			<td><button class="btn" onclick="actualizarOtrosGastos();">Actualizar Tabla Otros Gastos con Datos de "OtrosGastos_temp"</button></td>
 		  		</tr>
+		  		<tr>
+		  			<td><button class="btn" onclick="actualizarEquipos();">Actualizar Tabla Equipos con Datos de "equipos_temp"</button></td>
+		  		</tr>
 			</table>				
 		</div><!--div col xs12 -->
 	</div><!--div row -->
@@ -51,6 +54,12 @@
 
 	function actualizarOtrosGastos(){
 		$.getJSON("/actualizarOtrosGastos", function (obj){
+			console.log(obj);
+		});
+	}
+
+	function actualizarEquipos () {
+		$.getJSON("/actualizarEquipos", function (obj) {
 			console.log(obj);
 		});
 	}

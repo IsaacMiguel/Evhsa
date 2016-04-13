@@ -352,6 +352,7 @@ module.exports = function(app) {
 	app.get("/updateTablaVehiculosConFive", auth, cRandom.updateTablaVehiculosConFive);
 	app.get("/updateTablaSecr", auth, cRandom.updateTablaSecrConOperariosTemp);
 	app.get("/actualizarOtrosGastos", auth, cRandom.updateOtrosGastos);
+	app.get("/actualizarEquipos", auth, cRandom.updateEquipos);
 	// app.post('/random', auth, cRandom.postAsd);
 	// app.get('/random2', auth, cRandom.getr2);
 	// app.post('/random2', auth, cRandom.postr2);
