@@ -21,7 +21,7 @@
 							<td>Filtrar&nbsp;</td>
 							<td>
 								<select class="form-control" id="filtro" name="filtro">
-									<option value="1">Listado completo</option>
+									<option value="1" selected>Listado completo</option>
 									<option value="2">Fecha de colocación</option>
 									<option value="3">Tipo</option>
 									<option value="4">Fecha de sacado</option>
@@ -81,80 +81,26 @@
 					</tr>
 		  		</thead>
 		  		<tbody id="tbodylisto">
-		  			{% for e in equipos %}
-						<tr>
-							<td>{{ e.numero }}</td>
-							<td>{{ e.denominacion }}</td>
-							<td>
-								{% if e.numero_coche_fk == 0 %}
-									S/A
-								{% else %}
-									{{ e.numero_coche_fk }}
-								{% endif %}
-							</td>
-							<td>
-								{% if e.fecha_colocacion != '00/00/0000' %}
-									{{ e.fecha_colocacion }}
-								{% else %}
-									
-								{% endif %}
-							</td>
-							<td>{{ e.total }}</td>
-							<td>{{ e.responsable }}</td>
-							<td>{{ e.tipo }}</td>
-							<td>
-								{% if e.fecha_sacado != '00/00/0000' %}
-									{{ e.fecha_sacado }}
-								{% else %}
-									
-								{% endif %}
-							</td>
-							<td>{{ e.km }}</td>
-
-							<td><a href="/equipos_ver/{{ e.id }}"><button class="btn btn-default">Ver</button></a></td>
-							<td><a href="/equipos_modificar/{{ e.id }}"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
-							<td><a href='/equipos_eliminar/{{ e.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
-						</tr>
-						{% endfor %}
+		  			
 		  		</tbody>
-		  		<script type="text/template" id="tabla_equipos">
-		  			[% for e in equipos %]
+		  		<script type="text/template" id="tabla_equipos" />
+		  			[% for e in data %]
 						<tr>
 							<td>[[ e.numero ]]</td>
 							<td>[[ e.denominacion ]]</td>
-							<td>
-								[% if e.numero_coche_fk == 0 %]
-									S/A
-								[% else %]
-									[[ e.numero_coche_fk ]]
-								[% endif %]
-							</td>
-							<td>
-								[% if e.fecha_colocacion != '00/00/0000' %]
-									[[ e.fecha_colocacion ]]
-								[% else %]
-									
-								[% endif %]
-							</td>
+							<td>[% if e.numero_coche_fk == 0 %]S/A[% else %][[ e.numero_coche_fk ]][% endif %]</td>
+							<td>[% if e.fecha_colocacion != '00/00/0000' %][[ e.fecha_colocacion ]][% else %][% endif %]</td>
 							<td>[[ e.total ]]</td>
 							<td>[[ e.responsable ]]</td>
 							<td>[[ e.tipo ]]</td>
-							<td>
-								[% if e.fecha_sacado != '00/00/0000' %]
-									[[ e.fecha_sacado ]]
-								[% else %]
-									
-								[% endif %]
-							</td>
+							<td>[% if e.fecha_sacado != '00/00/0000' %][[ e.fecha_sacado ]][% else %][% endif %]</td>
 							<td>[[ e.km ]]</td>
-
 							<td><a href="/equipos_ver/[[ e.id ]]"><button class="btn btn-default">Ver</button></a></td>
 							<td><a href="/equipos_modificar/[[ e.id ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
-							<td><a href='/equipos_eliminar/[[ e.id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+							<td><a href="/equipos_eliminar/[[ e.id ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
 						</tr>
-						[% endfor %]
+					[% endfor %]
 		  		</script>
-
 			</table>				
 		</div><!--div col xs12 -->
 	</div><!--div row -->
@@ -162,7 +108,6 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery.autotab.min.js"></script>
 <script src="/js/swig.min.js"></script>
-<script src="/js/main.js"></script>
 <script type="text/javascript">
 
 	swig.setDefaults({
@@ -170,12 +115,8 @@
     	tagControls: ['[%', '%]']
     });
 
-    $('#filtro').on('change', function () {
-    	var o_filtrado = $('#filtro option:selected'). val();
-
-    	// <input type="text" class="form-control" name="busqueda_filtro" id="busqueda_filtro">
-
-    	switch(o_filtrado) {
+    function switchear (opcion) {
+		switch(opcion) {
     		case '1':
     			var input = '';
     			$('#load_input').html(input);
@@ -206,6 +147,16 @@
 
     			break;
     	}
+	}
+
+	$(function () {
+		var opcion = $('#filtro option:selected').val();
+    	switchear(opcion);
+	});
+
+    $('#filtro').on('change', function () {
+    	var opcion = $('#filtro option:selected').val();
+    	switchear(opcion);
     });
 
 	$("#btnFiltrar").on("click", function (){
@@ -224,6 +175,7 @@
 
 		if (valido == true) {
 			$.getJSON('/equipos_filtrar/'+opcion_filtrado+'/'+buscar, function (data){
+
 				if (data.length != 0){
 					$('#tbodylisto > tr').remove();
 					var template = $('#tabla_equipos').html();

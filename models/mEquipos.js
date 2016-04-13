@@ -4,12 +4,16 @@ module.exports = {
 	getAll : getAll,
 	insert : insert,
 	getById : getById,
+	getByIdModificar : getByIdModificar,
 	update : update,
-	del : del
+	del : del,
+	getQuery : getQuery
 }
 
 function getAll (cb) {
-	conn("select id, numero, denominacion, numero_coche_fk, DATE_FORMAT(fecha_colocacion, '%d/%m/%Y') as f_colocacion, total, responsable, tipo, DATE_FORMAT(fecha_sacado, '%d/%m/%Y') as f_sacado, km, resultado from equipos",cb);
+	conn("select id, numero, denominacion, numero_coche_fk, "+
+		"DATE_FORMAT(fecha_colocacion, '%d/%m/%Y') as fecha_colocacion, total, responsable, tipo, "+
+		"DATE_FORMAT(fecha_sacado, '%d/%m/%Y') as fecha_sacado, km, resultado from equipos",cb);
 }
 
 function insert (d, cb) {
@@ -23,7 +27,13 @@ function insert (d, cb) {
 }
 
 function getById (id, cb) {
-	conn("select *, DATE_FORMAT(fecha_colocacion, '%d/%m/%Y') as f_colocacion, DATE_FORMAT(fecha_sacado, '%d/%m/%Y') as f_sacado from equipos where id=" + id, cb);
+	conn("select *, DATE_FORMAT(fecha_colocacion, '%d/%m/%Y') as fecha_colocacion, " +
+	"DATE_FORMAT(fecha_sacado, '%d/%m/%Y') as fecha_sacado from equipos where id=" + id, cb);
+}
+
+//Se trae sin convertir fecha para poder ser ingresado en el input='date'
+function getByIdModificar (id, cb) {
+	conn("select * from equipos where id=" + id, cb);
 }
 
 function update (d, cb) {
@@ -45,4 +55,10 @@ function update (d, cb) {
 
 function del (id, cb) {
 	conn("delete from equipos where id=" + id, cb);
+}
+
+function getQuery (campo, buscar, cb){
+	conn("select *, DATE_FORMAT(fecha_colocacion, '%d/%m/%Y') as fecha_colocacion, " +
+	"DATE_FORMAT(fecha_sacado, '%d/%m/%Y') as fecha_sacado " +
+	"from equipos where " + campo + "='" + buscar + "'", cb);
 }

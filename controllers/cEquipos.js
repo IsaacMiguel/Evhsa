@@ -71,7 +71,7 @@ function postAlta (req, res) {
 
 function getVer (req, res) {
 	mEquipos.getById(req.params.id, function (equipo) {
-			res.render('equipo_ver', {
+			res.render('equipos_ver', {
 				pagename : 'Ver Equipo',
 				equipo : equipo[0]
 			});
@@ -79,9 +79,9 @@ function getVer (req, res) {
 }
 
 function getModificar (req, res) {
-	mEquipos.getById(req.params.id, function (equipo) {
+	mEquipos.getByIdModificar(req.params.id, function (equipo) {
 		mVehiculos.getDataVehiculos(function (vehiculos) {
-			res.render('equipo_modificar', {
+			res.render('equipos_modificar', {
 				pagename : 'Modificar Equipo',
 				equipo : equipo[0],
 				vehiculos : vehiculos
@@ -138,6 +138,35 @@ function getDelete (req, res) {
 
 function getEquiposFiltro (req, res) {
 	var params = req.params;
-	
-	console.log("parametros: " + params.opcion + '/' + params.buscar);
+	var opcion = params.opcion;
+	var buscar = params.buscar;
+	var campo = "";
+
+	if (opcion == 1) {
+		mEquipos.getAll(function (equipos) {
+			res.send(equipos);
+		});
+	}else{
+		switch (opcion){
+			case "2":
+				campo = "fecha_colocacion";
+				break;
+
+			case "3":
+				campo = "tipo";
+				break;
+
+			case "4":
+				campo = "fecha_sacado";
+				break;
+
+			case "5":
+				campo = "numero_coche_fk";
+				break;
+		}
+
+		mEquipos.getQuery(campo, buscar, function (data){
+				res.send(data);
+		});
+	}
 }

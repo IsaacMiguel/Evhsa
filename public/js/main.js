@@ -172,9 +172,10 @@ function isNumberKey(evt)
 
 // PARA EL SWIG CUANDO SE USA CON AJAX EN LAS VISTAS
 function parseSwig(input, data) {
-    var output = swig.render(input, { locals: { 
+    var output = swig.render(input, { locals: {
         data: data
     }});
+
     return output;
 }
 
