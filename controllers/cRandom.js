@@ -277,8 +277,8 @@ function updateEquipos (req, res) {
 	var connection = mysql.createConnection({
 	    user: 'root',
 	    password: 'root',
-	    host: '192.168.56.1',
-	    port: '81',
+	    host: 'localhost',
+	    port: '',
 	    database: 'evhsa',
 	    dateStrings : true
  	});
@@ -291,16 +291,21 @@ function updateEquipos (req, res) {
 		async.eachSeries(equipos_temp, function (equipo, callback) {
 			var numero = equipo.EQ_NUME;
 			var denominacion = equipo.EQ_DENO;
+				denominacion = denominacion.replace(/"|'/g, "");
+
 			var numero_coche_fk = equipo.EQ_COCHE;
 			var fecha_colocacion = equipo.EQ_FECO;
 			var total = equipo.EQ_TOTAL;
-			var unica_operador_fk = equipo.EQ_OPER;
+			var unica_operador_fk = 0;
 			var responsable = equipo.EQ_RESPO;
+				responsable = responsable.replace(/"|'/g, "");
 			var observaciones = equipo.EQ_OBSE;
+				observaciones = observaciones.replace(/"|'/g, "");
 			var tipo = equipo.EQ_TIPO;
 			var fecha_sacado = equipo.EQ_FESA;
 			var km = equipo.EQ_KM;
-			var resultado = equipo.RESU;
+			var resultado = equipo.EQ_RESU;
+				resultado = resultado.replace(/"|'/g, "");
 
 			var query = "INSERT INTO equipos(" +
 				"numero, " +
@@ -316,21 +321,21 @@ function updateEquipos (req, res) {
 				"km, " +
 				"resultado) " +
 					"VALUES( " +
-						numero + ", " +
-						"'" + denominacion + ", " +
-					  numero_coche_fk	+ ", " +
-						"'" + fecha_colocacion + ", " +
+						numero + ", '" +
+						denominacion + "', " +
+					  numero_coche_fk	+ ", '" +
+						fecha_colocacion + "', " +
 						total + ", " +
-						unica_operador_fk + ", " +
-						"'" + responsable + ", " +
-						"'" + observaciones + ", " +
-						"'" + tipo + ", " +
-						"'" + fecha_sacado + ", " +
-						km + ", " +
-						"'" + resultado + ", " +
-				")";
+						unica_operador_fk + ", '" +
+						responsable + "', '" +
+						observaciones + "', '" +
+						tipo + "', '" +
+						fecha_sacado + "', " +
+						km + ", '" +
+						resultado + "')";
 
 			connection.query(query, function (err, rows, fields) {
+				console.log("conection.query: " + query)
 				if (err) {
 					throw err;
 			    	console.log(err);
