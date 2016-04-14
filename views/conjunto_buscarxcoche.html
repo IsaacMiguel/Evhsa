@@ -1,0 +1,48 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">
+	        			<span aria-hidden="true">&times;</span>
+	        			<span class="sr-only">Close</span>
+	        		</button>
+	        		<h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      		</div>
+	      		<table id="tabla_conjuntos">
+	      		</table>
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/conjunto_buscarxcoche">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Nro Coche:</td>
+				<td><input type="text" id="nro_coche" maxlength="3" name="nro_coche" required class="form-control" style="width: 150px; text-align: center;" onKeyPress="return soloNumeros(event)"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>
+				<td><input type="button" value="Buscar" id="Buscar" class="btn btn-default"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+	// $("#codigo1").val().toUpperCase();
+</script>
+{% endblock %}
