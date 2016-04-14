@@ -20,6 +20,7 @@ var cIngegr = require('./controllers/cIngegr');
 var cFlujoDeFondos = require('./controllers/cFlujoDeFondos');
 var cConjunto = require('./controllers/cConjunto');
 var cEquipos = require('./controllers/cEquipos');
+var cHerramientas = require('./controllers/cHerramientas');
 
 
 
@@ -341,6 +342,9 @@ module.exports = function(app) {
 	app.post("/equipos_modificar", auth, cEquipos.postModificar);
 	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
 	app.get("/equipos_filtrar/:opcion/:buscar", auth, acceso, cEquipos.getEquiposFiltro);
+
+	//HERRAMIENTRAS
+	app.get("/herramientas_lista", auth, acceso, cHerramientas.getLista);
 
 
 

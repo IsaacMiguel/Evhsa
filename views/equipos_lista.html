@@ -66,42 +66,45 @@
 	<!-- Fin Modal -->
 	<div class="row">
 		<div class="col-xs-12">
-			<table class="table table-striped">
-		  		<thead>
-		  			<tr> 
-						<th>N°</th>
-						<th>Denominación</th>
-						<th>N° Coche</th>
-						<th>Fcha. Colocación</th>
-						<th>Total</th>
-						<th>Responsable</th>
-						<th>Tipo</th>
-						<th>Fcha. Sacado</th>
-						<th>Km</th>
-					</tr>
-		  		</thead>
-		  		<tbody id="tbodylisto">
-		  			
-		  		</tbody>
-		  		<script type="text/template" id="tabla_equipos" />
-		  			[% for e in data %]
-						<tr>
-							<td>[[ e.numero ]]</td>
-							<td>[[ e.denominacion ]]</td>
-							<td>[% if e.numero_coche_fk == 0 %]S/A[% else %][[ e.numero_coche_fk ]][% endif %]</td>
-							<td>[% if e.fecha_colocacion != '00/00/0000' %][[ e.fecha_colocacion ]][% else %][% endif %]</td>
-							<td>[[ e.total ]]</td>
-							<td>[[ e.responsable ]]</td>
-							<td>[[ e.tipo ]]</td>
-							<td>[% if e.fecha_sacado != '00/00/0000' %][[ e.fecha_sacado ]][% else %][% endif %]</td>
-							<td>[[ e.km ]]</td>
-							<td><a href="/equipos_ver/[[ e.id ]]"><button class="btn btn-default">Ver</button></a></td>
-							<td><a href="/equipos_modificar/[[ e.id ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
-							<td><a href="/equipos_eliminar/[[ e.id ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr> 
+			  				<th colspan="3">Opciones</th>
+							<th>N°</th>
+							<th>Denominación</th>
+							<th>N° Coche</th>
+							<th>Fcha. Colocación</th>
+							<th>Total</th>
+							<th>Responsable</th>
+							<th>Tipo</th>
+							<th>Fcha. Sacado</th>
+							<th>Km</th>
 						</tr>
-					[% endfor %]
-		  		</script>
-			</table>				
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tabla_equipos" />
+			  			[% for e in data %]
+							<tr>
+								<td><a href="/equipos_ver/[[ e.id ]]"><button class="btn btn-default">Ver</button></a></td>
+								<td><a href="/equipos_modificar/[[ e.id ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
+								<td><a href="/equipos_eliminar/[[ e.id ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+								<td>[[ e.numero ]]</td>
+								<td>[[ e.denominacion ]]</td>
+								<td>[% if e.numero_coche_fk == 0 %]S/A[% else %][[ e.numero_coche_fk ]][% endif %]</td>
+								<td>[% if e.fecha_colocacion != '00/00/0000' %][[ e.fecha_colocacion ]][% else %][% endif %]</td>
+								<td>[[ e.total ]]</td>
+								<td>[[ e.responsable ]]</td>
+								<td>[[ e.tipo ]]</td>
+								<td>[% if e.fecha_sacado != '00/00/0000' %][[ e.fecha_sacado ]][% else %][% endif %]</td>
+								<td>[[ e.km ]]</td>
+							</tr>
+						[% endfor %]
+			  		</script>
+				</table>				
+			</div>
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>
@@ -160,6 +163,7 @@
     });
 
 	$("#btnFiltrar").on("click", function (){
+		$('#tbodylisto').html('<p>Cargando...<p>');
 		var opcion_filtrado = $('#filtro option:selected').val();
 		var buscar = $('#busqueda_filtro').val();
 		var valido = false;
