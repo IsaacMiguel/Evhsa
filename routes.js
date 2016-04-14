@@ -76,7 +76,7 @@ function acceso (req, res, next){
 	// console.log(id_usuario)
 	// console.log(id_menu)
 
-	if (id_menu != 1 && id_menu != 43 && id_menu != 44 && id_menu != 45 ){
+	if (id_menu != 00 && id_menu != 1 && id_menu != 43 && id_menu != 44 && id_menu != 45 ){
 		mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
 			if (user[0].tiene_permiso){
 				next();
@@ -133,6 +133,26 @@ function acceso (req, res, next){
 		// usuarios 1
 		// administracion 43, 44 y 45	
 		switch (id_menu){
+			case '00':
+				mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
+					if (user[0].tiene_permiso){
+						next();
+					}else{
+				        mAccesos.VerificarNivelProgramador(id_usuario, function (user){
+							if (user[0].tiene_permiso){
+								next();
+							}else{
+								mAyuda.getAyuda(id_menu, function (ayuda){
+									var nombre_usuario = req.session.user.usuario;
+									res.render("error", {
+										error: nombre_usuario+": No tiene acceso al modulo Interno para programadores."
+									});
+								});
+							}
+						});
+					}
+				});
+				break;
 		    case '1':
 		    	// usuarios
 		    	mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
@@ -331,7 +351,11 @@ module.exports = function(app) {
 	app.get("/conjunto_ficha_modificar/:id", auth, acceso, cConjunto.getFicha_Modificar);
 	app.post("/conjunto_ficha_modificar", auth, cConjunto.postFicha_Modificar);
 	app.get("/conjunto_ficha_borrar/:id", auth, acceso, cConjunto.getFicha_Del);
-	// app.get("/conjunto_formacioncoche", auth, acceso, cConjunto.getFormacionCoche);
+	app.post("/conjunto_dardebaja/:id/:fecha_baja/:motivo_baja", auth, cConjunto.postBaja);
+	app.post("/conjunto_dardealta/:id", auth, cConjunto.postRecuperarAlta);
+	app.get("/conjunto_buscarxcoche", auth, acceso, cConjunto.getBuscarxCoche);
+	app.post("/conjunto_buscarxcoche", auth, cConjunto.postBuscarxCoche);
+	app.get("/conjunto_formacioncoche/:numero", auth, acceso, cConjunto.getFormacionCoche);
 	// app.get("/conjunto_neumaticos_ubicacion", auth, acceso, cConjunto.getNeumaticos_Ubicacion);
 	// app.get("/conjunto_neumaticos_resumen", auth, acceso, cConjunto.getNeumaticos_Resumen);
 
@@ -343,7 +367,6 @@ module.exports = function(app) {
 	app.get("/equipos_modificar/:id", auth, acceso, cEquipos.getModificar);
 	app.post("/equipos_modificar", auth, cEquipos.postModificar);
 	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
-
 
 
 	//pruebasql

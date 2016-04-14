@@ -13,7 +13,8 @@ module.exports = {
 	verificarAcceso: verificarAcceso,
 	VerificarNivelSupervisor: VerificarNivelSupervisor,
 	VerificarNivelAdministracion: VerificarNivelAdministracion,
-	VerificarNivelClaves: VerificarNivelClaves
+	VerificarNivelClaves: VerificarNivelClaves,
+	VerificarNivelProgramador: VerificarNivelProgramador
 }
 
 function getAccesosPorUsuario(idusuario, cb){
@@ -97,4 +98,8 @@ function VerificarNivelAdministracion(id_usuario, cb){
 
 function VerificarNivelClaves(id_usuario, cb){
 	conn("select IF (UPPER(secr.niveles) like '%CLAVES%', 1, 0) as tiene_permiso from secr where unica = "+id_usuario, cb)
+}
+
+function VerificarNivelProgramador(id_usuario, cb){
+	conn("select IF (UPPER(secr.niveles) like '%PROGRAMADOR%', 1, 0) as tiene_permiso from secr where unica = "+id_usuario, cb)
 }

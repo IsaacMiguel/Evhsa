@@ -121,7 +121,7 @@
 					</select>
 				</td>
 			</tr>
-			<tr id="tr_ubicacion_neumatico" style="display:none">
+			{% if ubicacion_actual == 'C' %}<tr id="tr_ubicacion_neumatico">{% else %}<tr id="tr_ubicacion_neumatico" style="display:none">{% endif %}
 				<td>Ubicacion Neumatico:</td>
 				<td>
 					<select class="form-control" id="ubicacion_neumatico" name="ubicacion_neumatico">
@@ -164,7 +164,7 @@
 			</tr>
 			{% if es_neumatico == 0 %}<tr style="display:none">{% else %}<tr>{% endif %}
 				<td>MMs de Cubierta:</td>
-				<td><input type="text" id="mm" name="mm" class="form-control" onKeyPress="return soloNumeros(event)" maxlength="2" value="{{ ficha.mm }}"></td>
+				<td><input type="text" id="mm" name="mm" class="form-control" onKeyPress="return soloNumeros(event)" maxlength="3" value="{{ ficha.mm }}"></td>
 			</tr>
 			<tr>
 				<td>Suma en Estadistica?:</td>

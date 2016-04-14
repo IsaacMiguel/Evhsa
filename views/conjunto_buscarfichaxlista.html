@@ -5,6 +5,24 @@
 {% endblock %}
 
 {% block content %}
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        		<h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      		</div>
+	      		<div class="modal-body">
+	        		{{ ayuda.texto }}
+	      		</div>
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+<!-- Fin Modal -->
 <link href="/css/conjunto_buscarfichaxlista.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
@@ -15,7 +33,8 @@
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
 				<td><a href="/conjuntos_alta"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo</button></a></td>
-				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<!-- <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td> -->
+				<td><button type="button" class="btn btn-default">Ayuda</button></td>
 				<td style="width: 100%;">
 					<table class="pull-right">
 						<tr>
@@ -46,24 +65,6 @@
 			</tr>	
 		</table>
 	</div>
-	<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
-		      </div>
-		      <div class="modal-body">
-		        {{ ayuda.texto }}
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	<!-- Fin Modal -->
 	<!-- código pañol – código evhsa – denominación – fecha comprado - valor -->
 	<div class="row">
 		<div class="col-xs-12">
@@ -71,7 +72,7 @@
 				<table class="table table-striped">
 			  		<thead>
 			  			<tr>
-			  				<th colspan="2">Opciones</th>
+			  				<th colspan="4">Opciones</th>
 							<th>Codigo Pañol</th>
 							<th>Codigo Evhsa</th>
 							<th>Denominacion</th>
@@ -85,19 +86,75 @@
 			  		<script type="text/template" id="tablafichas" />
 			  			[% for f in data %]
 			  				<tr>
+			  					<td>
+			  						<a href="/conjunto_verficha/[[ f.codigo ]]/[[ f.serie ]]" data-idmenu="17" data-accion="c">
+			  							<button class="btn btn-default" id="ver" title="Ver Ficha Completa">
+			  								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+			  							</button>
+			  						</a>
+			  					</td>
 			  					<td style="padding-right: 4px;">
-									<a href="/conjunto_modificar/[[ f.id ]]" data-idmenu="17" data-accion="m">
-										<button class="btn btn-warning modificar" id="modificar" title="Modificar">
+			  						[% if f.fecha_baja == ''  %]
+			  							<a href="/conjunto_modificar/[[ f.id ]]" data-idmenu="17" data-accion="m">
+											<button class="btn btn-warning modificar" id="modificar" title="Modificar">
+												<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+											</button>
+										</a>
+			  						[% elseif f.fecha_baja == '0000-00-00' %]
+			  							<a href="/conjunto_modificar/[[ f.id ]]" data-idmenu="17" data-accion="m">
+											<button class="btn btn-warning modificar" id="modificar" title="Modificar">
+												<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+											</button>
+										</a>
+			  						[% else %]
+										<button class="btn btn-warning" title="Modificar" onclick="Este conjunto no se puede modificar porque está dado de baja.">
 											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 										</button>
-									</a>
+									[% endif %]
 								</td>
-								<td style="padding-right: 4px; padding-left: 0px;">
-			  						<a href="/conjunto_borrar/[[ f.id ]]" data-idmenu="17" data-accion="b">
-			  							<button class="btn btn-danger borrar" id="borrar" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar">
+								[% if f.fecha_baja == ''  %]
+									<td>
+										<!-- <a href="/"  data-idmenu="17" data-accion="m"> -->
+											<button class="btn btn-danger baja" data-id="[[ f.id ]]" title="Dar de Baja la Ficha de este Conjunto" onclick="if (!confirm('¿Seguro desea dar de baja este conjunto?')) return false;" >
+												<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+											</button>
+										<!-- </a> -->
+									</td>
+								[% elseif f.fecha_baja == '0000-00-00' %]
+									<td>
+										<!-- <a href="/"  data-idmenu="17" data-accion="m"> -->
+											<button class="btn btn-danger baja" data-id="[[ f.id ]]" title="Dar de Baja la Ficha de este Conjunto" onclick="if (!confirm('¿Seguro desea dar de baja este conjunto?')) return false;" >
+												<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+											</button>
+										<!-- </a> -->
+									</td>
+								[% else %]
+									<td>
+										<!-- <a href="/"  data-idmenu="17" data-accion="m"> -->
+											<button class="btn btn-success alta" data-id="[[ f.id ]]" title="Recuperar (dar de alta) la Ficha de este Conjunto" onclick="if (!confirm('¿Seguro desea dar de alta, osea, recuperar esta ficha?')) return false;">
+												<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+											</button>
+										<!-- </a> -->
+									</td>
+								[% endif %]
+								<td style="padding-right: 4px; padding-left: 0px;">			  						
+				  					[% if f.fecha_baja == ''  %]
+			  							<a href="/conjunto_borrar/[[ f.id ]]" data-idmenu="17" data-accion="b">
+				  							<button class="btn btn-danger borrar" id="borrar" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar">
+					  							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					  						</button>
+					  					</a>
+			  						[% elseif f.fecha_baja == '0000-00-00' %]
+			  							<a href="/conjunto_borrar/[[ f.id ]]" data-idmenu="17" data-accion="b">
+				  							<button class="btn btn-danger borrar" id="borrar" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar">
+					  							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					  						</button>
+					  					</a>
+			  						[% else %]
+										<button class="btn btn-danger" onclick="Este conjunto no se puede ser eliminado porque está dado de baja." title="Eliminar">
 				  							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				  						</button>
-				  					</a>
+									[% endif %]
 			  					</td>
 			  					<td>[[ f.codigo ]]</td>
 			  					<td>[[ f.serie ]]</td>
@@ -125,16 +182,9 @@
     	tagControls: ['[%', '%]']
     });
 
-	$("#btnFiltrar").on("click", function (){
-		var opcion = $("#filtro").val();
-		var codigo_letra = $("#codigo_letra").val();
-		var codigo_num_grupo = $("#codigo_num_grupo").val();
-		var codigo_num_repuesto = $("#codigo_num_repuesto").val();
+	function Filtrar(opcion, codigo_letra, codigo_num_grupo, codigo_num_repuesto){
 		var codigo = "nocode"
 
-		// si el primero o el segundo estan vacios, pero el 3ro tiene algo, buscar NADA y vaciar el 3ro, con .val("")
-		// agregar el left a la busqueda = where left(codigo, length) like '%ads%'
-		// console.log(codigo)
 		if (codigo_letra.length == 1){
 			if (codigo_num_grupo.length == 3){
 				if (codigo_num_repuesto.length == 3){
@@ -161,16 +211,11 @@
 		codigo = codigo.toUpperCase();
 
 		$.getJSON('/getFichasFiltro/'+opcion+'/'+codigo, function (data){
-			// console.log(data);
+			console.log(data);
 			if (data.length != 0){
 				$('#tbodylisto > tr').remove();
 				var template = $('#tablafichas').html();
-				// Mustache.tags =['[[',']]'];
-				// var html = Mustache.to_html(template, data);
-				//console.log(html);
-
 				var output = parseSwig(template, data);
-
 				$('#tbodylisto').html(output);
 			}else{
 				//hacer que aca muestre error de que no se encontro nada en la busqueda
@@ -179,6 +224,67 @@
 				$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
 			}
 		});	
+	}
+
+	$("#btnFiltrar").on("click", function (){
+		var opcion = $("#filtro").val();
+		var codigo_letra = $("#codigo_letra").val();
+		var codigo_num_grupo = $("#codigo_num_grupo").val();
+		var codigo_num_repuesto = $("#codigo_num_repuesto").val();
+		
+		Filtrar(opcion, codigo_letra, codigo_num_grupo, codigo_num_repuesto);		
+	});
+
+	$(document).on("click",".baja",function(){
+		myDate = generateTodayDate();
+
+		var id = $(this).data("id");
+		console.log(id)
+		$("#myModalLabel").text("Dar de Baja Conjunto");
+		var html = "<input hidden id='id_del_conjunto' name='id_del_conjunto' value='"+id+"'><table><tr><td>Fecha de Baja:</td><td><input readonly type='text' id='fecha_baja' name='fecha_baja' value='"+myDate+"' class='form-control' style='width:150px; text-align:center;'></td></tr><tr><td>Motivo de Baja:</td><td><input type='text' id='motivo_baja' name='motivo_baja' maxlength='30' class='form-control' value='' required></td></tr><tr><td colspan='2'><p>*Al dar de baja el conjunto no podrá modificarlo ni a ningún movimiento perteneciente a él.</p></td></tr></table>";
+		$(".modal-body").html(html);
+		$("#motivo_baja").focus();
+		var footer = "<div class='modal-footer'><button type='button' class='btn btn-default' data-dismiss='modal'>Cerrar</button><button type='button' id='btnSubmitBaja' class='btn btn-warning'>Dar de Baja</button></div>";
+		$(".modal-footer").replaceWith(footer);
+		$("#motivo_baja").val("");
+		$('#myModal').modal('toggle');
+		
+	});
+
+	$(document).on("click","#btnSubmitBaja",function(){
+		var fecha_baja = $("#fecha_baja").val();
+		fecha_baja = changeDate(fecha_baja);
+		fecha_baja = encodeURIComponent(fecha_baja);
+		var motivo_baja = $("#motivo_baja").val();
+		var id = $("#id_del_conjunto").val();
+		// SEGUIR ACA, DAR DE BAJA CON EL AJAX, CERRAR EL MODAL, LIMPIAR CAMPOS EN EL MODAL...
+		if (motivo_baja != ''){
+			$.post("/conjunto_dardebaja/"+id+"/"+fecha_baja+"/"+motivo_baja, function(data, textStatus, xhr) {
+				/*optional stuff to do after success */
+				console.log("success");
+				var opcion = $("#filtro").val();
+				var codigo_letra = $("#codigo_letra").val();
+				var codigo_num_grupo = $("#codigo_num_grupo").val();
+				var codigo_num_repuesto = $("#codigo_num_repuesto").val();
+				
+				$("#myModal").modal("toggle");
+				Filtrar(opcion, codigo_letra, codigo_num_grupo, codigo_num_repuesto);
+			});
+		}else{
+			alert("El motivo de baja no puede estar vacio.")
+		}				
+	});
+
+	$(document).on("click",".alta",function(){
+		var opcion = $("#filtro").val();
+		var codigo_letra = $("#codigo_letra").val();
+		var codigo_num_grupo = $("#codigo_num_grupo").val();
+		var codigo_num_repuesto = $("#codigo_num_repuesto").val();
+		var id = $(this).data("id");
+		console.log(id)
+		$.post("/conjunto_dardealta/"+id, function(data, textStatus, xhr) {
+			Filtrar(opcion, codigo_letra, codigo_num_grupo, codigo_num_repuesto);
+		});
 	});
 </script>
 {% endblock %}

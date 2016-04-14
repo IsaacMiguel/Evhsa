@@ -16,7 +16,15 @@ module.exports = {
 	getAllActivas_xCodigo: getAllActivas_xCodigo,
 	getAllBajas_xCodigo: getAllBajas_xCodigo,
 	getBuscar_ConjuntoFicha_ById: getBuscar_ConjuntoFicha_ById,
-	updateMovimiento: updateMovimiento
+	updateMovimiento: updateMovimiento,
+	del_Ficha: del_Ficha,
+	postBaja: postBaja,
+	postRecuperarAlta: postRecuperarAlta,
+	update_UbicacionActual_onDefinicion: update_UbicacionActual_onDefinicion,
+	update_UbicacionActualNeumaticos_onDefinicion: update_UbicacionActualNeumaticos_onDefinicion,
+	update_UbicacionCocheActual_onDefinicion: update_UbicacionCocheActual_onDefinicion,
+	getFichaWithFechaMax: getFichaWithFechaMax,
+	getFormacionCoche: getFormacionCoche
 }
 
 function getAll(cb){
@@ -66,7 +74,7 @@ function getBuscar_ConjuntoFicha_x_CodigoySerie(codigo, serie, cb){
 		"LEFT JOIN ubicaciones on ubicaciones.codigo = conjunto_ficha.codigo_ubicacion_actual_fk "+
 		"LEFT JOIN ubicaciones_neumaticos ON ubicaciones_neumaticos.codigo = conjunto_ficha.codigo_ubicacion_neumatico_fk "+
 		"LEFT JOIN tipo_cubierta ON tipo_cubierta.codigo = conjunto_ficha.codigo_tipo_cubierta_fk "+
-		"where conjunto_ficha.codigo = '"+codigo+"' AND conjunto_ficha.serie = '"+serie+"'", cb);
+		"where conjunto_ficha.codigo = '"+codigo+"' AND conjunto_ficha.serie = '"+serie+"' ORDER BY fecha_movimiento desc, id desc", cb);
 }
 
 function getBuscar_ConjuntoDefinicion_xCodigo(codigo, cb){
@@ -90,7 +98,7 @@ function getAllActivas(cb){
 		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
 		"FROM conjunto_definicion "+
 		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
-		"WHERE fecha_baja = ''", cb);
+		"WHERE fecha_baja = '' order by conjunto_definicion.id", cb);
 }
 
 function getAllBajas(cb){
@@ -98,7 +106,7 @@ function getAllBajas(cb){
 		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
 		"FROM conjunto_definicion "+
 		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
-		"WHERE fecha_baja != ''", cb);
+		"WHERE fecha_baja != '' order by conjunto_definicion.id", cb);
 }
 
 function getAll_xCodigo(codigo, cb){
@@ -106,7 +114,7 @@ function getAll_xCodigo(codigo, cb){
 		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
 		"FROM conjunto_definicion "+
 		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
-		"WHERE conjunto_definicion.codigo like '%"+codigo+"%'", cb);
+		"WHERE conjunto_definicion.codigo like '%"+codigo+"%' order by conjunto_definicion.id", cb);
 }
 
 function getAllActivas_xCodigo(codigo, cb){
@@ -114,7 +122,7 @@ function getAllActivas_xCodigo(codigo, cb){
 		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
 		"FROM conjunto_definicion "+
 		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
-		"WHERE fecha_baja = '' AND conjunto_definicion.codigo like '%"+codigo+"%'", cb);
+		"WHERE fecha_baja = '' AND conjunto_definicion.codigo like '%"+codigo+"%' order by conjunto_definicion.id", cb);
 }
 
 function getAllBajas_xCodigo(codigo, cb){
@@ -122,7 +130,7 @@ function getAllBajas_xCodigo(codigo, cb){
 		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
 		"FROM conjunto_definicion "+
 		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
-		"WHERE fecha_baja != '' AND conjunto_definicion.codigo like '%"+codigo+"%'", cb);
+		"WHERE fecha_baja != '' AND conjunto_definicion.codigo like '%"+codigo+"%' order by conjunto_definicion.id", cb);
 }
 
 function getBuscar_ConjuntoFicha_ById(id, cb){
@@ -145,4 +153,46 @@ function updateMovimiento(id, fecha_movimiento, coche_sacado, coche_colocado, ub
 		"valor = "+costo+", memo = '"+detalle+"', codigo_ubicacion_neumatico_fk = '"+ubicacion_neumatico+"', imputa = "+imputado+", "+
 		"responsable_reparacion = '"+responsable_reparacion+"', responsable_rotura = '"+responsable_rotura+"', km = 0, "+
 		"codigo_tipo_cubierta_fk = '"+tipo_cubiertas+"', est = '"+suma_estadistica+"', mm = "+mm+" WHERE id = "+id, cb)
+}
+
+function del_Ficha(id, cb){
+	conn("delete from conjunto_ficha where id = "+id, cb);
+}
+
+function postBaja(id, fecha_baja, motivo, cb){
+	conn("UPDATE conjunto_definicion SET fecha_baja = '"+fecha_baja+"', motivo_baja = '"+motivo+"' WHERE id = "+id, cb);
+}
+
+function postRecuperarAlta(id, cb){
+	conn("UPDATE conjunto_definicion SET fecha_baja = '' WHERE id = "+id, cb);
+}
+
+function update_UbicacionActual_onDefinicion(codigo, serie, ubicacion_actual, cb){
+	conn("UPDATE conjunto_definicion SET codigo_ubicacion_actual_fk = '"+ubicacion_actual+"' WHERE codigo = '"+codigo+
+		"' AND serie = '"+serie+"'", cb);
+}
+
+function update_UbicacionActualNeumaticos_onDefinicion(codigo, serie, ubicacion_neumaticos, cb){
+	conn("UPDATE conjunto_definicion SET codigo_ubicacion_neumatico_fk = '"+ubicacion_neumaticos+"' WHERE codigo = '"+codigo+
+		"' AND serie = '"+serie+"'", cb);
+}
+
+function update_UbicacionCocheActual_onDefinicion(codigo, serie, numero_coche, cb){
+	conn("UPDATE conjunto_definicion SET numero_coche_fk = "+numero_coche+" WHERE codigo = '"+codigo+
+		"' AND serie = '"+serie+"'", cb);
+}
+
+function getFichaWithFechaMax(codigo, serie, cb){
+	// SELECT * FROM evhsa.conjunto_ficha ORDER BY fecha_movimiento desc, id desc LIMIT 1
+	conn("SELECT * FROM conjunto_ficha "+
+		"WHERE fecha_movimiento IN (SELECT max(fecha_movimiento) FROM conjunto_ficha WHERE conjunto_ficha.codigo = '"+codigo+"' "+
+		"AND conjunto_ficha.serie = '"+serie+"' ORDER BY fecha_movimiento desc, id desc)", cb);
+}
+
+function getFormacionCoche(numero, cb){
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"FROM conjunto_definicion "+
+		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
+		"WHERE conjunto_definicion.numero_coche_fk = "+numero, cb);
 }

@@ -183,3 +183,16 @@ function parseSwig(input, data) {
 // module.exports = {
 //     changeDate2: changeDate2
 // }
+
+function generateTodayDate(){
+    var myDate = new Date();
+    year = myDate.getFullYear(); 
+    day = myDate.getDate();
+    if (day<10)
+        day = "0"+day;
+    month = myDate.getMonth()+1;
+    if (month<10)
+        month = "0"+month
+    myDate = day + "/" + month + "/" + year;
+    return myDate;
+}

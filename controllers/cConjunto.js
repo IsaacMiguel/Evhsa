@@ -24,7 +24,43 @@ module.exports = {
 	postModificar: postModificar,
 	getFicha_Modificar: getFicha_Modificar,
 	postFicha_Modificar: postFicha_Modificar,
-	getFicha_Del: getFicha_Del
+	getFicha_Del: getFicha_Del,
+	postBaja: postBaja,
+	postRecuperarAlta: postRecuperarAlta,
+	getBuscarxCoche: getBuscarxCoche,
+	postBuscarxCoche: postBuscarxCoche,
+	getFormacionCoche: getFormacionCoche
+}
+
+function ActualizarUbicacionesActuales(codigo, serie, cb){
+	var bandera = false;
+
+	mConjunto.getFichaWithFechaMax(codigo, serie, function (ficha) {
+		const ultima_ubicacion = ficha[0].codigo_ubicacion_actual_fk;
+		const ubicacion_neumaticos = ficha[0].codigo_ubicacion_neumatico_fk;
+		const numero_coche = ficha[0].numero_coche_colocado_fk;
+		// si es hacia coche, updatear tambien ubicacion_neumaticos, sino, sólo ubicacion_actual
+		if (ultima_ubicacion == 'C'){
+			mConjunto.update_UbicacionActual_onDefinicion(codigo, serie, ultima_ubicacion, function (){
+				mConjunto.update_UbicacionCocheActual_onDefinicion(codigo, serie, numero_coche, function (){
+					mConjunto.update_UbicacionActualNeumaticos_onDefinicion(codigo, serie, ubicacion_neumaticos, function (){
+						bandera = true;
+						return cb();
+					});
+				});
+			});
+		}else{
+			mConjunto.update_UbicacionActual_onDefinicion(codigo, serie, ultima_ubicacion, function (){
+				bandera = true;
+				return cb();
+			});
+		}
+	});
+
+	// if (bandera)	
+	// 	return cb();
+	// else
+	// 	console.log("ERROR AL ACTUALIZAR LAS UBICACIONES ACTUALES DE ESTE CONJUNTO");
 }
 
 function changeDate(date){
@@ -112,16 +148,19 @@ function getVerFicha(req, res){
 	var codigo = params.codigo;
 	var serie = params.serie;
 
-	mConjunto.getBuscar_x_CodigoySerie(codigo, serie, function (conjunto_definicion){
-		mConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie(codigo, serie, function (conjunto_fichas){
-			res.render("conjunto_verficha", {
-				pagename: "Ficha completa de Conjunto",
-				conjunto_definicion: conjunto_definicion[0],
-				conjunto_fichas: conjunto_fichas,
-				es_neumatico: conjunto_definicion[0].es_neumatico
+	ActualizarUbicacionesActuales(codigo, serie, function (){
+		mConjunto.getBuscar_x_CodigoySerie(codigo, serie, function (conjunto_definicion){
+			mConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie(codigo, serie, function (conjunto_fichas){
+				res.render("conjunto_verficha", {
+					pagename: "Ficha completa de Conjunto",
+					conjunto_definicion: conjunto_definicion[0],
+					conjunto_fichas: conjunto_fichas,
+					es_neumatico: conjunto_definicion[0].es_neumatico
+				});
 			});
 		});
 	});
+	
 }
 
 function getBuscar_ConjuntoDefinicion_xCodigo(req, res){
@@ -167,7 +206,7 @@ function getConjunto_Ficha_Alta(req, res){
 
 function postConjuntoFicha_Alta(req, res){
 	var params = req.body;
-	console.log(params)
+	// console.log(params)
 	var codigo = params.codigo;
 	var serie = params.serie;
 	var fecha_movimiento = params.fecha_movimiento;
@@ -194,17 +233,21 @@ function postConjuntoFicha_Alta(req, res){
 	switch(ubicacion_actual) {
 	    case 'A':
 	    	coche_colocado = 0;
+	    	ubicacion_neumatico = 'NN';
 	    	break;
 	    case 'C':
 	    	break;
 	    case 'P':	    	
 	    	coche_colocado = 0;
+	    	ubicacion_neumatico = 'NN';
 	    	break;
 	    case 'T':	    	
 	    	coche_colocado = 0;
+	    	ubicacion_neumatico = 'NN';
 	    	break;
 	    case 'B':
 	    	coche_colocado = 0;
+	    	ubicacion_neumatico = 'NN';
 	    	break;
 	    default:
 	}
@@ -215,7 +258,9 @@ function postConjuntoFicha_Alta(req, res){
 	}
 
 	mConjunto.insertMovimiento(codigo, serie, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, tipo_cubiertas, mm, suma_estadistica, function (){
-		res.redirect("conjunto_verficha/"+codigo+"/"+serie);
+		ActualizarUbicacionesActuales(codigo, serie, function (){
+			res.redirect("conjunto_verficha/"+codigo+"/"+serie);
+		});
 	});
 }
 
@@ -313,11 +358,12 @@ function postModificar(req, res){
 	fecha_compra = changeDate(fecha_compra);
 
 	mConjunto.updateDefinicion(id, fecha_compra, proveedor, valor, ubicacion, experimental, chasis, es_neumatico, function (){
-		res.redirect("conjunto_buscarfichaxlistado");
+		ActualizarUbicacionesActuales(codigo, serie, function (){
+			res.redirect("conjunto_buscarfichaxlistado");
+		});
 	});
 }
 
-// 
 function getDel(req, res){
 	var params = req.params;
 	var id = params.id;
@@ -334,7 +380,6 @@ function getDel(req, res){
 			// console.log(conjunto_ficha.length)
 			// console.log("conjunto_ficha.length")
 			if (conjunto_ficha.length > 0){
-
 				res.render("error", {
 					error: "El Conjunto no puede ser eliminado porque posee movimientos. Elimine todos los movimientos y vuelva a intentarlo."
 				});
@@ -366,7 +411,8 @@ function getFicha_Modificar(req, res){
 									vehiculos: vehiculos,
 									ubicaciones_neumaticos: ubicaciones_neumaticos,
 									tipo_cubiertas: tipo_cubiertas,
-									ubicaciones: ubicaciones
+									ubicaciones: ubicaciones,
+									ubicacion_actual: ficha[0].codigo_ubicacion_actual_fk
 								});
 							});
 						});
@@ -406,17 +452,21 @@ function postFicha_Modificar(req, res){
 	switch(ubicacion_actual) {
 	    case 'A':
 	    	coche_colocado = 0;
+	    	ubicacion_neumatico = 'NN';
 	    	break;
 	    case 'C':
 	    	break;
 	    case 'P':	    	
 	    	coche_colocado = 0;
+	    	ubicacion_neumatico = 'NN';
 	    	break;
 	    case 'T':	    	
 	    	coche_colocado = 0;
+	    	ubicacion_neumatico = 'NN';
 	    	break;
 	    case 'B':
 	    	coche_colocado = 0;
+	    	ubicacion_neumatico = 'NN';
 	    	break;
 	    default:
 	}
@@ -427,11 +477,71 @@ function postFicha_Modificar(req, res){
 	}
 
 	mConjunto.updateMovimiento(id, fecha_movimiento, coche_sacado, coche_colocado, ubicacion_actual, destino, detalle, costo, imputado, ubicacion_neumatico, responsable_reparacion, responsable_rotura, tipo_cubiertas, mm, suma_estadistica, function (){
-		res.redirect("conjunto_verficha/"+codigo+"/"+serie);
+		ActualizarUbicacionesActuales(codigo, serie, function (){
+			res.redirect("conjunto_verficha/"+codigo+"/"+serie);
+		});
 	});
 
 }
 
 function getFicha_Del(req, res){
+	var params = req.params;
+	var id = params.id;
 
+	mConjunto.getBuscar_ConjuntoFicha_ById(id, function (ficha){
+		var codigo = ficha[0].codigo;
+		var serie = ficha[0].serie;
+		mConjunto.del_Ficha(id, function (){
+			res.redirect("conjunto_verficha/"+codigo+"/"+serie);
+		});
+	});
+}
+
+function postBaja(req, res){
+	var params = req.params;
+	var id = params.id;
+	var fecha_baja = params.fecha_baja;
+	var motivo_baja = params.motivo_baja;
+
+	mConjunto.postBaja(id, fecha_baja, motivo_baja, function (asd){
+		// console.log(asd);
+		res.send(asd);
+	});
+}
+
+function postRecuperarAlta(req, res){
+	var params = req.params;
+	var id = params.id;
+
+	mConjunto.postRecuperarAlta(id, function (asd){
+		res.send(asd);
+	});
+}
+
+function getBuscarxCoche(req, res){
+	res.render("conjunto_buscarxcoche", {
+		pagename: "Buscar Formacion de Coche"
+	});
+}
+
+function postBuscarxCoche(req, res){
+	var params = req.body;
+	var nro_coche = params.nro_coche;
+	
+	res.redirect("conjunto_formacioncoche/"+nro_coche);	
+}
+
+// SEGUIR ACA
+
+function getFormacionCoche(req, res) {
+	var params = req.params;
+	var numero = params.numero;
+
+	mConjunto.getFormacionCoche(numero, function (formacion) {
+		console.log(formacion)
+		res.render("conjunto_formacioncoche", {
+			pagename: "Formacion de Coche Nro "+numero,
+			formacion: formacion
+		});
+	});
 }
