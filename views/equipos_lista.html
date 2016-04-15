@@ -94,11 +94,11 @@
 								<td>[[ e.numero ]]</td>
 								<td>[[ e.denominacion ]]</td>
 								<td>[% if e.numero_coche_fk == 0 %]S/A[% else %][[ e.numero_coche_fk ]][% endif %]</td>
-								<td>[% if e.fecha_colocacion != '00/00/0000' %][[ e.fecha_colocacion ]][% else %][% endif %]</td>
+								<td>[% if e.fecha_colocacion_f != '00/00/0000' %][[ e.fecha_colocacion_f ]][% else %][% endif %]</td>
 								<td>[[ e.total ]]</td>
 								<td>[[ e.responsable ]]</td>
 								<td>[[ e.tipo ]]</td>
-								<td>[% if e.fecha_sacado != '00/00/0000' %][[ e.fecha_sacado ]][% else %][% endif %]</td>
+								<td>[% if e.fecha_sacado_f != '00/00/0000' %][[ e.fecha_sacado_f ]][% else %][% endif %]</td>
 								<td>[[ e.km ]]</td>
 							</tr>
 						[% endfor %]
@@ -178,7 +178,7 @@
 		}
 
 		if (valido == true) {
-			$.getJSON('/equipos_filtrar/'+opcion_filtrado+'/'+buscar, function (data){
+			$.getJSON('/equipos_filtrar/' + opcion_filtrado + '/' + buscar , function (data){
 
 				if (data.length != 0){
 					$('#tbodylisto > tr').remove();
@@ -191,7 +191,7 @@
 					//hacer que aca muestre error de que no se encontro nada en la busqueda
 					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
 					$('#tbodylisto > tr').remove();					
-					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					$("#tbodylisto").html("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
 				}
 			});
 		}

@@ -31,7 +31,7 @@
 			<td>Fecha Colocación:</td>
 			<td>
 				{% if equipo.fecha_colocacion != '00/00/0000' %}
-					{{ equipo.fecha_colocacion }}
+					{{ equipo.fecha_colocacion_f }}
 				{% else %}
 					
 				{% endif %}
@@ -53,7 +53,7 @@
 			<td>Fecha Sacado:</td>
 			<td>
 				{% if equipo.fecha_sacado != '00/00/0000' %}
-					{{ equipo.fecha_sacado }}
+					{{ equipo.fecha_sacado_f }}
 				{% else %}
 					
 				{% endif %}
@@ -74,7 +74,7 @@
 		<tr>
 			<td>
 				<center>
-					<input type="button" class="btn btn-primary" value="Atras" onclick="history.back()">
+					<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
 				</center>
 			</td>
 		</tr>
