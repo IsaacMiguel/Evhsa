@@ -29,7 +29,12 @@ module.exports = {
 	postRecuperarAlta: postRecuperarAlta,
 	getBuscarxCoche: getBuscarxCoche,
 	postBuscarxCoche: postBuscarxCoche,
-	getFormacionCoche: getFormacionCoche
+	getFormacionCoche: getFormacionCoche,
+	getCheckFormacionNotNull: getCheckFormacionNotNull,
+	getNeumaticoCoche: getNeumaticoCoche,
+	postNeumaticoCoche: postNeumaticoCoche,
+	getCheckNeumaticoNotNull: getCheckNeumaticoNotNull,
+	getNeumaticos_Ubicacion: getNeumaticos_Ubicacion
 }
 
 function ActualizarUbicacionesActuales(codigo, serie, cb){
@@ -526,21 +531,64 @@ function getBuscarxCoche(req, res){
 
 function postBuscarxCoche(req, res){
 	var params = req.body;
-	var nro_coche = params.nro_coche;
-	
+	console.log(params)
+	const nro_coche = params.nro_coche;
+
 	res.redirect("conjunto_formacioncoche/"+nro_coche);	
 }
 
-// SEGUIR ACA
-
 function getFormacionCoche(req, res) {
 	var params = req.params;
-	var numero = params.numero;
-
+	const numero = params.numero;
+	console.log(params)
 	mConjunto.getFormacionCoche(numero, function (formacion) {
-		console.log(formacion)
 		res.render("conjunto_formacioncoche", {
 			pagename: "Formacion de Coche Nro "+numero,
+			formacion: formacion
+		});
+	});
+}
+
+function getCheckFormacionNotNull(req, res){
+	var params = req.params;
+	const numero = params.numero;
+	// console.log(params)
+	mConjunto.getFormacionCoche(numero, function (formacion) {
+		res.send(formacion);
+	});;
+}
+
+// SEGUIR ACA
+function getNeumaticoCoche(req, res){
+	res.render("conjunto_buscarneumaticoxcoche", {
+		pagename: "Buscar Neumaticos x Coche"
+	});
+}
+
+function postNeumaticoCoche(req, res){
+	var params = req.body;
+	console.log(params)
+	const nro_coche = params.nro_coche;
+
+	res.redirect("conjunto_neumaticos_ubicacion/"+nro_coche);
+}
+
+function getCheckNeumaticoNotNull(req, res){
+	var params = req.params;
+	const numero = params.numero;
+	// console.log(params)
+	mConjunto.getNeumaticoCoche(numero, function (neumaticos) {
+		res.send(neumaticos);
+	});;
+}
+
+function getNeumaticos_Ubicacion(req, res){
+	var params = req.params;
+	const numero = params.numero;
+	console.log(params)
+	mConjunto.getNeumaticoCoche(numero, function (formacion) {
+		res.render("conjunto_neumaticos_ubicacion", {
+			pagename: "Ubicacion de Neumaticos de Coche Nro "+numero,
 			formacion: formacion
 		});
 	});

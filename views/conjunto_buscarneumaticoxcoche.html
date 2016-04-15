@@ -28,7 +28,7 @@
 	</div>
 <!-- Fin Modal -->
 <div class="panel panel-default">
-	<form method="post" id="formalta" action="/conjunto_buscarxcoche">
+	<form method="post" id="formalta" action="/conjunto_buscarneumaticoxcoche">
 		<!-- <input hidden id="error" name="error" value="{{ error }}"> -->
 		<table align="center" class="table table-striped">
 			<tr>
@@ -44,16 +44,15 @@
 </div>
 <script src="/js/jquery.min.js"></script>
 <script type="text/javascript">
-	// $("#codigo1").val().toUpperCase();
-	
+	// $("#codigo1").val().toUpperCase();	
 	$(function (){
 		$("#formalta").submit(function(event) {
 			const numero_coche = $("#nro_coche").val();
 			const self = this;
-			console.log("adentro del submit");
+			// console.log("adentro del submit");
 			event.preventDefault();
-			$.getJSON('/conjunto_checkFormacionNotNull/'+numero_coche, function(formacion) {
-				if (formacion.length == 0){
+			$.getJSON('/conjunto_checkNeumaticosNotNull/'+numero_coche, function(neumaticos) {
+				if (neumaticos.length == 0){
 					alert("No hay ningun registro asociado al coche Nro "+numero_coche);
 					$("#nro_coche").focus();
 					return false;

@@ -24,7 +24,8 @@ module.exports = {
 	update_UbicacionActualNeumaticos_onDefinicion: update_UbicacionActualNeumaticos_onDefinicion,
 	update_UbicacionCocheActual_onDefinicion: update_UbicacionCocheActual_onDefinicion,
 	getFichaWithFechaMax: getFichaWithFechaMax,
-	getFormacionCoche: getFormacionCoche
+	getFormacionCoche: getFormacionCoche,
+	getNeumaticoCoche: getNeumaticoCoche
 }
 
 function getAll(cb){
@@ -191,8 +192,20 @@ function getFichaWithFechaMax(codigo, serie, cb){
 
 function getFormacionCoche(numero, cb){
 	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
-		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f, "+
+		"ubicaciones_neumaticos.descripcion as ubica_neumaticotxt "+
 		"FROM conjunto_definicion "+
-		"left join repuestos on repuestos.codigo = conjunto_definicion.codigo "+
+		"LEFT JOIN repuestos ON repuestos.codigo = conjunto_definicion.codigo "+
+		"LEFT JOIN ubicaciones_neumaticos ON ubicaciones_neumaticos.codigo = conjunto_definicion.codigo_ubicacion_neumatico_fk "+
 		"WHERE conjunto_definicion.numero_coche_fk = "+numero, cb);
+}
+
+function getNeumaticoCoche(numero, cb){
+	conn("select conjunto_definicion.*, repuestos.nombre as denominacion, "+
+		"DATE_FORMAT(conjunto_definicion.fecha_compra, '%d/%m/%Y') as fecha_compra_f, "+
+		"ubicaciones_neumaticos.descripcion as ubica_neumaticotxt "+
+		"FROM conjunto_definicion "+
+		"LEFT JOIN repuestos ON repuestos.codigo = conjunto_definicion.codigo "+
+		"LEFT JOIN ubicaciones_neumaticos ON ubicaciones_neumaticos.codigo = conjunto_definicion.codigo_ubicacion_neumatico_fk "+
+		"WHERE conjunto_definicion.es_neumatico = 1 AND conjunto_definicion.numero_coche_fk = "+numero, cb);
 }

@@ -41,12 +41,12 @@
 			</tr>
 			{% for f in formacion %}
 				<tr>
-					<td>{% f.codigo %}</td>
-					<td>{% f.serie %}</td>
-					<td>{% f.denominacion %}</td>
-					<td>{% f.fecha_compra_f %}</td>
-					<td>{% f.valor %}</td>
-					<td>{% f.ubica_neumaticotxt %}</td>
+					<td>{{ f.codigo }}</td>
+					<td>{{ f.serie }}</td>
+					<td>{{ f.denominacion }}</td>
+					<td>{{ f.fecha_compra_f }}</td>
+					<td>{{ f.valor }}</td>
+					<td>{{ f.ubica_neumaticotxt }}</td>
 				</tr>
 			{% endfor %}
 		</table>
