@@ -79,7 +79,7 @@ function getVer (req, res) {
 }
 
 function getModificar (req, res) {
-	mEquipos.getByIdModificar(req.params.id, function (equipo) {
+	mEquipos.getById(req.params.id, function (equipo) {
 		mVehiculos.getDataVehiculos(function (vehiculos) {
 			res.render('equipos_modificar', {
 				pagename : 'Modificar Equipo',
