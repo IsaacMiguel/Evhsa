@@ -95,36 +95,40 @@
 	var mainReady = function () {
 		//Setea fecha hasta (hoy)
 		//todayDate, funcion dentro de main.js
-		let today = todayDate();
+		var today = generateTodayDateYMD();
 		$('#fecha_hoy').val(today);
 
 	}
 
 	var btnFiltrar = function () {
-		$('#tbodylisto').html('<p>Cargando...<p>');
+		var date1 = $('#fecha_desde').val();
+		var date2 = $('#fecha_hoy').val();
+		var toolname = $('#nombre').val();
 
-		let date1 = $('#fecha_desde').val();
-		let date2 = $('#fecha_hoy').val();
-		let toolname = $('#nombre').val();
+		if (toolname === '') {
+			toolname = 'NoName';
+		}
 
 		if (date1 === '') {
 			alert('¡Debe Ingresar una fecha de inicio!')
 		} else {
+			$('#tbodylisto').html('<p>Cargando...<p>');
 			$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + toolname, function (data){
 
-				if (data.length != 0){
-					$('#tbodylisto > tr').remove();
-					var template = $('#tabla_herramientas').html();
+				console.log(data)
+				// if (data.length != 0){
+				// 	$('#tbodylisto > tr').remove();
+				// 	var template = $('#tabla_herramientas').html();
 
-					var output = parseSwig(template, data);
+				// 	var output = parseSwig(template, data);
 
-					$('#tbodylisto').html(output);
-				}else{
-					//hacer que aca muestre error de que no se encontro nada en la busqueda
-					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
-					$('#tbodylisto > tr').remove();					
-					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-				}
+				// 	$('#tbodylisto').html(output);
+				// }else{
+				// 	//hacer que aca muestre error de que no se encontro nada en la busqueda
+				// 	console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+				// 	$('#tbodylisto > tr').remove();					
+				// 	$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+				// }
 			});
 		}
 	}

@@ -376,7 +376,7 @@ module.exports = function(app) {
 
 	//HERRAMIENTRAS
 	app.get("/herramientas_lista", auth, acceso, cHerramientas.getLista);
-	//app.get("/herramientas_filtrar/:date1/:date2/:toolname", auth, acceso, cHerramientas.getFiltro);
+	app.get("/herramientas_filtrar/:date1/:date2/:toolname", auth, acceso, cHerramientas.getFiltrar);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

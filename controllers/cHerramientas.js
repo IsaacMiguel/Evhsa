@@ -14,10 +14,25 @@ function getLista(req, res) {
 function getFiltrar (req, res) {
 	var params = req.params;
 
-	mHerramientas.getLista(
-		params.date1,
-		params.date2,
-		params.toolName, function (herramientas) {
-			
+	if (params.toolName === 'NoName') {
+		var data = {
+			'date1' : params.date1, 
+			'date2' : params.date2, 
+			'toolname' : params.toolName
+		}
+
+		mHerramientas.getByFecha_Nombre(data, function (herramientas) {
+			res.send(herramientas);
 		});
+
+	} else {
+		var data = {
+			'date1' : params.date1, 
+			'date2' : params.date2
+		}
+
+		mHerramientas.getByFecha(data, function (herramientas) {
+			res.send(herramientas);
+		});
+	}
 }

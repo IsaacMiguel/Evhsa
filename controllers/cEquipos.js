@@ -2,8 +2,6 @@
 var mEquipos = require('../models/mEquipos');
 var mVehiculos = require('../models/mVehiculos');
 
-var utils = require('../public/js/main').changeDate2;
-
 module.exports = {
 	getLista : getLista,
 	getAlta : getAlta,
