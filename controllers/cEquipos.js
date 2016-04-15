@@ -11,15 +11,13 @@ module.exports = {
 	getVer : getVer,
 	getModificar : getModificar,
 	postModificar : postModificar,
-	getDelete : getDelete
+	getDelete : getDelete,
+	getEquiposFiltro : getEquiposFiltro
 }
 
 function getLista (req, res) {
-	mEquipos.getAll(function (equipos) {
-		res.render('equipos_lista', {
-			pagename : 'Lista de Equipos',
-			equipos : equipos
-		});
+	res.render('equipos_lista', {
+		pagename : 'Lista de Equipos'
 	});
 }
 
@@ -34,6 +32,16 @@ function getAlta (req, res) {
 
 function postAlta (req, res) {
 	var params = req.body;
+	var total = params.total;
+	var km = params.km;
+
+	if (params.total == '') {
+		total = 0;
+	}
+
+	if (params.km == '') {
+		km = 0;
+	}
 
 	var observaciones = params.observaciones;
 		observaciones = observaciones.trim();
@@ -45,14 +53,14 @@ function postAlta (req, res) {
 		'numero' : params.numero,
 		'denominacion' : params.denominacion,
 		'numero_coche_fk' : params.nro_coche,
-		'fecha_colocacion' : params.f_colocacion,
-		'total' : params.total,
+		'fecha_colocacion' : params.fecha_colocacion,
+		'total' : total,
 		'unica_operador_fk' : req.session.user.unica,
 		'responsable' : params.responsable,
 		'observaciones' : observaciones,
 		'tipo' : params.tipo,
-		'fecha_sacado' : params.f_sacado,
-		'km' : params.km,
+		'fecha_sacado' : params.fecha_sacado,
+		'km' : km,
 		'resultado' : resultado
 		};
 
@@ -63,13 +71,9 @@ function postAlta (req, res) {
 
 function getVer (req, res) {
 	mEquipos.getById(req.params.id, function (equipo) {
-		fcolocacion = utils(equipo[0].fecha_sacado);
-		fsacado = utils(equipo[0].fecha_colocacion);
-			res.render('equipo_ver', {
+			res.render('equipos_ver', {
 				pagename : 'Ver Equipo',
-				equipo : equipo[0],
-				fcolocacion : fcolocacion,
-				fsacado : fsacado
+				equipo : equipo[0]
 			});
 	});
 }
@@ -77,7 +81,7 @@ function getVer (req, res) {
 function getModificar (req, res) {
 	mEquipos.getById(req.params.id, function (equipo) {
 		mVehiculos.getDataVehiculos(function (vehiculos) {
-			res.render('equipo_modificar', {
+			res.render('equipos_modificar', {
 				pagename : 'Modificar Equipo',
 				equipo : equipo[0],
 				vehiculos : vehiculos
@@ -88,6 +92,16 @@ function getModificar (req, res) {
 
 function postModificar (req, res) {
 	var params = req.body;
+	var total = params.total;
+	var km = params.km;
+
+	if (params.total == '') {
+		total = 0;
+	}
+
+	if (params.km == '') {
+		km = 0;
+	}
 
 	var observaciones = params.observaciones;
 		observaciones = observaciones.trim();
@@ -100,14 +114,14 @@ function postModificar (req, res) {
 		'numero' : params.numero,
 		'denominacion' : params.denominacion,
 		'numero_coche_fk' : params.nro_coche,
-		'fecha_colocacion' : params.f_colocacion,
-		'total' : params.total,
+		'fecha_colocacion' : params.fecha_colocacion,
+		'total' : total,
 		'unica_operador_fk' : req.session.user.unica,
 		'responsable' : params.responsable,
 		'observaciones' : observaciones,
 		'tipo' : params.tipo,
-		'fecha_sacado' : params.f_sacado,
-		'km' : params.km,
+		'fecha_sacado' : params.fecha_sacado,
+		'km' : km,
 		'resultado' : resultado
 		};
 
@@ -120,4 +134,39 @@ function getDelete (req, res) {
 	mEquipos.del(req.params.id, function () {
 		res.redirect("equipos_lista");
 	});
+}
+
+function getEquiposFiltro (req, res) {
+	var params = req.params;
+	var opcion = params.opcion;
+	var buscar = params.buscar;
+	var campo = "";
+
+	if (opcion == 1) {
+		mEquipos.getAll(function (equipos) {
+			res.send(equipos);
+		});
+	}else{
+		switch (opcion){
+			case "2":
+				campo = "fecha_colocacion";
+				break;
+
+			case "3":
+				campo = "tipo";
+				break;
+
+			case "4":
+				campo = "fecha_sacado";
+				break;
+
+			case "5":
+				campo = "numero_coche_fk";
+				break;
+		}
+
+		mEquipos.getQuery(campo, buscar, function (data){
+				res.send(data);
+		});
+	}
 }

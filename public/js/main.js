@@ -172,17 +172,13 @@ function isNumberKey(evt)
 
 // PARA EL SWIG CUANDO SE USA CON AJAX EN LAS VISTAS
 function parseSwig(input, data) {
-    var output = swig.render(input, { locals: { 
+    var output = swig.render(input, { locals: {
         data: data
     }});
+
     return output;
 }
 
-// exports.changeDate2 = changeDate2;
-
-// module.exports = {
-//     changeDate2: changeDate2
-// }
 
 function generateTodayDate(){
     var myDate = new Date();
@@ -195,4 +191,10 @@ function generateTodayDate(){
         month = "0"+month
     myDate = day + "/" + month + "/" + year;
     return myDate;
+}
+
+function maxLengthCheck(object) {
+    if (object.value.length > object.maxLength)
+      object.value = object.value.slice(0, object.maxLength)
+
 }
