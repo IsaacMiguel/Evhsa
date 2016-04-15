@@ -1,7 +1,7 @@
 var conn = require('../config/db').conn;
 
 module.exports = {
-	getAll
+	getAll: getAll
 }
 
 function getAll (cb) {

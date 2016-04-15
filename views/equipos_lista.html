@@ -123,31 +123,22 @@
     		case '1':
     			var input = '';
     			$('#load_input').html(input);
-
     			break;
-
     		case '2':
     			var input = '<input type="date" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
     			$('#load_input').html(input);
-
     			break;
-
     		case '3':
     			var input = '<input type="text" maxlength="1" onkeydown="return lettersOnly(event)" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
     			$('#load_input').html(input);
-
     			break;
-
     		case '4':
     			var input = '<input type="date" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
     			$('#load_input').html(input);
-
     			break;
-
     		case '5':
     			var input = '<input type="number" class="form-control" maxlength="5" oninput="maxLengthCheck(this)" name="busqueda_filtro" id="busqueda_filtro">';
     			$('#load_input').html(input);
-
     			break;
     	}
 	}
@@ -179,13 +170,10 @@
 
 		if (valido == true) {
 			$.getJSON('/equipos_filtrar/' + opcion_filtrado + '/' + buscar , function (data){
-
 				if (data.length != 0){
 					$('#tbodylisto > tr').remove();
 					var template = $('#tabla_equipos').html();
-
 					var output = parseSwig(template, data);
-
 					$('#tbodylisto').html(output);
 				}else{
 					//hacer que aca muestre error de que no se encontro nada en la busqueda
@@ -195,7 +183,6 @@
 				}
 			});
 		}
-
 		valido = false;
 	});
 </script>

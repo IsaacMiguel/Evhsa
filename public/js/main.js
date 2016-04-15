@@ -57,20 +57,6 @@ function validate(evt) {
   }
 }// onkeypress='validate(event)'
 
-// //VALIDATE EMAIL:
-// function checkemail(this){
-// 	var testresults;
-
-// 	var str=this.value;
-// 	var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-// 	if (filter.test(str))
-// 		testresults=true;
-// 	else{
-// 		alert("Please input a valid email address!");
-// 		testresults=false;
-// 	return (testresults);
-// }
-
 function Validate7EntY2Dec(e, field) {
     key = e.keyCode ? e.keyCode : e.which
     // backspace
@@ -160,8 +146,7 @@ function isNumber(evt) {
     return true;
 }//onkeypress="return isNumber(event)"
 
-function isNumberKey(evt)
-{
+function isNumberKey(evt){
     var e = evt || window.event; //window.event is safer, thanks @ThiefMaster
     var charCode = e.which || e.keyCode;                        
     if (charCode > 31 && (charCode < 47 || charCode > 57))
@@ -178,7 +163,6 @@ function parseSwig(input, data) {
 
     return output;
 }
-
 
 function generateTodayDate(){
     var myDate = new Date();
