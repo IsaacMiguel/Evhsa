@@ -20,6 +20,7 @@ var cIngegr = require('./controllers/cIngegr');
 var cFlujoDeFondos = require('./controllers/cFlujoDeFondos');
 var cConjunto = require('./controllers/cConjunto');
 var cEquipos = require('./controllers/cEquipos');
+var cHerramientas = require('./controllers/cHerramientas');
 
 
 
@@ -343,6 +344,10 @@ module.exports = function(app) {
 	app.get("/equipos_modificar/:id", auth, acceso, cEquipos.getModificar);
 	app.post("/equipos_modificar", auth, cEquipos.postModificar);
 	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
+	app.get("/equipos_filtrar/:opcion/:buscar", auth, acceso, cEquipos.getEquiposFiltro);
+
+	//HERRAMIENTRAS
+	app.get("/herramientas_lista", auth, acceso, cHerramientas.getLista);
 
 
 
@@ -354,6 +359,7 @@ module.exports = function(app) {
 	app.get("/updateTablaVehiculosConFive", auth, cRandom.updateTablaVehiculosConFive);
 	app.get("/updateTablaSecr", auth, cRandom.updateTablaSecrConOperariosTemp);
 	app.get("/actualizarOtrosGastos", auth, cRandom.updateOtrosGastos);
+	app.get("/actualizarEquipos", auth, cRandom.updateEquipos);
 	// app.post('/random', auth, cRandom.postAsd);
 	// app.get('/random2', auth, cRandom.getr2);
 	// app.post('/random2', auth, cRandom.postr2);
