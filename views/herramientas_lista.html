@@ -115,20 +115,19 @@
 			$('#tbodylisto').html('<p>Cargando...<p>');
 			$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + toolname, function (data){
 
-				console.log(data)
-				// if (data.length != 0){
-				// 	$('#tbodylisto > tr').remove();
-				// 	var template = $('#tabla_herramientas').html();
+				if (data.length != 0){
+					$('#tbodylisto > tr').remove();
+					var template = $('#tabla_herramientas').html();
 
-				// 	var output = parseSwig(template, data);
+					var output = parseSwig(template, data);
 
-				// 	$('#tbodylisto').html(output);
-				// }else{
-				// 	//hacer que aca muestre error de que no se encontro nada en la busqueda
-				// 	console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
-				// 	$('#tbodylisto > tr').remove();					
-				// 	$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-				// }
+					$('#tbodylisto').html(output);
+				}else{
+					//hacer que aca muestre error de que no se encontro nada en la busqueda
+					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+					$('#tbodylisto > tr').remove();					
+					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+				}
 			});
 		}
 	}
