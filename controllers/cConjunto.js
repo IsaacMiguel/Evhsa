@@ -583,13 +583,14 @@ function getCheckNeumaticoNotNull(req, res){
 }
 
 function getNeumaticos_Ubicacion(req, res){
+	// ESTE RESUMEN SE DEJA PARA MAS ADELANTE. CUANDO LO PIDAN. SI LO PIDEN.
 	var params = req.params;
 	const numero = params.numero;
 	console.log(params)
-	mConjunto.getNeumaticoCoche(numero, function (formacion) {
+	mConjunto.getNeumaticoCoche(numero, function (neumaticos) {
 		res.render("conjunto_neumaticos_ubicacion", {
 			pagename: "Ubicacion de Neumaticos de Coche Nro "+numero,
-			formacion: formacion
+			neumaticos: neumaticos
 		});
 	});
 }
