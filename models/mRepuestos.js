@@ -11,7 +11,8 @@ module.exports = {
 	del: del,
 	getRubroEnRepById: getRubroEnRepById,
     getAllAceites: getAllAceites,
-    getLastAceite: getLastAceite
+    getLastAceite: getLastAceite,
+  getByDescipcion : getByDescipcion
 }
 
 function getAll(cb){
@@ -60,4 +61,8 @@ function getAllAceites(cb){
 
 function getLastAceite(cb){
 	conn("SELECT id_repuesto_fk FROM evhsa.comb_planilladiaria  order by fecha desc LIMIT 1", cb);
+}
+
+function getByDescipcion (descripcion, cb) {
+	conn("select * from repuestos like '%" + descripcion + "%'", cb);
 }
