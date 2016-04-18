@@ -1,0 +1,113 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">
+	        			<span aria-hidden="true">&times;</span>
+	        			<span class="sr-only">Close</span>
+	        		</button>
+	        		<h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      		</div>
+	      		<table id="tabla_conjuntos">
+
+	      		</table>
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+	<!-- <form method="post" id="formalta" action="/conjunto_buscarfichaxcodigo"> -->
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Codigo:</td>
+				<td>
+					<table style="display: inline-block;">
+						<tr>
+							<td>
+								<input type="text" id="codigo1" name="codigo1" required class="form-control" style="width: 70px; text-align: center; text-transform:uppercase">  
+							</td>
+							<td>.</td>
+							<td>
+								<input type="text" id="codigo2" name="codigo2" required class="form-control" onKeyPress="return soloNumeros(event)" style="width: 70px; text-align: center;" >
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>Descripción:</td>
+				<td>
+					<input type="text" id="descripcion" name="descripcion" class="form-control"><div class="aviso">Quedan <span id="charsLeftSerie"></span> caraceteres.</div>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>
+				<td><input type="button" value="Buscar" id="Buscar" class="btn btn-default"></td>
+			</tr>
+		</table>
+	<!-- </form> -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	$("#Buscar").on("click", function (){
+		var codigo1 = $("#codigo1").val();
+		var codigo2 = $("#codigo2").val();
+
+		var descripcion = $("#descripcion").val();
+
+		if (codigo1 && codigo2) {
+			var codigo = codigo1 + "." + codigo2;
+		} else {
+			var codigo = false;
+		}
+
+		if (!descripcion) { descripcion = false }
+
+		if ((codigo && !descripcion) || (!codigo && descripcion) || (codigo && descripcion)) {
+			$.getJSON('/herramientas_filtro_repuestos/' + codigo + '/' + descripcion, function (data) {
+				if (data.length) {
+					if (data.length > 1) {
+						console.log(data);
+						var html = "<table class='table' id='tabla_conjuntos'>"
+						html += "<tr><th>Codigo</th><th>Descripción</th><th>Opciones</th></tr>";
+							for(var i = 0; i < data.length; i++){
+								html += "<tr><td>"+data[i].codigo+"</td><td>"+data[i].nombre+"</td>"+
+								"<td><a href='/herramientas_alta_form/"+data[i].codigo+"' class='btn btn-default' role='button'>Alta</a></td></tr>";
+							}
+							
+						html += "</table>";
+						$("#tabla_conjuntos").replaceWith(html);
+						$("#myModalLabel").text("Seleccione Conjunto")
+						$('#myModal').modal('toggle');
+					} else {
+						// url = "/herramientas_alta_form/" + data[0].codigo;
+						// window.location = url;
+						console.log(data)
+					}
+				} else {
+					alert("La busqueda no trajo resultados.")
+				}
+    		 });
+		} else {
+			alert("Debe ingresar algo que buscar")
+		}
+	});
+});
+</script>
+{% endblock %}
