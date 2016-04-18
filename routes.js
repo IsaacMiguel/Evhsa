@@ -376,7 +376,9 @@ module.exports = function(app) {
 
 	//HERRAMIENTRAS
 	app.get("/herramientas_lista", auth, acceso, cHerramientas.getLista);
-	app.get("/herramientas_filtrar/:date1/:date2/:toolname", auth, acceso, cHerramientas.getFiltrar);
+	app.get("/herramientas_filtrar/:date1/:date2/:denominacion", auth, acceso, cHerramientas.getFiltrar);
+	app.get("/herramientas_alta", auth, acceso, cHerramientas.getAlta);
+	app.get("/herramientas_filtro_repuestos/:codigo/:descripcion", auth, acceso, cHerramientas.getRepuestos);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

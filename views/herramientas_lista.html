@@ -13,7 +13,7 @@
 		<table>
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-				<td><a href="/equipos_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><a href="/herramientas_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 				<td style="width: 100%;">
 					<table class="pull-right">
@@ -26,7 +26,7 @@
 								<input class="form-control" type="date" id="fecha_hoy" name="fecha_hoy" readonly />
 							</td>
 							<td>
-								<input class="form-control" type="text" id="nombre" name="nombre"/>
+								<input class="form-control" type="text" id="nombre" name="nombre" placeholder="Denominación... "/>
 							</td>
 							<td><button type="button" class="btn btn-success" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
 						</tr>
@@ -74,8 +74,23 @@
 			  		<tbody id="tbodylisto">
 			  			
 			  		</tbody>
-			  		<script type="text/template" id="tabla_equipos" />
-			  			
+			  		<script type="text/template" id="tabla_herramientas" />
+			  			[% for d in data %]
+			  				<tr>
+								<td><a href="/herramientas_ver/[[ d.id ]]"><button class="btn btn-default">Ver</button></a></td>
+								<td><a href="/herramientas_modificar/[[ d.id ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
+								<td><a href="/herramientas_eliminar/[[ d.id ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+								<td>[[ d.codigo ]]</td>
+								<td>[[ d.descripcion ]]</td>
+								<td>[% if d.fecha_movimiento_f != '00/00/0000' %][[ d.fecha_movimiento_f ]][% else %][% endif %]</td>
+								<td>[[ d.nro_recibo ]]</td>
+								<td>[[ d.marca ]]</td>
+								<td>[[ d.lugar_compra ]]</td>
+								<td>[[ d.valor ]]</td>
+								<td>[[ d.cantidad ]]</td>
+								<td>[% if d.fecha_cambio_f != '00/00/0000' %][[ d.fecha_cambio_f ]][% else %][% endif %]</td>
+							</tr>
+						[% endfor %]
 			  		</script>
 				</table>				
 			</div>
@@ -103,18 +118,17 @@
 	var btnFiltrar = function () {
 		var date1 = $('#fecha_desde').val();
 		var date2 = $('#fecha_hoy').val();
-		var toolname = $('#nombre').val();
+		var denominacion = $('#nombre').val();
 
-		if (toolname === '') {
-			toolname = 'NoName';
+		if (denominacion === '') {
+			denominacion = 'NoName';
 		}
 
 		if (date1 === '') {
 			alert('¡Debe Ingresar una fecha de inicio!')
 		} else {
 			$('#tbodylisto').html('<p>Cargando...<p>');
-			$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + toolname, function (data){
-
+			$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + denominacion, function (data){
 				if (data.length != 0){
 					$('#tbodylisto > tr').remove();
 					var template = $('#tabla_herramientas').html();
@@ -124,7 +138,6 @@
 					$('#tbodylisto').html(output);
 				}else{
 					//hacer que aca muestre error de que no se encontro nada en la busqueda
-					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
 					$('#tbodylisto > tr').remove();					
 					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
 				}
