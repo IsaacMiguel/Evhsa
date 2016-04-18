@@ -11,7 +11,9 @@ function getAll (cb) {
 }
 
 function getByFecha (d, cb) {
-	conn("SELECT *, ubicaciones_herramientas.descripcion as ubicacion_herramientastxt " +
+	conn("SELECT *, ubicaciones_herramientas.descripcion as ubicacion_herramientastxt, " +
+	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
+	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"FROM herramientas " +
 	"LEFT JOIN ubicaciones_herramientas " +
 	"ON herramientas.id_ubicacionherramientas_fk = ubicaciones_herramientas.id " +
@@ -21,11 +23,13 @@ function getByFecha (d, cb) {
 }
 
 function getByFecha_Nombre (d, cb) {
-	conn("SELECT *, ubicaciones_herramientas.descripcion as ubicacion_herramientastxt " +
+	conn("SELECT *, ubicaciones_herramientas.descripcion as ubicacion_herramientastxt, " +
+	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
+	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"FROM herramientas " +
 	"LEFT JOIN ubicaciones_herramientas " +
 	"ON herramientas.id_ubicacionherramientas_fk = ubicaciones_herramientas.id " +
 	"WHERE fecha_movimiento >= '" + d.date1 + "' " +
 	"AND fecha_cambio <= '" + d.date2 + "' " +
-	"AND codigo like '%" + d.toolName + "%' ", cb);
+	"AND descripcion like '%" + d.denominacion + "%' ", cb);
 }

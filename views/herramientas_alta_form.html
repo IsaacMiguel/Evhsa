@@ -1,0 +1,76 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/equipos.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/herramientas_alta">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Código:</td>
+				<td><input type="text" id="codigo" name="codigo" maxlength="12" class="form-control"><div class="aviso">Quedan <span id="charsLeftCodigo"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Fecha Movimiento:</td>
+				<td><input type="date" id="fecha_movimiento" name="fecha_movimiento" class="form-control"></td>
+			</tr>
+			<tr>
+				<td>N° recibo:</td>
+				<td><input type="number" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control"><div class="aviso">Quedan <span id="charsLeftNro_recibo"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Ubicación:</td>
+				<td>
+					<select id="ubicacion" name="ubicacion" class="form-control" >
+						<option value="0" selected>Sin ubicación asignada</option>
+						{% for d in d %}
+							<option value="{{ d.numero }}">{{ d.numero }}  {{ d.dominio }} {{ d.marca }} {{ d.modelo }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Marca:</td>
+				<td><input type="text" id="marca" name="marca" maxlength="15" class="form-control"><div class="aviso">Quedan <span id="charsLeftMarca"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Lugar Compra:</td>
+				<td><input type="text" id="lugar_compra" name="lugar_compra" maxlength="20" class="form-control"><div class="aviso">Quedan <span id="charsLeftLugar_compra"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Valor:</td>
+				<td><input type="number" step="any" id="valor" name="valor" maxlength="15" class="form-control"><div class="aviso">Quedan <span id="charsLeftValor"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Cantidad:</td>
+				<td><input type="number" id="cantidad" name="cantidad" maxlength="4" class="form-control"><div class="aviso">Quedan <span id="charsLeftCantidad"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Fecha Cambio:</td>
+				<td><input type="date" id="fecha_cambio" name="fecha_cambio" class="form-control"></td>
+			</tr>
+			<tr>
+				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
+				<td><center><input class="btn btn-default" type="submit" value="Agregar"></center></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script type="text/javascript">
+	$('#codigo').limit('12','#charsLeftCodigo');
+	$('#nro_recibo').limit('11','#charsLeftNro_recibo');
+	$('#marca').limit('15','#charsLeftMarca');
+	$('#lugar_compra').limit('20','#charsLeftLugar_compra');
+	$('#valor').limit('15','#charsLeftValor');
+	$('#cantidad').limit('4','#charsLeftCantidad');
+</script>
+
+{% endblock %}
