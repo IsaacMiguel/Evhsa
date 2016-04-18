@@ -34,7 +34,13 @@
 		</tr>
 		<tr>
 			<th>Denominacion:</th>
-			<td><input type="text" id="denominacion" name="denominacion" class="form-control" readonly style="width: 350px;" value="{{ conjunto_definicion.denominacion }}"></td>
+			<td>
+				{% if conjunto_definicion.denominacion != null %}
+					<input type="text" id="denominacion" name="denominacion" class="form-control" readonly style="width: 350px;" value="{{ conjunto_definicion.denominacion }}">
+				{% else %}
+					<input type="text" id="denominacion" name="denominacion" class="form-control" readonly style="width: 350px;" value="">
+				{% endif %}
+			</td>
 			<td style="width: 10px;"></td>
 			<th>Pert. a Chasis:</th>
 			<td><input type="text" id="chasis" name="chasis" style="width: 200px;" class="form-control" readonly value="{{ conjunto_definicion.chasis }}"></td>

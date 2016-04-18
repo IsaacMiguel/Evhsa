@@ -29,6 +29,9 @@
 		  		<tr>
 		  			<td><button class="btn" onclick="actualizarEquipos();">Actualizar Tabla Equipos con Datos de "equipos_temp"</button></td>
 		  		</tr>
+		  		<tr>
+		  			<td><button class="btn" onclick="actualizarConjuntos();">Actualizar Tabla Conjuntos con Datos de "fic2"</button></td>
+		  		</tr>
 			</table>				
 		</div><!--div col xs12 -->
 	</div><!--div row -->
@@ -58,8 +61,14 @@
 		});
 	}
 
-	function actualizarEquipos () {
+	function actualizarEquipos() {
 		$.getJSON("/actualizarEquipos", function (obj) {
+			console.log(obj);
+		});
+	}
+
+	function actualizarConjuntos(){
+		$.getJSON("/actualizarConjuntos", function (obj) {
 			console.log(obj);
 		});
 	}

@@ -360,9 +360,10 @@ module.exports = function(app) {
 	app.get("/conjunto_checkFormacionNotNull/:numero", auth, cConjunto.getCheckFormacionNotNull);
 	app.get("/conjunto_buscarneumaticoxcoche", auth, acceso, cConjunto.getNeumaticoCoche);
 	app.post("/conjunto_buscarneumaticoxcoche", auth, cConjunto.postNeumaticoCoche);
-	app.get("/conjunto_checkNeumaticosNotNull", auth, cConjunto.getCheckNeumaticoNotNull);
+	app.get("/conjunto_checkNeumaticosNotNull/:numero", auth, cConjunto.getCheckNeumaticoNotNull);
 	app.get("/conjunto_neumaticos_ubicacion/:numero", auth, acceso, cConjunto.getNeumaticos_Ubicacion);
 	// app.get("/conjunto_neumaticos_resumen", auth, acceso, cConjunto.getNeumaticos_Resumen);
+	// VALES DE PAÑOL
 
 	//EQUIPOS
 	app.get("/equipos_lista", auth, acceso, cEquipos.getLista);
@@ -387,6 +388,7 @@ module.exports = function(app) {
 	app.get("/updateTablaSecr", auth, cRandom.updateTablaSecrConOperariosTemp);
 	app.get("/actualizarOtrosGastos", auth, cRandom.updateOtrosGastos);
 	app.get("/actualizarEquipos", auth, cRandom.updateEquipos);
+	app.get("/actualizarConjuntos", auth, cRandom.updateConjuntos);
 	// app.post('/random', auth, cRandom.postAsd);
 	// app.get('/random2', auth, cRandom.getr2);
 	// app.post('/random2', auth, cRandom.postr2);

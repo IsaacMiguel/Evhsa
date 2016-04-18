@@ -9,7 +9,8 @@ module.exports = {
 	updateTablaVehiculosConFive: updateTablaVehiculosConFive,
 	updateTablaSecrConOperariosTemp: updateTablaSecrConOperariosTemp,
 	updateOtrosGastos: updateOtrosGastos,
-	updateEquipos : updateEquipos
+	updateEquipos : updateEquipos,
+	updateConjuntos: updateConjuntos
 }
 
 function getRandom(req, res){
@@ -273,7 +274,7 @@ function updateOtrosGastos(req, res){
 
 }
 
-function updateEquipos (req, res) {
+function updateEquipos(req, res) {
 	var connection = mysql.createConnection({
 	    user: 'root',
 	    password: 'root',
@@ -358,4 +359,87 @@ function updateEquipos (req, res) {
 		});
 	});
 
+}
+
+function updateConjuntos(req, res){
+	var connection = mysql.createConnection({
+	    user: 'root',
+	    password: '',
+	    host: '127.0.0.1',
+	    port: '3306',
+	    database: 'Evhsa',
+	    dateStrings : true
+ 	});
+
+	connection.connect();
+
+	mRandom.getFic2(function (fic2){
+		console.log(fic2.length);
+		async.eachSeries(fic2, function (fic, callback) {
+
+			// asignar valores
+			const codigo = fic.codigo;
+			// const denominacion = fic.denominacion;
+			const serie = fic.serie;
+			const fecha_compra = fic.fecha_compra;
+			const proveedor = fic.proveedor;
+			const valor = fic.valor;
+			const identificacion = fic.identificacion; //ubicacion
+			const ubicacion_actual = fic.ubicacion_actual;
+			const coche = fic.coche;
+			const ubicacion_neumatico = fic.ubicacion_neumatico;
+			const experimental = fic.expe;
+			const chasis = fic.chasis;			
+			const es_neumatico = fic.es_neumatico;
+			const fecha_baja = fic.fecha_baja;
+			const motivo = fic.motivo;
+
+			//verificaciones con ifs
+			if (ubicacion_neumatico == '')
+				ubicacion_neumatico = 'NN';
+
+			//insertar en conjuntos_definicion
+
+			query = "INSERT INTO `evhsa`.`conjunto_definicion` (`codigo`, `serie`, `fecha_compra`,	`proveedor`, `valor`, "+
+				"`identificacion`, `codigo_ubicacion_actual_fk`,	`numero_coche_fk`, `codigo_ubicacion_neumatico_fk`,	"+
+				"`experimental`,	`es_neumatico`,	`chasis`,`fecha_baja`,	`motivo_baja`) "+
+				"VALUES "+
+					"('"+codigo+"', "+
+					"'"+serie+"', "+
+					"'"+fecha_compra+"', "+
+					"'"+proveedor+"', "+
+					valor+", "+
+					"'"+identificacion+"', "+
+					"'"+ubicacion_actual+"', "+
+					coche+", "+
+					"'"+ubicacion_neumatico+"', "+
+					"'"+experimental+"', "+
+					es_neumatico+", "+
+					"'"+chasis+"', "+
+					"'"+fecha_baja+"', "+
+					"'"+motivo+"');";
+			
+			console.log(query)
+			connection.query(query, function (err, rows, fields) {
+				if (err) {
+					throw err;
+			    	console.log(err);
+				}else{
+					// cb(rows);					
+					console.log(query);
+					console.log("updated !");
+					callback();
+				}					    
+			});
+
+		}, function (err) {
+			if (err) {
+				throw err; 
+			}else{
+				res.send("finished");
+				connection.end();
+				// return callback();
+			}				
+		});
+	});
 }

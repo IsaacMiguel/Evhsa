@@ -8,7 +8,8 @@ module.exports = {
 	getOperariosTemp: getOperariosTemp,
 	getOtrosGastos_Temp: getOtrosGastos_Temp,
 	getOperarios: getOperarios,
-	getEquipos_temp : getEquipos_temp
+	getEquipos_temp : getEquipos_temp,
+	getFic2: getFic2
 }	
 
 function getAllRepuestos(cb){
@@ -41,4 +42,8 @@ function getOperarios(cb){
 
 function getEquipos_temp (cb) {
 	conn("select * from equipos_temp", cb);
+}
+
+function getFic2(cb){
+	conn("select * from fic2", cb);
 }
