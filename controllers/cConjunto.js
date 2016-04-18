@@ -41,25 +41,30 @@ function ActualizarUbicacionesActuales(codigo, serie, cb){
 	var bandera = false;
 
 	mConjunto.getFichaWithFechaMax(codigo, serie, function (ficha) {
-		const ultima_ubicacion = ficha[0].codigo_ubicacion_actual_fk;
-		const ubicacion_neumaticos = ficha[0].codigo_ubicacion_neumatico_fk;
-		const numero_coche = ficha[0].numero_coche_colocado_fk;
-		// si es hacia coche, updatear tambien ubicacion_neumaticos, sino, sólo ubicacion_actual
-		if (ultima_ubicacion == 'C'){
-			mConjunto.update_UbicacionActual_onDefinicion(codigo, serie, ultima_ubicacion, function (){
-				mConjunto.update_UbicacionCocheActual_onDefinicion(codigo, serie, numero_coche, function (){
-					mConjunto.update_UbicacionActualNeumaticos_onDefinicion(codigo, serie, ubicacion_neumaticos, function (){
-						bandera = true;
-						return cb();
+		if (ficha.length > 0){
+			const ultima_ubicacion = ficha[0].codigo_ubicacion_actual_fk;
+			const ubicacion_neumaticos = ficha[0].codigo_ubicacion_neumatico_fk;
+			const numero_coche = ficha[0].numero_coche_colocado_fk;
+			// si es hacia coche, updatear tambien ubicacion_neumaticos, sino, sólo ubicacion_actual
+			if (ultima_ubicacion == 'C'){
+				mConjunto.update_UbicacionActual_onDefinicion(codigo, serie, ultima_ubicacion, function (){
+					mConjunto.update_UbicacionCocheActual_onDefinicion(codigo, serie, numero_coche, function (){
+						mConjunto.update_UbicacionActualNeumaticos_onDefinicion(codigo, serie, ubicacion_neumaticos, function (){
+							bandera = true;
+							return cb();
+						});
 					});
 				});
-			});
+			}else{
+				mConjunto.update_UbicacionActual_onDefinicion(codigo, serie, ultima_ubicacion, function (){
+					bandera = true;
+					return cb();
+				});
+			}
 		}else{
-			mConjunto.update_UbicacionActual_onDefinicion(codigo, serie, ultima_ubicacion, function (){
-				bandera = true;
-				return cb();
-			});
+			return cb();
 		}
+		
 	});
 
 	// if (bandera)	
@@ -155,6 +160,7 @@ function getVerFicha(req, res){
 
 	ActualizarUbicacionesActuales(codigo, serie, function (){
 		mConjunto.getBuscar_x_CodigoySerie(codigo, serie, function (conjunto_definicion){
+			console.log(conjunto_definicion)
 			mConjunto.getBuscar_ConjuntoFicha_x_CodigoySerie(codigo, serie, function (conjunto_fichas){
 				res.render("conjunto_verficha", {
 					pagename: "Ficha completa de Conjunto",
