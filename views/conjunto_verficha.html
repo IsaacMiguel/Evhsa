@@ -10,11 +10,13 @@
   	<div class="panel-heading">
   		<table>
 			<tr>	
-				<td><a href="/conjunto_buscarfichaxcodigo"></a><button type="button" class="btn btn-primary">Atras</button></a></td>
+				<td><a href="/conjunto_buscarfichaxcodigo"><button type="button" class="btn btn-primary">Atras</button></a></td>
 				<td>
 					{% if conjunto_definicion.fecha_baja == '' %}
 						<a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicion.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo Mov.</button></a>
 					{% elseif conjunto_definicion.fecha_baja == '0000-00-00' %}
+						<a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicion.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo Mov.</button></a>
+					{% elseif conjunto_definicion.fecha_baja == null %}
 						<a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicion.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo Mov.</button></a>
 					{% else %}
 						<button type="button" class="btn btn-success menu" onclick="alert('No se pueden agregar movimientos a esta ficha porque ha sido dada de baja.')">Agregar Nuevo Mov.</button>
@@ -34,7 +36,13 @@
 		</tr>
 		<tr>
 			<th>Denominacion:</th>
-			<td><input type="text" id="denominacion" name="denominacion" class="form-control" readonly style="width: 350px;" value="{{ conjunto_definicion.denominacion }}"></td>
+			<td>
+				{% if conjunto_definicion.denominacion != null %}
+					<input type="text" id="denominacion" name="denominacion" class="form-control" readonly style="width: 350px;" value="{{ conjunto_definicion.denominacion }}">
+				{% else %}
+					<input type="text" id="denominacion" name="denominacion" class="form-control" readonly style="width: 350px;" value="">
+				{% endif %}
+			</td>
 			<td style="width: 10px;"></td>
 			<th>Pert. a Chasis:</th>
 			<td><input type="text" id="chasis" name="chasis" style="width: 200px;" class="form-control" readonly value="{{ conjunto_definicion.chasis }}"></td>

@@ -9,7 +9,7 @@
 <h2>{{ pagename }}</h2>
 <!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  	<div class="modal-dialog">
+	  	<div class="modal-dialog" style="overflow-y: initial !important;">
 	    	<div class="modal-content">
 	      		<div class="modal-header">
 	        		<button type="button" class="close" data-dismiss="modal">
@@ -18,13 +18,15 @@
 	        		</button>
 	        		<h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
 	      		</div>
-	      		<table id="tabla_conjuntos">
-	      		</table>
+	      		<div id='mainHolder' style='overflow: scroll; max-height: 500px;'>
+		      		<table id="tabla_conjuntos">
+		      		</table>
+	      		</div>
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 	      		</div>
 	    	</div>
-	  	</div>
+	  	</div id="cierre_ultimo_div">
 	</div>
 <!-- Fin Modal -->
 <div class="panel panel-default">
@@ -100,7 +102,9 @@
 	    						}
 	    						
 	    					html += "</table>";
-	    					$("#tabla_conjuntos").replaceWith(html);
+	    					// $("#myModal").append("");
+	    					// $("#cierre_ultimo_div").append("</div>");
+	    					$("#tabla_conjuntos").replaceWith(html);	    					
 	    					$("#myModalLabel").text("Seleccione Conjunto")
 	    					$('#myModal').modal('toggle');
     					}else{
