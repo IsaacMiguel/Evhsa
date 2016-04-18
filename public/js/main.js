@@ -182,7 +182,6 @@ function maxLengthCheck(object) {
       object.value = object.value.slice(0, object.maxLength)
 }
 
-<<<<<<< HEAD
 function generateTodayDateYMD () {
     var today = new Date();
     var day = today.getDate();
@@ -191,18 +190,6 @@ function generateTodayDateYMD () {
     if (day < 10) { day = '0' + day }
     if (month < 10) { month = '0' + month }
 
-    var formatDate = today.getFullYear() + '-' + month + '-' + day;
-    return formatDate;
-=======
-function todayDate () {
-    var today = new Date();
-    var mes = today.getMonth() + 1;
-        if (mes < 10) {
-            mes = '0' + mes;
-        }
-
-    today = today.getFullYear() + '-' + mes + '-' + today.getDate();
-
+    today = today.getFullYear() + '-' + month + '-' + day;
     return today;
->>>>>>> b70c53dc1b8879ff2629fcd7ec31f5d6a880cf1f
 }
