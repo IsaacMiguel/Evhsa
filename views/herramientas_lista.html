@@ -129,7 +129,6 @@
 		} else {
 			$('#tbodylisto').html('<p>Cargando...<p>');
 			$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + denominacion, function (data){
-				console.log(data)
 				if (data.length != 0){
 					$('#tbodylisto > tr').remove();
 					var template = $('#tabla_herramientas').html();
