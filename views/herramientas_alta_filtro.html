@@ -68,10 +68,17 @@ $(function() {
 	$("#Buscar").on("click", function (){
 		var codigo1 = $("#codigo1").val();
 		var codigo2 = $("#codigo2").val();
+<<<<<<< HEAD
 		var descripcion = $("#descripcion").val();
 
 		if (codigo1) {
 			if (codigo2.length !== 3) { codigo2 = '' }
+=======
+
+		var descripcion = $("#descripcion").val();
+
+		if (codigo1 && codigo2) {
+>>>>>>> d1fc81a2d93746457908c0434f35b57cedb955b7
 			var codigo = codigo1 + "." + codigo2;
 		} else {
 			var codigo = false;
@@ -83,11 +90,19 @@ $(function() {
 			$.getJSON('/herramientas_filtro_repuestos/' + codigo + '/' + descripcion, function (data) {
 				if (data.length) {
 					if (data.length > 1) {
+<<<<<<< HEAD
+=======
+						console.log(data);
+>>>>>>> d1fc81a2d93746457908c0434f35b57cedb955b7
 						var html = "<table class='table' id='tabla_conjuntos'>"
 						html += "<tr><th>Codigo</th><th>Descripción</th><th>Opciones</th></tr>";
 							for(var i = 0; i < data.length; i++){
 								html += "<tr><td>"+data[i].codigo+"</td><td>"+data[i].nombre+"</td>"+
+<<<<<<< HEAD
 								"<td><a href='/herramientas_alta_form/"+data[i].codigo+"' class='btn btn-success' role='button'>Alta</a></td></tr>";
+=======
+								"<td><a href='/herramientas_alta_form/"+data[i].codigo+"' class='btn btn-default' role='button'>Alta</a></td></tr>";
+>>>>>>> d1fc81a2d93746457908c0434f35b57cedb955b7
 							}
 							
 						html += "</table>";
@@ -95,8 +110,14 @@ $(function() {
 						$("#myModalLabel").text("Seleccione Conjunto")
 						$('#myModal').modal('toggle');
 					} else {
+<<<<<<< HEAD
 						url = "/herramientas_alta_form/" + data[0].codigo;
 						window.location = url;
+=======
+						// url = "/herramientas_alta_form/" + data[0].codigo;
+						// window.location = url;
+						console.log(data)
+>>>>>>> d1fc81a2d93746457908c0434f35b57cedb955b7
 					}
 				} else {
 					alert("La busqueda no trajo resultados.")
