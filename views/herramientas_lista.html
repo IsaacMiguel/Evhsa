@@ -77,9 +77,9 @@
 			  		<script type="text/template" id="tabla_herramientas" />
 			  			[% for d in data %]
 			  				<tr>
-								<td><a href="/herramientas_ver/[[ d.id ]]"><button class="btn btn-default">Ver</button></a></td>
-								<td><a href="/herramientas_modificar/[[ d.id ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
-								<td><a href="/herramientas_eliminar/[[ d.id ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+								<td><a href="/herramientas_ver/[[ d.id_herramientas ]]"><button class="btn btn-default">Ver</button></a></td>
+								<td><a href="/herramientas_modificar/[[ d.id_herramientas ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
+								<td><a href="/herramientas_eliminar/[[ d.id_herramientas ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
 								<td>[[ d.codigo ]]</td>
 								<td>[[ d.descripcion ]]</td>
 								<td>[% if d.fecha_movimiento_f != '00/00/0000' %][[ d.fecha_movimiento_f ]][% else %][% endif %]</td>
@@ -129,6 +129,7 @@
 		} else {
 			$('#tbodylisto').html('<p>Cargando...<p>');
 			$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + denominacion, function (data){
+				console.log(data)
 				if (data.length != 0){
 					$('#tbodylisto > tr').remove();
 					var template = $('#tabla_herramientas').html();
@@ -137,7 +138,6 @@
 
 					$('#tbodylisto').html(output);
 				}else{
-					//hacer que aca muestre error de que no se encontro nada en la busqueda
 					$('#tbodylisto > tr').remove();					
 					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
 				}

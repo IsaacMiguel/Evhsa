@@ -70,7 +70,8 @@ $(function() {
 		var codigo2 = $("#codigo2").val();
 		var descripcion = $("#descripcion").val();
 
-		if (codigo1 && codigo2) {
+		if (codigo1) {
+			if (codigo2.length !== 3) { codigo2 = '' }
 			var codigo = codigo1 + "." + codigo2;
 		} else {
 			var codigo = false;
@@ -82,12 +83,11 @@ $(function() {
 			$.getJSON('/herramientas_filtro_repuestos/' + codigo + '/' + descripcion, function (data) {
 				if (data.length) {
 					if (data.length > 1) {
-						console.log(data);
 						var html = "<table class='table' id='tabla_conjuntos'>"
 						html += "<tr><th>Codigo</th><th>Descripción</th><th>Opciones</th></tr>";
 							for(var i = 0; i < data.length; i++){
 								html += "<tr><td>"+data[i].codigo+"</td><td>"+data[i].nombre+"</td>"+
-								"<td><a href='/herramientas_alta_form/"+data[i].codigo+"' class='btn btn-default' role='button'>Alta</a></td></tr>";
+								"<td><a href='/herramientas_alta_form/"+data[i].codigo+"' class='btn btn-success' role='button'>Alta</a></td></tr>";
 							}
 							
 						html += "</table>";
@@ -95,9 +95,8 @@ $(function() {
 						$("#myModalLabel").text("Seleccione Conjunto")
 						$('#myModal').modal('toggle');
 					} else {
-						// url = "/herramientas_alta_form/" + data[0].codigo;
-						// window.location = url;
-						console.log(data)
+						url = "/herramientas_alta_form/" + data[0].codigo;
+						window.location = url;
 					}
 				} else {
 					alert("La busqueda no trajo resultados.")

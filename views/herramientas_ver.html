@@ -1,0 +1,64 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/herramientas.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">		
+	<table align="center" class="table table-striped">
+		<tr>
+			<td>Codigo:</td>
+			<td>{{ herramienta.codigo }}</td>
+		</tr>
+		<tr>
+			<td>Fecha Movimiento:</td>
+			<td>{{ herramienta.fecha_movimiento_f }}</td>
+		</tr>
+		<tr>
+			<td>N° recibo:</td>
+			<td>{{ herramienta.nro_recibo }}</td>
+		</tr>
+		<tr>
+			<td>Marca:</td>
+			<td>{{ herramienta.marca }}</td>
+		</tr>
+		<tr>
+			<td>Lugar Compra:</td>
+			<td>{{ herramienta.lugar_compra }}</td>
+		</tr>
+		<tr>
+			<td>Valor:</td>
+			<td>{{ herramienta.valor }}</td>
+		</tr>
+		<tr>
+			<td>Cantidad:</td>
+			<td>{{ herramienta.cantidad }}</td>
+		</tr>
+		<tr>
+			<td>Fecha Cambio:</td>
+			<td>
+				{% if herramienta.fecha_cambio != '00/00/0000' %}
+					{{ herramienta.fecha_cambio_f }}
+				{% else %}
+					
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<center>
+					<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
+				</center>
+			</td>
+		</tr>
+	</table>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+</script>
+
+{% endblock %}
