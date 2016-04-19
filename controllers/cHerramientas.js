@@ -1,11 +1,16 @@
 var mHerramientas = require('../models/mHerramientas');
 var mRepuestos = require('../models/mRepuestos');
+var mUbicacionesHerramientas = require('../models/mUbicacionesHerramientas');
+var mUsuarios = require('../models/mUsuarios');
 
 module.exports = {
 	getLista : getLista,
 	getFiltrar : getFiltrar,
 	getAlta : getAlta,
-	getRepuestos : getRepuestos
+	getRepuestos : getRepuestos,
+	getAltaForm : getAltaForm,
+	postAlta : postAlta,
+	getVer : getVer
 }
 
 function getLista (req, res) {
@@ -49,13 +54,73 @@ function getAlta (req, res) {
 function getRepuestos (req, res) {
 	var params = req.params;
 
-	if (params.codigo !== false) {
-		mRepuestos.getByCodigo(params.codigo, function (repuestos) {
-			res.send(repuestos);
-		});
-	} else {
+	if (params.codigo === 'false') {
 		mRepuestos.getByDescripcion(params.descripcion, function (repuestos) {
 			res.send(repuestos);
 		});
+	} else {
+		mRepuestos.getByCodigoLike(params.codigo, function (repuestos) {
+			res.send(repuestos);
+		});
 	}
+}
+
+function getAltaForm (req, res) {
+	var params = req.params;
+	console.log("codigo repuesto: " + params.codigo)
+
+	mRepuestos.getByCodigo(params.codigo, function (repuesto) {
+		mUbicacionesHerramientas.getAll(function (ubicaciones) {
+			mUsuarios.getAllUsuarios(function (usuarios) {
+				res.render('herramientas_alta_form', {
+					pagename : 'Alta de Herramientas',
+					repuesto : repuesto,
+					ubicaciones : ubicaciones,
+					usuarios : usuarios
+				});
+			});
+		});
+	});
+}
+
+function postAlta (req, res) {
+	var params = req.body;
+	
+	if (!params.nro_recibo) { var nro_recibo = 0 }
+	if (!params.valor) { var valor = 0 }
+	if (!params.cantidad) { var cantidad = 0 }
+
+	var data = {
+		codigo : params.codigo,
+		unica_usuariodestino_fk : params.usuario_destino,
+		id_ubicacionherramientas_fk : params.ubicacion,
+		fecha_movimiento : params.fecha_movimiento,
+		nro_recibo : nro_recibo,
+		unica_operador_fk : req.session.user.unica,
+		marca : params.marca,
+		lugar_compra : params.lugar_compra,
+		valor : valor,
+		cantidad : cantidad,
+		fecha_cambio : params.fecha_cambio
+	}
+
+	mHerramientas.insertHerramienta(data, function () {
+		res.redirect('herramientas_lista');
+	});
+}
+
+function getVer (req, res) {
+	var id_herramienta = req.params.id_herramienta;
+
+	mHerramientas.getById(id_herramienta, function (herramienta) {
+		console.log("herramienta : ")
+		for(var a in herramienta){
+			console.log(herramienta[a]);
+		}
+		
+		res.render('herramientas_ver', {
+			pagename : 'Ver Herramienta',
+			herramienta : herramienta
+		});
+	});
 }

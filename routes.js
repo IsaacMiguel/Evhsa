@@ -380,6 +380,9 @@ module.exports = function(app) {
 	app.get("/herramientas_filtrar/:date1/:date2/:denominacion", auth, acceso, cHerramientas.getFiltrar);
 	app.get("/herramientas_alta", auth, acceso, cHerramientas.getAlta);
 	app.get("/herramientas_filtro_repuestos/:codigo/:descripcion", auth, acceso, cHerramientas.getRepuestos);
+	app.get("/herramientas_alta_form/:codigo", auth, acceso, cHerramientas.getAltaForm);
+	app.post("/herramientas_alta", auth, cHerramientas.postAlta);
+	app.get("/herramientas_ver/:id_herramienta", auth, acceso, cHerramientas.getVer);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
