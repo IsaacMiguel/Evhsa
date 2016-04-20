@@ -13,7 +13,9 @@ module.exports = {
 	getVer : getVer,
 	getModificar : getModificar,
 	postModificar : postModificar,
-	getEliminar : getEliminar
+	getEliminar : getEliminar,
+	getUbicaciones : getUbicaciones,
+	postHerramientasUbicacion : postHerramientasUbicacion
 }
 
 function getLista (req, res) {
@@ -179,5 +181,25 @@ function getEliminar (req, res) {
 
 	mHerramientas.deleteHerramienta(params.id_herramienta, function () {
 		res.redirect('herramientas_lista');
+	});
+}
+
+function getUbicaciones (req, res) {
+	mUbicacionesHerramientas.getAll(function (ubicaciones) {
+		res.send(ubicaciones);
+	});
+}
+
+function postHerramientasUbicacion (req, res) {
+	var id_herramienta = req.body.id_herramienta_form;
+	var id_ubicacion = req.body.id_ubicacion_form;
+
+	console.log("id_herramienta: " + id_herramienta)
+	console.log("id_ubicacion: " + id_ubicacion)
+
+	mHerramientas.updateHeramientasUbicacion(
+		id_herramienta,
+		id_ubicacion, function () {
+			res.redirect('herramientas_lista');
 	});
 }

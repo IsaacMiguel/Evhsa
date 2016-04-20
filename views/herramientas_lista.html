@@ -43,9 +43,9 @@
 		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
 		      </div>
-		      <div class="modal-body">
-		        {{ ayuda.texto }}
-		      </div>
+		      	<table class="table" id="tabla_ubicaciones">
+
+	      		</table>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 		      </div>
@@ -63,13 +63,13 @@
 							<th>N°</th>
 							<th>Nombre</th>
 							<th>Ubicación</th>
-							<th>Fcha. Colocación</th>
+							<th>Fcha. Movimiento</th>
 							<th>N° Coche</th>
 							<th>Total</th>
 							<th>Responsable</th>
 							<th>Tipo</th>
 							<th>Km</th>
-							<th>Fcha. Sacado</th>
+							<th>Fcha. Cambio</th>
 						</tr>
 			  		</thead>
 			  		<tbody id="tbodylisto">
@@ -93,11 +93,9 @@
 									</a>
 								</td>
 								<td>
-									<a href="/#/[[ d.id_herramientas ]]">
-										<button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="b">
-											<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-										</button>
-									<a/>
+									<button type="button" class="btn btn-success menu btn_ubicaciones" value="[[ d.id_herramientas ]]" onclick="cambiarUbicacion($(this).val())" data-idmenu="21" data-accion="b">
+										<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+									</button>
 								</td>
 								<td>
 									<a href="#" onclick="alert('No disponible')">
@@ -109,7 +107,7 @@
 								<td>
 									<a href="/herramientas_eliminar/[[ d.id_herramientas ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;">
 										<button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">
-											<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 										</button>
 									<a/>
 								</td>
@@ -142,42 +140,62 @@
     	tagControls: ['[%', '%]']
     });
 
+    function cambiarUbicacion (val) {
+		$.getJSON('/herramientas_ubicaciones', function (ubicaciones) {
+			var html = "";
+			html += "<tr><th>Ubicaciones</th></tr>";
+				for(var i = 0; i < ubicaciones.length; i++){
+					html +="<tr><td><form method='post' id="+val+" action='/herramientas_cambiar_ubicacion'>" +
+					"<div class='row'><div class='col-sm-6'><input hidden type='text' value='" + val + "' id='id_herramienta_form' name='id_herramienta_form'>" +
+					"<input hidden type='text' value='" + ubicaciones[i].id + "' id='id_ubicacion_form' name='id_ubicacion_form'>" +
+					"<input type='text' value='" + ubicaciones[i].descripcion + "'" +
+					" class='form-control' readonly></div>" +
+					"<div class='col-sm-6'><input type='submit' value='Cambiar ubicación' class='btn btn-success'></div></div>" +
+					"</form></td>";
+				}
+				
+			html += "</table>";
+			$("#tabla_ubicaciones").html(html);
+			$("#myModalLabel").text("Selecione una ubicación")
+			$('#myModal').modal('toggle');
+		});
+	}
+
 	var mainReady = function () {
 		var today = generateTodayDateYMD();
 		$('#fecha_hoy').val(today);
 
-	}
+		$('#btnFiltrar').on('click', function () {
+			var date1 = $('#fecha_desde').val();
+			var date2 = $('#fecha_hoy').val();
+			var denominacion = $('#nombre').val();
 
-	var btnFiltrar = function () {
-		var date1 = $('#fecha_desde').val();
-		var date2 = $('#fecha_hoy').val();
-		var denominacion = $('#nombre').val();
+			if (denominacion === '') {
+				denominacion = 'NoName';
+			}
 
-		if (denominacion === '') {
-			denominacion = 'NoName';
-		}
+			if (date1 === '') {
+				alert('¡Debe Ingresar una fecha de inicio!')
+			} else {
+				$('#tbodylisto').html('<p>Cargando...<p>');
+				$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + denominacion, function (data){
+					if (data.length != 0){
+						$('#tbodylisto > tr').remove();
+						var template = $('#tabla_herramientas').html();
 
-		if (date1 === '') {
-			alert('¡Debe Ingresar una fecha de inicio!')
-		} else {
-			$('#tbodylisto').html('<p>Cargando...<p>');
-			$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + denominacion, function (data){
-				if (data.length != 0){
-					$('#tbodylisto > tr').remove();
-					var template = $('#tabla_herramientas').html();
+						var output = parseSwig(template, data);
 
-					var output = parseSwig(template, data);
+						$('#tbodylisto').html(output);
 
-					$('#tbodylisto').html(output);
-				}else{
-					$('#tbodylisto > tr').remove();					
-					$("#tbodylisto").html("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-				}
-			});
-		}
+					}else{
+						$('#tbodylisto > tr').remove();					
+						$("#tbodylisto").html("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					}
+				});
+			}
+		})
 	}
 
 	$(document).ready(mainReady);
-	$('#btnFiltrar').on('click', btnFiltrar);
 </script>
 {% endblock %}

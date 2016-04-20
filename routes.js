@@ -386,6 +386,8 @@ module.exports = function(app) {
 	app.get("/herramientas_modificar/:id_herramienta", auth, acceso, cHerramientas.getModificar);
 	app.post("/herramientas_modificar", auth, cHerramientas.postModificar);
 	app.get("/herramientas_eliminar/:id_herramienta", auth, acceso, cHerramientas.getEliminar);
+	app.get("/herramientas_ubicaciones", auth, acceso, cHerramientas.getUbicaciones);
+	app.post("/herramientas_cambiar_ubicacion", auth, cHerramientas.postHerramientasUbicacion);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

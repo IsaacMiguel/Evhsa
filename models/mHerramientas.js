@@ -8,7 +8,8 @@ module.exports = {
 	insertHerramienta : insertHerramienta,
 	getById : getById,
 	updateHerramienta : updateHerramienta,
-	deleteHerramienta : deleteHerramienta
+	deleteHerramienta : deleteHerramienta,
+	updateHeramientasUbicacion : updateHeramientasUbicacion
 }
 
 function getAll (cb) {
@@ -92,4 +93,9 @@ function updateHerramienta (d, cb) {
 
 function deleteHerramienta (id_herramienta, cb) {
 	conn("delete from herramientas where id=" + id_herramienta, cb);
+}
+
+function updateHeramientasUbicacion (id_herramienta, id_ubicacion, cb) {
+	conn("UPDATE herramientas SET id_ubicacionherramientas_fk=" + id_ubicacion + 
+	" WHERE herramientas.id = " + id_herramienta, cb);
 }
