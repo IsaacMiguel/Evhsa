@@ -193,3 +193,14 @@ function generateTodayDateYMD () {
     today = today.getFullYear() + '-' + month + '-' + day;
     return today;
 }
+
+function checkDateLessToday (date) {
+    var fecha = new Date(date);
+    var fecha_hoy = new Date();
+
+    if (fecha > fecha_hoy) {
+        return false;
+    } else {
+        return true;
+    }
+}
