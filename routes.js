@@ -383,6 +383,9 @@ module.exports = function(app) {
 	app.get("/herramientas_alta_form/:codigo", auth, acceso, cHerramientas.getAltaForm);
 	app.post("/herramientas_alta", auth, cHerramientas.postAlta);
 	app.get("/herramientas_ver/:id_herramienta", auth, acceso, cHerramientas.getVer);
+	app.get("/herramientas_modificar/:id_herramienta", auth, acceso, cHerramientas.getModificar);
+	app.post("/herramientas_modificar", auth, cHerramientas.postModificar);
+	app.get("/herramientas_eliminar/:id_herramienta", auth, acceso, cHerramientas.getEliminar);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

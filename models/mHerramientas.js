@@ -6,7 +6,9 @@ module.exports = {
 	getByFecha_Nombre : getByFecha_Nombre,
 	getByCodigo : getByCodigo,
 	insertHerramienta : insertHerramienta,
-	getById : getById
+	getById : getById,
+	updateHerramienta : updateHerramienta,
+	deleteHerramienta : deleteHerramienta
 }
 
 function getAll (cb) {
@@ -19,6 +21,7 @@ function getByFecha (d, cb) {
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"FROM herramientas " +
+	"LEFT JOIN repuestos ON repuestos.codigo = herramientas.codigo " +
 	"LEFT JOIN ubicaciones_herramientas " +
 	"ON herramientas.id_ubicacionherramientas_fk = ubicaciones_herramientas.id " +
 	"WHERE fecha_movimiento >= '" + d.date1 + "' " +
@@ -32,6 +35,7 @@ function getByFecha_Nombre (d, cb) {
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"FROM herramientas " +
+	"LEFT JOIN repuestos ON repuestos.codigo = herramientas.codigo " +
 	"LEFT JOIN ubicaciones_herramientas " +
 	"ON herramientas.id_ubicacionherramientas_fk = ubicaciones_herramientas.id " +
 	"WHERE fecha_movimiento >= '" + d.date1 + "' " +
@@ -66,5 +70,26 @@ function getById (id_herramienta, cb) {
 	conn("select *, " +
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
-	"from herramientas where id = " + id_herramienta, cb);
+	"from herramientas " +
+	"LEFT JOIN repuestos ON repuestos.codigo = herramientas.codigo " +
+	"where herramientas.id = " + id_herramienta, cb);
+}
+
+function updateHerramienta (d, cb) {
+	conn("update herramientas " +
+	"SET unica_usuariodestino_fk=" + d.unica_usuariodestino_fk + ", " +
+	"id_ubicacionherramientas_fk=" + d.id_ubicacionherramientas_fk + ", " +
+	"fecha_movimiento='" + d.fecha_movimiento + "', " +
+	"nro_recibo=" + d.nro_recibo + ", " +
+	"unica_operador_fk=" + d.unica_operador_fk + ", " +
+	"marca='" + d.marca + "', " +
+	"lugar_compra='" +d.lugar_compra + "', " +
+	"valor=" + d.valor + ", " +
+	"cantidad=" + d.cantidad + ", " +
+	"fecha_cambio='" + d.fecha_cambio + "' " +
+	"WHERE id=" + d.id_herramienta, cb);
+}
+
+function deleteHerramienta (id_herramienta, cb) {
+	conn("delete from herramientas where id=" + id_herramienta, cb);
 }
