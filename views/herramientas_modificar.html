@@ -8,14 +8,15 @@
 <link href="/css/herramientas.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
-	<form method="post" id="formalta" action="/herramientas_alta">
+	<form method="post" id="formmodificar" action="/herramientas_modificar">
+		<input hidden id="id_herramienta" name="id_herramienta" value="{{ herramienta[0].id }}">
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Código:</td>
-				<td><input type="text" id="codigo" name="codigo" maxlength="12" class="form-control porc25" value="{{ repuesto[0].codigo }}" readonly></td>
+				<td><input type="text" id="codigo" name="codigo" maxlength="12" class="form-control porc25" value="{{ herramienta[0].codigo }}" readonly></td>
 			</tr>
 			<tr>
-				<td>Denominación:</td>
+				<td>Nombre:</td>
 				<td><input type="text" id="denominacion" name="denominacion" class="form-control porc50" value="{{ repuesto[0].nombre }}" readonly></td>
 			</tr>
 			<tr>
@@ -24,7 +25,11 @@
 					<select id="usuario_destino" name="usuario_destino" class="form-control porc25">
 						<option value="0" selected>Sin usuario asignado</option>
 						{% for s in usuarios %}
-							<option value="{{ s.unica }}">{{ s.usuario }}</option>
+							{% if s.unica == herramienta[0].unica_usuariodestino_fk %}
+								<option value="{{ s.unica }}" selected>{{ s.usuario }}</option>
+							{% else %}
+								<option value="{{ s.unica }}">{{ s.usuario }}</option>
+							{% endif %}
 						{% endfor %}
 					</select>
 				</td>
@@ -35,38 +40,42 @@
 					<select id="ubicacion" name="ubicacion" class="form-control porc25" required>
 						<option value="0" selected>Sin ubicación asignada</option>
 						{% for u in ubicaciones %}
-							<option value="{{ u.id }}">{{ u.descripcion }}</option>
+							{% if u.id == herramienta[0].id_ubicacionherramientas_fk %}
+								<option value="{{ u.id }}" selected>{{ u.descripcion }}</option>
+							{% else %}
+								<option value="{{ u.id }}">{{ u.descripcion }}</option>
+							{% endif %}
 						{% endfor %}
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td>Fecha Movimiento:</td>
-				<td><input type="date" id="fecha_movimiento" name="fecha_movimiento" class="form-control porc25" required></td>
+				<td><input type="date" id="fecha_movimiento" name="fecha_movimiento" class="form-control porc25" value="{{ herramienta[0].fecha_movimiento }}" required></td>
 			</tr>
 			<tr>
 				<td>N° recibo:</td>
-				<td><input type="number" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25"></td>
+				<td><input type="number" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25" value="{{ herramienta[0].nro_recibo }}"></td>
 			</tr>
 			<tr>
 				<td>Marca:</td>
-				<td><input type="text" id="marca" name="marca" maxlength="15" class="form-control porc50"><div class="aviso">Quedan <span id="charsLeftMarca"></span> caraceteres.</div></td>
+				<td><input type="text" id="marca" name="marca" maxlength="15" class="form-control porc50" value="{{ herramienta[0].marca }}"><div class="aviso">Quedan <span id="charsLeftMarca"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Lugar Compra:</td>
-				<td><input type="text" id="lugar_compra" name="lugar_compra" maxlength="20" class="form-control porc50"><div class="aviso">Quedan <span id="charsLeftLugar_compra"></span> caraceteres.</div></td>
+				<td><input type="text" id="lugar_compra" name="lugar_compra" maxlength="20" class="form-control porc50" value="{{ herramienta[0].lugar_compra }}"><div class="aviso">Quedan <span id="charsLeftLugar_compra"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Valor:</td>
-				<td><input type="number" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25"></td>
+				<td><input type="number" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25" value="{{ herramienta[0].valor }}"></td>
 			</tr>
 			<tr>
 				<td>Cantidad:</td>
-				<td><input type="number" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25"></td>
+				<td><input type="number" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25" value="{{ herramienta[0].cantidad }}"></td>
 			</tr>
 			<tr>
 				<td>Fecha Cambio:</td>
-				<td><input type="date" id="fecha_cambio" name="fecha_cambio" class="form-control porc25"></td>
+				<td><input type="date" id="fecha_cambio" name="fecha_cambio" class="form-control porc25" value="{{ herramienta[0].fecha_cambio }}"></td>
 			</tr>
 			<tr>
 				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
@@ -85,7 +94,7 @@
 	$('#marca').limit('15','#charsLeftMarca');
 	$('#lugar_compra').limit('20','#charsLeftLugar_compra');
 
-	$('#formalta').submit(function (e) {
+	$('#formmodificar').submit(function (e) {
 		var ubicacion = $('#ubicacion').val();
 		var fecha_movimiento = $('#fecha_movimiento').val();
 		var date1 = checkDateLessToday(fecha_movimiento);

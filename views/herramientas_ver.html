@@ -11,37 +11,41 @@
 	<table align="center" class="table table-striped">
 		<tr>
 			<td>Codigo:</td>
-			<td>{{ herramienta.codigo }}</td>
+			<td>{{ herramienta[0].codigo }}</td>
+		</tr>
+		<tr>
+			<td>Nombre:</td>
+			<td>{{ herramienta[0].nombre }}</td>
 		</tr>
 		<tr>
 			<td>Fecha Movimiento:</td>
-			<td>{{ herramienta.fecha_movimiento_f }}</td>
+			<td>{{ herramienta[0].fecha_movimiento_f }}</td>
 		</tr>
 		<tr>
 			<td>N° recibo:</td>
-			<td>{{ herramienta.nro_recibo }}</td>
+			<td>{{ herramienta[0].nro_recibo }}</td>
 		</tr>
 		<tr>
 			<td>Marca:</td>
-			<td>{{ herramienta.marca }}</td>
+			<td>{{ herramienta[0].marca }}</td>
 		</tr>
 		<tr>
 			<td>Lugar Compra:</td>
-			<td>{{ herramienta.lugar_compra }}</td>
+			<td>{{ herramienta[0].lugar_compra }}</td>
 		</tr>
 		<tr>
 			<td>Valor:</td>
-			<td>{{ herramienta.valor }}</td>
+			<td>{{ herramienta[0].valor }}</td>
 		</tr>
 		<tr>
 			<td>Cantidad:</td>
-			<td>{{ herramienta.cantidad }}</td>
+			<td>{{ herramienta[0].cantidad }}</td>
 		</tr>
 		<tr>
 			<td>Fecha Cambio:</td>
 			<td>
-				{% if herramienta.fecha_cambio != '00/00/0000' %}
-					{{ herramienta.fecha_cambio_f }}
+				{% if herramienta[0].fecha_cambio != '00/00/0000' %}
+					{{ herramienta[0].fecha_cambio_f }}
 				{% else %}
 					
 				{% endif %}

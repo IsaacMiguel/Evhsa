@@ -59,16 +59,17 @@
 				<table class="table table-striped">
 			  		<thead>
 			  			<tr> 
-			  				<th colspan="3">Opciones</th>
+			  				<th colspan="5">Opciones</th>
 							<th>N°</th>
-							<th>Denominación</th>
-							<th>N° Coche</th>
+							<th>Nombre</th>
+							<th>Ubicación</th>
 							<th>Fcha. Colocación</th>
+							<th>N° Coche</th>
 							<th>Total</th>
 							<th>Responsable</th>
 							<th>Tipo</th>
-							<th>Fcha. Sacado</th>
 							<th>Km</th>
+							<th>Fcha. Sacado</th>
 						</tr>
 			  		</thead>
 			  		<tbody id="tbodylisto">
@@ -77,10 +78,44 @@
 			  		<script type="text/template" id="tabla_herramientas" />
 			  			[% for d in data %]
 			  				<tr>
-								<td><a href="/herramientas_ver/[[ d.id_herramientas ]]"><button class="btn btn-default">Ver</button></a></td>
-								<td><a href="/herramientas_modificar/[[ d.id_herramientas ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
-								<td><a href="/herramientas_eliminar/[[ d.id_herramientas ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+								<td>
+									<a href="/herramientas_ver/[[ d.id_herramientas ]]">
+										<button class="btn btn-default">
+											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+										</button>
+									</a>
+								</td>
+								<td>
+									<a href="/herramientas_modificar/[[ d.id_herramientas ]]">
+										<button class="btn btn-warning menu" data-idmenu="21" data-accion="m">
+											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+										</button>
+									</a>
+								</td>
+								<td>
+									<a href="/#/[[ d.id_herramientas ]]">
+										<button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="b">
+											<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+										</button>
+									<a/>
+								</td>
+								<td>
+									<a href="#" onclick="alert('No disponible')">
+										<button type="button" class="btn btn-primary menu" data-idmenu="21" data-accion="b">
+											<span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+										</button>
+									<a/>
+								</td>
+								<td>
+									<a href="/herramientas_eliminar/[[ d.id_herramientas ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;">
+										<button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">
+											<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+										</button>
+									<a/>
+								</td>
+								
 								<td>[[ d.codigo ]]</td>
+								<td>[[ d.nombre ]]</td>
 								<td>[[ d.descripcion ]]</td>
 								<td>[% if d.fecha_movimiento_f != '00/00/0000' %][[ d.fecha_movimiento_f ]][% else %][% endif %]</td>
 								<td>[[ d.nro_recibo ]]</td>
@@ -108,8 +143,6 @@
     });
 
 	var mainReady = function () {
-		//Setea fecha hasta (hoy)
-		//todayDate, funcion dentro de main.js
 		var today = generateTodayDateYMD();
 		$('#fecha_hoy').val(today);
 
@@ -139,7 +172,7 @@
 					$('#tbodylisto').html(output);
 				}else{
 					$('#tbodylisto > tr').remove();					
-					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					$("#tbodylisto").html("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
 				}
 			});
 		}
