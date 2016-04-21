@@ -66,7 +66,7 @@
 			</tr>
 			<tr>
 				<td>Fecha Cambio:</td>
-				<td><input type="date" id="fecha_cambio" name="fecha_cambio" class="form-control porc25"></td>
+				<td><input type="checkbox" id="fecha_cambio" name="fecha_cambio" class="checkbox porc25"></td>
 			</tr>
 			<tr>
 				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
@@ -89,8 +89,6 @@
 		var ubicacion = $('#ubicacion').val();
 		var fecha_movimiento = $('#fecha_movimiento').val();
 		var date1 = checkDateLessToday(fecha_movimiento);
-		var fecha_cambio = $('#fecha_cambio').val();
-		var date2 = checkDateLessToday(fecha_cambio);
 		
 		if (ubicacion === '0') {
 			alert("Debe elegir una ubicación");
@@ -100,11 +98,6 @@
 		if (!date1) { 
 			alert("La fecha de movimiento no puede ser anterior al dia de hoy") ;
 			e.preventDefault();
-		}
-
-		if (!date2) {
-			alert("La fecha de cambio no puede ser anterior al dia de hoy") ;
-			e.preventDefault();	
 		}
 	});
 </script>

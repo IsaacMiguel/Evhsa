@@ -9,7 +9,7 @@
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
 	<form method="post" id="formmodificar" action="/herramientas_modificar">
-		<input hidden id="id_herramienta" name="id_herramienta" value="{{ herramienta[0].id }}">
+		<input hidden id="id_herramienta" name="id_herramienta" value="{{ herramienta[0].id_herramienta }}">
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Código:</td>
@@ -75,7 +75,12 @@
 			</tr>
 			<tr>
 				<td>Fecha Cambio:</td>
-				<td><input type="date" id="fecha_cambio" name="fecha_cambio" class="form-control porc25" value="{{ herramienta[0].fecha_cambio }}"></td>
+				<td>
+					{% if herramienta[0].fecha_cambio == '0000-00-00' %}
+						<input type="checkbox" id="fecha_cambio" name="fecha_cambio" class="checkbox porc25">
+					{% else %}
+						<input type="checkbox" id="fecha_cambio" name="fecha_cambio" class="checkbox porc25" checked>
+					{% endif %}
 			</tr>
 			<tr>
 				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>

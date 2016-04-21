@@ -9,7 +9,8 @@ module.exports = {
 	getById : getById,
 	updateHerramienta : updateHerramienta,
 	deleteHerramienta : deleteHerramienta,
-	updateHeramientasUbicacion : updateHeramientasUbicacion
+	updateHeramientasUbicacion : updateHeramientasUbicacion,
+	updateHerramientasFechaCambio : updateHerramientasFechaCambio
 }
 
 function getAll (cb) {
@@ -19,6 +20,7 @@ function getAll (cb) {
 function getByFecha (d, cb) {
 	conn("SELECT *, ubicaciones_herramientas.descripcion as ubicacion_herramientastxt, " +
 	"herramientas.id as id_herramientas, " +
+	"herramientas.marca as marca_herramientas, " +
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"FROM herramientas " +
@@ -33,6 +35,7 @@ function getByFecha (d, cb) {
 function getByFecha_Nombre (d, cb) {
 	conn("SELECT *, ubicaciones_herramientas.descripcion as ubicacion_herramientastxt, " +
 	"herramientas.id as id_herramientas, " +
+	"herramientas.marca as marca_herramientas, " +
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"FROM herramientas " +
@@ -68,7 +71,7 @@ function insertHerramienta (d, cb) {
 }
 
 function getById (id_herramienta, cb) {
-	conn("select *, " +
+	conn("select *, herramientas.id as id_herramienta, " +
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"from herramientas " +
@@ -97,5 +100,10 @@ function deleteHerramienta (id_herramienta, cb) {
 
 function updateHeramientasUbicacion (id_herramienta, id_ubicacion, cb) {
 	conn("UPDATE herramientas SET id_ubicacionherramientas_fk=" + id_ubicacion + 
+	" WHERE herramientas.id = " + id_herramienta, cb);
+}
+
+function updateHerramientasFechaCambio (id_herramienta, opcion, cb) {
+	conn("UPDATE herramientas SET fecha_cambio='" + opcion + "' " +
 	" WHERE herramientas.id = " + id_herramienta, cb);
 }

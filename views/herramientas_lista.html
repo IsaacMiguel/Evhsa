@@ -6,6 +6,26 @@
 
 {% block content %}
 <h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+	      	<table class="table" id="tabla_ubicaciones">
+
+      		</table>
+      	  </div>	
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
 <div class="panel panel-default">
   <!-- Default panel contents -->
   	<div class="panel-heading">
@@ -28,47 +48,29 @@
 							<td>
 								<input class="form-control" type="text" id="nombre" name="nombre" placeholder="Denominación... "/>
 							</td>
-							<td><button type="button" class="btn btn-success" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
+							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
 						</tr>
 					</table>					
 				</td>
 			</tr>	
 		</table>
 	</div>
-	<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
-		      </div>
-		      	<table class="table" id="tabla_ubicaciones">
-
-	      		</table>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	<!-- Fin Modal -->
 	<div class="row">
 		<div class="col-xs-12">
 			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
 				<table class="table table-striped">
 			  		<thead>
 			  			<tr> 
-			  				<th colspan="5">Opciones</th>
-							<th>N°</th>
+			  				<th colspan="6">Opciones</th>
+							<th>Código</th>
 							<th>Nombre</th>
 							<th>Ubicación</th>
 							<th>Fcha. Movimiento</th>
-							<th>N° Coche</th>
-							<th>Total</th>
-							<th>Responsable</th>
-							<th>Tipo</th>
-							<th>Km</th>
+							<th>N° Recibo</th>
+							<th>Marca</th>
+							<th>Lugar compra</th>
+							<th>Valor</th>
+							<th>Cantidad</th>
 							<th>Fcha. Cambio</th>
 						</tr>
 			  		</thead>
@@ -80,33 +82,50 @@
 			  				<tr>
 								<td>
 									<a href="/herramientas_ver/[[ d.id_herramientas ]]">
-										<button class="btn btn-default">
+										<button class="btn btn-default" title="Ver Herramienta / Ver información sobre la herramienta">
 											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 										</button>
 									</a>
 								</td>
 								<td>
 									<a href="/herramientas_modificar/[[ d.id_herramientas ]]">
-										<button class="btn btn-warning menu" data-idmenu="21" data-accion="m">
+										<button class="btn btn-warning menu" title="Modificar Herramienta / Modificar datos sobre la herramienta" data-idmenu="21" data-accion="m">
 											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 										</button>
 									</a>
 								</td>
 								<td>
-									<button type="button" class="btn btn-success menu btn_ubicaciones" value="[[ d.id_herramientas ]]" onclick="cambiarUbicacion($(this).val())" data-idmenu="21" data-accion="b">
+									<button type="button" class="btn btn-success menu btn_ubicaciones" title="Modificar Ubicación / Modificar la ubicación de la herramienta" value="[[ d.id_herramientas ]]" onclick="cambiarUbicacion($(this).val())" data-idmenu="21" data-accion="b">
 										<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 									</button>
 								</td>
+									[% if d.fecha_cambio == '0000-00-00' %]
+										<td>
+											<a href="#">
+												<button class="btn btn-info menu herramientas_modificar_fechaCambio" title="Cambiar fecha / Marca la herramienta para ser sacada de curso || NOTA: Esta herramienta SI esta actualmente marcada para ser cambiada" data-paramID="[[ d.id_herramientas ]]" data-paramTF="false" data-idmenu="21" data-accion="m">
+													<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+												</button>
+											</a>
+										</td>
+									[% else %]
+										<td>
+											<a href="#">
+												<button class="btn btn-info menu herramientas_modificar_fechaCambio" title="Cambiar fecha / Marca la herramienta para ser sacada de curso || NOTA: Esta herramienta NO esta actualmente marcada para ser cambiada" data-paramID="[[ d.id_herramientas ]]" data-paramTF="true" data-idmenu="21" data-accion="m">
+													<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+												</button>
+											</a>
+										</td>
+									[% endif %]
 								<td>
 									<a href="#" onclick="alert('No disponible')">
-										<button type="button" class="btn btn-primary menu" data-idmenu="21" data-accion="b">
+										<button type="button" class="btn btn-primary menu" title="Imprimir / Imprime recibo" data-idmenu="21" data-accion="b">
 											<span class="glyphicon glyphicon-print" aria-hidden="true"></span>
 										</button>
 									<a/>
 								</td>
 								<td>
 									<a href="/herramientas_eliminar/[[ d.id_herramientas ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;">
-										<button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">
+										<button type="button" class="btn btn-danger menu" title="Eliminar / Elimina la herramienta" data-idmenu="21" data-accion="b">
 											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 										</button>
 									<a/>
@@ -117,7 +136,7 @@
 								<td>[[ d.descripcion ]]</td>
 								<td>[% if d.fecha_movimiento_f != '00/00/0000' %][[ d.fecha_movimiento_f ]][% else %][% endif %]</td>
 								<td>[[ d.nro_recibo ]]</td>
-								<td>[[ d.marca ]]</td>
+								<td>[[ d.marca_herramientas ]]</td>
 								<td>[[ d.lugar_compra ]]</td>
 								<td>[[ d.valor ]]</td>
 								<td>[[ d.cantidad ]]</td>
@@ -135,6 +154,10 @@
 <script src="/js/swig.min.js"></script>
 <script src="/js/main.js"></script>
 <script type="text/javascript">
+
+	/* Seccion
+	 * (document).ready
+	 */
 	swig.setDefaults({
     	varControls: ['[[', ']]'],
     	tagControls: ['[%', '%]']
@@ -145,7 +168,7 @@
 			var html = "";
 			html += "<tr><th>Ubicaciones</th></tr>";
 				for(var i = 0; i < ubicaciones.length; i++){
-					html +="<tr><td><form method='post' id="+val+" action='/herramientas_cambiar_ubicacion'>" +
+					html +="<tr><td><form onsubmit='return submit_ubicaciones()' method='post' class='f_ubi' id='"+val+"' action='/herramientas_cambiar_ubicacion'>" +
 					"<div class='row'><div class='col-sm-6'><input hidden type='text' value='" + val + "' id='id_herramienta_form' name='id_herramienta_form'>" +
 					"<input hidden type='text' value='" + ubicaciones[i].id + "' id='id_ubicacion_form' name='id_ubicacion_form'>" +
 					"<input type='text' value='" + ubicaciones[i].descripcion + "'" +
@@ -153,12 +176,19 @@
 					"<div class='col-sm-6'><input type='submit' value='Cambiar ubicación' class='btn btn-success'></div></div>" +
 					"</form></td>";
 				}
-				
-			html += "</table>";
+
 			$("#tabla_ubicaciones").html(html);
 			$("#myModalLabel").text("Selecione una ubicación")
 			$('#myModal').modal('toggle');
 		});
+	}
+
+	function submit_ubicaciones () {
+		if (confirm('¿Seguro desea cambiar la ubicación?')) { 
+			return true
+		} else {
+			return false
+		}
 	}
 
 	var mainReady = function () {
@@ -197,5 +227,42 @@
 	}
 
 	$(document).ready(mainReady);
+
+	/* Seccion
+	 * (document).on
+	 */
+
+	$(document).on("click", ".herramientas_modificar_fechaCambio", function () {
+		var param1 = $(this).data('paramid');
+		var param2 = $(this).data('paramtf');
+		var today = generateTodayDateYMD();
+		$('#fecha_hoy').val(today);
+
+		var date1 = $('#fecha_desde').val();
+		var date2 = $('#fecha_hoy').val();
+		var denominacion = $('#nombre').val();
+
+		if (denominacion === '') {
+			denominacion = 'NoName';
+		}
+
+		$.post("/herramientas_modificar_fechaCambio/" + param1 + "/" + param2, function () {
+			$('#tbodylisto').html('<p>Cargando...<p>');
+				$.getJSON('/herramientas_filtrar/' + date1 + '/' + date2 + '/' + denominacion, function (data){
+					if (data.length != 0){
+						$('#tbodylisto > tr').remove();
+						var template = $('#tabla_herramientas').html();
+
+						var output = parseSwig(template, data);
+
+						$('#tbodylisto').html(output);
+
+					}else{
+						$('#tbodylisto > tr').remove();					
+						$("#tbodylisto").html("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					}
+				});
+		});
+	});
 </script>
 {% endblock %}
