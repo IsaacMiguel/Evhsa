@@ -6,6 +6,24 @@
 
 {% block content %}
 <h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div class="modal-body">
+	        {{ ayuda.texto }}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
 <div class="panel panel-default">
   <!-- Default panel contents -->
   	<div class="panel-heading">
@@ -46,24 +64,7 @@
 			</tr>	
 		</table>
 	</div>
-	<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
-		      </div>
-		      <div class="modal-body">
-		        {{ ayuda.texto }}
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	<!-- Fin Modal -->
+
 	<div class="row">
 		<div class="col-xs-12">
 			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
@@ -95,11 +96,21 @@
 								<td>[[ e.denominacion ]]</td>
 								<td>[% if e.numero_coche_fk == 0 %]S/A[% else %][[ e.numero_coche_fk ]][% endif %]</td>
 								<td>[% if e.fecha_colocacion_f != '00/00/0000' %][[ e.fecha_colocacion_f ]][% else %][% endif %]</td>
-								<td>[[ e.total ]]</td>
+								<td>
+									[% if e.total == 0 %]
+									[% else %]
+										[[ e.total ]]
+									[% endif %]
+								</td>
 								<td>[[ e.responsable ]]</td>
 								<td>[[ e.tipo ]]</td>
 								<td>[% if e.fecha_sacado_f != '00/00/0000' %][[ e.fecha_sacado_f ]][% else %][% endif %]</td>
-								<td>[[ e.km ]]</td>
+								<td>
+									[% if e.km == 0 %]
+									[% else %]
+										[[ e.km ]]
+									[% endif %]
+								</td>
 							</tr>
 						[% endfor %]
 			  		</script>
@@ -154,7 +165,7 @@
     });
 
 	$("#btnFiltrar").on("click", function (){
-		$('#tbodylisto').html('<p>Cargando...<p>');
+		$('#tbodylisto').html('<p style="padding-left: 20px; padding-top:20px;">Cargando...<p>');
 		var opcion_filtrado = $('#filtro option:selected').val();
 		var buscar = $('#busqueda_filtro').val();
 		var valido = false;
@@ -176,10 +187,8 @@
 					var output = parseSwig(template, data);
 					$('#tbodylisto').html(output);
 				}else{
-					//hacer que aca muestre error de que no se encontro nada en la busqueda
-					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
 					$('#tbodylisto > tr').remove();					
-					$("#tbodylisto").html("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
 				}
 			});
 		}

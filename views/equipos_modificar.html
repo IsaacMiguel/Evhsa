@@ -13,16 +13,16 @@
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Numero:</td>
-				<td><input type="number" id="numero" name="numero" class="form-control" value="{{ equipo.numero }}"><div class="aviso">Quedan <span id="charsLeftNumero"></span> caraceteres.</div></td>
+				<td><input type="number" id="numero" name="numero" maxlength="3" class="form-control" value="{{ equipo.numero }}" readonly></td>
 			</tr>
 			<tr>
 				<td>Denominación:</td>
-				<td><input type="text" id="denominacion" name="denominacion" required class="form-control" value="{{ equipo.denominacion }}"><div class="aviso">Quedan <span id="charsLeftDenominacion"></span> caraceteres.</div></td>
+				<td><input type="text" id="denominacion" name="denominacion" required class="form-control width_60" value="{{ equipo.denominacion }}"><div class="aviso">Quedan <span id="charsLeftDenominacion"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>N° Coche:</td>
 				<td>
-					<select id="nro_coche" name="nro_coche" class="form-control" >
+					<select id="nro_coche" name="nro_coche" class="form-control width_35" >
 						{% if v.id == 0 %}
 							<option value="0" selected>Sin coche asignado</option>
 						{% else %}
@@ -45,15 +45,21 @@
 			</tr>
 			<tr>
 				<td>Total:</td>
-				<td><input type="number" step="any" id="total" name="total" class="form-control" value="{{ equipo.total }}"><div class="aviso">Quedan <span id="charsLeftTotal"></span> caraceteres.</div></td>
+				<td>
+					{% if equipo.total == 0 %}
+						<input type="number" step="any" id="total" name="total" class="form-control">
+					{% else %}
+						<input type="number" step="any" id="total" name="total" class="form-control" value="{{ equipo.total }}">
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td>Responsable:</td>
-				<td><input type="text" id="responsable" name="responsable" class="form-control" value="{{ equipo.responsable }}"><div class="aviso">Quedan <span id="charsLeftResponsable"></span> caraceteres.</div></td>
+				<td><input type="text" id="responsable" name="responsable" class="form-control width_60" value="{{ equipo.responsable }}"><div class="aviso">Quedan <span id="charsLeftResponsable"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
-				<td>tipo:</td>
-				<td><input type="text" id="tipo" name="tipo" class="form-control" value="{{ equipo.tipo }}"><div class="aviso">Quedan <span id="charsLeftTipo"></span> caraceteres.</div></td>
+				<td>Tipo:</td>
+				<td><input type="text" id="tipo" maxlength="1" name="tipo" class="form-control" value="{{ equipo.tipo }}" onkeypress="return lettersOnly(event)"><div class="aviso">Quedan <span id="charsLeftTipo"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Fecha Sacado:</td>
@@ -61,30 +67,28 @@
 			</tr>
 			<tr>
 				<td>Km:</td>
-				<td><input type="number" id="km" name="km" class="form-control" value="{{ equipo.km }}"><div class="aviso">Quedan <span id="charsLeftKm"></span> caraceteres.</div></td>
+				<td>
+					{% if equipo.km == 0 %}
+						<input type="number" id="km" name="km" class="form-control">
+					{% else %}
+						<input type="number" id="km" name="km" class="form-control" value="{{ equipo.km }}"></td>
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td>Observaciones:</td>
-				<td><textarea rows="10" cols="50" id="observaciones" name="observaciones" class="form-control">
-					{{ equipo.observaciones }}
-				</textarea><div class="aviso">Quedan <span id="charsLeftObservaciones"></span> caraceteres.</div></td>
+				<td><textarea rows="5" cols="50" id="observaciones" name="observaciones" class="form-control">{{ equipo.observaciones }}</textarea><div class="aviso">Quedan <span id="charsLeftObservaciones"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Resultado:</td>
-				<td><textarea rows="10" cols="50" id="resultado" name="resultado" class="form-control">
-					{{ equipo.resultado }}
-				</textarea><div class="aviso">Quedan <span id="charsLeftResultado"></span> caraceteres.</div></td>
+				<td><textarea rows="5" cols="50" id="resultado" name="resultado" class="form-control">{{ equipo.resultado }}</textarea><div class="aviso">Quedan <span id="charsLeftResultado"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>
-					<center>
-						<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
-					</center>
+					<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
 				</td>
 				<td>
-					<center>
-						<input type="submit" class="btn btn-default" value="Agregar">
-					</center>
+					<input type="submit" class="btn btn-default" value="Agregar">
 				</td>
 			</tr>
 		</table>
@@ -95,12 +99,9 @@
 <script src="/js/jquery.limit-1.2.js"></script>
 <script src="/js/jquery.autotab.min.js"></script>
 <script type="text/javascript">
-	$('#numero').limit('3','#charsLeftNumero');
 	$('#denominacion').limit('30','#charsLeftDenominacion');
-	$('#total').limit('14','#charsLeftTotal');
-	$('#responsable').limit('14','#charsLeftTelefono');
+	$('#responsable').limit('14','#charsLeftResponsable');
 	$('#tipo').limit('1','#charsLeftTipo');
-	$('#km').limit('11','#charsLeftKm');
 	$('#observaciones').limit('5000','#charsLeftObservaciones');
 	$('#resultado').limit('5000','#charsLeftResultado');
 </script>
