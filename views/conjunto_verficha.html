@@ -16,6 +16,8 @@
 						<a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicion.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo Mov.</button></a>
 					{% elseif conjunto_definicion.fecha_baja == '0000-00-00' %}
 						<a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicion.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo Mov.</button></a>
+					{% elseif conjunto_definicion.fecha_baja == null %}
+						<a href="/conjunto_ficha_alta/{{ conjunto_definicion.codigo }}/{{ conjunto_definicion.serie }}"><button type="button" class="btn btn-success menu" data-idmenu="17" data-accion="a">Agregar Nuevo Mov.</button></a>
 					{% else %}
 						<button type="button" class="btn btn-success menu" onclick="alert('No se pueden agregar movimientos a esta ficha porque ha sido dada de baja.')">Agregar Nuevo Mov.</button>
 					{% endif %}

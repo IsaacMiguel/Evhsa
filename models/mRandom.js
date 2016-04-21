@@ -9,7 +9,9 @@ module.exports = {
 	getOtrosGastos_Temp: getOtrosGastos_Temp,
 	getOperarios: getOperarios,
 	getEquipos_temp : getEquipos_temp,
-	getFic2: getFic2
+	getFic2: getFic2,
+	getFico: getFico,
+	getFico2015: getFico2015
 }	
 
 function getAllRepuestos(cb){
@@ -46,4 +48,12 @@ function getEquipos_temp (cb) {
 
 function getFic2(cb){
 	conn("select * from fic2", cb);
+}
+
+function getFico(cb){
+	conn("select * from fico", cb);
+}
+
+function getFico2015(cb){
+	conn("SELECT * FROM `fico` where fecha like '2015%' ORDER BY id", cb);
 }

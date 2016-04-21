@@ -10,7 +10,8 @@ module.exports = {
 	updateTablaSecrConOperariosTemp: updateTablaSecrConOperariosTemp,
 	updateOtrosGastos: updateOtrosGastos,
 	updateEquipos : updateEquipos,
-	updateConjuntos: updateConjuntos
+	updateConjuntos: updateConjuntos,
+	updateConjuntosFichas: updateConjuntosFichas
 }
 
 function getRandom(req, res){
@@ -436,6 +437,116 @@ function updateConjuntos(req, res){
 			if (err) {
 				throw err; 
 			}else{
+				res.send("finished");
+				connection.end();
+				// return callback();
+			}				
+		});
+	});
+}
+
+function updateConjuntosFichas(req, res){
+	var connection = mysql.createConnection({
+	    user: 'root',
+	    password: '',
+	    host: '127.0.0.1',
+	    port: '3306',
+	    database: 'Evhsa',
+	    dateStrings : true
+ 	});
+
+	connection.connect();
+
+	mRandom.getFico2015(function (fico){
+		console.log(fico.length);
+		// console.log(fico[0])
+		async.eachSeries(fico, function (fico2, callback) {
+			// fico2 = fico2o[0]
+			// asignar valores
+			const codigo = fico2.codigo;
+			// const denominacion = fico2.denominacion;
+			const serie = fico2.serie;
+			const fecha_movimiento = fico2.fecha;
+			const coche_sacado = fico2.coche_sacado;
+			const destino = fico2.destino;
+			const coche_colocado = fico2.coche_colocado; //ubicacion
+			const ubicacion_actual = fico2.ubicacion_actual;
+			const valor = fico2.valor;
+			const memo = fico2.memo;
+			var ubicacion_neumatico = fico2.ubicacion_neumatico;
+			const imputa = fico2.imputa;
+			const responsable_reparacion = fico2.responsable_reparacion;			
+			const responsable_rotura = fico2.responsable_rotura;
+			const km = fico2.km;
+			var tipo_cubierta = fico2.tipo_cubierta;
+			var estadistica = fico2.estadistica;
+			const mm = fico2.mm;
+
+			//verificaciones con ifs
+			if (tipo_cubierta == '')
+				tipo_cubierta = '0';
+
+			if (ubicacion_neumatico == '')
+				ubicacion_neumatico = 'NN';
+
+			if (estadistica == '' || estadistica == '0')
+				estadistica = 'n'
+			else if (estadistica == '1')
+				estadistica = 's'
+			//insertar en conjuntos_ficha
+
+			var query = "INSERT INTO `evhsa`.`conjunto_ficha` (`codigo`, `serie`, `fecha_movimiento`, "+
+				"`numero_coche_sacado_fk`, `numero_coche_colocado_fk`, `codigo_ubicacion_actual_fk`, "+
+				"`valor`, `memo`, `codigo_ubicacion_neumatico_fk`, `imputa`, `responsable_reparacion`, "+
+				"`responsable_rotura`, `km`, `codigo_tipo_cubierta_fk`, `est`, `mm`) VALUES"+
+					"('"+codigo+"', '"+serie+"', '"+fecha_movimiento+"', "+
+					coche_sacado+", "+coche_colocado+", '"+ubicacion_actual+"', "+
+					valor+", '"+memo+"', '"+ubicacion_neumatico+"', "+imputa+", '"+responsable_reparacion+"', "+
+					"'"+responsable_rotura+"', "+km+", '"+tipo_cubierta+"', '"+estadistica+"', "+mm+");";
+			
+			// console.log(query)
+			connection.query(query, function (err, rows, fields) {
+				if (err) {
+					throw err;
+			    	console.log(err);
+				}else{
+					// cb(rows);					
+					// console.log(query);
+					// var i = fico.indexOf(fico2);
+
+					// if(i == '100')
+					// 	console.log("100 !")
+					// if(i == '500')
+					// 	console.log("500 !!")
+					// if(i == '1000')
+					// 	console.log("1000 !!")
+					// if(i == '5000')
+					// 	console.log("5000 !!!")
+					// if(i == '10000')
+					// 	console.log("10000 !!!!")
+					// if(i == '15000')
+					// 	console.log("15000 !!!!")
+					// if(i == '20000')
+					// 	console.log("20000 !!!!")
+					// if(i == '25000')
+					// 	console.log("25000 !!!!")
+					// if(i == '30000')
+					// 	console.log("30000 !!!!")
+					// if(i == '35000')
+					// 	console.log("35000 !!!!")
+					// if(i == '40000')
+					// 	console.log("40000 !!!!")
+					// console.log("updated !");
+					callback();
+				}					    
+			});
+
+			}, function (err) {
+			if (err) {
+				throw err;
+				console.log(err);
+			}else{
+				console.log("finished");
 				res.send("finished");
 				connection.end();
 				// return callback();
