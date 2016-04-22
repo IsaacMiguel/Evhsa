@@ -68,6 +68,6 @@ function getByDescripcion (descripcion, cb) {
 	conn("select * from repuestos where nombre like '%" + descripcion + "%'", cb);
 }
 
-function getByCodigoLike (codigo, cb) {
-	conn("select * from repuestos where codigo like '" + codigo + "%'", cb);
+function getByCodigoLike (codigo, descripcion, cb) {
+	conn("select * from repuestos where nombre like '%" + descripcion + "%' AND codigo like '" + codigo + "%'", cb);
 }

@@ -1,4 +1,3 @@
-//requiriendo modelo mensaje.js:
 var mEquipos = require('../models/mEquipos');
 var mVehiculos = require('../models/mVehiculos');
 
@@ -148,23 +147,31 @@ function getEquiposFiltro (req, res) {
 		switch (opcion){
 			case "2":
 				campo = "fecha_colocacion";
+					mEquipos.getQueryDate(campo, buscar, function (data){
+						res.send(data);
+					});
 				break;
 
 			case "3":
 				campo = "tipo";
+					mEquipos.getQueryEqual(campo, buscar, function (data){
+						res.send(data);
+					});
 				break;
 
 			case "4":
 				campo = "fecha_sacado";
+					mEquipos.getQueryDate(campo, buscar, function (data){
+						res.send(data);
+					});
 				break;
 
 			case "5":
 				campo = "numero_coche_fk";
+					mEquipos.getQueryEqual(campo, buscar, function (data){
+						res.send(data);
+					});
 				break;
 		}
-
-		mEquipos.getQuery(campo, buscar, function (data){
-				res.send(data);
-		});
 	}
 }

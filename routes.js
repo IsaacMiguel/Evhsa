@@ -377,7 +377,7 @@ module.exports = function(app) {
 
 	//HERRAMIENTRAS
 	app.get("/herramientas_lista", auth, acceso, cHerramientas.getLista);
-	app.get("/herramientas_filtrar/:date1/:date2/:denominacion", auth, acceso, cHerramientas.getFiltrar);
+	app.get("/herramientas_filtrar/:desde/:hasta/:denominacion", auth, acceso, cHerramientas.getFiltrar);
 	app.get("/herramientas_alta", auth, acceso, cHerramientas.getAlta);
 	app.get("/herramientas_filtro_repuestos/:codigo/:descripcion", auth, acceso, cHerramientas.getRepuestos);
 	app.get("/herramientas_alta_form/:codigo", auth, acceso, cHerramientas.getAltaForm);
@@ -386,6 +386,9 @@ module.exports = function(app) {
 	app.get("/herramientas_modificar/:id_herramienta", auth, acceso, cHerramientas.getModificar);
 	app.post("/herramientas_modificar", auth, cHerramientas.postModificar);
 	app.get("/herramientas_eliminar/:id_herramienta", auth, acceso, cHerramientas.getEliminar);
+	app.get("/herramientas_ubicaciones", auth, acceso, cHerramientas.getUbicaciones);
+	app.post("/herramientas_cambiar_ubicacion", auth, cHerramientas.postHerramientasUbicacion);
+	app.post("/herramientas_modificar_fechaCambio/:id_herramienta/:opcion", auth, cHerramientas.postModificarFechaCambio);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

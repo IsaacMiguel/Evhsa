@@ -23,11 +23,16 @@
 		</tr>
 		<tr>
 			<td>N° recibo:</td>
-			<td>{{ herramienta[0].nro_recibo }}</td>
+			<td>
+				{% if herramienta[0].nro_recibo == 0 %}
+				{% else %}
+					{{ herramienta[0].nro_recibo }}
+				{% endif %}
+			</td>
 		</tr>
 		<tr>
 			<td>Marca:</td>
-			<td>{{ herramienta[0].marca }}</td>
+			<td>{{ herramienta[0].marca_herramientas }}</td>
 		</tr>
 		<tr>
 			<td>Lugar Compra:</td>
@@ -35,28 +40,36 @@
 		</tr>
 		<tr>
 			<td>Valor:</td>
-			<td>{{ herramienta[0].valor }}</td>
+			<td>$ - 
+				{% if herramienta[0].valor_herramientas == 0 %}
+				{% else %}
+					{{ herramienta[0].valor_herramientas }}
+				{% endif %}
+			</td>
 		</tr>
 		<tr>
 			<td>Cantidad:</td>
-			<td>{{ herramienta[0].cantidad }}</td>
+			<td>
+				{% if herramienta[0].cantidad == 0 %}
+				{% else %}
+					{{ herramienta[0].cantidad }}
+				{% endif %}
+			</td>
 		</tr>
 		<tr>
 			<td>Fecha Cambio:</td>
 			<td>
-				{% if herramienta[0].fecha_cambio != '00/00/0000' %}
-					{{ herramienta[0].fecha_cambio_f }}
+				{% if herramienta[0].fecha_cambio_f == '00/00/0000' %}
 				{% else %}
-					
+					{{ herramienta[0].fecha_cambio_f }}
 				{% endif %}
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<center>
-					<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
-				</center>
+				<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
 			</td>
+			<td></td>
 		</tr>
 	</table>
 </div>

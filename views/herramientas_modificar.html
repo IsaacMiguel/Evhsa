@@ -9,14 +9,14 @@
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
 	<form method="post" id="formmodificar" action="/herramientas_modificar">
-		<input hidden id="id_herramienta" name="id_herramienta" value="{{ herramienta[0].id }}">
+		<input hidden id="id_herramienta" name="id_herramienta" value="{{ herramienta[0].id_herramienta }}">
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Código:</td>
-				<td><input type="text" id="codigo" name="codigo" maxlength="12" class="form-control porc25" value="{{ herramienta[0].codigo }}" readonly></td>
+				<td><input type="text" id="codigo" name="codigo" class="form-control porc25" value="{{ herramienta[0].codigo }}" readonly></td>
 			</tr>
 			<tr>
-				<td>Nombre:</td>
+				<td>Denominación:</td>
 				<td><input type="text" id="denominacion" name="denominacion" class="form-control porc50" value="{{ repuesto[0].nombre }}" readonly></td>
 			</tr>
 			<tr>
@@ -55,11 +55,17 @@
 			</tr>
 			<tr>
 				<td>N° recibo:</td>
-				<td><input type="number" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25" value="{{ herramienta[0].nro_recibo }}"></td>
+				<td>
+					{% if herramienta[0].nro_recibo == 0 %}
+						<input type="number" onKeyPress="return soloNumeros(event)" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftNro_recibo"></span> caraceteres.</div>
+					{% else %}
+						<input type="number" onKeyPress="return soloNumeros(event)" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25" value="{{ herramienta[0].nro_recibo }}"><div class="aviso">Quedan <span id="charsLeftNro_recibo"></span> caraceteres.</div>
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td>Marca:</td>
-				<td><input type="text" id="marca" name="marca" maxlength="15" class="form-control porc50" value="{{ herramienta[0].marca }}"><div class="aviso">Quedan <span id="charsLeftMarca"></span> caraceteres.</div></td>
+				<td><input type="text" id="marca" name="marca" maxlength="15" class="form-control porc50" value="{{ herramienta[0].marca_herramientas }}"><div class="aviso">Quedan <span id="charsLeftMarca"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Lugar Compra:</td>
@@ -67,19 +73,37 @@
 			</tr>
 			<tr>
 				<td>Valor:</td>
-				<td><input type="number" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25" value="{{ herramienta[0].valor }}"></td>
+				<td>
+					{% if herramienta[0].valor == 0 %}
+						<input type="number" onKeyPress="return soloNumeros(event)" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftValor"></span> caraceteres.</div>
+					{% else %}
+						<input type="number" onKeyPress="return soloNumeros(event)" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25" value="{{ herramienta[0].valor_herramientas }}"><div class="aviso">Quedan <span id="charsLeftValor"></span> caraceteres.</div>
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td>Cantidad:</td>
-				<td><input type="number" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25" value="{{ herramienta[0].cantidad }}"></td>
+				<td>
+					{% if herramienta[0].cantidad == 0 %}
+						<input type="number" onKeyPress="return soloNumeros(event)" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftCantidad"></span> caraceteres.</div>
+					{% else %}
+						<input type="number" onKeyPress="return soloNumeros(event)" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25" value="{{ herramienta[0].cantidad }}"><div class="aviso">Quedan <span id="charsLeftCantidad"></span> caraceteres.</div>
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td>Fecha Cambio:</td>
-				<td><input type="date" id="fecha_cambio" name="fecha_cambio" class="form-control porc25" value="{{ herramienta[0].fecha_cambio }}"></td>
+				<td>
+					{% if herramienta[0].fecha_cambio == '0000-00-00' %}
+						<input type="checkbox" id="fecha_cambio" name="fecha_cambio" class="checkbox porc25">
+					{% else %}
+						<input type="checkbox" id="fecha_cambio" name="fecha_cambio" class="checkbox porc25" checked>
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
-				<td><center><input class="btn btn-default" type="submit" value="Agregar"></center></td>
+				<td><center><input class="btn btn-default" type="submit" value="Modificar"></center></td>
 			</tr>
 		</table>
 	</form>
@@ -93,25 +117,28 @@
 	$('#codigo').limit('12','#charsLeftCodigo');
 	$('#marca').limit('15','#charsLeftMarca');
 	$('#lugar_compra').limit('20','#charsLeftLugar_compra');
+	$('#nro_recibo').limit('11','#charsLeftNro_recibo');
+	$('#valor').limit('14','#charsLeftValor');
+	$('#cantidad').limit('2','#charsLeftCantidad');
 
 	$('#formmodificar').submit(function (e) {
 		var ubicacion = $('#ubicacion').val();
 		var fecha_movimiento = $('#fecha_movimiento').val();
-		var date1 = checkDateLessToday(fecha_movimiento);
+		var desde = checkDateLessToday(fecha_movimiento);
 		var fecha_cambio = $('#fecha_cambio').val();
-		var date2 = checkDateLessToday(fecha_cambio);
+		var hasta = checkDateLessToday(fecha_cambio);
 		
 		if (ubicacion === '0') {
 			alert("Debe elegir una ubicación");
 			e.preventDefault();
 		}
 
-		if (!date1) { 
+		if (!desde) { 
 			alert("La fecha de movimiento no puede ser anterior al dia de hoy") ;
 			e.preventDefault();
 		}
 
-		if (!date2) {
+		if (!hasta) {
 			alert("La fecha de cambio no puede ser anterior al dia de hoy") ;
 			e.preventDefault();	
 		}

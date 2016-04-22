@@ -12,16 +12,16 @@
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Numero:</td>
-				<td><input type="number" id="numero" name="numero" required class="form-control"><div class="aviso">Quedan <span id="charsLeftNumero"></span> caraceteres.</div></td>
+				<td><input type="number" onKeyPress="return soloNumeros(event)" id="numero" name="numero" class="form-control" maxlength="3" required></td>
 			</tr>
 			<tr>
 				<td>Denominación:</td>
-				<td><input type="text" id="denominacion" name="denominacion" required class="form-control"><div class="aviso">Quedan <span id="charsLeftDenominacion"></span> caraceteres.</div></td>
+				<td><input type="text" id="denominacion" name="denominacion" required class="form-control width_60"><div class="aviso">Quedan <span id="charsLeftDenominacion"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>N° Coche:</td>
 				<td>
-					<select id="nro_coche" name="nro_coche" class="form-control" >
+					<select id="nro_coche" name="nro_coche" class="form-control width_35" >
 						<option value="0" selected>Sin coche asignado</option>
 						{% for v in vehiculos %}
 							<option value="{{ v.numero }}">{{ v.numero }}  {{ v.dominio }} {{ v.marca }} {{ v.modelo }}</option>
@@ -35,15 +35,15 @@
 			</tr>
 			<tr>
 				<td>Total:</td>
-				<td><input type="number" step="any" id="total" name="total" class="form-control"><div class="aviso">Quedan <span id="charsLeftTotal"></span> caraceteres.</div></td>
+				<td><input type="number" onKeyPress="return soloNumeros(event)" step="any" id="total" name="total" class="form-control"><div class="aviso">Quedan <span id="charsLeftTotal"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Responsable:</td>
-				<td><input type="text" id="responsable" name="responsable" class="form-control"><div class="aviso">Quedan <span id="charsLeftResponsable"></span> caraceteres.</div></td>
+				<td><input type="text" id="responsable" name="responsable" class="form-control width_60"><div class="aviso">Quedan <span id="charsLeftResponsable"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Tipo:</td>
-				<td><input type="text" id="tipo" name="tipo" class="form-control"><div class="aviso">Quedan <span id="charsLeftTipo"></span> caraceteres.</div></td>
+				<td><input type="text" id="tipo" name="tipo" maxlength="1" class="form-control" onkeypress="return lettersOnly(event)"><div class="aviso">Quedan <span id="charsLeftTipo"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Fecha Sacado:</td>
@@ -51,19 +51,15 @@
 			</tr>
 			<tr>
 				<td>Km:</td>
-				<td><input type="number" id="km" name="km" class="form-control"><div class="aviso">Quedan <span id="charsLeftKm"></span> caraceteres.</div></td>
+				<td><input type="number" onKeyPress="return soloNumeros(event)" maxlength="11" id="km" name="km" class="form-control"><div class="aviso">Quedan <span id="charsLeftKm"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Observaciones:</td>
-				<td><textarea rows="10" cols="50" id="observaciones" name="observaciones" class="form-control">
-					
-				</textarea><div class="aviso">Quedan <span id="charsLeftObservaciones"></span> caraceteres.</div></td>
+				<td><textarea rows="5" cols="50" id="observaciones" name="observaciones" class="form-control"></textarea><div class="aviso">Quedan <span id="charsLeftObservaciones"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Resultado:</td>
-				<td><textarea rows="10" cols="50" id="resultado" name="resultado" class="form-control">
-					
-				</textarea><div class="aviso">Quedan <span id="charsLeftResultado"></span> caraceteres.</div></td>
+				<td><textarea rows="5" cols="50" id="resultado" name="resultado" class="form-control"></textarea><div class="aviso">Quedan <span id="charsLeftResultado"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
@@ -77,7 +73,6 @@
 <script src="/js/jquery.limit-1.2.js"></script>
 <script src="/js/jquery.autotab.min.js"></script>
 <script type="text/javascript">
-	$('#numero').limit('3','#charsLeftNumero');
 	$('#denominacion').limit('30','#charsLeftDenominacion');
 	$('#total').limit('14','#charsLeftTotal');
 	$('#responsable').limit('14','#charsLeftTelefono');

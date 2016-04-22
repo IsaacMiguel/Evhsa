@@ -204,3 +204,14 @@ function checkDateLessToday (date) {
         return true;
     }
 }
+
+function generateFirstDateActualMonth () {
+    var desdeSet = new Date();
+    var mes = desdeSet.getMonth() + 1;
+
+    if (mes < 10) { mes = '0' + mes }
+
+    desdeSet = desdeSet.getFullYear() + '-' + mes + '-01';
+    
+    return desdeSet;
+}

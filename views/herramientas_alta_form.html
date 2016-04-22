@@ -46,7 +46,7 @@
 			</tr>
 			<tr>
 				<td>N° recibo:</td>
-				<td><input type="number" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25"></td>
+				<td><input type="number" onKeyPress="return soloNumeros(event)" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftNro_recibo"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Marca:</td>
@@ -58,15 +58,15 @@
 			</tr>
 			<tr>
 				<td>Valor:</td>
-				<td><input type="number" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25"></td>
+				<td><input type="number" onKeyPress="return soloNumeros(event)" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftValor"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Cantidad:</td>
-				<td><input type="number" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25"></td>
+				<td><input type="number" onKeyPress="return soloNumeros(event)" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftCantidad"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Fecha Cambio:</td>
-				<td><input type="date" id="fecha_cambio" name="fecha_cambio" class="form-control porc25"></td>
+				<td><input type="checkbox" id="fecha_cambio" name="fecha_cambio" class="checkbox porc25"></td>
 			</tr>
 			<tr>
 				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
@@ -82,29 +82,24 @@
 <script src="/js/main.js"></script>
 <script type="text/javascript">
 	$('#codigo').limit('12','#charsLeftCodigo');
-	$('#marca').limit('15','#charsLeftMarca');
+	$('#nro_recibo').limit('11','#charsLeftNro_recibo');
+	$('#valor').limit('14','#charsLeftValor');
+	$('#cantidad').limit('2','#charsLeftCantidad');
 	$('#lugar_compra').limit('20','#charsLeftLugar_compra');
 
 	$('#formalta').submit(function (e) {
 		var ubicacion = $('#ubicacion').val();
 		var fecha_movimiento = $('#fecha_movimiento').val();
-		var date1 = checkDateLessToday(fecha_movimiento);
-		var fecha_cambio = $('#fecha_cambio').val();
-		var date2 = checkDateLessToday(fecha_cambio);
+		var desde = checkDateLessToday(fecha_movimiento);
 		
 		if (ubicacion === '0') {
 			alert("Debe elegir una ubicación");
 			e.preventDefault();
 		}
 
-		if (!date1) { 
+		if (!desde) { 
 			alert("La fecha de movimiento no puede ser anterior al dia de hoy") ;
 			e.preventDefault();
-		}
-
-		if (!date2) {
-			alert("La fecha de cambio no puede ser anterior al dia de hoy") ;
-			e.preventDefault();	
 		}
 	});
 </script>

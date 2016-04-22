@@ -38,21 +38,26 @@
 			</td>
 		</tr>
 		<tr>
-			<td>total:</td>
-			<td>{{ equipo.total }}</td>
+			<td>Total:</td>
+			<td>
+				{% if equipo.total == 0 %}
+				{% else %}
+					{{ equipo.total }}
+				{% endif %}
+			</td>
 		</tr>
 		<tr>
-			<td>responsable:</td>
+			<td>Responsable:</td>
 			<td>{{ equipo.responsable }}</td>
 		</tr>
 		<tr>
-			<td>tipo:</td>
+			<td>Tipo:</td>
 			<td>{{ equipo.tipo }}</td>
 		</tr>
 		<tr>
 			<td>Fecha Sacado:</td>
 			<td>
-				{% if equipo.fecha_sacado != '00/00/0000' %}
+				{% if equipo.fecha_sacado_f != '00/00/0000' %}
 					{{ equipo.fecha_sacado_f }}
 				{% else %}
 					
@@ -61,7 +66,12 @@
 		</tr>
 		<tr>
 			<td>Km:</td>
-			<td>{{ equipo.km }}</td>
+			<td>
+				{% if equipo.km == 0 %}
+				{% else %}
+					{{ equipo.km }}
+				{% endif %}
+			</td>
 		</tr>
 		<tr>
 			<td>Observaciones:</td>
@@ -73,10 +83,9 @@
 		</tr>
 		<tr>
 			<td>
-				<center>
-					<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
-				</center>
+				<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
 			</td>
+			<td></td>
 		</tr>
 	</table>
 </div>

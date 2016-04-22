@@ -8,7 +8,9 @@ module.exports = {
 	insertHerramienta : insertHerramienta,
 	getById : getById,
 	updateHerramienta : updateHerramienta,
-	deleteHerramienta : deleteHerramienta
+	deleteHerramienta : deleteHerramienta,
+	updateHeramientasUbicacion : updateHeramientasUbicacion,
+	updateHerramientasFechaCambio : updateHerramientasFechaCambio
 }
 
 function getAll (cb) {
@@ -18,29 +20,33 @@ function getAll (cb) {
 function getByFecha (d, cb) {
 	conn("SELECT *, ubicaciones_herramientas.descripcion as ubicacion_herramientastxt, " +
 	"herramientas.id as id_herramientas, " +
+	"herramientas.valor as valor_herramientas, " +
+	"herramientas.marca as marca_herramientas, " +
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"FROM herramientas " +
 	"LEFT JOIN repuestos ON repuestos.codigo = herramientas.codigo " +
 	"LEFT JOIN ubicaciones_herramientas " +
 	"ON herramientas.id_ubicacionherramientas_fk = ubicaciones_herramientas.id " +
-	"WHERE fecha_movimiento >= '" + d.date1 + "' " +
-	"AND fecha_cambio <= '" + d.date2 + "'", cb);
+	"WHERE fecha_movimiento >= '" + d.desde + "' " +
+	"AND fecha_movimiento <= '" + d.hasta + "' ORDER BY fecha_movimiento DESC", cb);
 
 }
 
 function getByFecha_Nombre (d, cb) {
 	conn("SELECT *, ubicaciones_herramientas.descripcion as ubicacion_herramientastxt, " +
 	"herramientas.id as id_herramientas, " +
+	"herramientas.valor as valor_herramientas, " +
+	"herramientas.marca as marca_herramientas, " +
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"FROM herramientas " +
 	"LEFT JOIN repuestos ON repuestos.codigo = herramientas.codigo " +
 	"LEFT JOIN ubicaciones_herramientas " +
 	"ON herramientas.id_ubicacionherramientas_fk = ubicaciones_herramientas.id " +
-	"WHERE fecha_movimiento >= '" + d.date1 + "' " +
-	"AND fecha_cambio <= '" + d.date2 + "' " +
-	"AND descripcion like '%" + d.denominacion + "%' ", cb);
+	"WHERE fecha_movimiento >= '" + d.desde + "' " +
+	"AND fecha_movimiento <= '" + d.hasta + "' " +
+	"AND repuestos.nombre like '%" + d.denominacion + "%' ORDER BY fecha_movimiento DESC", cb);
 }
 
 function getByCodigo (codigo, cb) {
@@ -67,7 +73,9 @@ function insertHerramienta (d, cb) {
 }
 
 function getById (id_herramienta, cb) {
-	conn("select *, " +
+	conn("select *, herramientas.id as id_herramienta, " +
+	"herramientas.marca as marca_herramientas, " +
+	"herramientas.valor as valor_herramientas, " +
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') as fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') as fecha_cambio_f " +
 	"from herramientas " +
@@ -92,4 +100,14 @@ function updateHerramienta (d, cb) {
 
 function deleteHerramienta (id_herramienta, cb) {
 	conn("delete from herramientas where id=" + id_herramienta, cb);
+}
+
+function updateHeramientasUbicacion (id_herramienta, id_ubicacion, cb) {
+	conn("UPDATE herramientas SET id_ubicacionherramientas_fk=" + id_ubicacion + 
+	" WHERE herramientas.id = " + id_herramienta, cb);
+}
+
+function updateHerramientasFechaCambio (id_herramienta, opcion, cb) {
+	conn("UPDATE herramientas SET fecha_cambio='" + opcion + "' " +
+	" WHERE herramientas.id = " + id_herramienta, cb);
 }

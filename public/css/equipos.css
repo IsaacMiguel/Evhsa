@@ -1,5 +1,5 @@
 input[type=date]{
-	width: 30%;
+	width: 20%;
 }
 
 input[type=number]{
@@ -10,6 +10,14 @@ input[type=number]{
 	width: 10%;
 }
 
-#nro_coche{
-	width: 35%;
+.width_10{
+	width: 10%;
+}
+
+.width_35{
+	width: 35%;	
+}
+
+.width_60{
+	width: 60%;
 }

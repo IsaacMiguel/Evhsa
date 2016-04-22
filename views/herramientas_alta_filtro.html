@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<link href="/css/herramientas.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -18,9 +18,11 @@
 	        		</button>
 	        		<h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
 	      		</div>
-	      		<table id="tabla_conjuntos">
+	      		<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+		      		<table id="tabla_conjuntos">
 
-	      		</table>
+		      		</table>
+		      	</div>
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 	      		</div>
@@ -37,11 +39,11 @@
 					<table style="display: inline-block;">
 						<tr>
 							<td>
-								<input type="text" id="codigo1" name="codigo1" required class="form-control" style="width: 70px; text-align: center; text-transform:uppercase">  
+								<input type="text" maxlength="4" id="codigo1" name="codigo1" required class="form-control" style="width: 70px; text-align: center; text-transform:uppercase">  
 							</td>
 							<td>.</td>
 							<td>
-								<input type="text" id="codigo2" name="codigo2" required class="form-control" onKeyPress="return soloNumeros(event)" style="width: 70px; text-align: center;" >
+								<input type="text" maxlength="3" id="codigo2" name="codigo2" required class="form-control" onKeyPress="return soloNumeros(event)" style="width: 70px; text-align: center;" >
 							</td>
 						</tr>
 					</table>
@@ -50,7 +52,7 @@
 			<tr>
 				<td>Descripción:</td>
 				<td>
-					<input type="text" id="descripcion" name="descripcion" class="form-control"><div class="aviso">Quedan <span id="charsLeftSerie"></span> caraceteres.</div>
+					<input type="text" maxlength="45" id="descripcion" name="descripcion" class="form-control porc50">
 				</td>
 			</tr>
 			<tr>
@@ -68,17 +70,10 @@ $(function() {
 	$("#Buscar").on("click", function (){
 		var codigo1 = $("#codigo1").val();
 		var codigo2 = $("#codigo2").val();
-<<<<<<< HEAD
 		var descripcion = $("#descripcion").val();
 
 		if (codigo1) {
 			if (codigo2.length !== 3) { codigo2 = '' }
-=======
-
-		var descripcion = $("#descripcion").val();
-
-		if (codigo1 && codigo2) {
->>>>>>> d1fc81a2d93746457908c0434f35b57cedb955b7
 			var codigo = codigo1 + "." + codigo2;
 		} else {
 			var codigo = false;
@@ -90,19 +85,11 @@ $(function() {
 			$.getJSON('/herramientas_filtro_repuestos/' + codigo + '/' + descripcion, function (data) {
 				if (data.length) {
 					if (data.length > 1) {
-<<<<<<< HEAD
-=======
-						console.log(data);
->>>>>>> d1fc81a2d93746457908c0434f35b57cedb955b7
 						var html = "<table class='table' id='tabla_conjuntos'>"
 						html += "<tr><th>Codigo</th><th>Descripción</th><th>Opciones</th></tr>";
 							for(var i = 0; i < data.length; i++){
 								html += "<tr><td>"+data[i].codigo+"</td><td>"+data[i].nombre+"</td>"+
-<<<<<<< HEAD
 								"<td><a href='/herramientas_alta_form/"+data[i].codigo+"' class='btn btn-success' role='button'>Alta</a></td></tr>";
-=======
-								"<td><a href='/herramientas_alta_form/"+data[i].codigo+"' class='btn btn-default' role='button'>Alta</a></td></tr>";
->>>>>>> d1fc81a2d93746457908c0434f35b57cedb955b7
 							}
 							
 						html += "</table>";
@@ -110,14 +97,8 @@ $(function() {
 						$("#myModalLabel").text("Seleccione Conjunto")
 						$('#myModal').modal('toggle');
 					} else {
-<<<<<<< HEAD
 						url = "/herramientas_alta_form/" + data[0].codigo;
 						window.location = url;
-=======
-						// url = "/herramientas_alta_form/" + data[0].codigo;
-						// window.location = url;
-						console.log(data)
->>>>>>> d1fc81a2d93746457908c0434f35b57cedb955b7
 					}
 				} else {
 					alert("La busqueda no trajo resultados.")
