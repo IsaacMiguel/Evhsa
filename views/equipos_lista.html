@@ -165,6 +165,7 @@
     });
 
 	$("#btnFiltrar").on("click", function (){
+		$('#tbodylisto').html('<p style="padding-left: 20px; padding-top:20px;">Cargando...<p>');
 		var opcion_filtrado = $('#filtro option:selected').val();
 		var buscar = $('#busqueda_filtro').val();
 		var valido = false;
