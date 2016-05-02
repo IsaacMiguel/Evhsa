@@ -41,7 +41,7 @@
 			</tr>
 			<tr>
 				<td>Fecha Colocación:</td>
-				<td><input type="date" id="fecha_colocacion" name="fecha_colocacion" class="form-control" value="{{ equipo.fecha_colocacion }}"></td>
+				<td><input type="text" id="fecha_colocacion" name="fecha_colocacion" class="form-control datepicker width_35" value="{{ equipo.fecha_colocacion_f }}"></td>
 			</tr>
 			<tr>
 				<td>Total:</td>
@@ -63,7 +63,7 @@
 			</tr>
 			<tr>
 				<td>Fecha Sacado:</td>
-				<td><input type="date" id="fecha_sacado" name="fecha_sacado" class="form-control" value="{{ equipo.fecha_sacado }}"></td>
+				<td><input type="text" id="fecha_sacado" name="fecha_sacado" class="form-control datepicker width_35" value="{{ equipo.fecha_sacado_f }}"></td>
 			</tr>
 			<tr>
 				<td>Km:</td>
@@ -95,10 +95,14 @@
 	</form>
 </div>
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
 <script src="/js/jquery.autotab.min.js"></script>
 <script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
 	$('#denominacion').limit('30','#charsLeftDenominacion');
 	$('#responsable').limit('14','#charsLeftResponsable');
 	$('#tipo').limit('1','#charsLeftTipo');

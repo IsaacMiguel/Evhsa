@@ -51,7 +51,10 @@
 									<tr>
 										<td>
 											<div id="load_input">
-												
+												<input type="text" class="datepicker form-control hidders fecha_colocacion" readonly>
+    <input type="text" maxlength="1" onkeydown="return lettersOnly(event)" class="form-control hidders tipo">
+    <input type="text" class="datepicker form-control hidders fecha_sacado" readonly>
+    <input type="number" onKeyPress="return soloNumeros(event)" class="form-control hidders nro_coche" maxlength="5" oninput="maxLengthCheck(this)">
 											</div>
 										<td>
 									</tr>
@@ -120,44 +123,50 @@
 	</div><!--div row -->
 </div>
 <script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.autotab.min.js"></script>
 <script src="/js/swig.min.js"></script>
 <script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	$('.hidders').hide();
 
 	swig.setDefaults({
     	varControls: ['[[', ']]'],
     	tagControls: ['[%', '%]']
     });
 
-    function switchear (opcion) {
+	function switchear (opcion) {
 		switch(opcion) {
     		case '1':
-    			var input = '';
-    			$('#load_input').html(input);
+    			$('.hidders').hide();
     			break;
     		case '2':
-    			var input = '<input type="date" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
-    			$('#load_input').html(input);
+    			$('.hidders').hide();
+    			$('.fecha_colocacion').show();
     			break;
     		case '3':
-    			var input = '<input type="text" maxlength="1" onkeydown="return lettersOnly(event)" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
-    			$('#load_input').html(input);
+    			$('.hidders').hide();
+    			$('.tipo').show();
     			break;
     		case '4':
-    			var input = '<input type="date" class="form-control" name="busqueda_filtro" id="busqueda_filtro">';
-    			$('#load_input').html(input);
+    			$('.hidders').hide();
+    			$('.fecha_sacado').show();
     			break;
     		case '5':
-    			var input = '<input type="number" onKeyPress="return soloNumeros(event)" class="form-control" maxlength="5" oninput="maxLengthCheck(this)" name="busqueda_filtro" id="busqueda_filtro">';
-    			$('#load_input').html(input);
+    			$('.hidders').hide();
+    			$('.nro_coche').show();
     			break;
     	}
 	}
 
-	$(function () {
-		var opcion = $('#filtro option:selected').val();
-    	switchear(opcion);
-	});
+
+	// $(function () {
+	// 	var opcion = $('#filtro option:selected').val();
+ //    	switchear(opcion);
+	// });
 
     $('#filtro').on('change', function () {
     	var opcion = $('#filtro option:selected').val();
@@ -167,17 +176,31 @@
 	$("#btnFiltrar").on("click", function (){
 		$('#tbodylisto').html('<p style="padding-left: 20px; padding-top:20px;">Cargando...<p>');
 		var opcion_filtrado = $('#filtro option:selected').val();
-		var buscar = $('#busqueda_filtro').val();
 		var valido = false;
 
 		if (opcion_filtrado == 1) {
-			buscar = 1;
+			var buscar = 1;
 			valido = true;
 		}else if (buscar != ''){
 			valido = true
 		}else{
 			alert("Ingrese busqueda para filtrar!")
 		}
+
+		switch(opcion_filtrado) {
+    		case '2':
+    			var buscar = encodeURIComponent($('.fecha_colocacion').val());
+    			break;
+    		case '3':
+    			var buscar = $('.tipo').val();
+    			break;
+    		case '4':
+    			var buscar = encodeURIComponent($('.fecha_sacado').val());
+    			break;
+    		case '5':
+    			var buscar = $('.nro_coche').val();
+    			break;
+    	}
 
 		if (valido == true) {
 			$('#tbodylisto').html('<p style="padding-left: 20px; padding-top:20px;">Cargando...<p>');

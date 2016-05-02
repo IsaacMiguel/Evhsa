@@ -1,5 +1,6 @@
 var mEquipos = require('../models/mEquipos');
 var mVehiculos = require('../models/mVehiculos');
+var tools = require('../public/js/utils.js');
 
 module.exports = {
 	getLista : getLista,
@@ -31,6 +32,8 @@ function postAlta (req, res) {
 	var params = req.body;
 	var total = params.total;
 	var km = params.km;
+	var fecha_colocacion = tools.changeDate(params.fecha_colocacion);
+	var fecha_sacado = tools.changeDate(params.fecha_sacado);
 
 	if (params.total == '') {
 		total = 0;
@@ -50,13 +53,13 @@ function postAlta (req, res) {
 		'numero' : params.numero,
 		'denominacion' : params.denominacion,
 		'numero_coche_fk' : params.nro_coche,
-		'fecha_colocacion' : params.fecha_colocacion,
+		'fecha_colocacion' : fecha_colocacion,
 		'total' : total,
 		'unica_operador_fk' : req.session.user.unica,
 		'responsable' : params.responsable,
 		'observaciones' : observaciones,
 		'tipo' : params.tipo,
-		'fecha_sacado' : params.fecha_sacado,
+		'fecha_sacado' : fecha_sacado,
 		'km' : km,
 		'resultado' : resultado
 		};
@@ -91,6 +94,8 @@ function postModificar (req, res) {
 	var params = req.body;
 	var total = params.total;
 	var km = params.km;
+	var fecha_colocacion = tools.changeDate(params.fecha_colocacion);
+	var fecha_sacado = tools.changeDate(params.fecha_sacado);
 
 	if (params.total == '') {
 		total = 0;
@@ -111,13 +116,13 @@ function postModificar (req, res) {
 		'numero' : params.numero,
 		'denominacion' : params.denominacion,
 		'numero_coche_fk' : params.nro_coche,
-		'fecha_colocacion' : params.fecha_colocacion,
+		'fecha_colocacion' : fecha_colocacion,
 		'total' : total,
 		'unica_operador_fk' : req.session.user.unica,
 		'responsable' : params.responsable,
 		'observaciones' : observaciones,
 		'tipo' : params.tipo,
-		'fecha_sacado' : params.fecha_sacado,
+		'fecha_sacado' : fecha_sacado,
 		'km' : km,
 		'resultado' : resultado
 		};
@@ -147,6 +152,7 @@ function getEquiposFiltro (req, res) {
 		switch (opcion){
 			case "2":
 				campo = "fecha_colocacion";
+				buscar = tools.changeDate(buscar);
 					mEquipos.getQueryDate(campo, buscar, function (data){
 						res.send(data);
 					});
@@ -161,6 +167,7 @@ function getEquiposFiltro (req, res) {
 
 			case "4":
 				campo = "fecha_sacado";
+				buscar = tools.changeDate(buscar);
 					mEquipos.getQueryDate(campo, buscar, function (data){
 						res.send(data);
 					});
