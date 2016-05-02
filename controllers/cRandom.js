@@ -340,18 +340,17 @@ function updateEquipos(req, res) {
 				console.log("conection.query: " + query)
 				if (err) {
 					throw err;
-			    	console.log(err);
+			    console.log(err);
 				}else{
-					// cb(rows);					
-					console.log(query);
+					// cb(rows);
 					console.log("updated !");
 					callback();
 				}					    
 			});
 
-		}, function (err) {
-			if (err) { 
-				throw err; 
+		}, function (err2) {
+			if (err2) { 
+				throw err2; 
 			}else{
 				res.send("finished");
 				connection.end();
@@ -433,9 +432,9 @@ function updateConjuntos(req, res){
 				}					    
 			});
 
-		}, function (err) {
-			if (err) {
-				throw err; 
+		}, function (err2) {
+			if (err2) {
+				throw err2; 
 			}else{
 				res.send("finished");
 				connection.end();
@@ -541,9 +540,9 @@ function updateConjuntosFichas(req, res){
 				}					    
 			});
 
-			}, function (err) {
-			if (err) {
-				throw err;
+			}, function (err2) {
+			if (err2) {
+				throw err2;
 				console.log(err);
 			}else{
 				console.log("finished");
