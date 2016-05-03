@@ -1,0 +1,153 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/herramientas.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formmodificar" action="/herramientas_modificar">
+		<input hidden id="id_herramienta" name="id_herramienta" value="{{ herramienta[0].id_herramienta }}">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Código:</td>
+				<td><input type="text" id="codigo" name="codigo" class="form-control porc25" value="{{ herramienta[0].codigo }}" readonly></td>
+			</tr>
+			<tr>
+				<td>Denominación:</td>
+				<td><input type="text" id="denominacion" name="denominacion" class="form-control porc50" value="{{ repuesto[0].nombre }}" readonly></td>
+			</tr>
+			<tr>
+				<td>Usuario Destino:</td>
+				<td>
+					<select id="usuario_destino" name="usuario_destino" class="form-control porc25">
+						<option value="0" selected>Sin usuario asignado</option>
+						{% for s in usuarios %}
+							{% if s.unica == herramienta[0].unica_usuariodestino_fk %}
+								<option value="{{ s.unica }}" selected>{{ s.usuario }}</option>
+							{% else %}
+								<option value="{{ s.unica }}">{{ s.usuario }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Ubicación:</td>
+				<td>
+					<select id="ubicacion" name="ubicacion" class="form-control porc25" required>
+						<option value="0" selected>Sin ubicación asignada</option>
+						{% for u in ubicaciones %}
+							{% if u.id == herramienta[0].id_ubicacionherramientas_fk %}
+								<option value="{{ u.id }}" selected>{{ u.descripcion }}</option>
+							{% else %}
+								<option value="{{ u.id }}">{{ u.descripcion }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Fecha Movimiento:</td>
+				<td><input type="text" id="fecha_movimiento" name="fecha_movimiento" class="form-control porc25 datepicker" value="{{ herramienta[0].fecha_movimiento_f }}" required readonly></td>
+			</tr>
+			<tr>
+				<td>N° recibo:</td>
+				<td>
+					{% if herramienta[0].nro_recibo == 0 %}
+						<input type="number" onKeyPress="return soloNumeros(event)" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftNro_recibo"></span> caraceteres.</div>
+					{% else %}
+						<input type="number" onKeyPress="return soloNumeros(event)" id="nro_recibo" name="nro_recibo" maxlength="11" class="form-control porc25" value="{{ herramienta[0].nro_recibo }}"><div class="aviso">Quedan <span id="charsLeftNro_recibo"></span> caraceteres.</div>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>Marca:</td>
+				<td><input type="text" id="marca" name="marca" maxlength="15" class="form-control porc50" value="{{ herramienta[0].marca_herramientas }}"><div class="aviso">Quedan <span id="charsLeftMarca"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Lugar Compra:</td>
+				<td><input type="text" id="lugar_compra" name="lugar_compra" maxlength="20" class="form-control porc50" value="{{ herramienta[0].lugar_compra }}"><div class="aviso">Quedan <span id="charsLeftLugar_compra"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Valor:</td>
+				<td>
+					{% if herramienta[0].valor == 0 %}
+						<input type="number" onKeyPress="return soloNumeros(event)" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftValor"></span> caraceteres.</div>
+					{% else %}
+						<input type="number" onKeyPress="return soloNumeros(event)" step="any" id="valor" name="valor" maxlength="15" class="form-control porc25" value="{{ herramienta[0].valor_herramientas }}"><div class="aviso">Quedan <span id="charsLeftValor"></span> caraceteres.</div>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>Cantidad:</td>
+				<td>
+					{% if herramienta[0].cantidad == 0 %}
+						<input type="number" onKeyPress="return soloNumeros(event)" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25"><div class="aviso">Quedan <span id="charsLeftCantidad"></span> caraceteres.</div>
+					{% else %}
+						<input type="number" onKeyPress="return soloNumeros(event)" id="cantidad" name="cantidad" maxlength="4" class="form-control porc25" value="{{ herramienta[0].cantidad }}"><div class="aviso">Quedan <span id="charsLeftCantidad"></span> caraceteres.</div>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>Fecha Cambio:</td>
+				<td>
+					{% if herramienta[0].fecha_cambio == '0000-00-00' %}
+						<input type="checkbox" id="fecha_cambio" name="fecha_cambio" class="checkbox porc25">
+					{% else %}
+						<input type="checkbox" id="fecha_cambio" name="fecha_cambio" class="checkbox porc25" checked>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
+				<td><center><input class="btn btn-default" type="submit" value="Modificar"></center></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	$('#codigo').limit('12','#charsLeftCodigo');
+	$('#marca').limit('15','#charsLeftMarca');
+	$('#lugar_compra').limit('20','#charsLeftLugar_compra');
+	$('#nro_recibo').limit('11','#charsLeftNro_recibo');
+	$('#valor').limit('14','#charsLeftValor');
+	$('#cantidad').limit('2','#charsLeftCantidad');
+
+	$('#formmodificar').submit(function (e) {
+		var ubicacion = $('#ubicacion').val();
+		var fecha_movimiento = $('#fecha_movimiento').val();
+		fecha_movimiento = changeDate3(fecha_movimiento);
+		var desde = checkDateLessToday(fecha_movimiento);
+		var fecha_cambio = $('#fecha_cambio').val();
+		var hasta = checkDateLessToday(fecha_cambio);
+		
+		if (ubicacion === '0') {
+			alert("Debe elegir una ubicación");
+			e.preventDefault();
+		}
+
+		if (!desde) { 
+			alert("La fecha de movimiento no puede ser anterior al dia de hoy") ;
+			e.preventDefault();
+		}
+
+		if (!hasta) {
+			alert("La fecha de cambio no puede ser anterior al dia de hoy") ;
+			e.preventDefault();	
+		}
+	});
+</script>
+
+{% endblock %}

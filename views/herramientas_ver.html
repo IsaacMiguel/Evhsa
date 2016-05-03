@@ -1,0 +1,81 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/herramientas.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">		
+	<table align="center" class="table table-striped">
+		<tr>
+			<td>Codigo:</td>
+			<td>{{ herramienta[0].codigo }}</td>
+		</tr>
+		<tr>
+			<td>Nombre:</td>
+			<td>{{ herramienta[0].nombre }}</td>
+		</tr>
+		<tr>
+			<td>Fecha Movimiento:</td>
+			<td>{{ herramienta[0].fecha_movimiento_f }}</td>
+		</tr>
+		<tr>
+			<td>N° recibo:</td>
+			<td>
+				{% if herramienta[0].nro_recibo == 0 %}
+				{% else %}
+					{{ herramienta[0].nro_recibo }}
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td>Marca:</td>
+			<td>{{ herramienta[0].marca_herramientas }}</td>
+		</tr>
+		<tr>
+			<td>Lugar Compra:</td>
+			<td>{{ herramienta[0].lugar_compra }}</td>
+		</tr>
+		<tr>
+			<td>Valor:</td>
+			<td>$ - 
+				{% if herramienta[0].valor_herramientas == 0 %}
+				{% else %}
+					{{ herramienta[0].valor_herramientas }}
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td>Cantidad:</td>
+			<td>
+				{% if herramienta[0].cantidad == 0 %}
+				{% else %}
+					{{ herramienta[0].cantidad }}
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td>Fecha Cambio:</td>
+			<td>
+				{% if herramienta[0].fecha_cambio_f == '00/00/0000' %}
+				{% else %}
+					{{ herramienta[0].fecha_cambio_f }}
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="button" class="btn btn-default" value="Atras" onclick="history.back()">
+			</td>
+			<td></td>
+		</tr>
+	</table>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+</script>
+
+{% endblock %}
