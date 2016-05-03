@@ -17,8 +17,8 @@ module.exports = {
 	getEliminar : getEliminar,
 	getUbicaciones : getUbicaciones,
 	postHerramientasUbicacion : postHerramientasUbicacion,
-	postModificarFechaCambio : postModificarFechaCambio,
-	getContromensual : getContromensual
+	postModificarFechaCambio : postModificarFechaCambio//,
+	// getContromensual : getContromensual
 }
 
 function getLista (req, res) {
