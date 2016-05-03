@@ -9,7 +9,8 @@ module.exports = {
 	getModificar: getModificar,
 	postModificar: postModificar,
 	getDel: getDel,
-	getVer: getVer
+	getVer: getVer,
+	verificarNumero: verificarNumero
 }
 
 function changeDate(date){
@@ -36,37 +37,37 @@ function getAlta(req, res){
 }
 
 function postAlta(req, res){
-	params = req.body;
+	const params = req.body;
 	// console.log(params)
-	numero = params.numero;
-	marca = params.marca;
-	modelo = params.modelo;
-	dominio = params.dominio;
-	tipo = params.tipo;
-	fecha_alta = params.fecha_alta;
+	const numero = params.numero;
+	const marca = params.marca;
+	const modelo = params.modelo;
+	const dominio = params.dominio;
+	const tipo = params.tipo;
+	var fecha_alta = params.fecha_alta;
 	if (fecha_alta != '')
 		fecha_alta = changeDate(fecha_alta);
-	chasis = params.chasis;
-	chasis_fecha = params.chasis_fecha;
+	const chasis = params.chasis;
+	var chasis_fecha = params.chasis_fecha;
 	if (chasis_fecha != '')
 		chasis_fecha = changeDate(chasis_fecha);
-	chasis_dlls = params.chasis_dlls;
+	var chasis_dlls = params.chasis_dlls;
 	if (chasis_dlls == '')
 		chasis_dlls = 0;
-	chasis_pesos = params.chasis_pesos;
+	var chasis_pesos = params.chasis_pesos;
 	if (chasis_pesos == '')
 		chasis_pesos = 0;
-	carro = params.carro;
-	carro_fecha = params.carro_fecha;
+	const carro = params.carro;
+	var carro_fecha = params.carro_fecha;
 	if (carro_fecha != '')
 		carro_fecha = changeDate(carro_fecha);
-	carro_dlls = params.carro_dlls;
+	var carro_dlls = params.carro_dlls;
 	if (carro_dlls == '')
 		carro_dlls = 0;
-	carro_pesos = params.carro_pesos;
+	var carro_pesos = params.carro_pesos;
 	if (carro_pesos == '')
 		carro_pesos = 0;
-	ano = params.ano;
+	const ano = params.ano;
 
 	mVehiculos.verificarNumero(numero, function (repite){
 		if (repite[0] != null){
@@ -82,8 +83,8 @@ function postAlta(req, res){
 }
 
 function getModificar(req, res){
-	params = req.params;
-	id = params.id;
+	const params = req.params;
+	const id = params.id;
 
 	mVehiculos.getbyId(id, function (vehiculo){
 		res.render("vehiculosmodificar", {
@@ -94,37 +95,37 @@ function getModificar(req, res){
 }
 
 function postModificar(req, res){
-	params = req.body;
-	id = params.id;
-	numero = params.numero;
-	marca = params.marca;
-	modelo = params.modelo;
-	dominio = params.dominio;
-	tipo = params.tipo;
-	fecha_alta = params.fecha_alta;
+	const params = req.body;
+	const id = params.id;
+	const numero = params.numero;
+	const marca = params.marca;
+	const modelo = params.modelo;
+	const dominio = params.dominio;
+	const tipo = params.tipo;
+	var fecha_alta = params.fecha_alta;
 	if (fecha_alta != '')
 		fecha_alta = changeDate(fecha_alta);
-	chasis = params.chasis;
-	chasis_fecha = params.chasis_fecha;
+	const chasis = params.chasis;
+	var chasis_fecha = params.chasis_fecha;
 	if (chasis_fecha != '')
 		chasis_fecha = changeDate(chasis_fecha);
-	chasis_dlls = params.chasis_dlls;
+	var chasis_dlls = params.chasis_dlls;
 	if (chasis_dlls == '')
 		chasis_dlls = 0;
-	chasis_pesos = params.chasis_pesos;
+	var chasis_pesos = params.chasis_pesos;
 	if (chasis_pesos == '')
 		chasis_pesos = 0;
-	carro = params.carro;
-	carro_fecha = params.carro_fecha;
+	const carro = params.carro;
+	var carro_fecha = params.carro_fecha;
 	if (carro_fecha != '')
 		carro_fecha = changeDate(carro_fecha);
-	carro_dlls = params.carro_dlls;
+	var carro_dlls = params.carro_dlls;
 	if (carro_dlls == '')
 		carro_dlls = 0;
-	carro_pesos = params.carro_pesos;
+	var carro_pesos = params.carro_pesos;
 	if (carro_pesos == '')
 		carro_pesos = 0;
-	ano = params.ano;
+	var ano = params.ano;
 	if (ano == '')
 		ano = 0;
 
@@ -150,8 +151,8 @@ function postModificar(req, res){
 }
 
 function getDel(req, res){
-	params = req.params;
-	id = params.id;
+	const params = req.params;
+	const id = params.id;
 
 	mVehiculos.del(id, function (){
 		res.redirect('vehiculoslista');
@@ -159,8 +160,8 @@ function getDel(req, res){
 }
 
 function getVer(req, res){
-	params = req.params;
-	id = params.id;
+	const params = req.params;
+	const id = params.id;
 
 	mVehiculos.getbyId(id, function (vehiculo){
 		res.render("vehiculosver", {
@@ -168,4 +169,13 @@ function getVer(req, res){
 			vehiculo: vehiculo[0]
 		})
 	})
+}
+
+function verificarNumero(req, res){
+	const params = req.params;
+	const numero = params.numero;
+
+	mVehiculos.verificarNumero(numero, function (vehiculo){
+		res.send(vehiculo);
+	});
 }

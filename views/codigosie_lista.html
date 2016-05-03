@@ -6,6 +6,24 @@
 
 {% block content %}
 <h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div class="modal-body">
+	        {{ ayuda.texto }}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
 <div class="panel panel-default">
   <!-- Default panel contents -->
   	<div class="panel-heading">
@@ -18,30 +36,13 @@
 			</tr>	
 		</table>
 	</div>
-	<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
-		      </div>
-		      <div class="modal-body">
-		        {{ ayuda.texto }}
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	<!-- Fin Modal -->
 	<div class="row">
 		<div class="col-xs-12">
 			<table class="table table-striped">
 		  		<thead>
 		  			<tr> 
 						<th>ID</th>
+						<th>Cuenta</th>
 						<th>Nombre</th>
 						<th>Tipo</th>
 						<th>Activo</th>
@@ -52,6 +53,7 @@
 		  			{% for c in codigos %}
 						<tr>
 							<td>{{ c.id }}</td>
+							<td>{% if c.cuenta != null %}{{ c.cuenta }}{% else %}{% endif %}</td>
 							<td>{{ c.nombre }}</td>
 							<td>{% if c.tipo == 'I' %}Ingreso{% else %}Egreso{% endif %}</td>
 							<td>{% if c.activo == '1' %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% else %}{% endif %}</td>

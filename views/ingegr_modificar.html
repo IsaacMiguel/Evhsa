@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<link href="/css/ingegr_modificar.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
 	<form method="post" id="formalta" action="/ingegr_modificar">
@@ -13,7 +13,7 @@
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Fecha:</td>
-				<td><input type="text" readonly class="form-control datepicker" name="fecha" id="fecha" value="{{ ingegr.fechaf }}"></td>
+				<td><input type="text" readonly class="form-control datepicker" name="fecha" id="fecha" value="{{ ingegr.fechaf }}" style="width: 150px;"></td>
 			</tr>
 			<tr>
 				<td>Codigo:</td>
@@ -21,9 +21,17 @@
 					<select id="codigo" name="codigo" class="form-control">
 						{% for c in codigos %}
 							{% if c.id == ingegr.id_codigoie_fk %}
-								<option selected value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
+								{% if c.cuenta != null %}
+									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.cuenta }} - {{ c.nombre }}</option>
+								{% else %}
+									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
+								{% endif %}
 							{% else %}
-								<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
+								{% if c.cuenta != null %}
+									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.cuenta }} - {{ c.nombre }}</option>
+								{% else %}
+									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
+								{% endif %}
 							{% endif %}
 						{% endfor %}
 					</select>

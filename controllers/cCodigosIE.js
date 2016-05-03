@@ -18,7 +18,7 @@ module.exports = {
 function getLista(req, res) {
 	req.session.nromenu = 3;
   	mCodigosIE.getAll(function (codigos){
-  		console.log(codigos)  
+  		// console.log(codigos)  
   		res.render('codigosie_lista', {
 			pagename: 'Archivo de Codigos de Ingreso/Egreso',
 			codigos: codigos
@@ -34,18 +34,19 @@ function getAlta(req, res){
 
 
 function postAlta(req, res){
-	params = req.body;
-	nombre = params.nombre;
-	tipo = params.tipo;
+	const params = req.body;
+	const nombre = params.nombre;
+	const tipo = params.tipo;
+	const  cuenta = params.cuenta;
 
-	mCodigosIE.insert(nombre, tipo, function(){
+	mCodigosIE.insert(nombre, tipo, cuenta, function(){
 		res.redirect('codigosie_lista');
 	});
 }
 
 function getModificar(req, res){
-	params = req.params;
-	id = params.id;
+	const params = req.params;
+	const id = params.id;
 
 	mCodigosIE.getById(id, function (codigo){
 		res.render('codigosie_modificar',{
@@ -56,17 +57,18 @@ function getModificar(req, res){
 }
 
 function postModificar(req, res){
-	params = req.body;
-	id = params.id;
-	nombre = params.nombre;
-	tipo = params.tipo;
-	activo = params.activo;
+	const params = req.body;
+	const id = params.id;
+	const nombre = params.nombre;
+	const tipo = params.tipo;
+	var activo = params.activo;
 	if (activo == 'on')
 		activo = 1;
 	else
 		activo = 0;
-	
-	mCodigosIE.update(id, nombre, tipo, activo, function(){
+	const  cuenta = params.cuenta;
+
+	mCodigosIE.update(id, nombre, tipo, activo, cuenta, function(){
 		res.redirect('codigosie_lista');
 	});
 }

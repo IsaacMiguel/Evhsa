@@ -12,7 +12,8 @@ module.exports = {
 	getModificar : getModificar,
 	postModificar : postModificar,
 	getDelete : getDelete,
-	getEquiposFiltro : getEquiposFiltro
+	getEquiposFiltro : getEquiposFiltro,
+	getBuscarxNumero: getBuscarxNumero
 }
 
 function getLista (req, res) {
@@ -169,4 +170,13 @@ function getEquiposFiltro (req, res) {
 				res.send(data);
 		});
 	}
+}
+
+function getBuscarxNumero(req, res){
+	const params = req.params;
+	const numero = params.numero;
+
+	mEquipos.getBuscarxNumero(numero, function (equipos){
+		res.send(equipos);
+	});
 }

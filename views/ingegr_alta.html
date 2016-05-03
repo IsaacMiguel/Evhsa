@@ -12,14 +12,18 @@
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Fecha:</td>
-				<td><input type="text" readonly required class="form-control datepicker" name="fecha" id="fecha"></td>
+				<td><input type="text" readonly required class="form-control datepicker" name="fecha" id="fecha" style="width: 150px;"></td>
 			</tr>
 			<tr>
 				<td>Codigo:</td>
 				<td>
 					<select id="codigo" name="codigo" class="form-control">
 						{% for c in codigos %}
-							<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
+							{% if c.cuenta != null %}
+								<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.cuenta }} - {{ c.nombre }}</option>
+							{% else %}
+								<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
+							{% endif %}
 						{% endfor %}
 					</select>
 				</td>

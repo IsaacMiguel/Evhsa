@@ -68,7 +68,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-submenu="">Movimientos<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/inicio" class="menu" data-idmenu="16" data-accion="c">Vales de Pañol</a></li>
+                        <li><a href="/vales_lista" class="menu" data-idmenu="16" data-accion="c" id="btnVales">Vales de Pañol</a></li>
                         <!-- <li><a href="/inicio" class="menu" data-idmenu="17" data-accion="c">Ficha de Conjuntos</a></li> -->
                         <li class="dropdown-submenu">
                             <a href="/inicio">Ficha de Conjuntos</a>
@@ -104,7 +104,7 @@
                         <li><a href="/inicio" class="menu" data-idmenu="20" data-accion="c">Repuestos en Sereno</a></li>
                         <li><a href="/equipos_lista" class="menu" data-idmenu="21" data-accion="c">Equipos</a></li>
                         <li><a href="/inicio" class="menu" data-idmenu="22" data-accion="c">Ordenes de Trabajo</a></li>
-                        <li><a href="/inicio" class="menu" data-idmenu="23" data-accion="c">Reparaciones de Emergencia</a></li>
+                        <li><a href="/reparaciones_lista" class="menu" data-idmenu="23" data-accion="c" id="btnReparaciones">Reparaciones de Emergencia</a></li>
                         <li><a href="/inicio" class="menu" data-idmenu="24" data-accion="c">Novedades de Coches</a></li>
                     </ul>
                 </li>
@@ -198,12 +198,12 @@
         $("#btnIngEgrLista").on("click", function (){
             if('localStorage' in window && window['localStorage'] !== null) {
                 console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
-                var storage = localStorage;
-                console.log(storage.length);                   
+                const storage = localStorage;
+                // console.log(storage.length);                   
                    
                 localStorage.clear();
 
-                var myDate = new Date(); 
+                const myDate = new Date(); 
                 myDate.setFullYear(myDate.getFullYear());
                 day = myDate.getDate();
                 if (day<10)
@@ -224,6 +224,70 @@
                 
             } else { 
                 alert('No soporta LocalStorage. Actualize el navegador !!'); 
+            }
+        });
+        
+        $("#btnVales").on("click", function (){
+            if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                // var storage = localStorage;
+                // console.log(storage.length);  
+                localStorage.clear();
+
+                var myDate = new Date(); 
+                myDate.setFullYear(myDate.getFullYear());
+                year = myDate.getFullYear();
+                month = myDate.getMonth()+1;
+                day = myDate.getDate();
+                if (month<10)
+                    month = "0"+month;
+                if (day<10)
+                    day = "0"+day;
+                const first = "01/"+month+"/"+year;
+                const today = day+"/"+month+"/"+year;
+
+                var objFechas = {"fecha_01": first, "fecha_hoy": today}
+
+                var objFechas_stringified = JSON.stringify(objFechas);
+
+                // if (storage.length == 0){
+                localStorage.setItem('objFechas', objFechas_stringified);
+                // }
+                
+            } else { 
+                alert('No soporta LocalStorage. Use Chrome o Actualize el navegador !!'); 
+            }
+        });
+
+        $("#btnReparaciones").on("click", function (){
+            if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                // var storage = localStorage;
+                // console.log(storage.length);  
+                localStorage.clear();
+
+                var myDate = new Date(); 
+                myDate.setFullYear(myDate.getFullYear());
+                year = myDate.getFullYear();
+                month = myDate.getMonth()+1;
+                day = myDate.getDate();
+                if (month<10)
+                    month = "0"+month;
+                if (day<10)
+                    day = "0"+day;
+                const first = "01/"+month+"/"+year;
+                const today = day+"/"+month+"/"+year;
+
+                var objFechas = {"fecha_01": first, "fecha_hoy": today}
+
+                var objFechas_stringified = JSON.stringify(objFechas);
+
+                // if (storage.length == 0){
+                localStorage.setItem('objFechas', objFechas_stringified);
+                // }
+                
+            } else { 
+                alert('No soporta LocalStorage. Use Chrome o Actualize el navegador !!'); 
             }
         });
     });

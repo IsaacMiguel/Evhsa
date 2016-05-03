@@ -11,7 +11,8 @@ module.exports = {
 	updateOtrosGastos: updateOtrosGastos,
 	updateEquipos : updateEquipos,
 	updateConjuntos: updateConjuntos,
-	updateConjuntosFichas: updateConjuntosFichas
+	updateConjuntosFichas: updateConjuntosFichas,
+	updateVales: updateVales
 }
 
 function getRandom(req, res){
@@ -272,7 +273,6 @@ function updateOtrosGastos(req, res){
 			}				
 		});
 	});
-
 }
 
 function updateEquipos(req, res) {
@@ -359,7 +359,6 @@ function updateEquipos(req, res) {
 			}				
 		});
 	});
-
 }
 
 function updateConjuntos(req, res){
@@ -510,33 +509,6 @@ function updateConjuntosFichas(req, res){
 					throw err;
 			    	console.log(err);
 				}else{
-					// cb(rows);					
-					// console.log(query);
-					// var i = fico.indexOf(fico2);
-
-					// if(i == '100')
-					// 	console.log("100 !")
-					// if(i == '500')
-					// 	console.log("500 !!")
-					// if(i == '1000')
-					// 	console.log("1000 !!")
-					// if(i == '5000')
-					// 	console.log("5000 !!!")
-					// if(i == '10000')
-					// 	console.log("10000 !!!!")
-					// if(i == '15000')
-					// 	console.log("15000 !!!!")
-					// if(i == '20000')
-					// 	console.log("20000 !!!!")
-					// if(i == '25000')
-					// 	console.log("25000 !!!!")
-					// if(i == '30000')
-					// 	console.log("30000 !!!!")
-					// if(i == '35000')
-					// 	console.log("35000 !!!!")
-					// if(i == '40000')
-					// 	console.log("40000 !!!!")
-					// console.log("updated !");
 					callback();
 				}					    
 			});
@@ -549,6 +521,197 @@ function updateConjuntosFichas(req, res){
 				console.log("finished");
 				res.send("finished");
 				connection.end();
+				// return callback();
+			}				
+		});
+	});
+}
+
+function updateVales(req, res){
+	var connection = mysql.createConnection({
+	    user: 'root',
+	    password: '',
+	    host: '127.0.0.1',
+	    port: '3306',
+	    database: 'Evhsa',
+	    dateStrings : true
+ 	});
+
+	// CONTROLAR QUE INSERTE BIEN LOS DECIMALES
+
+	connection.connect();
+
+	mRandom.getPagol2015(function (pagol){
+		console.log(pagol.length);
+		// console.log(pagol[0])
+		async.eachSeries(pagol, function (pagol2, callback) {
+			// asignar valores
+			const nro_vale = pagol2.numero;
+			const destino = pagol2.destino;
+			const fecha = pagol2.fecha;
+			const cam1 = pagol2.cam1;
+			const cam2 = pagol2.cam2;
+			const cam3 = pagol2.cam3;
+			const cam4 = pagol2.cam4;
+			const cam5 = pagol2.cam5;
+			const cam6 = pagol2.cam6;
+			const cam7 = pagol2.cam7;
+			const cam8 = pagol2.cam8;
+			const cam9 = pagol2.cam9;
+			const cam10 = pagol2.cam10;
+			const cam11 = pagol2.cam11;
+			const cam12 = pagol2.cam12;
+			const cam13 = pagol2.cam13;
+			const cam14 = pagol2.cam14;
+			const cant1 = pagol2.cant1;
+			const cant2 = pagol2.cant2;
+			const cant3 = pagol2.cant3;
+			const cant4 = pagol2.cant4;
+			const cant5 = pagol2.cant5;
+			const cant6 = pagol2.cant6;
+			const cant7 = pagol2.cant7;
+			const cant8 = pagol2.cant8;
+			const cant9 = pagol2.cant9;
+			const cant10 = pagol2.cant10;
+			const cant11 = pagol2.cant11;
+			const cant12 = pagol2.cant12;
+			const cant13 = pagol2.cant13;
+			const cant14 = pagol2.cant14;
+			const total = pagol2.total;
+			const responsable = pagol2.responsable;
+			const nro_coche = pagol2.nro_coche;
+			const codigo = pagol2.codigo;
+			const serie = pagol2.serie;
+			const operario = pagol2.operario;
+			const equipo = pagol2.equipo;
+			const precio1 = pagol2.precio1;
+			const precio2 = pagol2.precio2;
+			const precio3 = pagol2.precio3;
+			const precio4 = pagol2.precio4;
+			const precio5 = pagol2.precio5;
+			const precio6 = pagol2.precio6;
+			const precio7 = pagol2.precio7;
+			const precio8 = pagol2.precio8;
+			const precio9 = pagol2.precio9;
+			const precio10 = pagol2.precio10;
+			const precio11 = pagol2.precio11;
+			const precio12 = pagol2.precio12;
+			const precio13 = pagol2.precio13;
+			const precio14 = pagol2.precio14;
+			const carro = pagol2.carro;
+
+			//armado de arrays para insertar luego en vales2
+			var aCodigo = [];
+			var aCant = [];
+			var aPrecio = [];
+
+			aCodigo.push(cam1);
+			aCodigo.push(cam2);
+			aCodigo.push(cam3);
+			aCodigo.push(cam4);
+			aCodigo.push(cam5);
+			aCodigo.push(cam6);
+			aCodigo.push(cam7);
+			aCodigo.push(cam8);
+			aCodigo.push(cam9);
+			aCodigo.push(cam10);
+			aCodigo.push(cam11);
+			aCodigo.push(cam12);
+			aCodigo.push(cam13);
+			aCodigo.push(cam14);
+
+			aCant.push(cant1);
+			aCant.push(cant2);
+			aCant.push(cant3);
+			aCant.push(cant4);
+			aCant.push(cant5);
+			aCant.push(cant6);
+			aCant.push(cant7);
+			aCant.push(cant8);
+			aCant.push(cant9);
+			aCant.push(cant10);
+			aCant.push(cant11);
+			aCant.push(cant12);
+			aCant.push(cant13);
+			aCant.push(cant14);
+			
+			aPrecio.push(precio1);
+			aPrecio.push(precio2);
+			aPrecio.push(precio3);
+			aPrecio.push(precio4);
+			aPrecio.push(precio5);
+			aPrecio.push(precio6);
+			aPrecio.push(precio7);
+			aPrecio.push(precio8);
+			aPrecio.push(precio9);
+			aPrecio.push(precio10);
+			aPrecio.push(precio11);
+			aPrecio.push(precio12);
+			aPrecio.push(precio13);
+			aPrecio.push(precio14);
+			
+			var vale = {};
+			var vales = [];
+
+			//armo el array con el contenido de este vale, para vales2
+			for (var i=0 ; i<14 ; i++){
+				// if (aCodigo[i] != '' || aCant[i] > 0 || aPrecio[i] > 0){
+				if (aCodigo[i] != ''){
+					vale = {'codigo': aCodigo[i], 'cant': aCant[i], 'precio': aPrecio[i]};
+					vales.push(vale);
+				}	
+			}
+
+			//insertar en vales1
+			var query = "INSERT INTO evhsa.vales1 (nro_vale, fecha, total, responsable, nro_coche, conjunto_codigo, conjunto_serie, "+
+						"unica_operario_fk, nro_equipo, carro, id_valedestino_fk) "+
+						"VALUES ("+nro_vale+", '"+fecha+"', "+total+", '"+responsable+"', "+nro_coche+", '"+codigo+"', '"+
+						serie+"', "+operario+", "+equipo+", '"+carro+"', "+destino+");";
+			console.log(query)
+			// ejecuto query de insert en vale1 y cuando termine inserto todo en vales2 
+			connection.query(query, function (err, rows, fields) {
+				if (err) {
+					throw err;
+			    	console.log(err);
+				}else{
+					if (vales.length > 0){
+
+						// CONTROLAR QUE INSERTE BIEN LOS DECIMALES
+						async.eachSeries(vales, function (val, callback2) {
+							var query2 = "INSERT INTO vales2(nro_vale, codigo_repuesto, cantidad, precio) "+
+						  				"VALUES("+nro_vale+", '"+val.codigo+"', "+val.cant+", "+val.precio+");";
+						  	console.log(query2)
+						  	connection.query(query2, function (err, rows, fields) {
+								if (err) {
+									throw err;
+							    	console.log(err);
+								}else{										
+									callback2();
+								}					    
+							});
+						}, function (err) {
+							if (err) {
+								throw err;
+								console.log(err);
+							}else{
+								callback();
+							}				
+						});
+						// CONTROLAR QUE INSERTE BIEN LOS DECIMALES
+					}else{
+						callback();
+					}				
+				}					    
+			});
+		}, function (err) {
+			if (err) {
+				throw err;
+				console.log(err);
+			}else{
+				console.log("finished");
+				res.send("finished");
+				connection.end();
+				res.redirect("inicio")
 				// return callback();
 			}				
 		});

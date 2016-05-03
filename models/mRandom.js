@@ -11,7 +11,9 @@ module.exports = {
 	getEquipos_temp : getEquipos_temp,
 	getFic2: getFic2,
 	getFico: getFico,
-	getFico2015: getFico2015
+	getFico2015: getFico2015,
+	getPagol: getPagol,
+	getPagol2015: getPagol2015
 }	
 
 function getAllRepuestos(cb){
@@ -56,4 +58,12 @@ function getFico(cb){
 
 function getFico2015(cb){
 	conn("SELECT * FROM `fico` where fecha like '2015%' ORDER BY id", cb);
+}
+
+function getPagol(cb){
+	conn("SELECT * from temp_pagol", cb);
+}
+
+function getPagol2015(cb){
+	conn("SELECT * from temp_pagol where fecha like '2015-05%' ORDER BY id", cb);
 }

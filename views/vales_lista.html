@@ -6,60 +6,160 @@
 
 {% block content %}
 <h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div class="modal-body">
+	        {{ ayuda.texto }}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
 <div class="panel panel-default">
-  <!-- Default panel contents -->
   	<div class="panel-heading">
   	<!-- Table -->
-		<table>
+		<table style="width: 100%;">
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
 				<td><a href="/vales_alta"><button type="button" class="btn btn-success menu" data-idmenu="16" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 100%;">
+					<table class="pull-right">
+						<tr>			
+							<td>Desde:</td>
+							<td><input type="text" class="datepicker form-control" name="desde" id="desde" style="width: 100px;" readonly></td>
+							<td style="width:10px;"></td>
+							<td>Hasta:</td>
+							<td><input type="text" class="datepicker form-control" name="hasta" id="hasta" style="width: 100px;" readonly></td>
+							<td style="width:5px;"></td>
+							<td><button type="button" name="filtrar" id="filtrar" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></td>
+						</tr>
+					</table>
+				</td>				
 			</tr>	
 		</table>
-	</div>
-	<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
-		      </div>
-		      <div class="modal-body">
-		        {{ ayuda.texto }}
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	<!-- Fin Modal -->
+	</div>	
 	<div class="row">
 		<div class="col-xs-12">
-			<table class="table table-striped">
-		  		<thead>
-		  			<tr> 
-						<th>Nro Vale</th>
-						<th>Fecha</th>
-						<th>Destino</th>
-						<th colspan="3">Opciones</th>
-					</tr>
-		  		</thead>
-		  		<tbody>
-		  			{% for v in codigos %}
-						<tr>
-							<td>{{ v.nro_vale }}</td>
-							<td>{{ v.fechaf }}</td>
-							<td>{{ v.destino }}</td>
-							<td><a href="/vales_modificar/{{ v.id }}"><button class="btn btn-warning menu" data-idmenu="16" data-accion="m">Modificar</button></a></td>
-							<td><a href='/vales_borrar/{{ v.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="16" data-accion="b">Eliminar</button><a/></td>
+			<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr> 
+			  				<th colspan="3">Opciones</th>
+							<th>Nro Vale</th>
+							<th>Fecha</th>
+							<th>Destino</th>							
 						</tr>
-					{% endfor %}
-		  		</tbody>
-			</table>				
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tablavales" />
+			  			[% for v in data %]
+							<tr>
+								<td>
+									<a href="/vales_ver/[[ v.id ]]"><button class="btn btn-default">Ver</button></a>
+								</td>
+								<td><a href="/vales_modificar/[[ v.id ]]"><button class="btn btn-warning menu" data-idmenu="16" data-accion="m">Modificar</button></a></td>
+								<td><a href='/vales_borrar/[[ v.id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="16" data-accion="b">Eliminar</button><a/></td>
+								<td>[[ v.nro_vale ]]</td>
+								<td>[[ v.fechaf ]]</td>
+								<td>[% if v.id_valedestino_fk == '1' %]Coche[% elseif v.id_valedestino_fk == '2' %]Conjunto[% elseif v.id_valedestino_fk == '3' %]M.Inst/Otros[% elseif v.id_valedestino_fk == '4' %]Equipo[% else %]ERROR![% endif %]</td>								
+							</tr>
+						[% endfor %]
+			  		</script>
+				</table>
+			</div>
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/swig.min.js"></script>
+<script type="text/javascript">
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
+	
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	$(".datepicker").on("change", function (){
+		const name =  $(this).attr("name");
+		if (name == "desde"){
+			var objFechas = localStorage.getItem('objFechas');
+			var objFechas_parsed = JSON.parse(objFechas);
+			
+			objFechas_parsed.fecha_01 = $(this).val();
+            var objFechas_stringified = JSON.stringify(objFechas_parsed);
+
+            localStorage.setItem('objFechas', objFechas_stringified);
+		} else if (name == "hasta"){
+			var objFechas = localStorage.getItem('objFechas');
+			var objFechas_parsed = JSON.parse(objFechas);
+			
+			objFechas_parsed.fecha_hoy = $(this).val();
+            var objFechas_stringified = JSON.stringify(objFechas_parsed);
+
+            localStorage.setItem('objFechas', objFechas_stringified);
+		}else{
+			console.log("Alto error!!");
+		}
+	});
+
+	function filtrar(){
+		var desde = $("#desde").val();
+		var hasta = $("#hasta").val();
+		desde = encodeURIComponent(desde);
+		hasta = encodeURIComponent(hasta);
+
+		$.getJSON('/getValesFiltroFecha/'+desde+'/'+hasta, function (data){
+			// console.log(data);
+			// console.log(data.length);
+			if (data.length != 0){
+				$('#tbodylisto > tr').remove();
+				var template = $('#tablavales').html();
+				var output = parseSwig(template, data);
+				// var output = swig.render(template, { locals: { data: data }});
+				// console.log(output)
+				$('#tbodylisto').html(output);
+			}else{
+				//hacer que aca muestre error de que no se encontro nada en la busqueda
+				console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+				$('#tbodylisto > tr').remove();					
+				$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+			}
+		});	
+	}
+
+	if('localStorage' in window && window['localStorage'] !== null) {
+		var objFechas = localStorage.getItem('objFechas');
+		var objFechas_parsed = JSON.parse(objFechas);
+
+		var PrimeroDeMes = objFechas_parsed.fecha_01;
+		var Today = objFechas_parsed.fecha_hoy;
+
+		$("#desde").val(PrimeroDeMes);
+		$("#hasta").val(Today);
+		filtrar()
+	}else{
+		// event.preventDefault();
+		alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");				
+	}
+	
+	$("#filtrar").on("click", function (){
+		filtrar()
+	});
+</script>
 {% endblock %}

@@ -1,35 +1,35 @@
-var cIndex = require('./controllers/cIndex');
-var cUsuario = require('./controllers/cUsuario');
-var cAdmin = require('./controllers/cAdmin');
-var cAccesos = require('./controllers/cAccesos');
-// var cCargos = require('./controllers/cCargos');
-var cUmed = require('./controllers/cUmed');
-var cRubros = require('./controllers/cRubros');
-var cRubrosGrupos = require('./controllers/cRubrosGrupos');
-var cRepuestos = require('./controllers/cRepuestos');
-var cVehiculos = require('./controllers/cVehiculos');
-var cProveedores = require('./controllers/cProveedores');
-var cAgenda = require('./controllers/cAgenda');
-var cOtrosGastos = require('./controllers/cOtrosGastos');
-var cPlanillaDiaria = require('./controllers/cPlanillaDiaria');
-var cTank = require('./controllers/cTank');
-var cStockGasoilEnTanque = require('./controllers/cStockGasoilEnTanque');
-var cConsumoxFechas = require('./controllers/cConsumoxFechas');
-var cCodigosIE = require('./controllers/cCodigosIE');
-var cIngegr = require('./controllers/cIngegr');
-var cFlujoDeFondos = require('./controllers/cFlujoDeFondos');
-var cConjunto = require('./controllers/cConjunto');
-var cEquipos = require('./controllers/cEquipos');
-var cHerramientas = require('./controllers/cHerramientas');
+const cIndex = require('./controllers/cIndex');
+const cUsuario = require('./controllers/cUsuario');
+const cAdmin = require('./controllers/cAdmin');
+const cAccesos = require('./controllers/cAccesos');
+// const cCargos = require('./controllers/cCargos');
+const cUmed = require('./controllers/cUmed');
+const cRubros = require('./controllers/cRubros');
+const cRubrosGrupos = require('./controllers/cRubrosGrupos');
+const cRepuestos = require('./controllers/cRepuestos');
+const cVehiculos = require('./controllers/cVehiculos');
+const cProveedores = require('./controllers/cProveedores');
+const cAgenda = require('./controllers/cAgenda');
+const cOtrosGastos = require('./controllers/cOtrosGastos');
+const cPlanillaDiaria = require('./controllers/cPlanillaDiaria');
+const cTank = require('./controllers/cTank');
+const cStockGasoilEnTanque = require('./controllers/cStockGasoilEnTanque');
+const cConsumoxFechas = require('./controllers/cConsumoxFechas');
+const cCodigosIE = require('./controllers/cCodigosIE');
+const cIngegr = require('./controllers/cIngegr');
+const cFlujoDeFondos = require('./controllers/cFlujoDeFondos');
+const cConjunto = require('./controllers/cConjunto');
+const cEquipos = require('./controllers/cEquipos');
+const cHerramientas = require('./controllers/cHerramientas');
+const cVales = require('./controllers/cVales');
+const cReparaciones = require('./controllers/cReparaciones');
 
+const mEventos = require('./models/mEventos');
+const mAccesos = require('./models/mAccesos');
+const mAyuda = require('./models/mAyuda');
 
-
-var mEventos = require('./models/mEventos');
-var mAccesos = require('./models/mAccesos');
-var mAyuda = require('./models/mAyuda');
-
-// var cPruebaSQL = require('./controllers/cPruebaSQL');
-var cRandom = require('./controllers/cRandom');
+// const cPruebaSQL = require('./controllers/cPruebaSQL');
+const cRandom = require('./controllers/cRandom');
 
 function logout (req, res) {
 	console.log(req.cookies);
@@ -64,18 +64,9 @@ function auth (req, res, next) {
 }
 
 function acceso (req, res, next){
-	// console.log("adentro")
-	// ver como hacer esta funcion para que sea ejecutada desdes de los "auth" como verificador de acceso,
-	// puede ser que se envien parametros con req y res, o que envie parametros comunes, más el NEXT
-	// se me ocurre hacer una sola funcion con parametro 'accion' o sino hacer 4 funciones, una para cada uno a,b,m,c
-	// console.log(req.session.user)
-	// usuarios 1
-	// administracion 43, 44 y 45	
 	var id_usuario = req.session.user.unica;
 	var id_menu = req.session.user.id_menu;
 	var accion = req.session.user.accion;
-	// console.log(id_usuario)
-	// console.log(id_menu)
 
 	if (id_menu != 00 && id_menu != 1 && id_menu != 43 && id_menu != 44 && id_menu != 45 ){
 		mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
@@ -128,11 +119,6 @@ function acceso (req, res, next){
 			}
 		});
 	}else{
-		//hacer que verifique que segun para cada menu, tiene la palabra en los niveles de usuario
-		// para modulo usuario tiene que tener "claves"
-		// para los de administracion tiene que tener la palabra "admin"
-		// usuarios 1
-		// administracion 43, 44 y 45	
 		switch (id_menu){
 			case '00':
 				mAccesos.VerificarNivelSupervisor(id_usuario, function (user){
@@ -267,6 +253,7 @@ module.exports = function(app) {
 	app.post('/vehiculosmodificar', auth, cVehiculos.postModificar);
 	app.get('/vehiculosborrar/:id', auth, acceso, cVehiculos.getDel);
 	app.get('/vehiculosver/:id', auth, acceso, cVehiculos.getVer);
+	app.get("/vehiculos_verificarNumero/:numero", auth, cVehiculos.verificarNumero);
 	//proveedores
 	app.get('/proveedoreslista', auth, acceso, cProveedores.getLista);
 	app.get('/proveedoresalta', auth, acceso, cProveedores.getAlta);
@@ -362,8 +349,26 @@ module.exports = function(app) {
 	app.post("/conjunto_buscarneumaticoxcoche", auth, cConjunto.postNeumaticoCoche);
 	app.get("/conjunto_checkNeumaticosNotNull/:numero", auth, cConjunto.getCheckNeumaticoNotNull);
 	app.get("/conjunto_neumaticos_ubicacion/:numero", auth, acceso, cConjunto.getNeumaticos_Ubicacion);
-	// app.get("/conjunto_neumaticos_resumen", auth, acceso, cConjunto.getNeumaticos_Resumen);
 	// VALES DE PAÑOL
+	app.get("/vales_lista", auth, acceso, cVales.getLista);
+	app.get("/getValesFiltroFecha/:desde/:hasta", auth, cVales.getValesFiltroFecha);
+	app.get("/vales_alta", auth, acceso, cVales.getAlta);
+	app.post("/vales_alta", auth, cVales.postAlta);
+	app.get("/vales_modificar/:id", auth, acceso, cVales.getModificar);
+	app.post("/vales_modificar", auth, cVales.postModificar);
+	app.get("/vales_borrar/:id", auth, acceso, cVales.getDel);
+	app.get("/vales_ver/:id", auth, cVales.getVer);
+	app.get("/vales_alta_repuesto/:id_vale1", auth, cVales.getAltaRepuesto);
+	app.post("/vales_alta_repuesto", auth, cVales.postAltaRepuesto);
+	app.get("/vales_modificar_repuesto/:id_vale1/:id_vale2", auth, cVales.getModificarRepuesto);
+	app.post("/vales_modificar_repuesto", auth, cVales.postModificarRepuesto);
+	app.get("/vales_borrar_repuesto/:id_vale1/:id_vale2", auth, cVales.getDelRepuesto);
+	// REPARACIONES DE EMERGENCIA
+	app.get("/reparaciones_lista", auth, acceso, cReparaciones.getLista);
+	app.get("/getReparacionesFiltroFecha/:desde/:hasta", auth, cReparaciones.getReparacionesFiltroFecha);
+	app.get("/reparaciones_alta", auth, acceso, cReparaciones.getAlta);
+
+
 
 	//EQUIPOS
 	app.get("/equipos_lista", auth, acceso, cEquipos.getLista);
@@ -374,7 +379,7 @@ module.exports = function(app) {
 	app.post("/equipos_modificar", auth, cEquipos.postModificar);
 	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
 	app.get("/equipos_filtrar/:opcion/:buscar", auth, acceso, cEquipos.getEquiposFiltro);
-
+	app.get("/equipos_buscarxnumero/:numero", auth, cEquipos.getBuscarxNumero);
 	//HERRAMIENTRAS
 	app.get("/herramientas_lista", auth, acceso, cHerramientas.getLista);
 
@@ -389,7 +394,8 @@ module.exports = function(app) {
 	app.get("/actualizarOtrosGastos", auth, cRandom.updateOtrosGastos);
 	app.get("/actualizarEquipos", auth, cRandom.updateEquipos);
 	app.get("/actualizarConjuntos", auth, cRandom.updateConjuntos);
-	app.get("/actualizarConjuntosFichas", auth, cRandom.updateConjuntosFichas)
+	app.get("/actualizarConjuntosFichas", auth, cRandom.updateConjuntosFichas);
+	app.get("/actualizarVales", auth, cRandom.updateVales);
 	// app.post('/random', auth, cRandom.postAsd);
 	// app.get('/random2', auth, cRandom.getr2);
 	// app.post('/random2', auth, cRandom.postr2);

@@ -145,7 +145,7 @@
 		if (codigo1.length > 0){
 			if (codigo1.length == 4 && codigo2.length == 3 && serie.length > 0){
 				$.getJSON("/conjunto_verificar_codigoyserie/"+codigo+"/"+serie, function (repuesto){
-			   		console.log(repuesto);
+			   		// console.log(repuesto);
 			   		if (repuesto[0] != null){
 			   			$("#serie").focus();
 			   			console.log("repetido!")
