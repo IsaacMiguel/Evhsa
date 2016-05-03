@@ -1,0 +1,361 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/vales_alta">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Nro Vale:</td>
+				<td><input id="nro_vale" name="nro_vale" class="form-control" readonly style="width: 150px;" value="{{ proximo_nro_vale }}"></td>
+			</tr>
+			<tr>
+				<td>Fecha:</td>
+				<td><input type="date" class="form-control" id="fecha" name="fecha" style="width: 170px;"></td>
+			</tr>
+			<tr>
+				<td>Responsable:</td>
+				<td><input type="text" class="form-control" id="responsable" name="responsable" style="width: 350px;"><div class="aviso">Quedan <span id="charsLeftResponsable"></td>
+			</tr>
+			<tr>
+				<td>Seleccione un destino:</td>
+				<td>
+					<select id="destino" name="destino" class="form-control" style="width: 300px;">
+						<option value="0">Seleccione un destino para continuar</option>
+						{% for d in vales_destinos %}
+							<option value="{{ d.id }}">{{ d.descripcion }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr id="tr_coche" style="display: none;">
+				<td>Nro Coche:</td>
+				<td>
+					<table style="display: inline-block;">
+						<tr>
+							<td><input id="nro_coche" name="nro_coche" class="form-control" style="width: 100px;" onKeyPress="return soloNumeros(event)" maxlength="3"></td>
+							<td>
+								<span style="display: none; margin-left: 5px;" id="span_ok1" class="glyphicon glyphicon-ok text-success" aria-hidden="true" ></span>
+								<span style="display: none; margin-left: 5px;" id="span_remove1" class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ></span>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr id="tr_carro" style="display: none;">
+				<td>Imputacion:</td>
+				<td>	
+					<select class="form-control" id="carro" name="carro" style="width: 170px;">
+						<option value="N">Nada</option>
+						<option value="S">Carroceria</option>
+						<option value="I">Siniestro</option>
+					</select>
+				</td>
+			</tr>
+			<tr id="tr_codigo" style="display: none;">
+				<td>Codigo:</td>
+				<td>
+					<table style="display: inline-block;">
+						<tr>
+							<td>
+								<input type="text" id="codigo" name="codigo" class="form-control" style="width: 100px; text-align: center; text-transform: uppercase">  
+							</td>
+							<td>
+								<span style="display: none; margin-left: 5px;" id="span_ok" class="glyphicon glyphicon-ok text-success" aria-hidden="true" ></span>
+								<span style="display: none; margin-left: 5px;" id="span_remove" class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ></span>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr id="tr_serie" style="display: none;">
+				<td>y/o Codigo Asignado por EVHSA:</td>
+				<td>
+					<table style="display: inline-block;">
+						<tr>
+							<td>
+								<input type="text" id="serie" name="serie" class="form-control" style="width: 300px;"><div class="aviso">Quedan <span id="charsLeftSerie"></span> caraceteres.</div>
+							</td>
+							<td>
+								<span style="display: none; margin-left: 5px;" id="span_ok2" class="glyphicon glyphicon-ok text-success" aria-hidden="true" ></span>
+								<span style="display: none; margin-left: 5px;" id="span_remove2" class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ></span>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr id="tr_equipo" style="display: none;">
+				<td>Nro Equipo:</td>
+				<td>
+					<table style="display: inline-block;">
+						<tr>
+							<td>
+								<input id="nro_equipo" name="nro_equipo" class="form-control" style="width:150px;" maxlength="6" onKeyPress="return soloNumeros(event)">
+							</td>
+							<td>
+								<span style="display: none; margin-left: 5px;" id="span_ok3" class="glyphicon glyphicon-ok text-success" aria-hidden="true" ></span>
+								<span style="display: none; margin-left: 5px;" id="span_remove3" class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ></span>
+							</td>
+						</tr>
+					</table>
+					
+				</td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-primary"></td>
+				<td><input type="submit" value="Agregar" id="Agregar" class="btn btn-success"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script type="text/javascript">
+	$('#serie').limit('20','#charsLeftSerie');
+	$('#responsable').limit('30','#charsLeftResponsable');
+	$("#codigo").mask("a999.999");
+	var myDate = new Date(); 
+	myDate.setFullYear(myDate.getFullYear());
+	year = myDate.getFullYear();
+	month = myDate.getMonth()+1;
+	day = myDate.getDate();
+	if (month<10)
+		month = "0"+month;
+	if (day<10)
+		day = "0"+day;
+
+	const today = year+"-"+month+"-"+day;
+	$("#fecha").val(today);
+
+	$(function() {		
+		$("#destino").on("change", function (){
+			const destino = $("#destino").val();
+			// var form = "";
+			switch (destino){
+				case "0":
+					
+					break;
+				case "1":
+					$("#tr_coche").toggle();
+					$("#tr_carro").toggle();
+					$("#tr_codigo").css( "display", "none" );
+					$("#tr_serie").css( "display", "none" );
+					$("#tr_equipo").css( "display", "none" );
+					break;
+				case "2":
+					$("#tr_coche").css( "display", "none" );
+					$("#tr_carro").css( "display", "none" );
+					$("#tr_codigo").toggle();
+					$("#tr_serie").toggle();
+					$("#tr_equipo").css( "display", "none" );
+					break;
+				case "3":
+					//ocultar todo xq no va nada.
+					$("#tr_coche").css( "display", "none" );
+					$("#tr_carro").css( "display", "none" );
+					$("#tr_codigo").css( "display", "none" );
+					$("#tr_serie").css( "display", "none" );
+					$("#tr_equipo").css( "display", "none" );
+					break;
+				case "4":
+					//imp = "N"
+					$("#tr_coche").css( "display", "none" );
+					$("#tr_carro").css( "display", "none" );
+					$("#tr_codigo").css( "display", "none" );
+					$("#tr_serie").css( "display", "none" );
+					$("#tr_equipo").toggle();
+					break;
+			}
+
+			// $("#form").html(form);
+		});
+		
+		$("#nro_coche").focusout(function(event) {
+			const nro_coche = $("#nro_coche").val();
+
+			if (nro_coche.length > 0){
+				$.getJSON("/vehiculos_verificarNumero/"+nro_coche, function(data) {
+					console.log(data)
+					if (data.length > 0){
+						console.log("existe");
+						//poner visible un tilde de ok VERDE
+						$("#span_ok1").show("slow");
+						$("#span_remove1").hide("slow");
+					}else{
+						$("#span_ok1").hide("slow");
+						$("#span_remove1").show("slow");
+						// $("#codigo").focus();
+					}
+				});
+			}else{
+				$("#span_ok1").hide();
+				$("#span_remove1").hide();
+			}
+		});
+
+		$("#codigo").focusout(function(event) {
+			const codigo = $(this).val();
+			// console.log(codigo.length)
+			// console.log(codigo)
+			if (codigo != '____.___'){
+				$.getJSON("/conjunto_definicion_buscarxcodigo/"+codigo, function(data) {
+					if (data.length > 0) {
+						console.log("existe");
+						//poner visible un tilde de ok VERDE
+						$("#span_ok").show("slow");
+						$("#span_remove").hide("slow");
+					}else{
+						$("#span_ok").hide("slow");
+						$("#span_remove").show("slow");
+						// $("#codigo").focus();
+					}
+				});
+			}else{
+				$("#span_ok").hide();
+				$("#span_remove").hide();
+			}			
+		});
+
+		$("#serie").focusout(function (event){
+			const serie = $(this).val();
+			const codigo = $("#codigo").val();
+			// console.log(codigo)
+			if (serie.length != 0){
+				if (codigo.length != 0){
+					$.getJSON("/conjunto_verificar_codigoyserie/"+codigo+"/"+serie, function(data) {
+						if (data.length > 0){
+							console.log("existe");
+							$("#span_ok2").show("slow");
+							$("#span_remove2").hide("slow");
+						}else{
+							$("#span_ok2").hide("slow");
+							$("#span_remove2").show("slow");
+							// $("#serie").focus();
+						}
+					});
+				}
+			}else{
+				$("#span_ok2").hide();
+				$("#span_remove2").hide()
+			}
+		});
+
+		$("#nro_equipo").focusout(function(event) {
+			const numero = $(this).val();
+			if (numero.length > 0){
+				$.getJSON("/equipos_buscarxnumero/"+numero, function(data) {
+					if (data.length > 0){
+						console.log("existe");
+						$("#span_ok3").show("slow");
+						$("#span_remove3").hide("slow");
+					}else{
+						$("#span_ok3").hide("slow");
+						$("#span_remove3").show("slow");
+					}
+				});
+			}
+		});
+
+		// prueba
+		$("#formalta").submit(function (){
+			// var codigo = $("#codigo").val();
+			// var serie = $("#serie").val();
+			// codigo = codigo.toUpperCase();
+			event.preventDefault();
+			const destino = $("#destino").val();
+			// var form = "";
+			switch (destino){
+				case "0":
+					alert("Debe seleccionar un destino para continuar");
+					$("#destino").focus();
+					return false;
+					break;
+				case "1":
+					console.log("case coche")
+					const nro_coche = $("#nro_coche").val();
+					if (nro_coche.length > 0){
+						$.getJSON("/vehiculos_verificarNumero/"+nro_coche, function(data) {
+							console.log(data)
+							if (data.length > 0){
+								console.log("continue mdfkr :)");
+								$("#formalta").unbind().submit(); 
+								// break;
+							}else{								
+								alert("El numero de coche no existe. Debe ingresar un numero de coche que exista.");
+								$("#nro_coche").focus();
+								return false;
+							}
+						});
+					}else{						
+						alert("Debe ingresar un numero de coche.");
+						$("#nro_coche").focus();
+						return false;
+					}
+					break;
+				case "2":
+					console.log("case conjunto")
+					const serie = $("#serie").val();
+					const codigo = $("#codigo").val();
+					// console.log(codigo)
+					if (serie.length != 0){
+						if (codigo.length != 0){
+							$.getJSON("/conjunto_verificar_codigoyserie/"+codigo+"/"+serie, function(data) {
+								if (data.length > 0){
+									console.log("continue mdfkr :)");
+									$("#formalta").unbind().submit(); 
+									// break;
+								}else{
+									alert("El codigo y/o numero de serie no existen. Ingrese codigo y/o numero de serie que existan.");
+									$("#codigo").focus();
+									return false;
+								}
+							});
+						}else{
+							alert("Debe ingresar un codigo.");
+							$("#codigo").focus();
+							return false;
+						}
+					}else{
+						alert("Debe ingresar un numero de serie.");
+						$("#serie").focus();
+						return false;
+					}		
+					break;
+				case "3":
+					//ocultar todo xq no va nada.
+					console.log("case otros")
+					$("#formalta").unbind().submit(); 		
+					break;
+				case "4":
+					console.log("case equipo")
+					const numero = $("#nro_equipo").val();
+					if (numero.length > 0){
+						$.getJSON("/equipos_buscarxnumero/"+numero, function(data) {
+							if (data.length > 0){
+								console.log("continue mdfkr :)");
+								$("#formalta").unbind().submit(); 
+								// break;
+							}else{
+								alert("El numero de equipo que ha ingreso no existe. Ingrese un numero de equipo que exista.");
+								$("#nro_equipo").focus();
+								return false;
+							}
+						});
+					}else{
+						alert("Debe ingresar un numero de equipo.");
+						$("#nro_equipo").focus();
+						return false;
+					}
+					break;
+			}
+		});
+	});
+</script>
+
+{% endblock %}

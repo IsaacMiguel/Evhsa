@@ -1,0 +1,115 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div class="modal-body">
+	        {{ ayuda.texto }}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/vales_alta_repuesto/{{ vale1.id }}"><button type="button" class="btn btn-success">Agregar Repuesto</button></a></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+			</tr>	
+		</table>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table" style="margin: 0px;">
+				<tr>
+					<td><b>Nro vale:</b> {{ vale1.nro_vale }}</td>
+					<td><b>Fecha:</b> {{ vale1.fechaf }}</td>
+					<td><b>Responsable:</b> {{ vale1.responsable }}</td>
+					<td><b>Destino:</b> {{ vale1.destinotxt }}</td>
+				</tr>
+				<tr>
+					{% if vale1.destinotxt == 'Coche' %}
+						<td><b>Nro Coche:</b> {{ vale1.nro_coche }}</td>
+						<td>
+							<b>Imputacion:</b> 
+							{% if vale1.carro == 'N' %}
+								Nada
+							{% elseif vale1.carro == 'S' %}
+								Carroceria
+							{% else %}
+								Siniestro
+							{% endif %}
+						</td>
+						<td></td>
+						<td></td>
+					{% elseif vale1.destinotxt == 'Conjunto' %}
+						<td><b>Codigo:</b> {{ vale1.conjunto_codigo }}</td>
+						<td><b>Serie:</b> {{ vale1.conjunto_serie }}</td>
+						<td></td>
+						<td></td>
+					{% elseif vale1.destinotxt == 'Equipo' %}
+						<td><b>Nro Equipo</b>: {{ vale1.nro_equipo }}</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					{% else %}
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					{% endif %}
+				</tr>
+				<tr></tr>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr> 
+			  				<th colspan="2">Opciones</th>
+							<th>Codigo Rep.</th>
+							<th>Denominacion</th>
+							<th>Precio</th>							
+							<th>Cantidad</th>
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			{% for v in vales2 %}
+							<tr>
+								<td><a href="/vales_modificar_repuesto/{{ vale1.id }}/{{ v.id }}"><button class="btn btn-warning menu" data-idmenu="16" data-accion="m">Modificar</button></a></td>
+								<td><a href='/vales_borrar_repuesto/{{ vale1.id }}/{{ v.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="16" data-accion="b">Eliminar</button><a/></td>
+								<td>{{ v.codigo_repuesto }}</td>
+								<td>{% if v.denominacion != null %}{{ v.denominacion }}{% else %}{% endif %}</td>
+								<td>{{ v.precio }}</td>
+								<td>{{ v.cantidad }}</td>
+							</tr>
+						{% endfor %}
+			  		</tbody>
+				</table>
+			</div>
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript"></script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/vales_alta_repuesto">
+		<input hidden id="id_vale1" name="id_vale1" value="{{ vale1.id }}">
+		<input hidden id="nro_vale" name="nro_vale" value="{{ vale1.nro_vale }}">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Nro Vale:</td>
+				<td>{{ vale1.nro_vale }}</td>
+			</tr>
+			<tr>
+				<td>Repuesto:</td>
+				<td>
+					<select class="form-control" id="repuesto" name="repuesto" style="width: 500px">
+						{% for r in repuestos %}
+							<option value="{{ r.codigo }}" data-valor="{{ r.valor }}">{{ r.codigo }} - {{ r.nombre }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Precio:</td>
+				<td><input id="precio" name="precio" class="form-control" onkeypress="return Validate8EntY2Dec(event,this)" style="width: 130px;" maxlength="11"></td>
+			</tr>
+			<tr>
+				<td>Cantidad:</td>
+				<td><input id="cantidad" name="cantidad" class="form-control" onkeypress="return Validate6EntY1Dec(event,this)" style="width: 100px;"></td>
+			</tr>
+			<tr>
+				<td><input type="button" class="btn btn-default" value="Atras" onclick="history.back()"></td>
+				<td><input type="submit" class="btn btn-default" value="Agregar"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<!-- <script src="/js/jquery.limit-1.2.js"></script> -->
+<script type="text/javascript">
+	// $('#codigo2').limit('3','#charsLeftCodigo');
+	$(function() {
+		const valor = $(this).find(':selected').data("valor");
+		if (valor != 0)
+			$("#precio").val(valor);
+		else
+			$("#precio").val("");
+		$("#repuesto").on("change", function (){
+			const valor = $(this).find(':selected').data("valor");
+			if (valor != 0)
+				$("#precio").val(valor);
+			else
+				$("#precio").val("");
+		});
+	});
+</script>
+{% endblock %}
