@@ -19,6 +19,13 @@ function changeDate2(date){
 	// output: dd/mm/yyyy
 }
 
+function changeDate3(date){
+    // input: dd/mm/yyyy
+    fechaus = date.substring(6,10) + "-" + date.substring(3,5) + "-" + date.substring(0,2);
+    return fechaus;
+    // output: yyyy-mm-dd
+}
+
 function Numy1Punto(e, field) {
 	key = e.keyCode ? e.keyCode : e.which
 	// backspace
@@ -177,11 +184,6 @@ function generateTodayDate(){
     return myDate;
 }
 
-// function maxLengthCheck(object) {
-//     if (object.value.length > object.maxLength)
-//       object.value = object.value.slice(0, object.maxLength)
-// }//si le ponemos MAXLENGTH a un input no hace falta verificar con una funcion propia su longitud maxima, es redundante.......
-
 function Validate6EntY1Dec(e, field) {
     key = e.keyCode ? e.keyCode : e.which
     // backspace
@@ -216,3 +218,38 @@ function Validate6EntY1Dec(e, field) {
     // other key
     return false
 }//onkeypress="return Validate6EntY1Dec(event,this)"
+
+function generateTodayDateYMD () {
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+
+    if (day < 10) { day = '0' + day }
+    if (month < 10) { month = '0' + month }
+
+    today = today.getFullYear() + '-' + month + '-' + day;
+    return today;
+}
+
+function checkDateLessToday (date) {
+    var fecha = new Date(date);
+    var fecha_hoy = new Date();
+
+    if (fecha > fecha_hoy) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function generateFirstDateActualMonth () {
+    var desdeSet = new Date();
+    var mes = desdeSet.getMonth() + 1;
+
+    if (mes < 10) { mes = '0' + mes }
+
+    desdeSet = '01/' + mes + '/' + desdeSet.getFullYear();
+    
+    return desdeSet;
+}
+

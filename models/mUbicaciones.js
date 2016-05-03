@@ -5,5 +5,5 @@ module.exports = {
 }
 
 function getAll(cb){
-	conn('select * from ubicaciones', cb);
+	conn("select * from ubicaciones", cb);
 }

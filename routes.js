@@ -379,9 +379,25 @@ module.exports = function(app) {
 	app.post("/equipos_modificar", auth, cEquipos.postModificar);
 	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
 	app.get("/equipos_filtrar/:opcion/:buscar", auth, acceso, cEquipos.getEquiposFiltro);
-	app.get("/equipos_buscarxnumero/:numero", auth, cEquipos.getBuscarxNumero);
-	//HERRAMIENTRAS
+	//HERRAMIENTRAS - MOVIMIENTOS
 	app.get("/herramientas_lista", auth, acceso, cHerramientas.getLista);
+	app.get("/herramientas_filtrar/:desde/:hasta/:denominacion", auth, acceso, cHerramientas.getFiltrar);
+	app.get("/herramientas_alta", auth, acceso, cHerramientas.getAlta);
+	app.get("/herramientas_filtro_repuestos/:codigo/:descripcion", auth, acceso, cHerramientas.getRepuestos);
+	app.get("/herramientas_alta_form/:codigo", auth, acceso, cHerramientas.getAltaForm);
+	app.post("/herramientas_alta", auth, cHerramientas.postAlta);
+	app.get("/herramientas_ver/:id_herramienta", auth, acceso, cHerramientas.getVer);
+	app.get("/herramientas_modificar/:id_herramienta", auth, acceso, cHerramientas.getModificar);
+	app.post("/herramientas_modificar", auth, cHerramientas.postModificar);
+	app.get("/herramientas_eliminar/:id_herramienta", auth, acceso, cHerramientas.getEliminar);
+	app.get("/herramientas_ubicaciones", auth, acceso, cHerramientas.getUbicaciones);
+	app.post("/herramientas_cambiar_ubicacion", auth, cHerramientas.postHerramientasUbicacion);
+	app.post("/herramientas_modificar_fechaCambio/:id_herramienta/:opcion", auth, cHerramientas.postModificarFechaCambio);	
+	//HERRAMIENTAS - CONTROL MENSUAL
+	// app.get("/herramientas_controlmensual", auth, acceso, cHerramientas.getContromensual);
+
+
+
 
 
 	//pruebasql
@@ -396,15 +412,4 @@ module.exports = function(app) {
 	app.get("/actualizarConjuntos", auth, cRandom.updateConjuntos);
 	app.get("/actualizarConjuntosFichas", auth, cRandom.updateConjuntosFichas);
 	app.get("/actualizarVales", auth, cRandom.updateVales);
-	// app.post('/random', auth, cRandom.postAsd);
-	// app.get('/random2', auth, cRandom.getr2);
-	// app.post('/random2', auth, cRandom.postr2);
-	// app.get('/random3', auth, cRandom.getRandom3);
-	// app.post('/random3', auth, cRandom.postRandom3);
-	// app.get('/random4', auth, cRandom.getRandom4);
-	// app.post('/random4', auth, cRandom.postRandom4);
-	// app.get('/random5', auth, cRandom.getRandom5);
-	// app.post('/random5', auth, cRandom.postRandom5);
-	// app.get('/random6', auth, cRandom.getRandom6);
-	// app.post('/random6', auth, cRandom.postRandom6);
 };
