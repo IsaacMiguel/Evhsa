@@ -42,7 +42,7 @@
 			</tr>
 			<tr>
 				<td>Fecha Movimiento:</td>
-				<td><input type="date" id="fecha_movimiento" name="fecha_movimiento" class="form-control porc25" required></td>
+				<td><input type="text" id="fecha_movimiento" name="fecha_movimiento" class="form-control porc25 datepicker" required readonly></td>
 			</tr>
 			<tr>
 				<td>N° recibo:</td>
@@ -76,11 +76,15 @@
 	</form>
 </div>
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
 <script src="/js/jquery.autotab.min.js"></script>
 <script src="/js/main.js"></script>
 <script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
 	$('#codigo').limit('12','#charsLeftCodigo');
 	$('#nro_recibo').limit('11','#charsLeftNro_recibo');
 	$('#valor').limit('14','#charsLeftValor');
@@ -90,6 +94,7 @@
 	$('#formalta').submit(function (e) {
 		var ubicacion = $('#ubicacion').val();
 		var fecha_movimiento = $('#fecha_movimiento').val();
+		fecha_movimiento = changeDate3(fecha_movimiento);
 		var desde = checkDateLessToday(fecha_movimiento);
 		
 		if (ubicacion === '0') {

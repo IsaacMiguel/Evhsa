@@ -19,6 +19,13 @@ function changeDate2(date){
 	// output: dd/mm/yyyy
 }
 
+function changeDate3(date){
+    // input: dd/mm/yyyy
+    fechaus = date.substring(6,10) + "-" + date.substring(3,5) + "-" + date.substring(0,2);
+    return fechaus;
+    // output: yyyy-mm-dd
+}
+
 function Numy1Punto(e, field) {
 	key = e.keyCode ? e.keyCode : e.which
 	// backspace
@@ -211,7 +218,7 @@ function generateFirstDateActualMonth () {
 
     if (mes < 10) { mes = '0' + mes }
 
-    desdeSet = desdeSet.getFullYear() + '-' + mes + '-01';
+    desdeSet = '01/' + mes + '/' + desdeSet.getFullYear();
     
     return desdeSet;
 }

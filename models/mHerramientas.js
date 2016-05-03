@@ -5,12 +5,12 @@ module.exports = {
 	getByFecha : getByFecha,
 	getByFecha_Nombre : getByFecha_Nombre,
 	getByCodigo : getByCodigo,
-	insertHerramienta : insertHerramienta,
+	insert : insert,
 	getById : getById,
-	updateHerramienta : updateHerramienta,
-	deleteHerramienta : deleteHerramienta,
-	updateHeramientasUbicacion : updateHeramientasUbicacion,
-	updateHerramientasFechaCambio : updateHerramientasFechaCambio
+	update : update,
+	del : del,
+	updateUbicacion : updateUbicacion,
+	updateFechaCambio : updateFechaCambio
 }
 
 function getAll (cb) {
@@ -55,7 +55,7 @@ function getByCodigo (codigo, cb) {
 	"from herramientas where codigo = '" + codigo + "'", cb);
 }
 
-function insertHerramienta (d, cb) {	
+function insert (d, cb) {	
 	conn("insert into herramientas(codigo, unica_usuariodestino_fk, id_ubicacionherramientas_fk, " +
 	"fecha_movimiento, nro_recibo, unica_operador_fk, marca, lugar_compra, valor, cantidad, fecha_cambio) " +
 	"values(" +
@@ -83,7 +83,7 @@ function getById (id_herramienta, cb) {
 	"where herramientas.id = " + id_herramienta, cb);
 }
 
-function updateHerramienta (d, cb) {
+function update (d, cb) {
 	conn("update herramientas " +
 	"SET unica_usuariodestino_fk=" + d.unica_usuariodestino_fk + ", " +
 	"id_ubicacionherramientas_fk=" + d.id_ubicacionherramientas_fk + ", " +
@@ -98,16 +98,16 @@ function updateHerramienta (d, cb) {
 	"WHERE id=" + d.id_herramienta, cb);
 }
 
-function deleteHerramienta (id_herramienta, cb) {
+function del (id_herramienta, cb) {
 	conn("delete from herramientas where id=" + id_herramienta, cb);
 }
 
-function updateHeramientasUbicacion (id_herramienta, id_ubicacion, cb) {
+function updateUbicacion (id_herramienta, id_ubicacion, cb) {
 	conn("UPDATE herramientas SET id_ubicacionherramientas_fk=" + id_ubicacion + 
 	" WHERE herramientas.id = " + id_herramienta, cb);
 }
 
-function updateHerramientasFechaCambio (id_herramienta, opcion, cb) {
+function updateFechaCambio (id_herramienta, opcion, cb) {
 	conn("UPDATE herramientas SET fecha_cambio='" + opcion + "' " +
 	" WHERE herramientas.id = " + id_herramienta, cb);
 }

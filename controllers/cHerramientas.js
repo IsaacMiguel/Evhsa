@@ -2,7 +2,7 @@ var mHerramientas = require('../models/mHerramientas');
 var mRepuestos = require('../models/mRepuestos');
 var mUbicacionesHerramientas = require('../models/mUbicacionesHerramientas');
 var mUsuarios = require('../models/mUsuarios');
-var utils = require('../public/js/utils');
+var tools = require('../public/js/utils');
 
 module.exports = {
 	getLista : getLista,
@@ -98,6 +98,7 @@ function getAltaForm (req, res) {
 
 function postAlta (req, res) {
 	var params = req.body;
+	var fecha_movimiento = tools.changeDate(params.fecha_movimiento);
 	var nro_recibo = params.nro_recibo;
 	var valor = params.valor;
 	var cantidad = params.cantidad;
@@ -107,7 +108,7 @@ function postAlta (req, res) {
 	if (!cantidad) { var cantidad = 0 }
 
 	if (params.fecha_cambio === 'on') {
-		var fecha_cambio = utils.generateTodayDateYMD();
+		var fecha_cambio = tools.generateTodayDateYMD();
 	} else {
 		var fecha_cambio = '0000-00-00';
 	}
@@ -116,7 +117,7 @@ function postAlta (req, res) {
 		codigo : params.codigo,
 		unica_usuariodestino_fk : params.usuario_destino,
 		id_ubicacionherramientas_fk : params.ubicacion,
-		fecha_movimiento : params.fecha_movimiento,
+		fecha_movimiento : fecha_movimiento,
 		nro_recibo : nro_recibo,
 		unica_operador_fk : req.session.user.unica,
 		marca : params.marca,
@@ -126,7 +127,7 @@ function postAlta (req, res) {
 		fecha_cambio : fecha_cambio
 	}
 
-	mHerramientas.insertHerramienta(data, function () {
+	mHerramientas.insert(data, function () {
 		res.redirect('herramientas_lista');
 	});
 }
@@ -164,6 +165,7 @@ function getModificar (req, res) {
 
 function postModificar (req, res) {
 	var params = req.body;
+	var fecha_movimiento = tools.changeDate(params.fecha_movimiento);
 	var nro_recibo = params.nro_recibo;
 	var valor = params.valor;
 	var cantidad = params.cantidad;
@@ -173,7 +175,7 @@ function postModificar (req, res) {
 	if (!cantidad) { var cantidad = 0 }
 
 	if (params.fecha_cambio === 'on') {
-		var fecha_cambio = utils.generateTodayDateYMD();
+		var fecha_cambio = tools.generateTodayDateYMD();
 	} else {
 		var fecha_cambio = '0000-00-00';
 	}
@@ -182,7 +184,7 @@ function postModificar (req, res) {
 		id_herramienta : params.id_herramienta,
 		unica_usuariodestino_fk : params.usuario_destino,
 		id_ubicacionherramientas_fk : params.ubicacion,
-		fecha_movimiento : params.fecha_movimiento,
+		fecha_movimiento : fecha_movimiento,
 		nro_recibo : nro_recibo,
 		unica_operador_fk : req.session.user.unica,
 		marca : params.marca,
@@ -192,7 +194,7 @@ function postModificar (req, res) {
 		fecha_cambio : fecha_cambio
 	}
 
-	mHerramientas.updateHerramienta(data, function () {
+	mHerramientas.update(data, function () {
 		res.redirect('herramientas_lista');
 	});
 }
@@ -200,7 +202,7 @@ function postModificar (req, res) {
 function getEliminar (req, res) {
 	var params = req.params;
 
-	mHerramientas.deleteHerramienta(params.id_herramienta, function () {
+	mHerramientas.del(params.id_herramienta, function () {
 		res.redirect('herramientas_lista');
 	});
 }
@@ -215,7 +217,7 @@ function postHerramientasUbicacion (req, res) {
 	var id_herramienta = req.body.id_herramienta_form;
 	var id_ubicacion = req.body.id_ubicacion_form;
 
-	mHerramientas.updateHeramientasUbicacion(
+	mHerramientas.updateUbicacion(
 		id_herramienta,
 		id_ubicacion, 
 			function () {
@@ -229,10 +231,10 @@ function postModificarFechaCambio (req, res) {
 	if (params.opcion === 'true') {
 		var opcion = '0000-00-00';
 	} else {
-		var opcion = utils.generateTodayDateYMD();
+		var opcion = tools.generateTodayDateYMD();
 	}
 
-	mHerramientas.updateHerramientasFechaCambio(
+	mHerramientas.updateFechaCambio(
 		params.id_herramienta,
 		opcion, 
 			function () {

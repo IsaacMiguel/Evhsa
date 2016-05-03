@@ -72,7 +72,7 @@ $(function() {
 		var codigo2 = $("#codigo2").val();
 		var descripcion = $("#descripcion").val();
 
-		if (codigo1) {
+		if (codigo1 && codigo1.length === 4) {
 			if (codigo2.length !== 3) { codigo2 = '' }
 			var codigo = codigo1 + "." + codigo2;
 		} else {
@@ -80,8 +80,9 @@ $(function() {
 		}
 
 		if (!descripcion) { descripcion = false }
+			console.log(codigo)
 
-		if ((codigo && !descripcion) || (!codigo && descripcion) || (codigo && descripcion)) {
+		if ((codigo && !descripcion) || (codigo && descripcion)) {
 			$.getJSON('/herramientas_filtro_repuestos/' + codigo + '/' + descripcion, function (data) {
 				if (data.length) {
 					if (data.length > 1) {

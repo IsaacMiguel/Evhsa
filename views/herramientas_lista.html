@@ -41,7 +41,7 @@
 						<tr>
 							<td>Filtrar&nbsp;</td>
 							<td>
-								<input class="form-control" type="date" id="fecha_desde" name="fecha_desde"/>
+								<input class="form-control datepicker" type="text" id="fecha_desde" name="fecha_desde" readonly />
 							</td>
 							<td>
 								<input class="form-control" type="date" id="fecha_hoy" name="fecha_hoy" readonly/>
@@ -151,14 +151,19 @@
 	</div><!--div row -->
 </div>
 <script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.autotab.min.js"></script>
 <script src="/js/swig.min.js"></script>
 <script src="/js/main.js"></script>
 <script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
 
 	/* Seccion
 	 * (document).ready
 	 */
+
 	swig.setDefaults({
     	varControls: ['[[', ']]'],
     	tagControls: ['[%', '%]']
@@ -211,6 +216,10 @@
 				alert('¡Debe Ingresar una fecha de inicio!')
 			} else {
 				$('#tbodylisto').html('<p style="padding-left: 20px; padding-top: 20px;">Cargando...<p>');
+
+				desde = changeDate3(desde);
+				desde = encodeURIComponent(desde);
+
 				$.getJSON('/herramientas_filtrar/' + desde + '/' + hasta + '/' + denominacion, function (data){
 					if (data.length != 0){
 						$('#tbodylisto > tr').remove();
@@ -239,9 +248,11 @@
 		var param1 = $(this).data('paramid');
 		var param2 = $(this).data('paramtf');
 		var today = generateTodayDateYMD();
+		
 		$('#fecha_hoy').val(today);
 
 		var desde = $('#fecha_desde').val();
+		desde = changeDate3(desde);
 		var hasta = $('#fecha_hoy').val();
 		var denominacion = $('#nombre').val();
 
