@@ -375,7 +375,7 @@ module.exports = function(app) {
 	app.get("/equipos_eliminar/:id", auth, acceso, cEquipos.getDelete);
 	app.get("/equipos_filtrar/:opcion/:buscar", auth, acceso, cEquipos.getEquiposFiltro);
 
-	//HERRAMIENTRAS
+	//HERRAMIENTRAS - MOVIMIENTOS
 	app.get("/herramientas_lista", auth, acceso, cHerramientas.getLista);
 	app.get("/herramientas_filtrar/:desde/:hasta/:denominacion", auth, acceso, cHerramientas.getFiltrar);
 	app.get("/herramientas_alta", auth, acceso, cHerramientas.getAlta);
@@ -389,6 +389,9 @@ module.exports = function(app) {
 	app.get("/herramientas_ubicaciones", auth, acceso, cHerramientas.getUbicaciones);
 	app.post("/herramientas_cambiar_ubicacion", auth, cHerramientas.postHerramientasUbicacion);
 	app.post("/herramientas_modificar_fechaCambio/:id_herramienta/:opcion", auth, cHerramientas.postModificarFechaCambio);
+	
+	//HERRAMIENTAS - CONTROL MENSUAL
+	// app.get("/herramientas_controlmensual", auth, acceso, cHerramientas.getContromensual);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

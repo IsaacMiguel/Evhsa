@@ -17,7 +17,8 @@ module.exports = {
 	getEliminar : getEliminar,
 	getUbicaciones : getUbicaciones,
 	postHerramientasUbicacion : postHerramientasUbicacion,
-	postModificarFechaCambio : postModificarFechaCambio
+	postModificarFechaCambio : postModificarFechaCambio,
+	getContromensual : getContromensual
 }
 
 function getLista (req, res) {
@@ -241,3 +242,12 @@ function postModificarFechaCambio (req, res) {
 				res.send(true)
 			});
 }
+
+// function getContromensual (req, res) {
+// 	mUsuarios.getAllUsuarios(function (operarios) {
+// 		res.render('herramientas_controlmensual', {
+// 			pagename : 'Control Mensual',
+// 			operarios : operarios
+// 		});
+// 	});
+// }
