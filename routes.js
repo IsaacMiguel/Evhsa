@@ -396,6 +396,9 @@ module.exports = function(app) {
 	//HERRAMIENTAS - CONTROL MENSUAL
 	app.get("/herramientas_controlmensual", auth, acceso, cHerramientas.getControlMensual);
 	app.get("/herramientas_listaoperarios/:desde/:hasta/:operario", auth, acceso, cHerramientas.getOperarios);
+	//HERRAMIENTAS - REPORTE X UBICACION
+	app.get("/herramientas_reporteubicacion", auth, acceso, cHerramientas.getReporteXUbicacion);
+	app.get("/herramientas_listareporteubicacion/:desde/:hasta/:id_ubicacion", auth, acceso, cHerramientas.getListadoReporteUbicacion);
 
 
 
