@@ -12,7 +12,8 @@ module.exports = {
 	updateEquipos : updateEquipos,
 	updateConjuntos: updateConjuntos,
 	updateConjuntosFichas: updateConjuntosFichas,
-	updateVales: updateVales
+	updateVales: updateVales,
+	updateHerramientas : updateHerramientas
 }
 
 function getRandom(req, res){
@@ -712,6 +713,83 @@ function updateVales(req, res){
 				connection.end();
 				res.redirect("inicio")
 				// return callback();
+			}				
+		});
+	});
+}
+
+function updateHerramientas (req, res) {
+	var connection = mysql.createConnection({
+	    user: 'root',
+	    password: 'root',
+	    host: 'localhost',
+	    port: '',
+	    database: 'evhsa',
+	    dateStrings : true
+ 	});
+
+	connection.connect();
+
+	mRandom.getHerramientas_temp(function (herramientas_temp) {
+		console.log(herramientas_temp.length)
+
+		async.eachSeries(herramientas_temp, function (herramienta, callback) {
+			var codigo = herramienta.HE_CODIGO;
+			var unica_usuariodestino_fk = herramienta.HE_LEGA;
+			var id_ubicacionherramientas_fk = herramienta.HE_UBIC;
+			var fecha_movimiento = herramienta.HE_FECHA;
+			var nro_recibo = herramienta.HE_RECI;
+			var unica_operador_fk = herramienta.HE_OPER;
+			var marca = herramienta.HE_MARCA;
+			var lugar_compra = herramienta.HE_LUCOM;
+			var valor = herramienta.HE_VALE;
+			var cantidad = herramienta.HE_CANTI;
+			var fecha_cambio = '0000-00-00';
+
+			var query = "INSERT INTO herramientas(" +
+				"codigo, " +
+				"unica_usuariodestino_fk, " +
+				"id_ubicacionherramientas_fk, " +
+				"fecha_movimiento, " +
+				"nro_recibo, " +
+				"unica_operador_fk, " +
+				"marca, " +
+				"lugar_compra, " +
+				"valor, " +
+				"cantidad, " +
+				"fecha_cambio) " +
+					"VALUES( '" +
+						codigo + "', " +
+						unica_usuariodestino_fk + ", " +
+					  id_ubicacionherramientas_fk	+ ", '" +
+						fecha_movimiento + "', " +
+						nro_recibo + ", " +
+						unica_operador_fk + ", '" +
+						marca + "', '" +
+						lugar_compra + "', " +
+						valor + ", " +
+						cantidad + ", '" +
+						fecha_cambio + "')";
+
+			connection.query(query, function (err, rows, fields) {
+				console.log("conection.query: " + query)
+				if (err) {
+					throw err;
+			    console.log(err);
+				}else{
+					// cb(rows);
+					console.log("updated !");
+					callback();
+				}					    
+			});
+
+		}, function (err2) {
+			if (err2) { 
+				throw err2; 
+			}else{
+				res.send("finished");
+				connection.end();
+				// return cb();
 			}				
 		});
 	});

@@ -416,4 +416,5 @@ module.exports = function(app) {
 	app.get("/actualizarConjuntos", auth, cRandom.updateConjuntos);
 	app.get("/actualizarConjuntosFichas", auth, cRandom.updateConjuntosFichas);
 	app.get("/actualizarVales", auth, cRandom.updateVales);
+	app.get("/actualizarHerramientas", auth, cRandom.updateHerramientas);
 };
