@@ -75,9 +75,9 @@
 			  		<thead>
 			  			<tr>
 							<th>Fecha</th>
-							<th>Operarios</th>
+							<th>Herramienta</th>
 							<th>Cantidad</th>
-							<th>Valor $</th>
+							<th>Valor Unitario $</th>
 						</tr>
 			  		</thead>
 			  		<tbody id="tbodylisto">
@@ -87,9 +87,9 @@
 			  			[% for l in data %]
 							<tr>
 								<td>[% if l.fecha_movimiento_f != '00/00/0000' %][[ l.fecha_movimiento_f ]][% else %][% endif %]</td>
-								<td>[[ l.usuario ]]</td>
+								<td>[[ l.repuestonombre ]]</td>
 								<td>[[ l.cantidad ]]</td>
-								<td>[[ l.valor ]]</td>
+								<td>[[ l.herramientavalor ]]</td>
 							</tr>
 						[% endfor %]
 			  		</script>
@@ -171,7 +171,7 @@
 				} else {
 					desde = changeDate3(desde);
 					hasta = changeDate3(hasta);
-					
+
 					imprimirListado(desde, hasta, operario);
 				}
 			} else {

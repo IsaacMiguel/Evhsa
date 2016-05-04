@@ -130,9 +130,12 @@ function getOperarioByUnica (desde, hasta, unicaOperario, cb) {
 	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') AS fecha_movimiento_f, " +
 	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') AS fecha_cambio_f, " +
 	"SUM( herramientas.valor ) AS valorHerramientas, " +
-	"SUM( herramientas.cantidad ) AS cantHerramientas " +
+	"SUM( herramientas.cantidad ) AS cantHerramientas, " +
+	"repuestos.nombre AS repuestonombre, " +
+	"herramientas.valor as herramientavalor " +
 	"FROM herramientas " +
 	"INNER JOIN secr ON herramientas.unica_usuariodestino_fk = secr.unica " +
+	"INNER JOIN repuestos ON herramientas.codigo = repuestos.codigo " +
 	"WHERE unica_usuariodestino_fk = " + unicaOperario + " " +
 	"AND fecha_movimiento >=  '" + desde + "' " +
 	"AND fecha_cambio <=  '" + hasta + "' " +
