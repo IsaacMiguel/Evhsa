@@ -18,7 +18,8 @@ module.exports = {
 	getUbicaciones : getUbicaciones,
 	postHerramientasUbicacion : postHerramientasUbicacion,
 	postModificarFechaCambio : postModificarFechaCambio,
-	getControlMensual : getControlMensual
+	getControlMensual : getControlMensual,
+	getOperarios : getOperarios
 }
 
 function getLista (req, res) {
@@ -250,4 +251,21 @@ function getControlMensual (req, res) {
 			operarios : operarios
 		});
 	});
+}
+
+function getOperarios (req, res) {
+	var params = req.params;
+	var desde = params.desde;
+	var hasta = params.hasta;
+	var operario = params.operario;
+
+	if (operario === '0') {
+		mHerramientas.getAllOperarios(desde, hasta, function (listado) {
+			res.send(listado);
+		});
+	} else {
+		mHerramientas.getOperarioByUnica(desde, hasta, operario, function (listado) {
+			res.send(listado);
+		});
+	}
 }

@@ -10,7 +10,9 @@ module.exports = {
 	update : update,
 	del : del,
 	updateUbicacion : updateUbicacion,
-	updateFechaCambio : updateFechaCambio
+	updateFechaCambio : updateFechaCambio,
+	getAllOperarios : getAllOperarios,
+	getOperarioByUnica : getOperarioByUnica
 }
 
 function getAll (cb) {
@@ -110,4 +112,29 @@ function updateUbicacion (id_herramienta, id_ubicacion, cb) {
 function updateFechaCambio (id_herramienta, opcion, cb) {
 	conn("UPDATE herramientas SET fecha_cambio='" + opcion + "' " +
 	" WHERE herramientas.id = " + id_herramienta, cb);
+}
+
+function getAllOperarios (desde, hasta, cb) {
+	conn("SELECT * , SUM( herramientas.cantidad ) AS cantHerramientas, " +
+	"SUM( herramientas.valor ) AS valorHerramientas, " +
+	"DATE_FORMAT( herramientas.fecha_movimiento, '%d/%m/%Y') AS fecha_movimiento_f " +
+	"FROM herramientas " +
+	"LEFT JOIN secr ON secr.unica = herramientas.unica_usuariodestino_fk " +
+	"WHERE herramientas.fecha_movimiento >= '" + desde + "'" +
+	"AND herramientas.fecha_cambio <= '" + hasta + "'" +
+	"GROUP BY secr.unica", cb);
+}
+
+function getOperarioByUnica (desde, hasta, unicaOperario, cb) {
+	conn("SELECT *, " +
+	"DATE_FORMAT(fecha_movimiento, '%d/%m/%Y') AS fecha_movimiento_f, " +
+	"DATE_FORMAT(fecha_cambio, '%d/%m/%Y') AS fecha_cambio_f, " +
+	"SUM( herramientas.valor ) AS valorHerramientas, " +
+	"SUM( herramientas.cantidad ) AS cantHerramientas " +
+	"FROM herramientas " +
+	"INNER JOIN secr ON herramientas.unica_usuariodestino_fk = secr.unica " +
+	"WHERE unica_usuariodestino_fk = " + unicaOperario + " " +
+	"AND fecha_movimiento >=  '" + desde + "' " +
+	"AND fecha_cambio <=  '" + hasta + "' " +
+	"GROUP BY fecha_movimiento DESC", cb);
 }

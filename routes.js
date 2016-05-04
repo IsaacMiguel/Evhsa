@@ -395,6 +395,7 @@ module.exports = function(app) {
 	app.post("/herramientas_modificar_fechaCambio/:id_herramienta/:opcion", auth, cHerramientas.postModificarFechaCambio);	
 	//HERRAMIENTAS - CONTROL MENSUAL
 	app.get("/herramientas_controlmensual", auth, acceso, cHerramientas.getControlMensual);
+	app.get("/herramientas_listaoperarios/:desde/:hasta/:operario", auth, acceso, cHerramientas.getOperarios);
 
 
 
