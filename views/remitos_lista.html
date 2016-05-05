@@ -1,0 +1,248 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/equipos_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 100%;">
+					<table class="pull-right">
+						<tr>
+							<td>Filtrar por:&nbsp;</td>
+							<td>
+								<select class="form-control" id="filtro" name="filtro">
+									<option value="0" selected>Elegir</option>
+									<option value="1">Rango de fechas</option>
+									<option value="2">Proveedor</option>
+									<option value="3">Estado</option>
+								</select>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<tbody id="load_fechas" class="load_input" style="display: none">
+												<tr><td>
+												<input type='text' id='Fechasfecha_desde' class='form-control datepicker' placeholder='Fecha Desde' readonly></td>
+												<td><input type='text' id='Fechasfecha_hasta' class='form-control datepicker' placeholder='Fecha Hasta' readonly></td>
+											</tbody>
+											<tbody id="load_proveedores" class="load_input" style="display: none">
+												<tr><td><select id='proveedores' class='form-control'><option value='0'>Seleccione un proveedor</option></select></td>
+												<td><input type='text' id='Proveedoresfecha_desde' class='form-control datepicker' placeholder='Fecha Desde' readonly></td>
+												<td><input type='text' id='Proveedoresfecha_hasta' class='form-control datepicker' placeholder='Fecha Hasta' readonly></td></tr>
+											</tbody>
+											<tbody  id="load_estados" class="load_input" style="display: none">
+												<tr><td><select id="estados" class="form-control"><option value="0">Seleccione una opción</option>
+												<option value="1">Recuperado</option>
+												<option value="2">Proveedor</option>
+												<option value="3">Pañol</option></select></td></tr>
+											</tbody>
+										<td>
+									</tr>
+								</table>
+							</td>
+							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
+						</tr>
+					</table>					
+				</td>
+			</tr>	
+		</table>
+	</div>	
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr> 
+			  				<th colspan="3">Opciones</th>
+							<th>Fecha</th>
+							<th>N°</th>
+							<th>Proveedor</th>
+							<th>Recuperar en Fecha</th>
+							<th>Costo Aprox</th>
+							<th>Estado Actual</th>
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tabla_remitos" />
+			  			[% for e in data %]
+							<tr>
+								<td><a href="/remitos_ver/[[ e.id ]]"><button class="btn btn-default">Ver</button></a></td>
+								<td><a href="/remitos_modificar/[[ e.id ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
+								<!-- <td>[[ e.numero ]]</td>
+								<td>[[ e.denominacion ]]</td>
+								<td>[% if e.numero_coche_fk == 0 %]S/A[% else %][[ e.numero_coche_fk ]][% endif %]</td>
+								<td>[% if e.fecha_colocacion_f != '00/00/0000' %][[ e.fecha_colocacion_f ]][% else %][% endif %]</td>
+								<td>
+									[% if e.total == 0 %]
+									[% else %]
+										[[ e.total ]]
+									[% endif %]
+								</td>
+								<td>[[ e.responsable ]]</td>
+								<td>[[ e.tipo ]]</td>
+								<td>[% if e.fecha_sacado_f != '00/00/0000' %][[ e.fecha_sacado_f ]][% else %][% endif %]</td>
+								<td>
+									[% if e.km == 0 %]
+									[% else %]
+										[[ e.km ]]
+									[% endif %]
+								</td> -->
+							</tr>
+						[% endfor %]
+			  		</script>
+				</table>				
+			</div>
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/swig.min.js"></script>
+<script type="text/javascript">
+											/****************
+											 * ON LOAD PAGE *
+											 ****************/
+
+(function ($) { 
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
+
+	$('#load_input').hide();
+})(jQuery);
+
+										/****************************
+										 * ON CHANGE SELECT #filtro *
+										 ****************************/
+
+$('#filtro').on('change', function () {
+	var filtro = $('#filtro').val();
+	
+	switch (filtro) {
+		case '0':
+			alert('Debe seleccionar una busqueda')
+			break;
+
+		case '1':
+			$('.load_input').hide();
+			$('#load_fechas').show();
+
+			break;
+
+		case '2':
+			var options = "";
+
+			$.getJSON('/remitos_listaproveedores/', function (listadoProveedores) {
+				for (var i = 0; i < listadoProveedores.length; i++) {
+					options += "<option value='"+listadoProveedores[i].id+"'>"+listadoProveedores[i].razonsocial+"</option>";
+				};
+
+				$('#proveedores').append(options);
+			});
+
+			$('.load_input').hide();
+			$('#load_proveedores').show();
+
+			break;
+
+		case '3':
+			$('.load_input').hide();
+			$('#load_estados').show();
+
+			break;
+	}
+});
+
+									/*******************************
+									 * ON CLICK BUTTON #btnFiltrar *
+									 *******************************/
+
+function remitos_listar (filtro, buscar, desde, hasta) {
+	desde = changeDate3(desde);
+	hasta = changeDate3(hasta);
+
+	$.getJSON('/remitos_listar/' + filtro + '/' + buscar + '/' + desde + '/' + hasta, function (data){
+		if (data.length != 0){
+			$('#tbodylisto > tr').remove();
+			var template = $('#tabla_remitos').html();
+
+			var output = parseSwig(template, data);
+
+			$('#tbodylisto').html(output);
+
+		}else{
+			$('#tbodylisto > tr').remove();					
+			$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+		}
+	});
+}
+
+$('#btnFiltrar').on('click', function () {
+	var filtro = $('#filtro').val();
+
+	switch (filtro) {
+		case '0':
+			alert('Debe seleccionar una busqueda')
+
+			break;
+
+		case '1':
+			var desde = $('#Fechasfecha_desde').val();
+			var hasta = $('#Fechasfecha_hasta').val();
+			var buscar = 'none';
+
+			if (filtro === '1' && desde !== '' && hasta !== '') {
+				remitos_listar(filtro, buscar, desde, hasta);
+			} else {
+				alert('Debe ingresar todos los campos de busqueda')
+			}
+
+			break;
+
+		case '2':
+			var desde = $('#Proveedoresfecha_desde').val();
+			var hasta = $('#Proveedoresfecha_hasta').val();
+			var buscar = $('#proveedores').val();
+
+			if (filtro === '2' && buscar !== '0' && desde !== '' && hasta !== '') {
+				remitos_listar(filtro, buscar, desde, hasta);
+			} else {
+				alert('Debe ingresar todos los campos de busqueda')
+			}
+
+			break;
+
+		case '3':
+			var desde = 'none';
+			var hasta = 'none';
+			var buscar = $('#estados').val();
+
+			if (filtro === '3' && buscar !== '0') {
+				remitos_listar(filtro, buscar, desde, hasta);
+			} else {
+				alert('Debe ingresar todos los campos de busqueda')
+			}
+
+			break;
+	}
+});
+</script>
+{% endblock %}

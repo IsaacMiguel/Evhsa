@@ -23,6 +23,7 @@ const cEquipos = require('./controllers/cEquipos');
 const cHerramientas = require('./controllers/cHerramientas');
 const cVales = require('./controllers/cVales');
 const cReparaciones = require('./controllers/cReparaciones');
+const cRemitos = require('./controllers/cRemitos');
 
 const mEventos = require('./models/mEventos');
 const mAccesos = require('./models/mAccesos');
@@ -401,8 +402,10 @@ module.exports = function(app) {
 	app.get("/herramientas_listareporteubicacion/:desde/:hasta/:id_ubicacion", auth, acceso, cHerramientas.getListadoReporteUbicacion);
 
 
-
-
+	//REMITOS
+	app.get("/remitos_lista", auth, acceso, cRemitos.getLista);
+	app.get("/remitos_listaproveedores", auth, acceso, cRemitos.getListaProveedores);
+	app.get("/remitos_listar/:opcion/:buscar/:desde/:hasta", auth, acceso, cRemitos.getListaRemitos);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
