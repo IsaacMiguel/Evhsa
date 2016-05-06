@@ -406,6 +406,7 @@ module.exports = function(app) {
 	app.get("/remitos_lista", auth, acceso, cRemitos.getLista);
 	app.get("/remitos_listaproveedores", auth, acceso, cRemitos.getListaProveedores);
 	app.get("/remitos_listar/:opcion/:buscar/:desde/:hasta", auth, acceso, cRemitos.getListaRemitos);
+	app.get("/verRemito/:id_remito1", auth, acceso, cRemitos.getRemito);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

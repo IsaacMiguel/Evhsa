@@ -4,7 +4,8 @@ var mRemitos = require('../models/mRemitos');
 module.exports = {
 	getLista : getLista,
 	getListaProveedores : getListaProveedores,
-	getListaRemitos : getListaRemitos
+	getListaRemitos : getListaRemitos,
+	getRemito : getRemito
 }
 
 function getLista (req, res) {
@@ -30,34 +31,38 @@ function getListaRemitos (req, res) {
 
 	switch (opcion) {
 		case '1':
-			// mRemitos.getRemitosEntrefechas(desde, hasta, function (remitos) {
-			// 	res.send(remitos);
-			// });
-			console.log(opcion + ' / ' + buscar + ' / ' + desde + ' / ' + hasta)
+			mRemitos.getRemitosEntrefechas(desde, hasta, function (remitos) {
+				res.send(remitos);
+			});
 
 			break;
 
 		case '2':
-			// mRemitos.getRemitosXProveedores(buscar, desde, hasta, function (remitos) {
-			// 	res.send(remitos);
-			// });
-			console.log(opcion + ' / ' + buscar + ' / ' + desde + ' / ' + hasta)
+			mRemitos.getRemitosXProveedores(buscar, desde, hasta, function (remitos) {
+				res.send(remitos);
+			});
 
 			break;
 
 		case '3':
-			// mRemitos.getRemitosXEstado(buscar, function (remitos) {
-			// 	res.send(remitos);
-			// });
-			console.log(opcion + ' / ' + buscar)
+			mRemitos.getRemitosXEstado(buscar, function (remitos) {
+				res.send(remitos);
+			});
 
 			break;
 
 		default:
 			res.redirect('/');
-			console.log(opcion + ' / ' + buscar + ' / ' + desde + ' / ' + hasta)
 
 			break;
 	}
 }
 
+function getRemito (req, res) {
+	var params = req.params;
+	var id_remito1 = params.id_remito1;
+
+	mRemitos.getVerRemito(id_remito1, function (remito) {
+		res.send(remito);
+	})
+}

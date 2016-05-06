@@ -5,6 +5,27 @@
 {% endblock %}
 
 {% block content %}
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+	      	<table class="table" id="tabla_verRemitos">
+
+      		</table>
+      	  </div>	
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
 <div class="panel panel-default">
   <!-- Default panel contents -->
   	<div class="panel-heading">
@@ -42,9 +63,9 @@
 											</tbody>
 											<tbody  id="load_estados" class="load_input" style="display: none">
 												<tr><td><select id="estados" class="form-control"><option value="0">Seleccione una opción</option>
-												<option value="1">Recuperado</option>
-												<option value="2">Proveedor</option>
-												<option value="3">Pañol</option></select></td></tr>
+												<option value="S">Recuperado</option>
+												<option value="N">Proveedor</option>
+												<option value="P">Pañol</option></select></td></tr>
 											</tbody>
 										<td>
 									</tr>
@@ -63,7 +84,7 @@
 				<table class="table table-striped">
 			  		<thead>
 			  			<tr> 
-			  				<th colspan="3">Opciones</th>
+			  				<th>Opciones</th>
 							<th>Fecha</th>
 							<th>N°</th>
 							<th>Proveedor</th>
@@ -78,27 +99,18 @@
 			  		<script type="text/template" id="tabla_remitos" />
 			  			[% for e in data %]
 							<tr>
-								<td><a href="/remitos_ver/[[ e.id ]]"><button class="btn btn-default">Ver</button></a></td>
-								<td><a href="/remitos_modificar/[[ e.id ]]"><button class="btn btn-warning menu" data-idmenu="21" data-accion="m">Modificar</button></a></td>
-								<!-- <td>[[ e.numero ]]</td>
-								<td>[[ e.denominacion ]]</td>
-								<td>[% if e.numero_coche_fk == 0 %]S/A[% else %][[ e.numero_coche_fk ]][% endif %]</td>
-								<td>[% if e.fecha_colocacion_f != '00/00/0000' %][[ e.fecha_colocacion_f ]][% else %][% endif %]</td>
+								<td><a href="#"><button value="[[ e.id_remitos1 ]]" class="btn btn-default verRemito">Ver</button></a></td>
+								<td>[% if e.fecha_movimiento_f != '00/00/0000' %][[ e.fecha_movimiento_f ]][% else %][% endif %]</td>
+								<td>[[ e.remito_numero ]]</td>
+								<td>[[ e.razonsocial ]]</td>
+								<td>[% if e.fecha_retiro_f != '00/00/0000' %][[ e.fecha_retiro_f ]][% else %][% endif %]</td>
 								<td>
-									[% if e.total == 0 %]
+									[% if e.costo == 0 %]
 									[% else %]
-										[[ e.total ]]
+										[[ e.costo ]]
 									[% endif %]
 								</td>
-								<td>[[ e.responsable ]]</td>
-								<td>[[ e.tipo ]]</td>
-								<td>[% if e.fecha_sacado_f != '00/00/0000' %][[ e.fecha_sacado_f ]][% else %][% endif %]</td>
-								<td>
-									[% if e.km == 0 %]
-									[% else %]
-										[[ e.km ]]
-									[% endif %]
-								</td> -->
+								<td>[[ e.estado ]]</td>
 							</tr>
 						[% endfor %]
 			  		</script>
@@ -179,6 +191,8 @@ function remitos_listar (filtro, buscar, desde, hasta) {
 	desde = changeDate3(desde);
 	hasta = changeDate3(hasta);
 
+	$('#tbodylisto').html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ... </td></tr>");
+
 	$.getJSON('/remitos_listar/' + filtro + '/' + buscar + '/' + desde + '/' + hasta, function (data){
 		if (data.length != 0){
 			$('#tbodylisto > tr').remove();
@@ -236,13 +250,52 @@ $('#btnFiltrar').on('click', function () {
 			var buscar = $('#estados').val();
 
 			if (filtro === '3' && buscar !== '0') {
-				remitos_listar(filtro, buscar, desde, hasta);
+				/* Esperando se confirme los distintos tipos de datos de los remitos
+				 * en la tabla remitos1 para poder realizar las busquedas
+				 * (preguntar si el campo puede estar vacio como dice en el .doc (parte 8))
+				 */
+
+				// remitos_listar(filtro, buscar, desde, hasta);
 			} else {
 				alert('Debe ingresar todos los campos de busqueda')
 			}
 
 			break;
 	}
+});
+
+									/******************************
+									 * ON CLICK BUTTON #verRemito *
+									 ******************************/
+
+$(document).on('click', '.verRemito', function () {
+	var id_remito = $(this).val();
+	$.getJSON('/verRemito/' + id_remito, function (remito) {
+		if (remito.length > 0) {
+			var html = "";
+			var cantidad = "";
+
+			for (var r in remito[0]) {
+				console.log("remito cant: " + r + "--" + remito[0][r])
+			}
+
+			// for (var i = 1; i < 9; i++) {
+			// 	cantidad = "cantidad" + i;
+			// 	console.log("remito cant: " + remito[0].i)
+			// 	html += "<tr><td>Cantidad " + i + ":<td>" + remito[0].cantidad + "<td></tr>";
+			// };
+
+			console.log(remito)
+			console.log(remito[0].cantidad1)
+			console.log("html: " + html)
+
+			$("#tabla_verRemitos").html(html);
+			$("#myModalLabel").text("Selecione una ubicación")
+			$('#myModal').modal('toggle');
+		} else {
+			alert("La busqueda no trajo resultados.")
+		}
+	});
 });
 </script>
 {% endblock %}
