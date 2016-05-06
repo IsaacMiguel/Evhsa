@@ -367,7 +367,11 @@ module.exports = function(app) {
 	app.get("/reparaciones_lista", auth, acceso, cReparaciones.getLista);
 	app.get("/getReparacionesFiltroFecha/:desde/:hasta", auth, cReparaciones.getReparacionesFiltroFecha);
 	app.get("/reparaciones_alta", auth, acceso, cReparaciones.getAlta);
-
+	app.get("/reparaciones_checkVale/:nro_vale", auth, cReparaciones.getCheckNroVale);
+	app.post("/reparaciones_alta", auth, cReparaciones.postAlta);
+	app.get("/reparaciones_modificar/:id", auth, acceso, cReparaciones.getModificar);
+	app.post("/reparaciones_modificar", auth, cReparaciones.postModificar);
+	app.get("/reparaciones_borrar/:id", auth, acceso, cReparaciones.getDel);
 
 
 	//EQUIPOS
