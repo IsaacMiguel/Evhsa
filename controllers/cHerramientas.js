@@ -17,9 +17,16 @@ module.exports = {
 	getEliminar : getEliminar,
 	getUbicaciones : getUbicaciones,
 	postHerramientasUbicacion : postHerramientasUbicacion,
-	postModificarFechaCambio : postModificarFechaCambio//,
-	// getContromensual : getContromensual
+	postModificarFechaCambio : postModificarFechaCambio,
+	getControlMensual : getControlMensual,
+	getOperarios : getOperarios,
+	getReporteXUbicacion : getReporteXUbicacion,
+	getListadoReporteUbicacion : getListadoReporteUbicacion
 }
+
+																			/*****************
+																			 * 	MOVIMIENTOS  *
+																			 *****************/
 
 function getLista (req, res) {
 	res.render('herramientas_lista', {
@@ -243,11 +250,62 @@ function postModificarFechaCambio (req, res) {
 			});
 }
 
-// function getContromensual (req, res) {
-// 	mUsuarios.getAllUsuarios(function (operarios) {
-// 		res.render('herramientas_controlmensual', {
-// 			pagename : 'Control Mensual',
-// 			operarios : operarios
-// 		});
-// 	});
-// }
+																		/*********************
+																		 * 	CONTROL MENSUAL  *
+																		 *********************/
+
+function getControlMensual (req, res) {
+	mUsuarios.getAllUsuarios(function (operarios) {
+		res.render('herramientas_controlmensual', {
+			pagename : 'Control Mensual',
+			operarios : operarios
+		});
+	});
+}
+
+function getOperarios (req, res) {
+	var params = req.params;
+	var desde = params.desde;
+	var hasta = params.hasta;
+	var operario = params.operario;
+
+	if (operario === '0') {
+		mHerramientas.getAllOperarios(desde, hasta, function (listado) {
+			res.send(listado);
+		});
+	} else {
+		mHerramientas.getOperarioByUnica(desde, hasta, operario, function (listado) {
+			res.send(listado);
+		});
+	}
+}
+
+																		/*************************
+																		 * 	REPORTE X UBICACION  *
+																		 *************************/
+
+function getReporteXUbicacion (req, res) {
+	mUbicacionesHerramientas.getAll(function (ubicaciones) {
+		res.render('herramientas_reportexubicacion', {
+			pagename : 'Reporte por Ubicación',
+			ubicaciones : ubicaciones
+		});
+	});
+}
+
+function getListadoReporteUbicacion (req, res) {
+	var params = req.params;
+	var desde = params.desde;
+	var hasta = params.hasta;
+	var id_ubicacion = params.id_ubicacion;
+
+	if (id_ubicacion === '0') {
+		mUbicacionesHerramientas.getReporteUbicacion(desde, hasta, function (reporte) {
+			res.send(reporte);
+		});
+	} else {
+		mUbicacionesHerramientas.getReporteUbicacionById(desde, hasta, id_ubicacion, function (reporte) {
+			res.send(reporte);
+		});
+	}
+}
