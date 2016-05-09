@@ -20,8 +20,11 @@ function getBetweenFecha(desde, hasta, cb){
 }
 
 function getById(id, cb){
-	conn("SELECT *, DATE_FORMAT(fecha_reparacion, '%d/%m/%Y') as fecha_reparacion_f "+ 
-		"FROM reparaciones_emergencia WHERE id = "+id, cb);
+	conn("SELECT *, DATE_FORMAT(fecha_reparacion, '%d/%m/%Y') as fecha_reparacion_f, "+
+		"secr.usuario as encargadotxt "+
+		"FROM reparaciones_emergencia "+
+		"LEFT JOIN secr on secr.unica = reparaciones_emergencia.unica_encargado_fk "+
+		"WHERE id = "+id, cb);
 }
 
 function insert(codigo, sector, id_grupo, cb){

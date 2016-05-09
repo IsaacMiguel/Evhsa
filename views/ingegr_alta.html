@@ -47,14 +47,14 @@
 		var objDatos = localStorage.getItem('objDatos');
 		var objDatos_parsed = JSON.parse(objDatos);
 
-		var PrimeroDeMes = objDatos_parsed.fecha_01;
+		// var PrimeroDeMes = objDatos_parsed.fecha_01;
 		var Today = objDatos_parsed.fecha_hoy;
 		// console.log("Pr: "+PrimeroDeMes)
 		// console.log("To: "+Today);
 
 		$(".datepicker").datepicker({
 			dateFormat: 'dd/mm/yy',
-			minDate: PrimeroDeMes,
+			// minDate: PrimeroDeMes,
 			maxDate: Today
 		});
 

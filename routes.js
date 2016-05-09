@@ -372,7 +372,7 @@ module.exports = function(app) {
 	app.get("/reparaciones_modificar/:id", auth, acceso, cReparaciones.getModificar);
 	app.post("/reparaciones_modificar", auth, cReparaciones.postModificar);
 	app.get("/reparaciones_borrar/:id", auth, acceso, cReparaciones.getDel);
-
+	app.get("/reparaciones_ver/:id", auth, acceso, cReparaciones.getVer);
 
 	//EQUIPOS
 	app.get("/equipos_lista", auth, acceso, cEquipos.getLista);

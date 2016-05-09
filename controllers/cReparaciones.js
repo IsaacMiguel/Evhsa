@@ -15,7 +15,8 @@ module.exports = {
 	getModificar: getModificar,
 	postModificar: postModificar,
 	getDel: getDel,
-	getCheckNroVale: getCheckNroVale
+	getCheckNroVale: getCheckNroVale,
+	getVer: getVer
 }
 
 function changeDate(date){
@@ -209,5 +210,17 @@ function getCheckNroVale(req, res){
 
 	mVales.getByNroVale(nro_vale, function (vale){
 		res.send(vale);
+	});
+}
+
+function getVer(req, res){
+	const params = req.params;
+	const id = params.id;
+
+	mReparaciones.getById(id, function (reparacion){
+		res.render("reparaciones_ver", {
+			pagename: "Ver Detalle de Reparacion de Emergencia",
+			reparacion: reparacion[0]
+		});
 	});
 }
