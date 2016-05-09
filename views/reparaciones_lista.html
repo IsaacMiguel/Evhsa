@@ -73,12 +73,12 @@
 								<td><a href="/reparaciones_modificar/[[ r.id ]]"><button class="btn btn-warning menu" data-idmenu="23" data-accion="m">Modificar</button></a>
 								</td>
 								<td><a href='/reparaciones_borrar/[[ r.id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="23" data-accion="b">Eliminar</button><a/></td>
-								<td>[[ r.fechaf ]]</td>
+								<td>[[ r.fecha_reparacion_f ]]</td>
 								<td>[[ r.id ]]</td>
-								<td>[[ r.nro_coche ]]</td>
+								<td>[% if r.nro_coche != 1 %][[ r.nro_coche ]][% else %]Sin Coche Asig.[% endif %]</td>
 								<td>[[ r.chofer ]]</td>
-								<td>[[ r.nro_linea ]]</td>
-								<td>[[ r.reemplazo_nro_coche ]]</td>
+								<td>[% if r.nro_linea != 0 %][[ r.nro_linea ]][% else %]Sin Linea Asig.[% endif %]</td>
+								<td>[% if r.reemplazo_nro_coche != 0 %][[ r.reemplazo_nro_coche ]][% else %]Sin Reemplazo Asig.[% endif %]</td>
 							</tr>
 						[% endfor %]
 			  		</script>
@@ -151,7 +151,7 @@
 	if('localStorage' in window && window['localStorage'] !== null) {
 		var objFechas = localStorage.getItem('objFechas');
 		var objFechas_parsed = JSON.parse(objFechas);
-		console.log(objFechas)
+		// console.log(objFechas)
 		
 		var PrimeroDeMes = objFechas_parsed.fecha_01;
 		var Today = objFechas_parsed.fecha_hoy;

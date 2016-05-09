@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block content %}
-<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<link href="/css/reparaciones_alta.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
 	<form method="post" id="formalta" action="/reparaciones_alta">
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Fecha:</td>
-				<td><input type="text" id="fecha" name="fecha" class="form-control datepicker"></td>
+				<td><input type="text" id="fecha" name="fecha" class="form-control datepicker" readonly></td>
 			</tr>
 			<tr>
 				<td>Modo:</td>
@@ -41,6 +41,7 @@
 				<td>Linea:</td>
 				<td>
 					<select class="form-control" id="linea" name="linea">
+						<option value="0">Sin Linea</option>
 						{% for l in lineas %}
 							<option value="{{ l.descripcion }}">{{ l.descripcion }}</option>
 						{% endfor %}
@@ -53,7 +54,7 @@
 			</tr>
 			<tr>
 				<td>Hora de Aviso:</td>
-				<td><input type="time" class="form-control" id="hora_aviso" name="hora_aviso"></td>
+				<td><input type="text" class="form-control time" id="hora_aviso" name="hora_aviso"></td>
 			</tr>
 			<tr>
 				<td>Avisó desde:</td>
@@ -77,7 +78,7 @@
 			</tr>
 			<tr>
 				<td>Desperfecto:</td>
-				<td><input type="text" class="form-control" id="Desperfecto" name="Desperfecto"><div class="aviso">Quedan <span id="charsLeftDesperfecto"></span> caraceteres.</div></td>
+				<td><input type="text" class="form-control" id="desperfecto" name="desperfecto" required><div class="aviso">Quedan <span id="charsLeftDesperfecto"></span> caraceteres.</div></td>
 			</tr>
 			<tr>
 				<td>Coord. Turno:</td>
@@ -99,7 +100,7 @@
 			</tr>
 			<tr>
 				<td>Hrs. Inicio Reparacion:</td>
-				<td><input type="time" class="form-control" id="reparacion_hora_inicio" name="reparacion_hora_inicio"></td>
+				<td><input type="text" class="form-control time" id="reparacion_hora_inicio" name="reparacion_hora_inicio"></td>
 			</tr>
 			<tr>
 				<td>Detalles Reparacion:</td>
@@ -107,22 +108,20 @@
 			</tr>
 			<tr>
 				<td>Hrs. Fin Reparacion:</td>
-				<td><input type="time" class="form-control" id="reparacion_hora_fin" name="reparacion_hora_fin"></td>
+				<td><input type="text" class="form-control time" id="reparacion_hora_fin" name="reparacion_hora_fin"></td>
 			</tr>
 			<tr>
-				<!-- HACER VALIDACION DE QUE EXISTE EL VALE, MOSTRANDO LA FECHA, Y EL NUMERO DE COCHE, SI TIENE -->
 				<td>Nro Vale 1:</td>
-				<td><input type="text" class="form-control" name="vale1" id="vale1"></td>
+				<td><input type="text" class="form-control vale" data-vale="1" name="vale1" id="vale1" onKeyPress="return soloNumeros(event)" style="width: 150px; float:left;"><div id="vale1_fecha" style="float:left; margin-top: 10px; margin-left: 10px;"></div><div id="vale1_nrocoche" style="float:left; margin-top: 10px; margin-left: 10px;"></div>
+				</td>
 			</tr>
 			<tr>
-				<!-- HACER VALIDACION DE QUE EXISTE EL VALE, MOSTRANDO LA FECHA, Y EL NUMERO DE COCHE, SI TIENE -->
 				<td>Nro Vale 2:</td>
-				<td><input type="text" class="form-control" name="vale2" id="vale2"></td>
+				<td><input type="text" class="form-control vale" data-vale="2" name="vale2" id="vale2" onKeyPress="return soloNumeros(event)" style="width: 150px; float:left;"><div id="vale2_fecha" style="float:left; margin-top: 10px; margin-left: 10px;"></div><div id="vale2_nrocoche" style="float:left; margin-top: 10px; margin-left: 10px;"></div></td>
 			</tr>
 			<tr>
-				<!-- HACER VALIDACION DE QUE EXISTE EL VALE, MOSTRANDO LA FECHA, Y EL NUMERO DE COCHE, SI TIENE -->
 				<td>Nro Vale 3:</td>
-				<td><input type="text" class="form-control" name="vale3" id="vale3"></td>
+				<td><input type="text" class="form-control vale" data-vale="3" name="vale3" id="vale3" onKeyPress="return soloNumeros(event)" style="width: 150px; float:left;"><div id="vale3_fecha" style="float:left; margin-top: 10px; margin-left: 10px;"></div><div id="vale3_nrocoche" style="float:left; margin-top: 10px; margin-left: 10px;"></div></td>
 			</tr>
 			<tr>
 				<td>Probado:</td>
@@ -138,15 +137,22 @@
 			</tr>
 			<tr>
 				<td>Reemplazo desde:</td>
-				<td><input type="time" class="form-control" name="reemplazo_desde" id="reemplazo_desde"></td>
+				<td><input type="text" class="form-control time" name="reemplazo_desde" id="reemplazo_desde"></td>
 			</tr>
 			<tr>
 				<td>Reemplazo hasta:</td>
-				<td><input type="time" class="form-control" name="reemplazo_hasta" id="reemplazo_hasta"></td>
+				<td><input type="text" class="form-control time" name="reemplazo_hasta" id="reemplazo_hasta"></td>
 			</tr>
 			<tr>
 				<td>Nro Coche Reemplazo:</td>
-				<td><input type="text" class="form-control" id="reemplazo_coche" name="reemplazo_coche" maxlength="3" onKeyPress="return soloNumeros(event)"></td>
+				<!-- <td><input type="text" class="form-control" id="reemplazo_coche" name="reemplazo_coche" maxlength="3" onKeyPress="return soloNumeros(event)"></td> -->
+				<td>
+					<select class="form-control" id="reemplazo_coche" name="reemplazo_coche">
+						{% for c in coches %}
+							<option value="{{ c.numero }}">{{ c.numero }} - {{ c.marca }} {{ c.dominio }}</option>
+						{% endfor %}
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td>Chofer Reemplazo:</td>
@@ -158,11 +164,11 @@
 			</tr>
 			<tr>
 				<td>Retoma Servicio a la hora:</td>
-				<td><input type="time" class="form-control" name="retoma_hora" id="retoma_hora"></td>
+				<td><input type="text" class="form-control time" name="retoma_hora" id="retoma_hora"></td>
 			</tr>
 			<tr> <!-- ESTO SERIA RETOMA_"DESDE" -->
 				<td>Horas Perdidas:</td>
-				<td><input type="text" class="form-control" name="horas_perdidas" id="horas_perdidas" onKeyPress="return soloNumeros(event)"></td>
+				<td><input type="text" class="form-control time" name="horas_perdidas" id="horas_perdidas"></td>
 			</tr>
 			<tr>
 				<td>Chofer que retoma el servicio:</td>
@@ -178,26 +184,122 @@
 			</tr>
 			<tr>
 				<td>Hora Informe Final:</td>
-				<td><input type="time" class="form-control" id="informe_horafin" name="informe_horafin"></td>
+				<td><input type="text" class="form-control time" id="informe_horafin" name="informe_horafin"></td>
 			</tr>
 			<tr>
-				<td><input type="button" value="Atras" onclick="history.back()"></td>
-				<td><input type="submit" value="Agregar"></td>
+				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>
+				<td><input type="submit" value="Agregar" class="btn btn-default"></td>
 			</tr>
 		</table>
 	</form>
 </div>
 <script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
 <script src="/js/jquery.maskedinput.js" type="text/javascript"></script>
 <script type="text/javascript">
-	// $('#codigo2').limit('3','#charsLeftCodigo');
-	// $('#nombre').limit('45','#charsLeftNombre');
-	$("#horas_perdidas").mask("99:99");
-	$(function() {
-		
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
 
+	var myDate = new Date();
+    year = myDate.getFullYear(); 
+    day = myDate.getDate();
+    if (day<10)
+        day = "0"+day;
+    month = myDate.getMonth()+1;
+    if (month<10)
+        month = "0"+month
+    const today = day + "/" + month + "/" + year;
+	$("#fecha").val(today);
+
+	$("#servicio").limit("5", "#charsLeftServicio");
+	$("#chofer").limit("20", "#charsLeftChofer");
+	$("#aviso_desde").limit("15", "#charsLeftAvisoDesde");
+	$("#aviso_medio").limit("10", "#charsLeftAvisoMedio");
+	$("#aviso_recibio").limit("15", "#charsLeftAvisoRecibio");
+	$("#parado_en").limit("25", "#charsLeftParadoEn");
+	$("#corte_en").limit("30", "#charsLeftCorteEn");
+	$("#desperfecto").limit("500", "#charsLeftDesperfecto");
+	$("#responsable1").limit("20", "#charsLeftResponsable1");
+	$("#responsable2").limit("20", "#charsLeftResponsable2");
+	$("#reparacion_detalle").limit("600", "#charsLeftReparacionDetalle");
+	$("#probado").limit("30", "#charsLeftProbado");
+	$("#pendiente").limit("600", "#charsLeftPendiente");
+	$("#reemplazo").limit("30", "#charsLeftReemplazo");
+	$("#reemplazo_chofer").limit("20", "#charsLeftReemplazoChofer");
+	$("#retoma").limit("30", "#charsLeftRetoma");
+	$("#retoma_chofer").limit("20", "#charsLeftRetomaChofer");
+	$("#informe_texto").limit("80", "#charsLeftInformeTexto");
+
+	$(".time").mask("99:99", { placeholder:"HH:MM", completed: function(){
+			// console.log("sad")
+			const value = $(this).val();
+			const hora = value.substring(0, 2);
+			const min = value.substring(3, 5);
+			var valido = false;
+			if (hora.length == 2 && min.length == 2){
+				const hora_int = parseInt(hora);
+				const min_int = parseInt(min);
+				if ( hora_int < 24 && min_int < 60){
+					valido = true;
+				}
+			}
+
+			if (!valido){
+				alert("Valor de hora INCORRECTO. Maximo: 23:59");
+				$(this).val("");
+			}
+		}
+	});
+
+	$(function() {
+		$(".vale").focusout(function (){
+			const nro_vale = $(this).val();
+			const nro_input = $(this).data("vale");
+			if (nro_vale.length > 0){				
+				$.getJSON("/reparaciones_checkVale/"+nro_vale, function(data) {					
+					console.log(data.length)			
+					if (data.length	> 0){
+						data = data[0];
+						$("#vale"+nro_input+"_fecha").text("Fecha: "+data.fechaf);
+						if (data.nro_coche != 0)
+							$("#vale"+nro_input+"_nrocoche").text("Nro. Coche: "+data.nro_coche);
+					}else{
+						$("#vale"+nro_input+"_fecha").text("No Existe.");
+						$("#vale"+nro_input+"_nrocoche").text("");
+						// $("#vale"+nro_input).focus();
+					}
+				});
+			}else{
+				$("#vale"+nro_input+"_fecha").text("");
+				$("#vale"+nro_input+"_nrocoche").text("");
+			}
+		});
+
+		$("#formalta").submit(function(e){
+			e.preventDefault();
+			const vale1txt = $("#vale1_fecha").text()
+			const vale2txt = $("#vale2_fecha").text()
+			const vale3txt = $("#vale3_fecha").text()
+			// alert(vale1txt+" "+vale2txt+" "+vale3txt)
+			if (vale1txt != 'No Existe.'){
+				if (vale2txt != 'No Existe.'){
+					if (vale3txt != 'No Existe.'){
+						this.submit();
+					}else{
+						alert("ERROR: Algun Nro de Vale no es válido.");
+					return false;
+					}
+				}else{
+					alert("ERROR: Algun Nro de Vale no es válido.");
+					return false;
+				}
+			}else{
+				alert("ERROR: Algun Nro de Vale no es válido.");
+				return false;
+			}
+		});
 	});
 </script>
-
 {% endblock %}
