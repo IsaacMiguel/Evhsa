@@ -33,7 +33,6 @@
 		<table>
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-				<td><a href="/equipos_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 				<td style="width: 100%;">
 					<table class="pull-right">
@@ -250,12 +249,7 @@ $('#btnFiltrar').on('click', function () {
 			var buscar = $('#estados').val();
 
 			if (filtro === '3' && buscar !== '0') {
-				/* Esperando se confirme los distintos tipos de datos de los remitos
-				 * en la tabla remitos1 para poder realizar las busquedas
-				 * (preguntar si el campo puede estar vacio como dice en el .doc (parte 8))
-				 */
-
-				// remitos_listar(filtro, buscar, desde, hasta);
+				remitos_listar(filtro, buscar, desde, hasta);
 			} else {
 				alert('Debe ingresar todos los campos de busqueda')
 			}
@@ -273,24 +267,15 @@ $(document).on('click', '.verRemito', function () {
 	$.getJSON('/verRemito/' + id_remito, function (remito) {
 		if (remito.length > 0) {
 			var html = "";
-			var cantidad = "";
-
+			
 			for (var r in remito[0]) {
-				console.log("remito cant: " + r + "--" + remito[0][r])
+				if (!(remito[0][r] === 0 || remito[0][r] === '' || r === 'id' || r === 'id_remitos1_fk')) {
+					html += "<tr><td>" + r + ": </td><td>" + remito[0][r] + "</td></tr>";
+				}
 			}
 
-			// for (var i = 1; i < 9; i++) {
-			// 	cantidad = "cantidad" + i;
-			// 	console.log("remito cant: " + remito[0].i)
-			// 	html += "<tr><td>Cantidad " + i + ":<td>" + remito[0].cantidad + "<td></tr>";
-			// };
-
-			console.log(remito)
-			console.log(remito[0].cantidad1)
-			console.log("html: " + html)
-
 			$("#tabla_verRemitos").html(html);
-			$("#myModalLabel").text("Selecione una ubicación")
+			$("#myModalLabel").text("Vista Detalles Remito")
 			$('#myModal').modal('toggle');
 		} else {
 			alert("La busqueda no trajo resultados.")
