@@ -24,7 +24,7 @@ const cHerramientas = require('./controllers/cHerramientas');
 const cVales = require('./controllers/cVales');
 const cReparaciones = require('./controllers/cReparaciones');
 const cRemitos = require('./controllers/cRemitos');
-const cSereno = require('./controllers/cSereno');
+const cSerenos = require('./controllers/cSerenos');
 
 const mEventos = require('./models/mEventos');
 const mAccesos = require('./models/mAccesos');
@@ -414,7 +414,9 @@ module.exports = function(app) {
 	app.get("/verRemito/:id_remito1", auth, acceso, cRemitos.getRemito);
 
 	//SERENO
-	app.get("/sereno_lista", auth, acceso, cSereno.getLista);
+	app.get("/sereno_lista", auth, acceso, cSerenos.getLista);
+	app.get("/sereno_alta", auth, acceso, cSerenos.getAlta);
+	app.post("/sereno_alta", auth, cSerenos.postAlta);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

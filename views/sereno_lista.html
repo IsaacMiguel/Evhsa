@@ -33,6 +33,7 @@
 		<table>
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/sereno_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 				<td style="width: 100%;">
 					<table class="pull-right">
@@ -76,8 +77,8 @@
 			  		<tbody id="tbodylisto">
 			  			
 			  		</tbody>
-			  		<script type="text/template" id="tabla_remitos" />
-			  			[% for e in data %]
+			  		<script type="text/template" id="tabla_sereno" />
+			  			<!-- [% for e in data %]
 							<tr>
 								<td>[% if e.fecha_movimiento_f != '00/00/0000' %][[ e.fecha_movimiento_f ]][% else %][% endif %]</td>
 								<td>[[ e.remito_numero ]]</td>
@@ -91,7 +92,7 @@
 								</td>
 								<td>[[ e.estado ]]</td>
 							</tr>
-						[% endfor %]
+						[% endfor %] -->
 			  		</script>
 				</table>				
 			</div>
@@ -131,7 +132,7 @@ function sereno_listar (filtro, desde, hasta) {
 	$.getJSON('/remitos_listar/' + filtro + '/' + desde + '/' + hasta, function (data){
 		if (data.length != 0){
 			$('#tbodylisto > tr').remove();
-			var template = $('#tabla_remitos').html();
+			var template = $('#tabla_sereno').html();
 
 			var output = parseSwig(template, data);
 
