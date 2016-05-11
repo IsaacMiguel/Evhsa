@@ -14,7 +14,8 @@ module.exports = {
 	getFico2015: getFico2015,
 	getPagol: getPagol,
 	getPagol2015: getPagol2015,
-	getHerramientas_temp : getHerramientas_temp
+	getHerramientas_temp : getHerramientas_temp,
+	getRemitos_temp : getRemitos_temp
 }	
 
 function getAllRepuestos(cb){
@@ -71,4 +72,8 @@ function getPagol2015(cb){
 
 function getHerramientas_temp(cb){
 	conn("SELECT * FROM herramientas_temp", cb);
+}
+
+function getRemitos_temp(cb){
+	conn("SELECT * FROM remitos_temp", cb);
 }

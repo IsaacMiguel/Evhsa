@@ -24,6 +24,7 @@ const cHerramientas = require('./controllers/cHerramientas');
 const cVales = require('./controllers/cVales');
 const cReparaciones = require('./controllers/cReparaciones');
 const cRemitos = require('./controllers/cRemitos');
+const cSereno = require('./controllers/cSereno');
 
 const mEventos = require('./models/mEventos');
 const mAccesos = require('./models/mAccesos');
@@ -412,6 +413,9 @@ module.exports = function(app) {
 	app.get("/remitos_listar/:opcion/:buscar/:desde/:hasta", auth, acceso, cRemitos.getListaRemitos);
 	app.get("/verRemito/:id_remito1", auth, acceso, cRemitos.getRemito);
 
+	//SERENO
+	app.get("/sereno_lista", auth, acceso, cSereno.getLista);
+
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
 	// //random
@@ -425,4 +429,5 @@ module.exports = function(app) {
 	app.get("/actualizarConjuntosFichas", auth, cRandom.updateConjuntosFichas);
 	app.get("/actualizarVales", auth, cRandom.updateVales);
 	app.get("/actualizarHerramientas", auth, cRandom.updateHerramientas);
+	app.get("/actualizarRemitos", auth, cRandom.updateRemitos);
 };
