@@ -13,7 +13,8 @@ module.exports = {
 	updateConjuntos: updateConjuntos,
 	updateConjuntosFichas: updateConjuntosFichas,
 	updateVales: updateVales,
-	updateHerramientas : updateHerramientas
+	updateHerramientas : updateHerramientas,
+	updateRemitos : updateRemitos
 }
 
 function getRandom(req, res){
@@ -793,4 +794,115 @@ function updateHerramientas (req, res) {
 			}				
 		});
 	});
+}
+
+function updateRemitos (req, res) {
+	var connection = mysql.createConnection({
+	    user: 'root',
+	    password: 'root',
+	    host: 'localhost',
+	    port: '',
+	    database: 'evhsa',
+	    dateStrings : true,
+	    //multipleStatements: permite multiples inejecciones (desabilitado por defecto por temas de seguridad)
+	    multipleStatements: true
+ 	});
+
+	connection.connect();
+
+	mRandom.getRemitos_temp(function (remitos_temp) {
+		console.log(remitos_temp.length)
+
+		async.forEach(remitos_temp, function (remito, callback) {
+			var query = "";
+		 	var cantidad = [];
+		 	var descripcion = [];
+
+			var fecha_movimiento = remito.fecha_movimiento;
+			var remito_numero = remito.remito_numero;
+			var fecha_retiro = remito.fecha_retiro;
+			var cliente = remito.cliente;
+
+			cantidad.push(
+				remito.cantidad1,
+				remito.cantidad2,
+				remito.cantidad3,
+				remito.cantidad4,
+				remito.cantidad5,
+				remito.cantidad6,
+				remito.cantidad7,
+				remito.cantidad8
+			);
+		
+
+			descripcion.push(
+				remito.descripcion1,
+				remito.descripcion2,
+				remito.descripcion3,
+				remito.descripcion4,
+				remito.descripcion5,
+				remito.descripcion6,
+				remito.descripcion7,
+				remito.descripcion8
+			);
+
+			var hora = remito.hora;
+				if (hora === '') {
+					hora = '00:00';
+				} else {
+					hora = hora.replace(/,/g, ":");
+				}
+				
+			var costo = remito.costo;
+			var estado = remito.estado;
+			var id_proveedor_fk = remito.id_proveedor_fk;
+			var confecciono = remito.confecciono;
+
+			var query = "INSERT INTO remitos1(" +
+				"fecha_movimiento, " +
+				"remito_numero, " +
+				"fecha_retiro, " +
+				"cliente, " +
+				"hora, " +
+				"costo, " +
+				"estado, " +
+				"id_proveedor_fk, " +
+				"confecciono) " +
+					"VALUES( '" +
+						fecha_movimiento + "', " +
+						remito_numero + ", '" +
+					  fecha_retiro	+ "', '" +
+						cliente + "', '" +
+						hora + "', " +
+						costo + ", '" +
+						estado + "', " +
+						id_proveedor_fk + ", '" +
+						confecciono + "');";
+
+			for (var i = 0; i < descripcion.length; i++) {
+				if (descripcion[i] !== '') {
+					query += "INSERT INTO remitos2(numero_remitos1_fk, cantidad, descripcion) " +
+					"VALUES(" + remito_numero + ", " + cantidad[i] + ", '" + descripcion[i] + "');";
+				}
+			}
+
+			connection.query(query, function (err, rows, fields) {
+				console.log("conection.query: " + query)
+				if (err) {
+					throw err;
+			    console.log(err);
+				}
+			})
+
+			callback();
+		}, function (err) {
+			if (err) { 
+				throw err;
+			}else{
+				res.send("finished");
+				connection.end();
+				// return cb();
+			}				
+		})
+	})
 }

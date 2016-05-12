@@ -23,6 +23,8 @@ const cEquipos = require('./controllers/cEquipos');
 const cHerramientas = require('./controllers/cHerramientas');
 const cVales = require('./controllers/cVales');
 const cReparaciones = require('./controllers/cReparaciones');
+const cRemitos = require('./controllers/cRemitos');
+const cSerenos = require('./controllers/cSerenos');
 
 const mEventos = require('./models/mEventos');
 const mAccesos = require('./models/mAccesos');
@@ -405,8 +407,16 @@ module.exports = function(app) {
 	app.get("/herramientas_listareporteubicacion/:desde/:hasta/:id_ubicacion", auth, acceso, cHerramientas.getListadoReporteUbicacion);
 
 
+	//REMITOS
+	app.get("/remitos_lista", auth, acceso, cRemitos.getLista);
+	app.get("/remitos_listaproveedores", auth, acceso, cRemitos.getListaProveedores);
+	app.get("/remitos_listar/:opcion/:buscar/:desde/:hasta", auth, acceso, cRemitos.getListaRemitos);
+	app.get("/verRemito/:id_remito1", auth, acceso, cRemitos.getRemito);
 
-
+	//SERENO
+	app.get("/sereno_lista", auth, acceso, cSerenos.getLista);
+	app.get("/sereno_alta", auth, acceso, cSerenos.getAlta);
+	app.post("/sereno_alta", auth, cSerenos.postAlta);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
@@ -421,4 +431,5 @@ module.exports = function(app) {
 	app.get("/actualizarConjuntosFichas", auth, cRandom.updateConjuntosFichas);
 	app.get("/actualizarVales", auth, cRandom.updateVales);
 	app.get("/actualizarHerramientas", auth, cRandom.updateHerramientas);
+	app.get("/actualizarRemitos", auth, cRandom.updateRemitos);
 };
