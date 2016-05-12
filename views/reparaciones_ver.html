@@ -1,0 +1,176 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/reparaciones_modificar.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<!-- <form method="post" id="formalta" action="/reparaciones_modificar"> -->
+		<input hidden id="id" name="id" value="{{ reparacion.id }}">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Fecha:</td>
+				<td>{{ reparacion.fecha_reparacion_f }}</td>
+			</tr>
+			<tr>
+				<td>Modo:</td>
+				<td>{% if reparacion.modo2 == 1 %}Con Corte{% else %}Sin Corte{% endif %}</td>
+			</tr>
+			<tr>
+				<td>Coche Nro.:</td>
+				<td>{{ reparacion.nro_coche }}</td>
+			</tr>
+			<tr>
+				<td>Servicio:</td>
+				<td>{{ reparacion.servicio }}</td>
+			</tr>
+			<tr>
+				<td>Linea:</td>
+				<td>{% if reparacion.nro_linea == 0 %}Sin Linea{% else%}{{ reparacion.nro_linea }}</td>
+			</tr>
+			<tr>
+				<td>Chofer:</td>
+				<td>{{ reparacion.chofer }}</td>
+			</tr>
+			<tr>
+				<td>Hora de Aviso:</td>
+				<td>{{ reparacion.aviso_hora }}</td>
+			</tr>
+			<tr>
+				<td>Avisó desde:</td>
+				<td>{{ reparacion.aviso_desde }}</td>
+			</tr>
+			<tr>
+				<td>Avisó por medio de:</td>
+				<td>{{ reparacion.aviso_medio }}</td>
+			</tr>
+			<tr>
+				<td>Aviso Recibido por:</td>
+				<td>{{ reparacion.aviso_recibio }}</td>
+			</tr>
+			<tr>
+				<td>Vehiculo parado en:</td>
+				<td>{{ reparacion.parado_en }}</td>
+			</tr>
+			<tr>
+				<td>Corte de Servicio en:</td>
+				<td>{{ reparacion.corte_en }}</td>
+			</tr>
+			<tr>
+				<td>Desperfecto:</td>
+				<td>{{ reparacion.desperfecto }}</td>
+			</tr>
+			<tr>
+				<td>Coord. Turno:</td>
+				<td>{{ reparacion.unica_encargado_fk }} - {{ reparacion.encargadotxt }}</td>
+			</tr>
+			<tr>
+				<td>Oficial Responsable 1:</td>
+				<td>{{ reparacion.responsable1 }}</td>
+			</tr>
+			<tr>
+				<td>Oficial Responsable 2:</td>
+				<td>{{ reparacion.responsable2 }}</td>
+			</tr>
+			<tr>
+				<td>Hrs. Inicio Reparacion:</td>
+				<td>{{ reparacion.reparacion_hora_inicio }}</td>
+			</tr>
+			<tr>
+				<td>Detalles Reparacion:</td>
+				<td>{{ reparacion.reparacion_detalle }}</td>
+			</tr>
+			<tr>
+				<td>Hrs. Fin Reparacion:</td>
+				<td>{{ reparacion.reparacion_hora_fin }}</td>
+			</tr>
+			<tr>
+				<td>Nro Vale 1:</td>
+				<td>{{ reparacion.nro_vale1_fk }}</td>
+			</tr>
+			<tr>
+				<td>Nro Vale 2:</td>
+				<td>{{ reparacion.nro_vale2_fk }}</td>
+			</tr>
+			<tr>
+				<td>Nro Vale 3:</td>
+				<td>{{ reparacion.nro_vale3_fk }}</td>
+			</tr>
+			<tr>
+				<td>Probado:</td>
+				<td>{{ reparacion.probado }}</td>
+			</tr>
+			<tr>
+				<td>Pendiente/Mensaje Prox. Serv.:</td>
+				<td>{{ reparacion.texto_pendiente }}</td>
+			</tr>
+			<tr>
+				<td>Reemplazo:</td>
+				<td>{{ reparacion.reemplazo }}</td>
+			</tr>
+			<tr>
+				<td>Reemplazo desde:</td>
+				<td>{{ reparacion.reemplazo_hora_desde }}</td>
+			</tr>
+			<tr>
+				<td>Reemplazo hasta:</td>
+				<td>{{ reparacion.reemplazo_hora_hasta }}</td>
+			</tr>
+			<tr>
+				<td>Nro Coche Reemplazo:</td>
+				<td>{{ reparacion.reemplazo_nro_coche }}</td>
+			</tr>
+			<tr>
+				<td>Chofer Reemplazo:</td>
+				<td>{{ reparacion.reemplazo_chofer }}</td>
+			</tr>
+			<tr>
+				<td>Retoma Servicio en:</td>
+				<td>{{ reparacion.retoma }}</td>
+			</tr>
+			<tr>
+				<td>Retoma Servicio a la hora:</td>
+				<td>{{ reparacion.retoma_hora }}</td>
+			</tr>
+			<tr> <!-- ESTO SERIA RETOMA_"DESDE" -->
+				<td>Horas Perdidas:</td>
+				<td>{{ reparacion.horas_perdidas }}</td>
+			</tr>
+			<tr>
+				<td>Chofer que retoma el servicio:</td>
+				<td>{{ reparacion.retoma_chofer }}</td>
+			</tr>
+			<tr>
+				<td>Km Perdidos:</td>
+				<td>{{ reparacion.km_perdidos }}</td>
+			</tr>
+			<tr>
+				<td>Informe Final:</td>
+				<td>{{ reparacion.informe_texto }}</td>
+			</tr>
+			<tr>
+				<td>Hora Informe Final:</td>
+				<td>{{ reparacion.informe_horafin }}</td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()" class="btn btn-default"></td>
+				<td></td>
+			</tr>
+		</table>
+	<!-- </form> -->
+</div>
+<script src="/js/jquery.min.js"></script>
+	<!-- // <script src="/js/jquery-ui-1.10.4.js"></script>
+	// <script src="/js/jquery.limit-1.2.js"></script>
+	// <script src="/js/jquery.maskedinput.js" type="text/javascript"></script> -->
+<script type="text/javascript">
+
+
+	$(function() {
+	
+	});
+</script>
+{% endblock %}
