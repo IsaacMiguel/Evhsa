@@ -213,10 +213,9 @@ $('#btnFiltrar').on('click', function () {
 
 	switch (filtro) {
 		case '0':
-			alert('Debe seleccionar una busqueda')
-
+		default:
+			alert('Debe seleccionar una busqueda');
 			break;
-
 		case '1':
 			var desde = $('#Fechasfecha_desde').val();
 			var hasta = $('#Fechasfecha_hasta').val();
@@ -227,9 +226,7 @@ $('#btnFiltrar').on('click', function () {
 			} else {
 				alert('Debe ingresar todos los campos de busqueda')
 			}
-
 			break;
-
 		case '2':
 			var desde = $('#Proveedoresfecha_desde').val();
 			var hasta = $('#Proveedoresfecha_hasta').val();
@@ -240,9 +237,7 @@ $('#btnFiltrar').on('click', function () {
 			} else {
 				alert('Debe ingresar todos los campos de busqueda')
 			}
-
 			break;
-
 		case '3':
 			var desde = 'none';
 			var hasta = 'none';
@@ -253,7 +248,6 @@ $('#btnFiltrar').on('click', function () {
 			} else {
 				alert('Debe ingresar todos los campos de busqueda')
 			}
-
 			break;
 	}
 });
