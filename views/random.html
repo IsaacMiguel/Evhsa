@@ -41,6 +41,9 @@
 		  		<tr>
 		  			<td><button class="btn" onclick="actualizarHerramientas();">Actualizar Tabla Herramientas con Datos de "Herramientas_temp"</button></td>
 		  		</tr>
+		  		<tr>
+		  			<td><button class="btn" onclick="actualizarRemitos();">Actualizar Tabla Remitos con Datos de "Remitos_temp"</button></td>
+		  		</tr>
 			</table>				
 		</div><!--div col xs12 -->
 	</div><!--div row -->
@@ -96,6 +99,12 @@
 
 	function actualizarHerramientas () {
 		$.getJSON("actualizarHerramientas", function (obj) {
+			console.log(obj);
+		});
+	}
+
+	function actualizarRemitos () {
+		$.getJSON("actualizarRemitos", function (obj) {
 			console.log(obj);
 		});
 	}

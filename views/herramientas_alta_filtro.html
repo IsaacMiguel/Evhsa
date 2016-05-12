@@ -86,7 +86,7 @@ $(function() {
 			$.getJSON('/herramientas_filtro_repuestos/' + codigo + '/' + descripcion, function (data) {
 				if (data.length) {
 					if (data.length > 1) {
-						var html = "<table class='table' id='tabla_conjuntos'>"
+						var html = "<table class='table' id='tabla_conjuntos'>";
 						html += "<tr><th>Codigo</th><th>Descripción</th><th>Opciones</th></tr>";
 							for(var i = 0; i < data.length; i++){
 								html += "<tr><td>"+data[i].codigo+"</td><td>"+data[i].nombre+"</td>"+

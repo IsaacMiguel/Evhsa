@@ -1,0 +1,286 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+	      	<table class="table" id="tabla_verRemitos">
+
+      		</table>
+      	  </div>	
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 100%;">
+					<table class="pull-right">
+						<tr>
+							<td>Filtrar por:&nbsp;</td>
+							<td>
+								<select class="form-control" id="filtro" name="filtro">
+									<option value="0" selected>Elegir</option>
+									<option value="1">Rango de fechas</option>
+									<option value="2">Proveedor</option>
+									<option value="3">Estado</option>
+								</select>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<tbody id="load_fechas" class="load_input" style="display: none">
+												<tr><td>
+												<input type='text' id='Fechasfecha_desde' class='form-control datepicker' placeholder='Fecha Desde' readonly></td>
+												<td><input type='text' id='Fechasfecha_hasta' class='form-control datepicker' placeholder='Fecha Hasta' readonly></td>
+											</tbody>
+											<tbody id="load_proveedores" class="load_input" style="display: none">
+												<tr><td><select id='proveedores' class='form-control'><option value='0'>Seleccione un proveedor</option></select></td>
+												<td><input type='text' id='Proveedoresfecha_desde' class='form-control datepicker' placeholder='Fecha Desde' readonly></td>
+												<td><input type='text' id='Proveedoresfecha_hasta' class='form-control datepicker' placeholder='Fecha Hasta' readonly></td></tr>
+											</tbody>
+											<tbody  id="load_estados" class="load_input" style="display: none">
+												<tr><td><select id="estados" class="form-control"><option value="0">Seleccione una opción</option>
+												<option value="S">Recuperado</option>
+												<option value="N">Proveedor</option>
+												<option value="P">Pañol</option></select></td></tr>
+											</tbody>
+										<td>
+									</tr>
+								</table>
+							</td>
+							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
+						</tr>
+					</table>					
+				</td>
+			</tr>	
+		</table>
+	</div>	
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr> 
+			  				<th>Opciones</th>
+							<th>Fecha</th>
+							<th>N°</th>
+							<th>Proveedor</th>
+							<th>Recuperar en Fecha</th>
+							<th>Costo Aprox</th>
+							<th>Estado Actual</th>
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tabla_remitos" />
+			  			[% for e in data %]
+							<tr>
+								<td><a href="#"><button value="[[ e.id_remitos1 ]]" class="btn btn-default verRemito">Ver</button></a></td>
+								<td>[% if e.fecha_movimiento_f != '00/00/0000' %][[ e.fecha_movimiento_f ]][% else %][% endif %]</td>
+								<td>[[ e.remito_numero ]]</td>
+								<td>[[ e.razonsocial ]]</td>
+								<td>[% if e.fecha_retiro_f != '00/00/0000' %][[ e.fecha_retiro_f ]][% else %][% endif %]</td>
+								<td>
+									[% if e.costo == 0 %]
+									[% else %]
+										[[ e.costo ]]
+									[% endif %]
+								</td>
+								<td>[[ e.estado ]]</td>
+							</tr>
+						[% endfor %]
+			  		</script>
+				</table>				
+			</div>
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/swig.min.js"></script>
+<script type="text/javascript">
+											/****************
+											 * ON LOAD PAGE *
+											 ****************/
+
+(function ($) { 
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
+
+	$('#load_input').hide();
+})(jQuery);
+
+										/****************************
+										 * ON CHANGE SELECT #filtro *
+										 ****************************/
+
+$('#filtro').on('change', function () {
+	var filtro = $('#filtro').val();
+	
+	switch (filtro) {
+		case '0':
+			alert('Debe seleccionar una busqueda')
+			break;
+
+		case '1':
+			$('.load_input').hide();
+			$('#load_fechas').show();
+
+			break;
+
+		case '2':
+			var options = "";
+
+			$.getJSON('/remitos_listaproveedores/', function (listadoProveedores) {
+				for (var i = 0; i < listadoProveedores.length; i++) {
+					options += "<option value='"+listadoProveedores[i].id+"'>"+listadoProveedores[i].razonsocial+"</option>";
+				};
+
+				$('#proveedores').append(options);
+			});
+
+			$('.load_input').hide();
+			$('#load_proveedores').show();
+
+			break;
+
+		case '3':
+			$('.load_input').hide();
+			$('#load_estados').show();
+
+			break;
+	}
+});
+
+									/*******************************
+									 * ON CLICK BUTTON #btnFiltrar *
+									 *******************************/
+
+function remitos_listar (filtro, buscar, desde, hasta) {
+	desde = changeDate3(desde);
+	hasta = changeDate3(hasta);
+
+	$('#tbodylisto').html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ... </td></tr>");
+
+	$.getJSON('/remitos_listar/' + filtro + '/' + buscar + '/' + desde + '/' + hasta, function (data){
+		if (data.length != 0){
+			$('#tbodylisto > tr').remove();
+			var template = $('#tabla_remitos').html();
+
+			var output = parseSwig(template, data);
+
+			$('#tbodylisto').html(output);
+
+		}else{
+			$('#tbodylisto > tr').remove();					
+			$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+		}
+	});
+}
+
+$('#btnFiltrar').on('click', function () {
+	var filtro = $('#filtro').val();
+
+	switch (filtro) {
+		case '0':
+			alert('Debe seleccionar una busqueda')
+
+			break;
+
+		case '1':
+			var desde = $('#Fechasfecha_desde').val();
+			var hasta = $('#Fechasfecha_hasta').val();
+			var buscar = 'none';
+
+			if (filtro === '1' && desde !== '' && hasta !== '') {
+				remitos_listar(filtro, buscar, desde, hasta);
+			} else {
+				alert('Debe ingresar todos los campos de busqueda')
+			}
+
+			break;
+
+		case '2':
+			var desde = $('#Proveedoresfecha_desde').val();
+			var hasta = $('#Proveedoresfecha_hasta').val();
+			var buscar = $('#proveedores').val();
+
+			if (filtro === '2' && buscar !== '0' && desde !== '' && hasta !== '') {
+				remitos_listar(filtro, buscar, desde, hasta);
+			} else {
+				alert('Debe ingresar todos los campos de busqueda')
+			}
+
+			break;
+
+		case '3':
+			var desde = 'none';
+			var hasta = 'none';
+			var buscar = $('#estados').val();
+
+			if (filtro === '3' && buscar !== '0') {
+				remitos_listar(filtro, buscar, desde, hasta);
+			} else {
+				alert('Debe ingresar todos los campos de busqueda')
+			}
+
+			break;
+	}
+});
+
+									/******************************
+									 * ON CLICK BUTTON #verRemito *
+									 ******************************/
+
+$(document).on('click', '.verRemito', function () {
+	var id_remito = $(this).val();
+	$.getJSON('/verRemito/' + id_remito, function (remito) {
+		if (remito.length > 0) {
+			var html = "";
+			
+			for (var r in remito[0]) {
+				if (!(remito[0][r] === 0 || remito[0][r] === '' || r === 'id' || r === 'id_remitos1_fk')) {
+					html += "<tr><td>" + r + ": </td><td>" + remito[0][r] + "</td></tr>";
+				}
+			}
+
+			$("#tabla_verRemitos").html(html);
+			$("#myModalLabel").text("Vista Detalles Remito")
+			$('#myModal').modal('toggle');
+		} else {
+			alert("La busqueda no trajo resultados.")
+		}
+	});
+});
+</script>
+{% endblock %}
