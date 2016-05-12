@@ -1,0 +1,42 @@
+<html>
+<head>
+	<title>{{ pagename }}</title>
+</head>
+<body>
+<table style="width:100%">
+	<tr>
+		<td><img src="/uploads/evhsalogogrande.png" title="Para imprimir: Click con el boton derecho -> Imprimir"></td>
+		<td><span style="padding-top: 10px; font-size: x-large;">{{ print_title }}</span></td>
+	</tr>
+</table>
+<div class="container">
+	<table style="width:100%">
+		<tr>
+			<th>Cuenta</th>
+			<th>Nombre</th>
+			<th style="text-align: left;">Tipo</th>
+		</tr>
+		{% for c in codigos %}
+			<tr>
+				<td style="text-align: center;">{% if c.cuenta != null %}{{ c.cuenta }}{% else %}{% endif %}</td>
+				<td style="padding-left: 75px;">{{ c.nombre }}</td>
+				<td>{% if c.tipo == 'I' %}Ingreso{% else %}Egreso{% endif %}</td>
+			</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="3">&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="3">&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="3"><small>Powered by LeandroDapello.com</small></td>
+		</tr>
+	</table>
+</div>
+</body>
+<script type="text/javascript">
+	window.print();
+	// document.location.href = "/codigosie_lista"; 
+</script>
+</html>

@@ -1,10 +1,10 @@
 //requiriendo modelo mensaje.js:
-var mCodigosIE = require('../models/mCodigosIE');
-var mBorro = require('../models/mBorro');
-// var mVerificacion = require('../models/mVerificacion');
-var mAyuda = require('../models/mAyuda');
-var mRepuestos = require('../models/mRepuestos');
-var mIngegr = require("../models/mIngegr");
+const mCodigosIE = require('../models/mCodigosIE');
+const mBorro = require('../models/mBorro');
+// const mVerificacion = require('../models/mVerificacion');
+const mAyuda = require('../models/mAyuda');
+const mRepuestos = require('../models/mRepuestos');
+const mIngegr = require("../models/mIngegr");
 
 module.exports = {
 	getLista: getLista,
@@ -12,7 +12,8 @@ module.exports = {
 	postAlta: postAlta,
 	getModificar: getModificar,
 	postModificar: postModificar,
-	getDel: getDel
+	getDel: getDel,
+	getPrint: getPrint
 }
 
 function getLista(req, res) {
@@ -91,4 +92,14 @@ function getDel(req, res){
       		});
   		}
   	});
+}
+
+function getPrint(req, res){
+	mCodigosIE.getAll(function (codigos){
+		res.render("codigosie_print", {
+			pagename: "Imprimir Lista de Codigos de Ingresos y Egresos",
+			print_title: "Lista de Codigos de Ingresos y Egresos",
+			codigos: codigos
+		});
+	});
 }

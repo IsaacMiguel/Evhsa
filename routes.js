@@ -310,6 +310,7 @@ module.exports = function(app) {
 	app.get("/codigosie_modificar/:id", auth, acceso, cCodigosIE.getModificar);
 	app.post("/codigosie_modificar", auth, cCodigosIE.postModificar);
 	app.get("/codigosie_borrar/:id", auth, acceso, cCodigosIE.getDel);
+	app.get("/codigosie_print", auth, cCodigosIE.getPrint);
 	// administracion - ingresos y egresos "ingegr"
 	app.get("/ingegr_lista", auth, acceso, cIngegr.getLista);
 	app.get("/ingegr_getDesdeHasta/:desde/:hasta", auth, cIngegr.getDesdeHasta);
