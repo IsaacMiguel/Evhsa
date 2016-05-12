@@ -33,7 +33,7 @@
 		<table>
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-				<td><a href="/sereno_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><a href="/sereno_getAlta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 				<td style="width: 100%;">
 					<table class="pull-right">
@@ -66,9 +66,10 @@
 				<table class="table table-striped">
 			  		<thead>
 			  			<tr>
+			  				<th colspan="3">Opciones</th>
 							<th>Fecha</th>
-							<th>Cant</th>
 							<th>Denominación</th>
+							<th>Cant</th>
 							<th>Valor Unit.</th>
 							<th>Fecha Colocación</th>
 							<th>Coche</th>
@@ -78,21 +79,29 @@
 			  			
 			  		</tbody>
 			  		<script type="text/template" id="tabla_sereno" />
-			  			<!-- [% for e in data %]
+			  			[% for e in data %]
 							<tr>
+								<td><a href="#"><button class="btn btn-default btnImprimir">Imprimir</button></a></td>
+								<td><a href="#"><button class="btn btn-warning menu btnColocar" data-idmenu="21" data-accion="m" value="[[ e.id_serenos ]]">Colocar</button></a></td>
+								<td><a href="/serenos_eliminar/[[ e.id_serenos ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
 								<td>[% if e.fecha_movimiento_f != '00/00/0000' %][[ e.fecha_movimiento_f ]][% else %][% endif %]</td>
-								<td>[[ e.remito_numero ]]</td>
-								<td>[[ e.razonsocial ]]</td>
-								<td>[% if e.fecha_retiro_f != '00/00/0000' %][[ e.fecha_retiro_f ]][% else %][% endif %]</td>
+								<td>[[ e.nombre ]]</td>
 								<td>
-									[% if e.costo == 0 %]
+									[% if e.cantidad == 0 %]
 									[% else %]
 										[[ e.costo ]]
 									[% endif %]
 								</td>
-								<td>[[ e.estado ]]</td>
+								<td>[[ e.valor_unitario ]]</td>
+								<td>[% if e.fecha_colocado_f != '00/00/0000' %][[ e.fecha_colocado_f ]][% else %][% endif %]</td>
+								<td>
+									[% if e.numero_coche == 0 %]
+									[% else %]
+										[[ e.marca ]]
+									[% endif %]
+								</td>
 							</tr>
-						[% endfor %] -->
+						[% endfor %]
 			  		</script>
 				</table>				
 			</div>
@@ -129,7 +138,7 @@ function sereno_listar (filtro, desde, hasta) {
 
 	$('#tbodylisto').html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ... </td></tr>");
 
-	$.getJSON('/remitos_listar/' + filtro + '/' + desde + '/' + hasta, function (data){
+	$.getJSON('/sereno_listaherramientas/' + filtro + '/' + desde + '/' + hasta, function (data){
 		if (data.length != 0){
 			$('#tbodylisto > tr').remove();
 			var template = $('#tabla_sereno').html();
@@ -158,28 +167,64 @@ $('#btnFiltrar').on('click', function () {
 });
 
 									/******************************
-									 * ON CLICK BUTTON #verRemito *
+									 * ON CLICK BUTTON .btnColocar *
 									 ******************************/
 
-// $(document).on('click', '.verRemito', function () {
-// 	var id_remito = $(this).val();
-// 	$.getJSON('/verRemito/' + id_remito, function (remito) {
-// 		if (remito.length > 0) {
-// 			var html = "";
-			
-// 			for (var r in remito[0]) {
-// 				if (!(remito[0][r] === 0 || remito[0][r] === '' || r === 'id' || r === 'id_remitos1_fk')) {
-// 					html += "<tr><td>" + r + ": </td><td>" + remito[0][r] + "</td></tr>";
-// 				}
-// 			}
+$(document).on('click', '.btnColocar', function () {
+	var id_serenos = $(this).val();
 
-// 			$("#tabla_verRemitos").html(html);
-// 			$("#myModalLabel").text("Vista Detalles Remito")
-// 			$('#myModal').modal('toggle');
-// 		} else {
-// 			alert("La busqueda no trajo resultados.")
-// 		}
-// 	});
-// });
+	$.getJSON('/serenos_vehiculos', function (vehiculos) {
+		if (vehiculos.length > 0) {
+			var html = ""
+			html += "<tr><th>Marca</th><th>Fecha</th><th>Opción</th></tr>"
+
+			html += "<tr>"
+				html += "<td><select class='form-control' id='coche'><option value='0'>Selecciona una Opción</option>"
+
+			for (var v in vehiculos) {
+				html += "<option value='"+vehiculos[v].id+"'>"+vehiculos[v].marca+"</option>"
+			}
+
+				html += "</select></td>"
+				html += "<td><input type='date' class='form-control' id='fecha_colocado_table'></td>"
+				html += "<td><button type='button' class='btn btn-success submitCoche' value='"+id_serenos+"'>Colocar</button></td>"
+			html += "</tr>";
+
+			$("#tabla_verRemitos").html(html)
+			$("#myModalLabel").text("Vista Detalles Remito")
+			$('#myModal').modal('toggle')
+		} else {
+			alert("La busqueda no trajo resultados.")
+		}
+	});
+});
+
+									// ON SUBMIT .submitCoche
+
+$(document).on('click', '.submitCoche', function () {
+	var id_serenos = $(this).val()
+	var select_coche = $('#coche').val()
+	var fecha_colocado_table = $('#fecha_colocado_table').val()
+
+	$.post('/serenos_setcoche/' + id_serenos + '/' + select_coche + '/' + fecha_colocado_table, function (data) {
+		(data) ? alert("Registro guardado") : alert ("Ha ocurrido un error")
+		$('#myModal').modal('toggle')
+
+		var filtro = $('#filtro').val();
+		var desde = $('#fecha_desde').val();
+		var hasta = $('#fecha_hasta').val();
+
+		sereno_listar(filtro, desde, hasta);
+	})
+})
+
+
+									/******************************
+									 * ON CLICK BUTTON .btnImprimir *
+									 ******************************/
+
+$(document).on('click', '.btnImprimir', function () {
+	alert("Opción no disponible por el momento")
+});
 </script>
 {% endblock %}
