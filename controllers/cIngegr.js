@@ -80,6 +80,8 @@ function getModificar(req, res){
 	id = params.id;
 	mCodigosIE.getAll(function (codigos){
 		mIngegr.getById(id, function (ingegr){
+			// console.log(codigos)
+			// console.log(ingegr)
 			res.render('ingegr_modificar',{
 				pagename: 'Modificar Registro de Ingreso/Egreso',
 				codigos: codigos,

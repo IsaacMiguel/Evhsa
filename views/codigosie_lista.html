@@ -38,31 +38,33 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			<table class="table table-striped">
-		  		<thead>
-		  			<tr> 
-						<th>ID</th>
-						<th>Cuenta</th>
-						<th>Nombre</th>
-						<th>Tipo</th>
-						<th>Activo</th>
-						<th colspan="2">Opciones</th>
-					</tr>
-		  		</thead>
-		  		<tbody>
-		  			{% for c in codigos %}
-						<tr>
-							<td>{{ c.id }}</td>
-							<td>{% if c.cuenta != null %}{{ c.cuenta }}{% else %}{% endif %}</td>
-							<td>{{ c.nombre }}</td>
-							<td>{% if c.tipo == 'I' %}Ingreso{% else %}Egreso{% endif %}</td>
-							<td>{% if c.activo == '1' %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% else %}{% endif %}</td>
-							<td><a href="/codigosie_modificar/{{ c.id }}"><button class="btn btn-warning menu" data-idmenu="43" data-accion="m">Modificar</button></a></td>
-							<td><a href='/codigosie_borrar/{{ c.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="43" data-accion="b">Eliminar</button><a/></td>
+			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr> 
+							<th>ID</th>
+							<th>Cuenta</th>
+							<th>Nombre</th>
+							<th>Tipo</th>
+							<th>Activo</th>
+							<th colspan="2">Opciones</th>
 						</tr>
-					{% endfor %}
-		  		</tbody>
-			</table>				
+			  		</thead>
+			  		<tbody>
+			  			{% for c in codigos %}
+							<tr>
+								<td>{{ c.id }}</td>
+								<td>{% if c.cuenta != null %}{{ c.cuenta }}{% else %}{% endif %}</td>
+								<td>{{ c.nombre }}</td>
+								<td>{% if c.tipo == 'I' %}Ingreso{% else %}Egreso{% endif %}</td>
+								<td>{% if c.activo == '1' %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% else %}{% endif %}</td>
+								<td><a href="/codigosie_modificar/{{ c.id }}"><button class="btn btn-warning menu" data-idmenu="43" data-accion="m">Modificar</button></a></td>
+								<td><a href='/codigosie_borrar/{{ c.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="43" data-accion="b">Eliminar</button><a/></td>
+							</tr>
+						{% endfor %}
+			  		</tbody>
+				</table>
+			</div>		
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>

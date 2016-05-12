@@ -9,7 +9,7 @@ module.exports = {
 }
 
 function getAll(cb){
-	conn("select * from codigosie", cb);
+	conn("select * from codigosie order by cuenta", cb);
 }
 
 function getById(id, cb){

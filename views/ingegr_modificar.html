@@ -22,9 +22,9 @@
 						{% for c in codigos %}
 							{% if c.id == ingegr.id_codigoie_fk %}
 								{% if c.cuenta != null %}
-									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.cuenta }} - {{ c.nombre }}</option>
+									<option value="{{ c.id }}" selected>[{{ c.tipo }}] {{ c.cuenta }} - {{ c.nombre }}</option>
 								{% else %}
-									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
+									<option value="{{ c.id }}" selected>[{{ c.tipo }}] {{ c.nombre }}</option>
 								{% endif %}
 							{% else %}
 								{% if c.cuenta != null %}

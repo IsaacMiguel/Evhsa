@@ -542,7 +542,7 @@ function updateVales(req, res){
 	connection.connect();
 
 	mRandom.getPagol2015(function (pagol){
-		console.log(pagol.length);
+		// console.log(pagol.length);
 		// console.log(pagol[0])
 		async.eachSeries(pagol, function (pagol2, callback) {
 			// asignar valores

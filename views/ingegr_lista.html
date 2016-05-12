@@ -66,10 +66,10 @@
 								<td>[[ fechaf ]]</td>
 								<td>
 									[[#tipovalue]]
-										<span class="glyphicon glyphicon-plus-sign" style="font-size: 19px;"></span> $ [[ importe ]]</td>
+										<span class="glyphicon glyphicon-plus-sign" style="font-size: 19px;"></span> $ [[ importe_f ]]</td>
 									[[/tipovalue]]
 									[[^tipovalue]]
-										<span class="glyphicon glyphicon-minus-sign" style="font-size: 19px;"></span> $ [[ importe ]]</td>
+										<span class="glyphicon glyphicon-minus-sign" style="font-size: 19px;"></span> $ [[ importe_f ]]</td>
 									[[/tipovalue]]
 								<td>[[ id_codigoie_fk ]] - [[ codigotxt ]]</td>
 								<td>[[ tipotxt ]]</td>
@@ -131,7 +131,7 @@
 				//hacer que aca muestre error de que no se encontro nada en la busqueda
 				console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
 				$('#tbodylisto > tr').remove();					
-				$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+				// $("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
 			}
 		});
 
