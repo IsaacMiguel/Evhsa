@@ -422,6 +422,7 @@ module.exports = function(app) {
 	app.get("/serenos_vehiculos", auth, acceso, cSerenos.getVehiculos);
 	app.post("/serenos_setcoche/:id_sereno/:id_coche/:fecha_colocado", auth, cSerenos.postColocarCoche);
 	app.get("/serenos_eliminar/:id_sereno", auth, cSerenos.getDel);
+	app.post("/serenos_unsetcoche/:id_sereno", auth, cSerenos.postSacarCoche);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
