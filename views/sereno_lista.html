@@ -93,7 +93,7 @@
 								<td>[% if e.fecha_movimiento_f != '00/00/0000' %][[ e.fecha_movimiento_f ]][% else %][% endif %]</td>
 								<td>[[ e.nombre ]]</td>
 								<td>
-									[% if e.cantidad == 0 %]
+									[% if e.serenocantidad == 0 %]
 									[% else %]
 										[[ e.costo ]]
 									[% endif %]
