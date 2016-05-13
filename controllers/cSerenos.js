@@ -10,7 +10,8 @@ module.exports = {
 	getListaHerramientas : getListaHerramientas,
 	getVehiculos : getVehiculos,
 	postColocarCoche : postColocarCoche,
-	getDel : getDel
+	getDel : getDel,
+	postSacarCoche : postSacarCoche
 }
 
 function getLista (req, res) {
@@ -104,5 +105,14 @@ function getDel (req, res) {
 		res.render('sereno_lista', {
 			pagename : 'Listado Herramientas Sereno'
 		});
+	})
+}
+
+function postSacarCoche (req, res) {
+	var params = req.params;
+	var id_sereno = params.id_sereno;
+
+	mSerenos.updateSerenosByNoColocado(id_sereno, function () {
+		res.send('true');
 	})
 }

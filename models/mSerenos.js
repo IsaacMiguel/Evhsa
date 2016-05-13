@@ -6,7 +6,8 @@ module.exports = {
 	getHerramientasByColocados : getHerramientasByColocados,
 	getHerramientasByNoColocados : getHerramientasByNoColocados,
 	updateSerenosByColocado : updateSerenosByColocado,
-	del : del
+	del : del,
+	updateSerenosByNoColocado : updateSerenosByNoColocado
 }
 
 function insertSerenos (fecha_movimiento, unica_operador_fk, id_repuesto_fk, cantidad, cb) {
@@ -61,4 +62,11 @@ function updateSerenosByColocado (id_sereno, id_coche, fecha_colocado, cb) {
 
 function del (id_sereno, cb) {
 	conn("DELETE FROM serenos WHERE id=" + id_sereno, cb);
+}
+
+function updateSerenosByNoColocado (id_sereno, cb) {
+	conn("UPDATE serenos SET " +
+	"fecha_colocado= '0000-00-00', " +
+	"numero_coche=0 " +
+	"WHERE id= " + id_sereno, cb);	
 }

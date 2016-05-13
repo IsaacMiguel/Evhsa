@@ -82,7 +82,13 @@
 			  			[% for e in data %]
 							<tr>
 								<td><a href="#"><button class="btn btn-default btnImprimir">Imprimir</button></a></td>
-								<td><a href="#"><button class="btn btn-warning menu btnColocar" data-idmenu="21" data-accion="m" value="[[ e.id_serenos ]]">Colocar</button></a></td>
+								<td>
+									[% if e.numero_coche === 0%]
+										<a href="#"><button class="btn btn-info menu btnColocar" data-idmenu="21" data-accion="m" value="[[ e.id_serenos ]]">Colocar</button></a>
+									[% else %]
+										<a href="#"><button class="btn btn-warning menu btnSacar" data-idmenu="21" data-accion="m" value="[[ e.id_serenos ]]">Sacar</button></a>
+									[% endif %]
+								</td>
 								<td><a href="/serenos_eliminar/[[ e.id_serenos ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
 								<td>[% if e.fecha_movimiento_f != '00/00/0000' %][[ e.fecha_movimiento_f ]][% else %][% endif %]</td>
 								<td>[[ e.nombre ]]</td>
@@ -95,7 +101,7 @@
 								<td>[[ e.valor_unitario ]]</td>
 								<td>[% if e.fecha_colocado_f != '00/00/0000' %][[ e.fecha_colocado_f ]][% else %][% endif %]</td>
 								<td>
-									[% if e.numero_coche == 0 %]
+									[% if e.numero_coche === 0 %]
 									[% else %]
 										[[ e.marca ]]
 									[% endif %]
@@ -207,7 +213,6 @@ $(document).on('click', '.submitCoche', function () {
 	var fecha_colocado_table = $('#fecha_colocado_table').val()
 
 	$.post('/serenos_setcoche/' + id_serenos + '/' + select_coche + '/' + fecha_colocado_table, function (data) {
-		(data) ? alert("Registro guardado") : alert ("Ha ocurrido un error")
 		$('#myModal').modal('toggle')
 
 		var filtro = $('#filtro').val();
@@ -218,10 +223,26 @@ $(document).on('click', '.submitCoche', function () {
 	})
 })
 
+									/********************************
+									* ON CLICK BUTTON .btnSacar *
+									********************************/
 
-									/******************************
+$(document).on('click', '.btnSacar', function () {
+	var id_serenos = $(this).val()
+
+	$.post('/serenos_unsetcoche/' + id_serenos, function (data) {
+		var filtro = $('#filtro').val();
+		var desde = $('#fecha_desde').val();
+		var hasta = $('#fecha_hasta').val();
+
+		sereno_listar(filtro, desde, hasta);
+	})
+})
+
+
+									/********************************
 									 * ON CLICK BUTTON .btnImprimir *
-									 ******************************/
+									 ********************************/
 
 $(document).on('click', '.btnImprimir', function () {
 	alert("Opción no disponible por el momento")
