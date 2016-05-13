@@ -109,7 +109,11 @@
 										[[ e.costo ]]
 									[% endif %]
 								</td>
-								<td>[[ e.estado ]]</td>
+								<td>
+									[% if e.estado === 'S'%]Reservado[% endif %]
+									[% if e.estado === 'N'%]Proveedor[% endif %]
+									[% if e.estado === 'P'%]Pañol[% endif %]
+								</td>
 							</tr>
 						[% endfor %]
 			  		</script>
