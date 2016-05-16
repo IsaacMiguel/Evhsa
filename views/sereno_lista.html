@@ -81,15 +81,15 @@
 			  		<script type="text/template" id="tabla_sereno" />
 			  			[% for e in data %]
 							<tr>
-								<td><a href="#"><button class="btn btn-default btnImprimir">Imprimir</button></a></td>
+								<td><a href="#"><button class="btn btn-default btnImprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></a></td>
 								<td>
 									[% if e.numero_coche === 0%]
-										<a href="#"><button class="btn btn-info menu btnColocar" data-idmenu="21" data-accion="m" value="[[ e.id_serenos ]]">Colocar</button></a>
+										<a href="#"><button class="btn btn-info menu btnColocar" data-idmenu="21" data-accion="m" data-idsereno="[[ e.id_serenos ]]">Colocar</button></a>
 									[% else %]
-										<a href="#"><button class="btn btn-warning menu btnSacar" data-idmenu="21" data-accion="m" value="[[ e.id_serenos ]]">Sacar</button></a>
+										<a href="#"><button class="btn btn-warning menu btnSacar" data-idmenu="21" data-accion="m" data-idsereno="[[ e.id_serenos ]]">Sacar</button></a>
 									[% endif %]
 								</td>
-								<td><a href="#"><button class="btn btn-danger menu btnEliminar" data-idmenu="21" data-accion="b" value="[[ e.id_serenos ]]">Eliminar</button><a/></td>
+								<td><button class="btn btn-danger menu btnEliminar" data-idmenu="21" data-accion="b" data-idsereno="[[ e.id_serenos ]]"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
 								<td>[% if e.fecha_movimiento_f != '00/00/0000' %][[ e.fecha_movimiento_f ]][% else %][% endif %]</td>
 								<td>[[ e.nombre ]]</td>
 								<td>
@@ -120,9 +120,9 @@
 <script src="/js/swig.min.js"></script>
 <script src="/js/main.js"></script>
 <script type="text/javascript">				
-											/****************
-											* ON READY PAGE *
-											****************/
+/****************
+* ON READY PAGE *
+****************/
 (function ($) { 
 	$(".datepicker").datepicker({
 		dateFormat: 'dd/mm/yy'
@@ -140,9 +140,9 @@
 	$('#fecha_hasta').val(f_hasta);	
 })(jQuery);
 
-									/*******************************
-									 * ON CLICK BUTTON #btnFiltrar *
-									 *******************************/
+/*******************************
+ * ON CLICK BUTTON #btnFiltrar *
+ *******************************/
 
 function sereno_listar () {
 	const filtro = $('#filtro').val();
@@ -178,12 +178,12 @@ $('#btnFiltrar').on('click', function () {
 	sereno_listar();
 });
 
-									/******************************
-									 * ON CLICK BUTTON .btnColocar *
-									 ******************************/
+/******************************
+ * ON CLICK BUTTON .btnColocar *
+ ******************************/
 
 $(document).on('click', '.btnColocar', function () {
-	const id_serenos = $(this).val();
+	const id_serenos = $(this).data("idsereno");
 
 	$.getJSON('/serenos_vehiculos', function (vehiculos) {
 		if (vehiculos.length > 0) {
@@ -211,10 +211,10 @@ $(document).on('click', '.btnColocar', function () {
 	});
 });
 
-									// ON SUBMIT .submitCoche
+// ON SUBMIT .submitCoche
 
 $(document).on('click', '.submitCoche', function () {
-	const id_serenos = $(this).val()
+	const id_serenos = $(this).data("idsereno")
 	const select_coche = $('#coche').val()
 	const fecha_colocado_table = $('#fecha_colocado_table').val()
 
@@ -229,12 +229,12 @@ $(document).on('click', '.submitCoche', function () {
 	})
 })
 
-									/********************************
-									* ON CLICK BUTTON .btnSacar *
-									********************************/
+/********************************
+* ON CLICK BUTTON .btnSacar *
+********************************/
 
 $(document).on('click', '.btnSacar', function () {
-	const id_serenos = $(this).val()
+	const id_serenos = $(this).data("idsereno")
 
 	$.post('/serenos_unsetcoche/' + id_serenos, function (data) {
 		if (data !== 'true') {
@@ -246,13 +246,13 @@ $(document).on('click', '.btnSacar', function () {
 })
 
 
-									/********************************
-									 * ON CLICK BUTTON .btnEliminar *
-									 ********************************/
+/********************************
+ * ON CLICK BUTTON .btnEliminar *
+ ********************************/
 
 $(document).on('click', '.btnEliminar', function () {
 	if (confirm('¿Seguro desea eliminar?')) {
-		const id_serenos = $(this).val()
+		const id_serenos = $(this).data("idsereno")
 
 		$.getJSON('/serenos_eliminar/' + id_serenos, function (data) {
 			if (data != true) {
@@ -266,9 +266,9 @@ $(document).on('click', '.btnEliminar', function () {
 	}
 });
 
-									/********************************
-									* ON CLICK BUTTON .btnImprimir *
-									********************************/
+/********************************
+* ON CLICK BUTTON .btnImprimir *
+********************************/
 
 $(document).on('click', '.btnImprimir', function () {
 	alert("Opción no disponible por el momento")
