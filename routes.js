@@ -416,7 +416,7 @@ module.exports = function(app) {
 
 	//SERENO
 	app.get("/sereno_lista", auth, acceso, cSerenos.getLista);
-	app.get("/sereno_getAlta", auth, acceso, cSerenos.getAlta);
+	app.get("/sereno_alta", auth, acceso, cSerenos.getAlta);
 	app.post("/sereno_alta", auth, cSerenos.postAlta);
 	app.get("/sereno_listaherramientas/:filtro/:desde/:hasta", auth, acceso, cSerenos.getListaHerramientas);
 	app.get("/serenos_vehiculos", auth, acceso, cSerenos.getVehiculos);

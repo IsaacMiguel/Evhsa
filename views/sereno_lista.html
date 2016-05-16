@@ -33,7 +33,7 @@
 		<table>
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-				<td><a href="/sereno_getAlta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><a href="/sereno_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 				<td style="width: 100%;">
 					<table class="pull-right">
@@ -89,7 +89,7 @@
 										<a href="#"><button class="btn btn-warning menu btnSacar" data-idmenu="21" data-accion="m" value="[[ e.id_serenos ]]">Sacar</button></a>
 									[% endif %]
 								</td>
-								<td><a href="/serenos_eliminar/[[ e.id_serenos ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="21" data-accion="b">Eliminar</button><a/></td>
+								<td><a href="#"><button class="btn btn-danger menu btnEliminar" data-idmenu="21" data-accion="b" value="[[ e.id_serenos ]]">Eliminar</button><a/></td>
 								<td>[% if e.fecha_movimiento_f != '00/00/0000' %][[ e.fecha_movimiento_f ]][% else %][% endif %]</td>
 								<td>[[ e.nombre ]]</td>
 								<td>
@@ -118,58 +118,64 @@
 <script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.autotab.min.js"></script>
 <script src="/js/swig.min.js"></script>
-<script type="text/javascript">
+<script src="/js/main.js"></script>
+<script type="text/javascript">				
 											/****************
-											 * ON LOAD PAGE *
-											 ****************/
-
+											* ON READY PAGE *
+											****************/
 (function ($) { 
 	$(".datepicker").datepicker({
 		dateFormat: 'dd/mm/yy'
 	});
 
 	swig.setDefaults({
-    	varControls: ['[[', ']]'],
-    	tagControls: ['[%', '%]']
-    });
+		varControls: ['[[', ']]'],
+		tagControls: ['[%', '%]']
+	});
+
+	const f_desde = generateFirstDateActualMonth();
+	const f_hasta = generateTodayDate();
+
+	$('#fecha_desde').val(f_desde);
+	$('#fecha_hasta').val(f_hasta);	
 })(jQuery);
 
 									/*******************************
 									 * ON CLICK BUTTON #btnFiltrar *
 									 *******************************/
 
-function sereno_listar (filtro, desde, hasta) {
-	desde = changeDate3(desde);
-	hasta = changeDate3(hasta);
-
-	$('#tbodylisto').html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ... </td></tr>");
-
-	$.getJSON('/sereno_listaherramientas/' + filtro + '/' + desde + '/' + hasta, function (data){
-		if (data.length != 0){
-			$('#tbodylisto > tr').remove();
-			var template = $('#tabla_sereno').html();
-
-			var output = parseSwig(template, data);
-
-			$('#tbodylisto').html(output);
-
-		}else{
-			$('#tbodylisto > tr').remove();					
-			$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-		}
-	});
-}
-
-$('#btnFiltrar').on('click', function () {
-	var filtro = $('#filtro').val();
+function sereno_listar () {
+	const filtro = $('#filtro').val();
 	var desde = $('#fecha_desde').val();
 	var hasta = $('#fecha_hasta').val();
 
 	if (!(filtro === '0' || desde === '' || hasta === '')) {
-		sereno_listar(filtro, desde, hasta);
+		desde = changeDate3(desde);
+		hasta = changeDate3(hasta);
+
+		$('#tbodylisto').html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ... </td></tr>");
+
+		$.getJSON('/sereno_listaherramientas/' + filtro + '/' + desde + '/' + hasta, function (data){
+			if (data.length != 0){
+				$('#tbodylisto > tr').remove();
+				const template = $('#tabla_sereno').html();
+
+				const output = parseSwig(template, data);
+
+				$('#tbodylisto').html(output);
+
+			}else{
+				$('#tbodylisto > tr').remove();					
+				$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+			}
+		});
 	} else {
 		alert('Debe ingresar todos los campos para la busqueda')
 	}
+}
+
+$('#btnFiltrar').on('click', function () {
+	sereno_listar();
 });
 
 									/******************************
@@ -177,7 +183,7 @@ $('#btnFiltrar').on('click', function () {
 									 ******************************/
 
 $(document).on('click', '.btnColocar', function () {
-	var id_serenos = $(this).val();
+	const id_serenos = $(this).val();
 
 	$.getJSON('/serenos_vehiculos', function (vehiculos) {
 		if (vehiculos.length > 0) {
@@ -208,18 +214,18 @@ $(document).on('click', '.btnColocar', function () {
 									// ON SUBMIT .submitCoche
 
 $(document).on('click', '.submitCoche', function () {
-	var id_serenos = $(this).val()
-	var select_coche = $('#coche').val()
-	var fecha_colocado_table = $('#fecha_colocado_table').val()
+	const id_serenos = $(this).val()
+	const select_coche = $('#coche').val()
+	const fecha_colocado_table = $('#fecha_colocado_table').val()
 
 	$.post('/serenos_setcoche/' + id_serenos + '/' + select_coche + '/' + fecha_colocado_table, function (data) {
+		if (data !== 'true') {
+			alert('Se ha producido un error.')
+		}
+
 		$('#myModal').modal('toggle')
 
-		var filtro = $('#filtro').val();
-		var desde = $('#fecha_desde').val();
-		var hasta = $('#fecha_hasta').val();
-
-		sereno_listar(filtro, desde, hasta);
+		sereno_listar();
 	})
 })
 
@@ -228,21 +234,41 @@ $(document).on('click', '.submitCoche', function () {
 									********************************/
 
 $(document).on('click', '.btnSacar', function () {
-	var id_serenos = $(this).val()
+	const id_serenos = $(this).val()
 
 	$.post('/serenos_unsetcoche/' + id_serenos, function (data) {
-		var filtro = $('#filtro').val();
-		var desde = $('#fecha_desde').val();
-		var hasta = $('#fecha_hasta').val();
+		if (data !== 'true') {
+			alert('Se ha producido un error.')
+		}
 
-		sereno_listar(filtro, desde, hasta);
+		sereno_listar();
 	})
 })
 
 
 									/********************************
-									 * ON CLICK BUTTON .btnImprimir *
+									 * ON CLICK BUTTON .btnEliminar *
 									 ********************************/
+
+$(document).on('click', '.btnEliminar', function () {
+	if (confirm('¿Seguro desea eliminar?')) {
+		const id_serenos = $(this).val()
+
+		$.getJSON('/serenos_eliminar/' + id_serenos, function (data) {
+			if (data != true) {
+				alert('Se ha producido un error.')
+			}
+
+			sereno_listar();
+		})
+	} else {
+		return false
+	}
+});
+
+									/********************************
+									* ON CLICK BUTTON .btnImprimir *
+									********************************/
 
 $(document).on('click', '.btnImprimir', function () {
 	alert("Opción no disponible por el momento")

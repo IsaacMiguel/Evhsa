@@ -25,7 +25,7 @@ function getAllHerramientas (fecha_desde, fecha_hasta, cb) {
 	"LEFT JOIN repuestos ON serenos.id_repuesto_fk = repuestos.id " +
 	"LEFT JOIN vehiculos ON serenos.numero_coche = vehiculos.id " +
 	"WHERE fecha_movimiento >= '" + fecha_desde + "' " +
-	"AND fecha_movimiento <= '" + fecha_hasta + "'", cb);
+	"AND fecha_movimiento <= '" + fecha_hasta + "' ORDER BY fecha_movimiento DESC", cb);
 }
 
 function getHerramientasByColocados (fecha_desde, fecha_hasta, cb) {
@@ -39,7 +39,7 @@ function getHerramientasByColocados (fecha_desde, fecha_hasta, cb) {
 	"LEFT JOIN vehiculos ON serenos.numero_coche = vehiculos.id " +
 	"WHERE fecha_movimiento >= '" + fecha_desde + "' " +
 	"AND fecha_movimiento <= '" + fecha_hasta + "' " +
-	"AND fecha_colocado != '0000-00-00'", cb);
+	"AND fecha_colocado != '0000-00-00' ORDER BY fecha_movimiento DESC", cb);
 }
 
 function getHerramientasByNoColocados (fecha_desde, fecha_hasta, cb) {
@@ -53,7 +53,7 @@ function getHerramientasByNoColocados (fecha_desde, fecha_hasta, cb) {
 	"LEFT JOIN vehiculos ON serenos.numero_coche = vehiculos.id " +
 	"WHERE fecha_movimiento >= '" + fecha_desde + "' " +
 	"AND fecha_movimiento <= '" + fecha_hasta + "' " +
-	"AND fecha_colocado = '0000-00-00'", cb);
+	"AND fecha_colocado = '0000-00-00' ORDER BY fecha_movimiento DESC", cb);
 }
 
 function updateSerenosByColocado (id_sereno, id_coche, fecha_colocado, cb) {

@@ -1,7 +1,7 @@
-var mRepuestos = require('../models/mRepuestos');
-var mSerenos = require('../models/mSerenos');
-var mVehiculos = require('../models/mVehiculos');
-var tools = require('../public/js/utils');
+const mRepuestos = require('../models/mRepuestos');
+const mSerenos = require('../models/mSerenos');
+const mVehiculos = require('../models/mVehiculos');
+const tools = require('../public/js/utils');
 
 module.exports = {
 	getLista : getLista,
@@ -30,26 +30,22 @@ function getAlta (req, res) {
 }
 
 function postAlta (req, res) {
-	var params = req.body;
-	var fecha_movimiento = tools.changeDate(params.fecha_movimiento);
-
-	var fecha_movimiento =  fecha_movimiento;
-	var unica_operador_fk = req.session.user.unica;
-	var id_repuesto_fk = params.repuesto;
-	var cantidad = params.cantidad;
+	const params = req.body;
+	const fecha_movimiento = tools.changeDate(params.fecha_movimiento);
+	const unica_operador_fk = req.session.user.unica;
+	const id_repuesto_fk = params.repuesto;
+	const cantidad = params.cantidad;
 
 	mSerenos.insertSerenos(fecha_movimiento, unica_operador_fk, id_repuesto_fk, cantidad, function () {
-		res.render('sereno_lista', {
-			pagename : 'Listado Herramientas Sereno'
-		})
-	})
+		res.redirect('sereno_lista');
+	});
 }
 
 function getListaHerramientas (req, res) {
-	var params = req.params;
-	var filtro = params.filtro;
-	var fecha_desde = params.desde;
-	var fecha_hasta = params.hasta;
+	const params = req.params;
+	const filtro = params.filtro;
+	const fecha_desde = params.desde;
+	const fecha_hasta = params.hasta;
 
 	switch (filtro) {
 		case '1':
@@ -87,10 +83,10 @@ function getVehiculos (req, res) {
 }
 
 function postColocarCoche (req, res) {
- var params = req.params;
- var id_sereno = params.id_sereno;
- var id_coche = params.id_coche;
- var fecha_colocado = params.fecha_colocado;
+ const params = req.params;
+ const id_sereno = params.id_sereno;
+ const id_coche = params.id_coche;
+ const fecha_colocado = params.fecha_colocado;
 
  mSerenos.updateSerenosByColocado(id_sereno, id_coche, fecha_colocado, function () {
  	res.send('true');
@@ -98,19 +94,17 @@ function postColocarCoche (req, res) {
 }
 
 function getDel (req, res) {
-	var params = req.params;
-	var id_sereno = params.id_sereno;
+	const params = req.params;
+	const id_sereno = params.id_sereno;
 
 	mSerenos.del(id_sereno, function () {
-		res.render('sereno_lista', {
-			pagename : 'Listado Herramientas Sereno'
-		});
-	})
+		res.send('true');
+	});
 }
 
 function postSacarCoche (req, res) {
-	var params = req.params;
-	var id_sereno = params.id_sereno;
+	const params = req.params;
+	const id_sereno = params.id_sereno;
 
 	mSerenos.updateSerenosByNoColocado(id_sereno, function () {
 		res.send('true');
