@@ -813,7 +813,7 @@ function updateRemitos (req, res) {
 	mRandom.getRemitos_temp(function (remitos_temp) {
 		console.log(remitos_temp.length)
 
-		async.forEach(remitos_temp, function (remito, callback) {
+		async.eachSeries(remitos_temp, function (remito, callback) {
 			var query = "";
 		 	var cantidad = [];
 		 	var descripcion = [];
@@ -891,14 +891,19 @@ function updateRemitos (req, res) {
 				if (err) {
 					throw err;
 			    console.log(err);
+				} else {
+					console.log("updated!")
 				}
 			})
 
+			/*si el callback lo posiciono dentro del if (!err) me inserta el doble de registros
+			 *seguir mirando la documentacion del async donde he visto el callback fuera de otras funciones
+			 */
 			callback();
 		}, function (err) {
 			if (err) { 
 				throw err;
-			}else{
+			} else {
 				res.send("finished");
 				connection.end();
 				// return cb();

@@ -418,6 +418,11 @@ module.exports = function(app) {
 	app.get("/sereno_lista", auth, acceso, cSerenos.getLista);
 	app.get("/sereno_alta", auth, acceso, cSerenos.getAlta);
 	app.post("/sereno_alta", auth, cSerenos.postAlta);
+	app.get("/sereno_listaherramientas/:filtro/:desde/:hasta", auth, acceso, cSerenos.getListaHerramientas);
+	app.get("/serenos_vehiculos", auth, acceso, cSerenos.getVehiculos);
+	app.post("/serenos_setcoche/:id_sereno/:id_coche/:fecha_colocado", auth, cSerenos.postColocarCoche);
+	app.get("/serenos_eliminar/:id_sereno", auth, cSerenos.getDel);
+	app.post("/serenos_unsetcoche/:id_sereno", auth, cSerenos.postSacarCoche);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
