@@ -12,12 +12,12 @@
 		<table align="center" class="table table-striped">
 			<tr>
 				<td>Fecha de Movimiento:</td>
-				<td><input type="text" id="fecha_movimiento" name="fecha_movimiento" class="datepicker form-control width_35" readonly required=""></td>
+				<td><input type="text" id="fecha_movimiento" name="fecha_movimiento" class="datepicker form-control width_35" readonly></td>
 			</tr>
 			<tr>
 				<td>Repuesto:</td>
 				<td>
-					<select class="form-control width_60" id="repuesto" name="repuesto" required="">
+					<select class="form-control width_60" id="repuesto" name="repuesto">
 						<option value="0">Elija una opción</option>
 						{% for r in repuestos %}
 							<option value="{{ r.id }}">{{ r.nombre }}</option>
@@ -26,8 +26,8 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Responsable:</td>
-				<td><input type="number" onKeyPress="return soloNumeros(event)" id="cantidad" name="cantidad" class="form-control width_60" required=""></td>
+				<td>Cantidad:</td>
+				<td><input type="number" step="any" id="cantidad" name="cantidad" class="form-control width_60" required></td>
 			</tr>
 			<tr>
 				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
@@ -48,7 +48,7 @@
 		var fecha_movimiento = $('#fecha_movimiento').val()
 		var repuesto = $('#repuesto').val()
 
-		if (repuesto === '0' || fecha_movimiento === '') {
+		if (repuesto == '0' || fecha_movimiento === '') {
 			alert('Debe completar todos los campos')
 			e.preventDefault()
 		}
