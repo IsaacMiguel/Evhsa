@@ -25,6 +25,7 @@ const cVales = require('./controllers/cVales');
 const cReparaciones = require('./controllers/cReparaciones');
 const cRemitos = require('./controllers/cRemitos');
 const cSerenos = require('./controllers/cSerenos');
+const cNovedadesCoches = require('./controllers/cNovedadesCoches');
 
 const mEventos = require('./models/mEventos');
 const mAccesos = require('./models/mAccesos');
@@ -205,7 +206,16 @@ module.exports = function(app) {
 	app.get('/ayuda', cIndex.getAyuda);
 	app.get('/ayudaver/:id', cIndex.AyudaVer);
 	//novedades
-	app.get('/listanovedades', cIndex.getNovedades);
+	app.get('/novedades_lista', auth, acceso, cNovedadesCoches.getLista);
+	app.get('/novedad_alta', auth, acceso, cNovedadesCoches.getAlta);
+	app.post('/novedades_alta', auth, cNovedadesCoches.postAlta);
+	app.get('/novedades_filtro/:desde/:hasta/:numero_coche/:sinreparar', auth, acceso, cNovedadesCoches.getFiltro);
+	app.get('/novedades_ver/:id_novedad', auth, acceso, cNovedadesCoches.getNovedad);
+	app.get('/novedades_eliminar/:id_novedad', auth, acceso, cNovedadesCoches.getDel);
+	app.post('/novedades_setordentrabajo/:id_novedad/:nro_orden', auth, acceso, cNovedadesCoches.postNroOrden);
+	app.post('/novedades_setno_ordentrabajo/:id_novedad', auth, acceso, cNovedadesCoches.postNoOrden);
+	app.get('/novedades_modificar/:id_novedad', auth, acceso, cNovedadesCoches.getModificar);
+	app.post('/novedades_modificar', auth, cNovedadesCoches.postModificar);
 	//usuarios
 	app.get('/usuarioslista', auth, acceso, cUsuario.getUsuarios);
 	app.get('/usuariosalta', auth, acceso, cUsuario.getUsuariosAlta);

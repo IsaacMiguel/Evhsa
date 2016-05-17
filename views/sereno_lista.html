@@ -214,16 +214,16 @@ $(document).on('click', '.btnColocar', function () {
 // ON SUBMIT .submitCoche
 
 $(document).on('click', '.submitCoche', function () {
-	const id_serenos = $(this).data("idsereno")
-	const select_coche = $('#coche').val()
-	const fecha_colocado_table = $('#fecha_colocado_table').val()
+	const id_serenos = $(this).val();
+	const select_coche = $('#coche').val();
+	const fecha_colocado_table = $('#fecha_colocado_table').val();
 
 	$.post('/serenos_setcoche/' + id_serenos + '/' + select_coche + '/' + fecha_colocado_table, function (data) {
 		if (data !== 'true') {
-			alert('Se ha producido un error.')
+			alert('Se ha producido un error.');
 		}
 
-		$('#myModal').modal('toggle')
+		$('#myModal').modal('toggle');
 
 		sereno_listar();
 	})

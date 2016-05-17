@@ -1,0 +1,325 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div id="mainHolder">
+	      	<table class="table" id="tabla_novedades">
+
+      		</table>
+      	  </div>	
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/novedad_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 100%;">
+					<table class="pull-right">
+						<tr>
+							<td style="width: 15%;">
+								<input type='text' id='fecha_desde' class='form-control datepicker' placeholder='Fecha Desde'readonly>
+							</td>
+							<td style="width: 15%;">
+								<input type='text' id='fecha_hasta' class='form-control datepicker' placeholder='Fecha Hasta'readonly>
+							</td>
+							<td>
+								<select class="form-control" id="nro_coche" name="nro_coche">
+									<option value="0" selected>Sin nro de coche</option>
+									{%  for v in vehiculos %}
+										<option value="{{ v.numero }}">{{ v.numero }} - {{ v.dominio }}</option>
+									{% endfor %}
+								</select>
+							</td>
+							<td>
+								<label style="margin: 5%;" for="novedadesSinReparar">Novedades sin reparar:</label>
+								<input type="checkbox" id="novedadesSinReparar"/>
+							</td>
+							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
+						</tr>
+					</table>					
+				</td>
+			</tr>	
+		</table>
+	</div>	
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr>
+			  				<th>Opciones</th>
+							<th>Fecha</th>
+							<th>Marca</th>
+							<th>Dominio</th>
+							<th>Estado</th>
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tabla_coches" />
+			  			[% for d in data %]
+							<tr>
+								<td>
+									<button class="btn btn-default menu btnVer" data-idmenu="21" data-idnovedad="[[ d.id_novedades ]]"><span class="glyphicon glyphicon-search"></span></button>
+									[% if d.id_orden_trabajo != 0 %]
+										<button class="btn btn-default menu btnCerrar" data-idmenu="21" data-idnovedad="[[ d.id_novedades ]]">Cerrar</button>
+									[% else %]
+										<button style="width: 68px;" class="btn btn-info menu btnAbrir" data-idmenu="21" data-idnovedad="[[ d.id_novedades ]]">Abrir</button>
+									[% endif %]
+									<a href="/novedades_modificar/[[ d.id_novedades ]]"><button class="btn btn-warning menu btnModificar" data-idmenu="21"><span class="glyphicon glyphicon-cog"></span></button></a>
+									<button class="btn btn-danger menu btnEliminar" data-idmenu="21" data-idnovedad="[[ d.id_novedades ]]"><span class="glyphicon glyphicon-trash"></span></button>
+								</td>
+								<td>
+									[% if d.novedades_coche_fecha_f != '00/00/0000' %][[ d.novedades_coche_fecha_f ]][% else %][% endif %]
+								</td>
+									[% if d.nro_coche_fk == 0 %]
+										<td></td>
+										<td></td>
+									[% else %]
+										<td>
+											[[ d.marca ]]
+										</td>
+										<td>
+											[[ d.dominio ]]
+										</td>
+									[% endif %]
+								<td>
+									[% if d.id_orden_trabajo != 0 %]
+										Abierto
+									[% else %]
+										Cerrado
+									[% endif %]
+								</td>
+							</tr>
+						[% endfor %]
+			  		</script>
+				</table>				
+			</div>
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/swig.min.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">				
+											/****************
+											* ON READY PAGE *
+											****************/
+(function ($) { 
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	swig.setDefaults({
+		varControls: ['[[', ']]'],
+		tagControls: ['[%', '%]']
+	});
+
+	const f_desde = generateFirstDateActualMonth();
+	const f_hasta = generateTodayDate();
+
+	$('#fecha_desde').val(f_desde);
+	$('#fecha_hasta').val(f_hasta);	
+})(jQuery);
+
+									/*******************************
+									* ON CLICK BUTTON #btnFiltrar *
+									*******************************/
+
+function coches_listar () {
+	var desde = $('#fecha_desde').val();
+	var hasta = $('#fecha_hasta').val();
+
+	if (!(desde === '' || hasta === '')) {
+		desde = changeDate3(desde);
+		hasta = changeDate3(hasta);
+
+		const numero_coche = $('#nro_coche').val();
+		const sin_reparar = $('#novedadesSinReparar').prop('checked');
+
+		$('#tbodylisto').html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ... </td></tr>");
+
+		$.getJSON('/novedades_filtro/' + desde + '/' + hasta + '/' + numero_coche + '/' + sin_reparar, function (data){
+			if (data.length != 0){
+				$('#tbodylisto > tr').remove();
+				const template = $('#tabla_coches').html();
+
+				const output = parseSwig(template, data);
+
+				$('#tbodylisto').html(output);
+
+			}else{
+				$('#tbodylisto > tr').remove();					
+				$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+			}
+		});
+	} else {
+		alert('Debe ingresar todos los campos para la busqueda');
+	}
+}
+
+$('#btnFiltrar').on('click', function () {
+	coches_listar();
+});
+
+									/***************************
+									* ON CLICK BUTTON .btnVer *
+									***************************/
+
+$(document).on('click', '.btnVer', function () {
+	const id_novedad = $(this).data('idnovedad');
+
+	$.getJSON('/novedades_ver/' + id_novedad, function (novedad) {
+		if (novedad) {
+			var html = "";
+			html += "<tr><td>Fecha:</td><td>"+novedad.novedades_coche_fecha_f+"</td></tr>";
+			html += "<tr><td>Marca:</td><td>"+novedad.marca+"</td></tr>";
+			html += "<tr><td>Dominio:</td><td>"+novedad.dominio+"</td></tr>";
+				if (novedad.id_orden_trabajo !== 0) {
+					html += "<tr><td>Orden de Trabajo:</td><td>"+novedad.id_orden_trabajo+"</td></tr>";
+				} else {
+					html += "<tr><td>Orden de Trabajo:</td><td></td></tr>";
+				}
+			html += "<tr><td>Detalle</td><td>"+novedad.detalle+"</td></tr>";
+
+			
+			$("#tabla_novedades").html(html);
+			$("#myModalLabel").text("Vista Novedades Coches");
+			$('#myModal').modal('toggle');
+		} else {
+			alert("La busqueda no trajo resultados.");
+		}
+	});
+});
+
+									// ON SUBMIT .submitCoche
+
+$(document).on('click', '.submitCoche', function () {
+	const id_serenos = $(this).val();
+	const select_coche = $('#coche').val();
+	const fecha_colocado_table = $('#fecha_colocado_table').val();
+
+	$.post('/serenos_setcoche/' + id_serenos + '/' + select_coche + '/' + fecha_colocado_table, function (data) {
+		if (data !== 'true') {
+			alert('Se ha producido un error.');
+		}
+
+		$('#myModal').modal('toggle');
+
+		sereno_listar();
+	})
+})
+
+									/****************************
+									* ON CLICK BUTTON .btnSacar *
+									*****************************/
+
+$(document).on('click', '.btnSacar', function () {
+	const id_serenos = $(this).val();
+
+	$.post('/serenos_unsetcoche/' + id_serenos, function (data) {
+		if (data !== 'true') {
+			alert('Se ha producido un error.');
+		}
+
+		sereno_listar();
+	});
+});
+
+
+									/*******************************
+									* ON CLICK BUTTON .btnEliminar *
+									********************************/
+
+$(document).on('click', '.btnEliminar', function () {
+	if (confirm('¿Seguro desea eliminar?')) {
+		const id_novedad = $(this).data('idnovedad');
+
+		$.getJSON('/novedades_eliminar/' + id_novedad, function (data) {
+			if (data != true) {
+				alert('Se ha producido un error.');
+			}
+
+			coches_listar();
+		});
+	} else {
+		return false;
+	}
+});
+
+									/****************************
+									* ON CLICK BUTTON .btnAbrir *									*****************************/
+
+$(document).on('click', '.btnAbrir', function () {
+	const id_novedad = $(this).data('idnovedad');
+	var html = "";
+	html += "<tr><td><input type='number' value='"+id_novedad+"'' id='idnovedad_nroorden' hidden/></td><td>Número de Orden:</td><td><input type='text' id='nro_ordentrabajo' onKeyPress='return soloNumeros(event)' class='form-control' placeholder='Número de orden de trabajo'/></td><td><input type='button' id='btnOrden' class='btn btn-success' value='Guardar'></td></tr>";
+	
+	$("#tabla_novedades").html(html);
+	$("#myModalLabel").text("Cargar Nro Orden de Trabajo");
+	$('#myModal').modal('toggle');
+});
+
+												//btnOrden
+
+$(document).on('click', '#btnOrden', function () {
+	const nro_orden = $('#nro_ordentrabajo').val();
+	const idnovedad = $('#idnovedad_nroorden').val();
+
+	if (nro_orden !== '') {
+		$.post('/novedades_setordentrabajo/' + idnovedad + '/' + nro_orden, function (data) {
+			if (data === 'true') {
+				$('#myModal').modal('toggle');
+				coches_listar();
+			} else {
+				alert('Se ha producido un error.')
+				$('#myModal').modal('toggle');
+			}
+		});
+	} else {
+		alert('Ingrese un número de orden');
+	}
+});
+
+										/*****************************
+										* ON CLICK BUTTON .btnCerrar *
+										******************************/
+
+$(document).on('click', '.btnCerrar', function () {
+	const id_novedad = $(this).data('idnovedad');
+
+	$.post('/novedades_setno_ordentrabajo/' + id_novedad, function (data) {
+		if (data === 'true') {
+			coches_listar();
+		} else {
+			alert('Se ha producido un error.')
+		}
+	});
+});
+</script>
+{% endblock %}
