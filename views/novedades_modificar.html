@@ -25,9 +25,9 @@
 						<option value="0">Elija un vehiculo</option>
 						{% for v in vehiculos %}
 							{% if novedad.nro_coche_fk == v.numero %}
-								<option value="{{ v.numero }}" selected>{{ v.marca }} - {{ v.dominio }} - {{ v.modelo }}</option>
+								<option value="{{ v.numero }}" selected>{{ v.marca }} - {{ v.dominio }}</option>
 							{% else %}
-								<option value="{{ v.numero }}">{{ v.marca }} - {{ v.dominio }} - {{ v.modelo }}</option>
+								<option value="{{ v.numero }}">{{ v.marca }} - {{ v.dominio }}</option>
 							{%  endif %}
 						{% endfor %}
 					</select>

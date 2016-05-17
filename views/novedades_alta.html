@@ -20,7 +20,7 @@
 					<select class="form-control width_60" id="vehiculo" name="vehiculo">
 						<option value="0">Elija un vehiculo</option>
 						{% for v in vehiculos %}
-							<option value="{{ v.numero }}">{{ v.marca }} - {{ v.dominio }} - {{ v.modelo }}</option>
+							<option value="{{ v.numero }}">{{ v.marca }} - {{ v.dominio }}</option>
 						{% endfor %}
 					</select>
 				</td>
