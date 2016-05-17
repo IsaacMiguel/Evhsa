@@ -48,5 +48,5 @@ function getRemitosXEstado (buscar, cb) {
 function getVerRemito (id_remitos1, cb) {
 	conn("SELECT * " +
 	"FROM remitos2 " +
-	"WHERE remitos2.id_remitos1_fk = " + id_remitos1, cb);	
+	"WHERE remitos2.numero_remitos1_fk = " + id_remitos1, cb);	
 }

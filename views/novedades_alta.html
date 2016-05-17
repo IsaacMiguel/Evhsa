@@ -1,0 +1,67 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/equipos.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/novedades_alta">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Fecha:</td>
+				<td><input type="text" id="fecha" name="fecha" class="datepicker form-control width_35" readonly></td>
+			</tr>
+			<tr>
+				<td>Vehiculo:</td>
+				<td>
+					<select class="form-control width_60" id="vehiculo" name="vehiculo">
+						<option value="0">Elija un vehiculo</option>
+						{% for v in vehiculos %}
+							<option value="{{ v.numero }}">{{ v.marca }} - {{ v.dominio }} - {{ v.modelo }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Detalle:</td>
+				<td>
+					<textarea id="detalle" name="detalle" class="form-control" cols="30" rows="10"></textarea><div class="aviso">Quedan <span id="charsLeftDetalle"></span> caraceteres.</div>
+				</td>
+			</tr>
+			<tr>
+				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
+				<td><center><input class="btn btn-default" type="submit" value="Agregar"></center></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+	$('#detalle').limit('3000','#charsLeftDetalle');
+
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	const f_hoy = generateTodayDate();
+
+	$('#fecha').val(f_hoy);
+
+	$('#formalta').submit(function (e) {
+		var vehiculo = $('#vehiculo').val()
+
+		if (vehiculo == '0') {
+			alert('Debe seleccionar un vehiculo')
+			e.preventDefault()
+		}
+	});
+</script>
+
+{% endblock %}
