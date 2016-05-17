@@ -117,12 +117,6 @@ function Validate7EntY2Dec_Neg(e, field) {// ^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$
             }
         }
     }
-    // // -
-    // if (key == 45) {
-    //     if (field.value == "") return false
-    //     regexp = /[+-]/
-    //     return regexp.test(field.value)
-    // }
     // 0-9 
     if (key > 47 && key < 58) {
         if (field.value == "") return true
@@ -133,7 +127,7 @@ function Validate7EntY2Dec_Neg(e, field) {// ^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$
     // .
     if (key == 46) {
         if (field.value == "") return false
-        regexp = /^[+-]?[0-9]{7}\.[0-9]{2}$/
+        regexp = /^[+-]?[0-9]{7}\\.[0-9]{2}$/
         return regexp.test(field.value)
     }
     // other key
