@@ -18,17 +18,17 @@
 			<tr>
 				<td>Codigo:</td>
 				<td>
-					<select id="codigo" name="codigo" class="form-control">
+					<select id="codigo" name="codigo" class="form-control" style="width: 450px;">
 						{% for c in codigos %}
 							{% if c.id == ingegr.id_codigoie_fk %}
 								{% if c.cuenta != null %}
-									<option value="{{ c.id }}" selected>[{{ c.tipo }}] {{ c.cuenta }} - {{ c.nombre }}</option>
+									<option value="{{ c.id }}" selected>[{{ c.tipo }}] {{ c.nombre }} - {{ c.cuenta }}</option>
 								{% else %}
 									<option value="{{ c.id }}" selected>[{{ c.tipo }}] {{ c.nombre }}</option>
 								{% endif %}
 							{% else %}
 								{% if c.cuenta != null %}
-									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.cuenta }} - {{ c.nombre }}</option>
+									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }} - {{ c.cuenta }}</option>
 								{% else %}
 									<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
 								{% endif %}
@@ -39,11 +39,12 @@
 			</tr>
 			<tr>
 				<td>Importe:</td>
-				<td><input required type="text" name="importe" id="importe" class="form-control" onkeypress="return Validate7EntY2Dec(event, this)" value="{{ ingegr.importe }}"></td>
+				<!-- <td><input required type="text" name="importe" id="importe" class="form-control" onkeypress="return Validate7EntY2Dec_Neg(event, this)" value="{{ ingegr.importe }}"></td> -->
+				<td><input required type="text" name="importe" id="importe" class="form-control" pattern="^[+-]?[0-9]{1,7}(?:\.[0-9]{1,2})?$" value="{{ ingegr.importe }}" style="width: 200px;" autocomplete="off"><small>Valida números negativos y positivos, 7 enteros y 2 decimales máximo, DESPUÉS de hacer click en 'Guardar'.</small></td>
 			</tr>
 			<tr>
 				<td><input type="button" class="btn btn-default" value="Atras" onclick="history.back()"></td>
-				<td><input type="submit" class="btn btn-default" value="Agregar"></td>
+				<td><input type="submit" class="btn btn-default" value="Guardar"></td>
 			</tr>
 		</table>
 	</form>

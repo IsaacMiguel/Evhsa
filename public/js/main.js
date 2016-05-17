@@ -99,6 +99,48 @@ function Validate7EntY2Dec(e, field) {
     return false
 }//onkeypress="return Validate7EntY2Dec(event,this)"
 
+function Validate7EntY2Dec_Neg(e, field) {// ^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$
+    key = e.keyCode ? e.keyCode : e.which
+    // backspace
+    if (key == 8) return true
+ 
+    // 0-9 a partir del .decimal  
+    if (field.value != "") {
+        if ((field.value.indexOf(".")) > 0) {
+            //si tiene un punto valida dos digitos en la parte decimal
+            if (key > 47 && key < 58) {
+                if (field.value == "") return true
+                //regexp = /[0-9]{1,10}[\.][0-9]{1,3}$/
+                // dos decimales
+                regexp = /[0-9]{2}$/
+                return !(regexp.test(field.value))
+            }
+        }
+    }
+    // // -
+    // if (key == 45) {
+    //     if (field.value == "") return false
+    //     regexp = /[+-]/
+    //     return regexp.test(field.value)
+    // }
+    // 0-9 
+    if (key > 47 && key < 58) {
+        if (field.value == "") return true
+        // 10 enteros?
+        regexp = /[0-9]{7}/
+        return !(regexp.test(field.value))
+    }
+    // .
+    if (key == 46) {
+        if (field.value == "") return false
+        regexp = /^[+-]?[0-9]{7}\.[0-9]{2}$/
+        return regexp.test(field.value)
+    }
+    // other key
+    return false
+}//onkeypress="return Validate7EntY2Dec_Neg(event,this)"
+
+
 function Validate8EntY2Dec(e, field) {
     key = e.keyCode ? e.keyCode : e.which
     // backspace
@@ -253,3 +295,48 @@ function generateFirstDateActualMonth () {
     return desdeSet;
 }
 
+//testing functions
+
+//{1,9} significa 1 digito entero minimo y 9 maximo
+//{1,2} significa 1 digito decimal minimo y 2 maximo
+//signo negativo es opcional
+//valores enteros y decimales entre 0 y 9
+// ^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$
+
+// function numbersOnly(Sender, evt, isFloat, isNegative) {
+//     if(Sender.readOnly) return false;       
+
+//     var key   = evt.which || !window.event ? evt.which : event.keyCode;
+//     var value = Sender.value;
+
+//     if((key == 46 || key == 44) && isFloat){                
+//         var selected = document.selection ? document.selection.createRange().text : "";
+//         if(selected.length == 0 && value.indexOf(".") == -1 && value.length > 0) Sender.value += ".";
+//         return false;
+//     }
+//     if(key == 45) { // minus sign '-'
+//         if(!isNegative) return false;
+//         if(value.indexOf('-')== -1) Sender.value = '-'+value; else Sender.value = value.substring(1);
+//         if(Sender.onchange != null) {
+//             if(Sender.fireEvent){
+//                 Sender.fireEvent('onchange');
+//             } else {
+//                 var e = document.createEvent('HTMLEvents');
+//                     e.initEvent('change', false, false);
+//                 Sender.dispatchEvent(e);
+//             }
+//         }
+
+//         var begin = Sender.value.indexOf('-') > -1 ? 1 : 0;
+//         if(Sender.setSelectionRange){
+//             Sender.setSelectionRange(begin,Sender.value.length);
+//         } else {
+//             var range = Sender.createTextRange();
+//             range.moveStart('character',begin);
+//             range.select();                 
+//         }
+
+//         return false;
+//     }
+//     if(key > 31 && (key < 48 || key > 57)) return false;
+// }//onkeypress='return numbersOnly(this,event,false,true);'

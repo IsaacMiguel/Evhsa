@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<!-- <link href="/css/rubrosalta.css" rel="stylesheet"> -->
+<link href="/css/ingegr_alta.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
 	<form method="post" id="formalta" action="/ingegr_alta">
@@ -17,10 +17,10 @@
 			<tr>
 				<td>Codigo:</td>
 				<td>
-					<select id="codigo" name="codigo" class="form-control">
+					<select id="codigo" name="codigo" class="form-control" style="width: 450px;">
 						{% for c in codigos %}
 							{% if c.cuenta != null %}
-								<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.cuenta }} - {{ c.nombre }}</option>
+								<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }} - {{ c.cuenta }}</option>
 							{% else %}
 								<option value="{{ c.id }}">[{{ c.tipo }}] {{ c.nombre }}</option>
 							{% endif %}
@@ -30,7 +30,8 @@
 			</tr>
 			<tr>
 				<td>Importe:</td>
-				<td><input type="text" name="importe" id="importe" class="form-control" required onkeypress="return Validate7EntY2Dec(event, this)"></td>
+				<!-- <td><input type="text" onkeypress="return Validate7EntY2Dec_Neg(event, this)" name="importe" id="importe" class="form-control" required></td> -->
+				<td><input type="text" pattern="^[+-]?[0-9]{1,7}(?:\.[0-9]{1,2})?$" name="importe" id="importe" class="form-control" required style="width: 200px;" autocomplete="off"><small>Valida números negativos y positivos, 7 enteros y 2 decimales máximo, DESPUÉS de hacer click en 'Agregar'.</small></td>
 			</tr>
 			<tr>
 				<td><input type="button" class="btn btn-default" value="Atras" onclick="history.back()"></td>
