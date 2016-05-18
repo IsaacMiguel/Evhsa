@@ -33,6 +33,77 @@
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
 				<td><a href="/repuestosalta"><button type="button" class="btn btn-success menu" data-idmenu="4" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="padding-left : 2%;">
+					<select class="form-control" id="filtro">
+						<option value="0">Seleccionar una opción</option>
+						<option value="1">Completo</option>
+						<option value="2">Rubro 1</option>
+						<option value="3">Rubro 2</option>
+						<option value="4">Calle</option>
+						<option value="5">Modulo</option>
+						<option value="6">Estante</option>
+						<option value="7">Marcados con *</option>
+						<option value="8">Rubro resumido</option>
+						<option value="9">Faltantes</option>
+					</select>
+				</td>
+				<td style="padding-left : 2%;">
+					<!-- Divs opciones select filtro -->
+			  			<div id="2" class="filters">
+			  				<select id="cmbRubro1" class="form-control">
+			  					<option value="0">Selecione una opción</option>
+			  					{% for rg in rubros_grupo %}
+			  						<option value="{{ rg.codigo }}">{{ rg.codigo }} - {{ rg.nombre }}</option>
+			  					{% endfor %}
+			  				</select>
+			  			</div>
+
+			  			<div id="3" class="filters">
+			  				<select id="cmbRubro2" class="form-control">
+			  					<option value="0">Selecione una opción</option>
+			  					{% for r in rubros %}
+			  						<option value="{{ r.codigo }}">{{ r.codigo }} - {{ r.nombre }}</option>
+			  					{% endfor %}
+			  				</select>
+			  			</div>
+
+			  			<div id="4" class="filters">
+			  				<input class="form-control" type="text" maxlength="1" id="txtCalle" />
+			  			</div>
+
+			  			<div id="5" class="filters">
+			  				<input class="form-control" type="number" maxlength="2" id="numModulo" />
+			  			</div>
+
+			  			<div id="6" class="filters">
+			  				<input class="form-control" type="text" maxlength="2" id="txtEstante" />
+			  			</div>
+
+			  			<div id="8" class="filters">
+				  			<div class="row">
+				  				<div class="col-sm-6">
+				  					<select id="rubroResumidoDesde" class="form-control">
+					  					<option value="0">Selecione una opción</option>
+					  					{% for r in rubros %}
+					  						<option value="{{ r.codigo }}">{{ r.codigo }} - {{ r.nombre }}</option>
+					  					{% endfor %}
+					  				</select>
+				  				</div>
+				  				<div class="col-sm-6">
+				  					<select id="rubroResumidoHasta" class="form-control">
+					  					<option value="0">Selecione una opción</option>
+					  					{% for r in rubros %}
+					  						<option value="{{ r.codigo }}">{{ r.codigo }} - {{ r.nombre }}</option>
+					  					{% endfor %}
+					  				</select>
+					  			</div>
+				  			</div>
+			  			</div>
+			  		<!-- /Divs opciones select filtro -->
+				</td>
+				<td style="padding-left : 2%;">
+					<input type="button" class="btn btn-primary" id="filtrar" value="Buscar" />
+				</td>
 			</tr>	
 		</table>
 	</div>
@@ -58,30 +129,207 @@
 							<th colspan="2">Opciones</th>
 						</tr>
 			  		</thead>
-			  		<tbody>
-			  			{% for r in repuestos %}
-							<tr>
-								<td>{{ r.id }}</td>
-								<td>{{ r.codigo }}</td>
-								<td><div title="{{ r.descripcion }}">{{ r.nombre }}</div></td>
-								<td>{{ r.valor }}</td>
-								<td>{{ r.stock_actual }}</td>
-								<td>{{ r.minimo }}</td>
-								<td>{{ r.punto_pedido }}</td>
-								<td>{{ r.maximo }}</td>
-								<td>{{ r.faltante }}</td>
-								<td style="text-align:center;">{{ r.calle }} - {{ r.modulo }} - {{ r.estante }}</td>
-								<td>{% if r.marca == 1 %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% else %}{% endif %}</td>
-								<td>{{ r.coche }}</td>
-								<td style="text-align:center;">{% if r.observaciones != '' %}<span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="{{ r.observaciones }}"></span>{% else %}{% endif %}</td>
-								<td><a href="/repuestosmodificar/{{ r.id }}"><button class="btn btn-warning menu" data-idmenu="4" data-accion="m">Modificar</button></a></td>
-								<td><a href='/repuestosborrar/{{ r.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="4" data-accion="b">Eliminar</button><a/></td>
-							</tr>
-						{% endfor %}
+			  		<tbody id="tbodylisto">
+			  			
 			  		</tbody>
+			  		<script type="text/template" id="tabla_repuestos" />
+			  			[% for r in data %]
+							<tr>
+								<td>[[ r.id ]]</td>
+								<td>[[ r.codigo ]]</td>
+								<td><div title="[[ r.descripcion ]]">[[ r.nombre ]]</div></td>
+								<td>[[ r.valor ]]</td>
+								<td>[[ r.stock_actual ]]</td>
+								<td>[[ r.minimo ]]</td>
+								<td>[[ r.punto_pedido ]]</td>
+								<td>[[ r.maximo ]]</td>
+								<td>[[ r.faltante ]]</td>
+								<td style="text-align:center;">[[ r.calle ]] - [[ r.modulo ]] - [[ r.estante ]]</td>
+								<td>[% if r.marca == 1 %]<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>[% else %][% endif %]</td>
+								<td>[[ r.coche ]]</td>
+								<td style="text-align:center;">[% if r.observaciones != '' %]<span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="[[ r.observaciones ]]"></span>[% else %][% endif %]</td>
+								<td><a href="/repuestosmodificar/[[ r.id ]]"><button class="btn btn-warning menu" data-idmenu="4" data-accion="m">Modificar</button></a></td>
+								<td><a href='/repuestosborrar/[[ r.id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="4" data-accion="b">Eliminar</button><a/></td>
+							</tr>
+						[% endfor %]
+			  		</script>
 				</table>	
 			</div>			
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/swig.min.js"></script>
+<script type="text/javascript">
+	$('.filters').hide();
+
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
+
+    (function ($) {
+    	$('#filtro').on('change', function () {
+    		const filtro = $(this).val();
+
+			switch (filtro) {
+				case '1':
+					$('.filters').hide();
+					$('#1').show();
+
+					break;
+
+				case '2':
+					$('.filters').hide();
+					$('#2').show();
+
+					break;
+
+				case '3':
+					$('.filters').hide();
+					$('#3').show();
+
+					break;
+
+				case '4':
+					$('.filters').hide();
+					$('#4').show();
+
+					break;
+
+				case '5':
+					$('.filters').hide();
+					$('#5').show();
+
+					break;
+
+				case '6':
+					$('.filters').hide();
+					$('#6').show();
+
+					break;
+
+				case '7':
+					$('.filters').hide();
+					$('#7').show();
+
+					break;
+
+				case '8':
+					$('.filters').hide();
+					$('#8').show();
+
+					break;
+
+				case '9':
+					$('.filters').hide();
+					$('#9').show();
+
+					break;
+
+				case '0':
+					$('.filters').hide();
+					alert('Debe selecionar una opción')
+
+					break;
+
+				default:
+
+					break;
+			}
+    		
+    	});
+
+    	$('#filtrar').on('click', function () {
+    		const option = $('#filtro').val();
+			var paramA = 'null';
+			var paramB = 'null';
+
+			switch (option) {
+				case '1':
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				case '2':
+					paramA = $('#cmbRubro1').val();
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				case '3':
+					paramA = $('#cmbRubro2').val();
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				case '4':
+					paramA = $('#txtCalle').val();
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				case '5':
+					paramA = $('#numModulo').val();
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				case '6':
+					paramA = $('#txtEstante').val();
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				case '7':
+					paramA = $('#numModulo').val();
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				case '8':
+					paramA = $('#rubroResumidoDesde').val();
+					paramB = $('#rubroResumidoHasta').val();
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				case '9':
+					filltbodylisto(option, paramA, paramB);
+
+					break;
+
+				default:
+
+					break;
+			}
+
+			function filltbodylisto(option, paramA, paramB) {
+				if (option !== '0' && (paramA !== '' && paramA !== '0') && (paramB !== '' && paramB !== '0')) {
+					$.getJSON('/repuestos_filtrar/' + option + '/' + paramA + '/' + paramB, function (data) {
+						$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ...</td></tr>");
+						if (data.length != 0){
+							$('#tbodylisto > tr').remove();
+							var template = $('#tabla_repuestos').html();
+							var output = parseSwig(template, data);
+							$('#tbodylisto').html(output);
+						}else{
+							$('#tbodylisto > tr').remove();					
+							$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+						}
+					});
+				} else {
+					alert("Debe completar los campos de busqueda");
+				}
+			}
+		});
+
+    })(jQuery);
+</script>
 {% endblock %}
