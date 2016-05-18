@@ -257,6 +257,7 @@ module.exports = function(app) {
 	app.post('/repuestosmodificar', auth, cRepuestos.postModificar);
 	app.get('/repuestosborrar/:id', auth, acceso, cRepuestos.getDel);
 	app.get('/getCantRepuestosEnRubro/:id_rubro', auth, cRepuestos.getCantRepuestosEnRubroById);
+	app.get('/repuestos_filtrar/:filtro/:paramA/:paramB', auth, cRepuestos.getFiltro);
 	//vehiculos
 	app.get('/vehiculoslista', auth, acceso, cVehiculos.getLista);
 	app.get('/vehiculosalta', auth, acceso, cVehiculos.getAlta);
