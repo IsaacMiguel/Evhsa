@@ -53,7 +53,7 @@ function postAlta(req, res){
 	const minimo = params.minimo;
 	const maximo = params.maximo;
 	const descripcion = params.descripcion;
-	const marca = params.marca;
+	var marca = params.marca;
 	
 	if (marca == 'on')
 		marca = 1;
@@ -114,7 +114,7 @@ function postModificar(req, res){
 	const minimo = params.minimo;
 	const maximo = params.maximo;
 	const descripcion = params.descripcion;
-	const marca = params.marca;
+	var marca = params.marca;
 	
 	if (marca == 'on')
 		marca = 1;
@@ -134,7 +134,7 @@ function postModificar(req, res){
 			});
 		}else{
 			if (repuestosporcodigo.length == 1){
-				if (repuestosporcodigo[0].id == id){
+				if (repuestosporcodigo[0].id == id_repuesto){
 					mRepuestos.update(id_repuesto, codigo, nombre, stock, valor, calle, modulo, estante, minimo, maximo, descripcion, marca, observaciones, puntopedido, id_rubro, function(){
 				res.redirect('repuestoslista');
 			});
@@ -147,7 +147,7 @@ function postModificar(req, res){
 				var aparece = false;
 				
 				for (var i = 0 ; i < repuestosporcodigo.length ; i++) {
-					if (repuestosporcodigo[i].id == id){
+					if (repuestosporcodigo[i].id == id_repuesto){
 						console.log(i+": aca está!")
 						aparece = true;
 						break;
