@@ -43,7 +43,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-submenu="">Repuestos<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/repuestoslista" class="menu" data-idmenu="4" data-accion="c">* Repuestos [ABM]</a></li>
+                        <li><a href="/repuestoslista" id="btnRepuestos" class="menu" data-idmenu="4" data-accion="c">* Repuestos [ABM]</a></li>
                         <li><a href="/rubroslista" class="menu" data-idmenu="2" data-accion="c">* Rubros [ABM]</a></li>
                         <li><a href="/rubrosgruposlista" class="menu" data-idmenu="3" data-accion="c">* Grupo de Rubros [ABM]</a></li>
                         <li><a href="/inicio" class="menu" data-idmenu="6" data-accion="c">- Control de Stock</a></li>
@@ -208,6 +208,41 @@
                 storage.setItem('objDatos', objDatos_stringified);
                 // }
                 
+            } else { 
+                alert('No soporta LocalStorage. Actualize el navegador !!'); 
+            }
+        });
+
+        $("#btnRepuestos").on("click", function (){
+            if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                   
+                localStorage.clear();
+
+                const flag = true;
+                var cmbFiltro = "0";
+                var cmbRubro1 = "0";
+                var cmbRubro2 = "0";
+                var txtCalle = "";
+                var numModulo = "";
+                var txtEstante = "";
+                var rubroResumidoDesde = "0";
+                var rubroResumidoHasta = "0";
+
+                var objDatos = {
+                    "flag" : flag,
+                    "cmbFiltro" : cmbFiltro,
+                    "cmbRubro1" : cmbRubro1, 
+                    "cmbRubro2" : cmbRubro2, 
+                    "txtCalle" : txtCalle, 
+                    "numModulo" : numModulo, 
+                    "txtEstante" : txtEstante, 
+                    "rubroResumidoDesde" : rubroResumidoDesde, 
+                    "rubroResumidoHasta" : rubroResumidoHasta
+                }
+
+                var objDatos_stringified = JSON.stringify(objDatos);
+                localStorage.setItem('objDatos', objDatos_stringified);                
             } else { 
                 alert('No soporta LocalStorage. Actualize el navegador !!'); 
             }

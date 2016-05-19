@@ -34,7 +34,7 @@
 				<td><a href="/repuestosalta"><button type="button" class="btn btn-success menu" data-idmenu="4" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 				<td style="padding-left : 2%;">
-					<select class="form-control" id="filtro">
+					<select class="form-control" id="cmbFiltro">
 						<option value="0">Seleccionar una opción</option>
 						<option value="1">Completo</option>
 						<option value="2">Rubro 1</option>
@@ -49,7 +49,7 @@
 				</td>
 				<td style="padding-left : 2%;">
 					<!-- Divs opciones select filtro -->
-			  			<div id="2" class="filters">
+			  			<div id="2" class="filters" style="display : none">
 			  				<select id="cmbRubro1" class="form-control">
 			  					<option value="0">Selecione una opción</option>
 			  					{% for rg in rubros_grupo %}
@@ -58,7 +58,7 @@
 			  				</select>
 			  			</div>
 
-			  			<div id="3" class="filters">
+			  			<div id="3" class="filters" style="display : none">
 			  				<select id="cmbRubro2" class="form-control">
 			  					<option value="0">Selecione una opción</option>
 			  					{% for r in rubros %}
@@ -67,19 +67,19 @@
 			  				</select>
 			  			</div>
 
-			  			<div id="4" class="filters">
+			  			<div id="4" class="filters" style="display : none">
 			  				<input class="form-control" type="text" maxlength="1" id="txtCalle" />
 			  			</div>
 
-			  			<div id="5" class="filters">
+			  			<div id="5" class="filters" style="display : none">
 			  				<input class="form-control" type="number" maxlength="2" id="numModulo" />
 			  			</div>
 
-			  			<div id="6" class="filters">
+			  			<div id="6" class="filters" style="display : none">
 			  				<input class="form-control" type="text" maxlength="2" id="txtEstante" />
 			  			</div>
 
-			  			<div id="8" class="filters">
+			  			<div id="8" class="filters" style="display : none">
 				  			<div class="row">
 				  				<div class="col-sm-6">
 				  					<select id="rubroResumidoDesde" class="form-control">
@@ -102,7 +102,7 @@
 			  		<!-- /Divs opciones select filtro -->
 				</td>
 				<td style="padding-left : 2%;">
-					<input type="button" class="btn btn-primary" id="filtrar" value="Buscar" />
+					<input type="button" class="btn btn-primary btnStoreFilter" id="filtrar" value="Buscar" />
 				</td>
 			</tr>	
 		</table>
@@ -110,9 +110,10 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
-				<table class="table table-striped">
+				<table class="table table-condensed">
 			  		<thead>
 			  			<tr> 
+			  				<th colspan="2">Opciones</th>
 							<th>ID</th>
 							<th>Codigo</th>
 							<th>Denominacion</th>
@@ -126,7 +127,6 @@
 							<th>Marca</th>
 							<th>Coche</th>
 							<th>Observ.</th>
-							<th colspan="2">Opciones</th>
 						</tr>
 			  		</thead>
 			  		<tbody id="tbodylisto">
@@ -135,6 +135,12 @@
 			  		<script type="text/template" id="tabla_repuestos" />
 			  			[% for r in data %]
 							<tr>
+								<td>
+									<a href="/repuestosmodificar/[[ r.id ]]"><button class="btn btn-warning menu" data-idmenu="4" data-accion="m"><span class="glyphicon glyphicon-cog"></span></button></a>
+								</td>
+								<td>
+									<a href='/repuestosborrar/[[ r.id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="4" data-accion="b"><span class="glyphicon glyphicon-trash"></span></button><a/>
+								</td>
 								<td>[[ r.id ]]</td>
 								<td>[[ r.codigo ]]</td>
 								<td><div title="[[ r.descripcion ]]">[[ r.nombre ]]</div></td>
@@ -148,8 +154,6 @@
 								<td>[% if r.marca == 1 %]<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>[% else %][% endif %]</td>
 								<td>[[ r.coche ]]</td>
 								<td style="text-align:center;">[% if r.observaciones != '' %]<span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="[[ r.observaciones ]]"></span>[% else %][% endif %]</td>
-								<td><a href="/repuestosmodificar/[[ r.id ]]"><button class="btn btn-warning menu" data-idmenu="4" data-accion="m">Modificar</button></a></td>
-								<td><a href='/repuestosborrar/[[ r.id ]]' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger menu" data-idmenu="4" data-accion="b">Eliminar</button><a/></td>
 							</tr>
 						[% endfor %]
 			  		</script>
@@ -163,7 +167,6 @@
 <script src="/js/jquery.autotab.min.js"></script>
 <script src="/js/swig.min.js"></script>
 <script type="text/javascript">
-	$('.filters').hide();
 
 	$(".datepicker").datepicker({
 		dateFormat: 'dd/mm/yy'
@@ -174,162 +177,170 @@
     	tagControls: ['[%', '%]']
     });
 
+
     (function ($) {
-    	$('#filtro').on('change', function () {
-    		const filtro = $(this).val();
+    	/*
+		 * Load filter from localStorage if exists/existData
+		 */
 
-			switch (filtro) {
-				case '1':
-					$('.filters').hide();
-					$('#1').show();
+		if('localStorage' in window && window['localStorage'] !== null) {
+			const objDatos = localStorage.getItem('objDatos');
+			const objDatos_parsed = JSON.parse(objDatos);
+			const flag = objDatos_parsed.flag;
+			const cmbFiltro = objDatos_parsed.cmbFiltro;
+			const cmbRubro1 = objDatos_parsed.cmbRubro1;
+			const cmbRubro2 = objDatos_parsed.cmbRubro2;
+			const txtCalle = objDatos_parsed.txtCalle;
+			const numModulo = objDatos_parsed.numModulo;
+			const txtEstante = objDatos_parsed.txtEstante;
+			const rubroResumidoDesde = objDatos_parsed.rubroResumidoDesde;
+			const rubroResumidoHasta = objDatos_parsed.rubroResumidoHasta;	
 
-					break;
+			$("#cmbFiltro").val(cmbFiltro);
+			$("#cmbRubro1").val(cmbRubro1);
+			$("#cmbRubro2").val(cmbRubro2);
+			$("#txtCalle").val(txtCalle);
+			$("#numModulo").val(numModulo);
+			$("#txtEstante").val(txtEstante);
+			$("#rubroResumidoDesde").val(rubroResumidoDesde);
+			$("#rubroResumidoHasta").val(rubroResumidoHasta);
 
-				case '2':
-					$('.filters').hide();
-					$('#2').show();
+			filtro(cmbFiltro);
+			filtrar(cmbFiltro);
+		}else{
+			// event.preventDefault();
+			alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");		
+		}
 
-					break;
 
-				case '3':
-					$('.filters').hide();
-					$('#3').show();
+		/*
+		 * END OF - Load filter from localStorage if exists/existData
+		 */
 
-					break;
 
-				case '4':
-					$('.filters').hide();
-					$('#4').show();
+		/*
+		 * Save filter data in localStorage
+		 */
 
-					break;
+		$(document).on('click', '.btnStoreFilter', function () {
+			if ('localStorage' in window && window['localStorage'] !== null) {
+				const objDatos = localStorage.getItem('objDatos');
+				var objDatos_parsed = JSON.parse(objDatos);
 
-				case '5':
-					$('.filters').hide();
-					$('#5').show();
+				var cmbFiltro = $("#cmbFiltro").val();
+				var cmbRubro1 = $("#cmbRubro1").val();
+				var cmbRubro2 = $("#cmbRubro2").val();
+				var txtCalle = $("#txtCalle").val();
+				var numModulo = $("#numModulo").val();
+				var txtEstante = $("#txtEstante").val();
+				var rubroResumidoDesde = $("#rubroResumidoDesde").val();
+				var rubroResumidoHasta = $("#rubroResumidoHasta").val();
 
-					break;
+				objDatos_parsed.cmbFiltro = cmbFiltro;
+				objDatos_parsed.cmbRubro1 = cmbRubro1;
+				objDatos_parsed.cmbRubro2 = cmbRubro2;
+				objDatos_parsed.txtCalle = txtCalle;
+				objDatos_parsed.numModulo = numModulo;
+				objDatos_parsed.txtEstante = txtEstante;
+				objDatos_parsed.rubroResumidoDesde = rubroResumidoDesde;
+				objDatos_parsed.rubroResumidoHasta = rubroResumidoHasta;
 
-				case '6':
-					$('.filters').hide();
-					$('#6').show();
-
-					break;
-
-				case '7':
-					$('.filters').hide();
-					$('#7').show();
-
-					break;
-
-				case '8':
-					$('.filters').hide();
-					$('#8').show();
-
-					break;
-
-				case '9':
-					$('.filters').hide();
-					$('#9').show();
-
-					break;
-
-				case '0':
-					$('.filters').hide();
-					alert('Debe selecionar una opción')
-
-					break;
-
-				default:
-
-					break;
+				const objDatos_stringified = JSON.stringify(objDatos_parsed);
+				localStorage.setItem('objDatos', objDatos_stringified);
+			} else {
+				// event.preventDefault();
+				alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");		
 			}
-    		
+		});
+
+
+		/*
+		 * END OF - Save filter data in localStorage
+		 */
+
+    	$('#cmbFiltro').on('change', function () {
+    		const filtr = $('#cmbFiltro').val();
+    		filtro(filtr);
     	});
 
     	$('#filtrar').on('click', function () {
-    		const option = $('#filtro').val();
+    		const op = $('#cmbFiltro').val();
+    		
+    		if (op === '0') {
+    			alert("Debe ingresar una busqueda");
+    		} else {
+    			filtrar(op);
+    		}
+		})
+
+    	function filtro (filtro) {
+			$('.filters').hide();
+			$('#' + filtro).show();
+    	}
+
+		function filtrar (option) {
 			var paramA = 'null';
 			var paramB = 'null';
 
 			switch (option) {
 				case '1':
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				case '2':
 					paramA = $('#cmbRubro1').val();
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				case '3':
 					paramA = $('#cmbRubro2').val();
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				case '4':
 					paramA = $('#txtCalle').val();
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				case '5':
 					paramA = $('#numModulo').val();
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				case '6':
 					paramA = $('#txtEstante').val();
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				case '7':
 					paramA = $('#numModulo').val();
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				case '8':
 					paramA = $('#rubroResumidoDesde').val();
 					paramB = $('#rubroResumidoHasta').val();
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				case '9':
 					filltbodylisto(option, paramA, paramB);
-
 					break;
-
 				default:
-
 					break;
 			}
+		}
 
-			function filltbodylisto(option, paramA, paramB) {
-				if (option !== '0' && (paramA !== '' && paramA !== '0') && (paramB !== '' && paramB !== '0')) {
-					$.getJSON('/repuestos_filtrar/' + option + '/' + paramA + '/' + paramB, function (data) {
-						$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ...</td></tr>");
-						if (data.length != 0){
-							$('#tbodylisto > tr').remove();
-							var template = $('#tabla_repuestos').html();
-							var output = parseSwig(template, data);
-							$('#tbodylisto').html(output);
-						}else{
-							$('#tbodylisto > tr').remove();					
-							$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-						}
-					});
-				} else {
-					alert("Debe completar los campos de busqueda");
-				}
+		function filltbodylisto(option, paramA, paramB) {
+			if (option !== '' && paramA !== '' && paramB !== '') {
+				$.getJSON('/repuestos_filtrar/' + option + '/' + paramA + '/' + paramB, function (data) {
+					$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Cargando ...</td></tr>");
+					if (data.length != 0){
+						$('#tbodylisto > tr').remove();
+						var template = $('#tabla_repuestos').html();
+						var output = parseSwig(template, data);
+						$('#tbodylisto').html(output);
+					}else{
+						$('#tbodylisto > tr').remove();					
+						$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					}
+				});
+			} else {
+				alert("Debe completar los campos de busqueda");
 			}
-		});
-
+		}
     })(jQuery);
 </script>
 {% endblock %}

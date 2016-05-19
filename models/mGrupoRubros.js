@@ -5,5 +5,5 @@ module.exports = {
 }
 
 function getAll (cb) {
-	conn("SELECT * FROM rubros_grupos", cb);
+	conn("SELECT * FROM rubros_grupos  ORDER BY codigo ASC", cb);
 }
