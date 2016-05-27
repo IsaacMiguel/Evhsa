@@ -44,7 +44,7 @@ function getIngresos(anio, mes, cb){
 		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma29, "+
 		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma30, "+
 		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma31 "+
-		"from codigosie ", cb);
+		"from codigosie where codigosie.tipo = 'I'", cb);
 }
 
 function getTotalIngresos(anio, mes, cb){
@@ -80,7 +80,7 @@ function getTotalIngresos(anio, mes, cb){
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total29, "+
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total30, "+
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total31 "+
-		"from codigosie ", cb);
+		"from codigosie where codigosie.tipo = 'I'", cb);
 }
 
 // function getTotalIngresosSinFormat(anio, mes, cb){
@@ -152,7 +152,7 @@ function getEgresos(anio, mes, cb){
 		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma29, "+
 		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma30, "+
 		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma31 "+
-		"from codigosie ", cb);
+		"from codigosie where codigosie.tipo = 'E'", cb);
 }
 
 function getTotalEgresos(anio, mes, cb){
@@ -188,7 +188,7 @@ function getTotalEgresos(anio, mes, cb){
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total29, "+
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total30, "+
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total31 "+
-		"from codigosie ", cb);
+		"from codigosie where codigosie.tipo = 'E'", cb);
 }
 
 // function getTotalEgresosSinFormat(anio, mes, cb){
