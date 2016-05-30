@@ -157,6 +157,7 @@
 <script src="/js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript">
     $('[data-submenu]').submenupicker();
+
     $(function() {
         $(".menu").on("click", function (){
             var id_menu = $(this).data("idmenu");
@@ -179,7 +180,6 @@
                 console.log(xhr)
             });
         });
-
 
         $("#btnIngEgrLista").on("click", function (){
             if('localStorage' in window && window['localStorage'] !== null) {
