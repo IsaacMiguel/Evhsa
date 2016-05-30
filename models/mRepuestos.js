@@ -13,7 +13,15 @@ module.exports = {
     getAllAceites: getAllAceites,
     getLastAceite: getLastAceite,
   getByDescripcion : getByDescripcion,
-  getByCodigoLike : getByCodigoLike
+  getByCodigoLike : getByCodigoLike,
+  getByLetter : getByLetter,
+  getByCodigoLista : getByCodigoLista,
+  getByCalle : getByCalle,
+  getByModulo : getByModulo,
+  getByEstante : getByEstante,
+  getByAsterisco : getByAsterisco,
+  getByResumido : getByResumido,
+  getByFaltantes : getByFaltantes
 }
 
 function getAll(cb){
@@ -70,4 +78,44 @@ function getByDescripcion (descripcion, cb) {
 
 function getByCodigoLike (codigo, descripcion, cb) {
 	conn("select * from repuestos where nombre like '%" + descripcion + "%' AND codigo like '" + codigo + "%'", cb);
+}
+
+function getByLetter (paramA, cb) {
+	conn("select *, if (stock_actual <= punto_pedido, maximo-stock_actual, 0) as faltante from repuestos " +
+	"WHERE codigo LIKE '" + paramA + "%' ORDER BY codigo ASC", cb);
+}
+
+function getByCodigoLista (paramA, cb) {
+	conn("select *, if (stock_actual <= punto_pedido, maximo-stock_actual, 0) as faltante from repuestos " +
+	"WHERE codigo LIKE '" + paramA + "%' ORDER BY codigo ASC", cb);
+}
+
+function getByCalle (paramA, cb) {
+	conn("select *, if (stock_actual <= punto_pedido, maximo-stock_actual, 0) as faltante from repuestos " +
+	"WHERE calle = '" + paramA + "' ORDER BY codigo ASC", cb);
+}
+
+function getByModulo (paramA, cb) {
+	conn("select *, if (stock_actual <= punto_pedido, maximo-stock_actual, 0) as faltante from repuestos " +
+	"WHERE modulo = " + paramA + " ORDER BY codigo ASC", cb);
+}
+
+function getByEstante (paramA, cb) {
+	conn("select *, if (stock_actual <= punto_pedido, maximo-stock_actual, 0) as faltante from repuestos " +
+	"WHERE estante = '" + paramA + "' ORDER BY codigo ASC", cb);
+}
+
+function getByAsterisco (cb) {
+	conn("select *, if (stock_actual <= punto_pedido, maximo-stock_actual, 0) as faltante from repuestos " +
+	"WHERE marca = 1 ORDER BY codigo ASC", cb);
+}
+
+function getByResumido (paramA, paramB, cb) {
+	conn("select *, if (stock_actual <= punto_pedido, maximo-stock_actual, 0) as faltante from repuestos " +
+	"WHERE left(codigo,4) >= '" + paramA + "' AND left(codigo,4) <= '" + paramB + "' ORDER BY codigo ASC", cb);
+}
+
+function getByFaltantes (cb) {
+	conn("select *, if (stock_actual <= punto_pedido, maximo-stock_actual, 0) as faltante from repuestos " +
+	"WHERE stock_actual <= punto_pedido AND maximo >= punto_pedido ORDER BY codigo ASC", cb);
 }
