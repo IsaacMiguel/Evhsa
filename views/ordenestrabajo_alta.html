@@ -11,34 +11,37 @@
 	<form method="post" id="formalta" action="/ordenestrabajo_alta">
 		<table align="center" class="table table-striped">
 			<tr>
-				<td>Fecha:</td>
-				<td><input type="text" name="fecha" id="fecha" class="form-control datepicker"></td>
-			</tr>
-			<tr>
 				<td>Nro. coche:</td>
 				<td>
 					<select class="form-control" id="coches" name="coches">
-						{% for c in coches %}
-							<option value="{{ c.numero }}">[{{ c.numero }}] - {{ c.marca }} - {{ c.tipo }} - {{ c.dominio }}</option>
+						<option value="0" selected>Elija una opción</option>
+						{% for v in vehiculos %}
+							<option value="{{ v.numero }}">[{{ v.numero }}] - {{ v.marca }} - {{ v.tipo }} - {{ v.dominio }}</option>
 						{% endfor %}
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<td>Nombre:</td>
-				<td><input type="text" id="nombre" name="nombre" required class="form-control"><div class="aviso">Quedan <span id="charsLeftNombre"></span> caraceteres.</div></td>
+				<td>Fecha:</td>
+				<td>
+					<input type="text" name="fecha" id="fecha" class="form-control datepicker" title="Fecha en que será realizado el trabajo" readonly>
+				</td>
 			</tr>
 			<tr>
-				<td>Descripcion:</td>
-				<td><input type="text" id="descripcion" name="descripcion" required class="form-control"><div class="aviso">Quedan <span id="charsLeftDescripcion"></span> caraceteres.</div></td>
+				<td>Fecha anterior:</td>
+				<td>
+					<input type="text" name="fecha_anterior" id="fecha_anterior" class="form-control" title="Fecha del mantenimiento anterior" readonly>
+				</td>
 			</tr>
 			<tr>
-				<td>Valor:</td>
-				<td><input type="text" id="valor" name="valor" required class="form-control" onkeypress="return Numy1Punto(event, this)"><div class="aviso">Quedan <span id="charsLeftValor"></span> caraceteres.</div></td>
+				<td>Número anterior:</td>
+				<td>
+					<input type="text" id="nro_ant" name="nro_ant" class="form-control" readonly>
+				</td>
 			</tr>
 			<tr>
-				<td>Stock:</td>
-				<td><input type="text" id="stock" name="stock" required class="form-control" onkeypress="return Numy1Punto(event, this)"><div class="aviso">Quedan <span id="charsLeftStock"></span> caraceteres.</div></td>
+				<td>Km hasta hoy:</td>
+				<td><input type="number" name="km_hastahoy" class="form-control" placeholder="autocalculable" readonly></td>
 			</tr>
 			<tr>
 				<td><input type="button" class="btn btn-primary" value="Atras" onclick="history.back()"></td>
@@ -50,61 +53,39 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/main.js"></script>
 <script type="text/javascript">
+
 	$(".datepicker").datepicker({
 		dateFormat: 'dd/mm/yy'
 	});
-	// $('#codigo2').limit('3','#charsLeftCodigo');
-	// $('#nombre').limit('45','#charsLeftNombre');
-	// $('#descripcion').limit('500','#charsLeftDescripcion');
-	// $('#valor').limit('10','#charsLeftValor');
-	// $('#stock').limit('10','#charsLeftStock');
-	// $('#minimo').limit('10','#charsLeftMinimo');
-	// $('#puntopedido').limit('5','#charsLeftPuntoPedido');
-	// $('#maximo').limit('10','#charsLeftMaximo');
-	// $('#calle').limit('1','#charsLeftCalle');
-	// $('#modulo').limit('2','#charsLeftModulo');
-	// $('#estante').limit('8','#charsLeftEstante');
-	// $('#coche').limit('3','#charsLeftCoche');
-	// $('#observaciones').limit('50','#charsLeftObservaciones');
-	$(function() {
-		// var codigo = $(this).find(':selected').data('codigo')
-   		// $("#codigo1").val(codigo+'.');
-   		// var id = $(this).find(':selected').data('id');
-  //  		$.getJSON("/getCantRepuestosEnRubro/"+id, function (CantRep){
-		// 	cant = CantRep[0].cant;
-		// 	cant = cant+1;
-		// 	$("#codigo1").val(codigo+'.');
-		// 	var codigo2 = '001';
-		// 	if (cant < 10){
-		// 		codigo2 = '00'+cant;
-		// 	}else if (cant > 9){
-		// 		codigo2 = '0'+cant;
-		// 	} else{
-		// 		codigo2 = cant;
-		// 	}
-		// 	$("#codigo2").val(codigo2);
-		// });
 
-   		// $("#rubro").on("change", function (){
-   		// 	var codigo = $(this).find(':selected').data('codigo');
-   		// 	var id = $(this).find(':selected').data('id');
-   		// 	$.getJSON("/getCantRepuestosEnRubro/"+id, function (CantRep){
-   		// 		cant = CantRep[0].cant;
-   		// 		cant = cant+1;
-   		// 		$("#codigo1").val(codigo+'.');
-   		// 		var codigo2 = '001';
-   		// 		if (cant < 10){
-   		// 			codigo2 = '00'+cant;
-   		// 		}else if (cant > 9){
-   		// 			codigo2 = '0'+cant;
-   		// 		} else{
-   		// 			codigo2 = cant;
-   		// 		}
-   		// 		$("#codigo2").val(codigo2);
-   		// 	});
-   		// });	   
-	});
+	//ON JQUERY READY
+	(function($) {
+		$('#coches').on('change', function () {
+			const nro_coche = $('#coches').val();
+			const fecha_hoy = generateTodayDateYMD();
+			console.log(nro_coche)
+
+			$.getJSON('/get_ultima_ordentrabajo/' + nro_coche + '/' + fecha_hoy, function (data) {
+				if (data !== null) {
+					console.log(data)
+					$('#fecha_anterior').val(data.fecha_anterior);
+					$('#num_ant').val(data.num_ant);
+					$('#km_hastahoy').val(data.km_hastahoy);
+					$('#').val();
+					$('#').val();
+				}
+			});
+		});
+
+		$('#formalta').submit(function (e) {
+			if ($('#fecha').val() === '' || $('#coches').val() === '0') {
+				e.preventDefault()
+				alert("Debe seleccionar un coche e ingresar una fecha")
+			}
+		});
+	})(jQuery);
 </script>
 
 {% endblock %}
