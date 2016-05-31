@@ -5,11 +5,23 @@
 {% endblock %}
 
 {% block content %}
-<link href="/css/ordenestrabajo_alta.css" rel="stylesheet">
+<!-- <link href="/css/ordenestrabajo_alta.css" rel="stylesheet"> -->
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
 	<form method="post" id="formalta" action="/ordenestrabajo_alta">
 		<table align="center" class="table table-striped">
+			<tr>
+				<td>Fecha:</td>
+				<td>
+					<input type="text" name="fecha" id="fecha" class="form-control datepicker" title="Fecha en que será realizado el trabajo" readonly>
+				</td>
+			</tr>
+			<tr>
+				<td>Número:</td>
+				<td>
+					<input value="{{ maxNum }}" type="number" name="numero" id="numero" class="form-control">
+				</td>
+			</tr>
 			<tr>
 				<td>Nro. coche:</td>
 				<td>
@@ -19,12 +31,6 @@
 							<option value="{{ v.numero }}">[{{ v.numero }}] - {{ v.marca }} - {{ v.tipo }} - {{ v.dominio }}</option>
 						{% endfor %}
 					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>Fecha:</td>
-				<td>
-					<input type="text" name="fecha" id="fecha" class="form-control datepicker" title="Fecha en que será realizado el trabajo" readonly>
 				</td>
 			</tr>
 			<tr>
@@ -41,11 +47,11 @@
 			</tr>
 			<tr>
 				<td>Km hasta hoy:</td>
-				<td><input type="number" name="km_hastahoy" class="form-control" placeholder="autocalculable" readonly></td>
+				<td><input type="number" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly></td>
 			</tr>
 			<tr>
 				<td><input type="button" class="btn btn-primary" value="Atras" onclick="history.back()"></td>
-				<td><input type="submit" class="btn btn-success" value="Agregar"></td>
+				<td><input type="button" id="agregar" class="btn btn-success" value="Agregar"></td>
 			</tr>
 		</table>
 	</form>
@@ -68,21 +74,39 @@
 			console.log(nro_coche)
 
 			$.getJSON('/get_ultima_ordentrabajo/' + nro_coche + '/' + fecha_hoy, function (data) {
-				if (data !== null) {
-					console.log(data)
-					$('#fecha_anterior').val(data.fecha_anterior);
-					$('#num_ant').val(data.num_ant);
-					$('#km_hastahoy').val(data.km_hastahoy);
-					$('#').val();
-					$('#').val();
+				if (data != null) {
+					var fecha = data.fecha;
+						fecha = changeDate2(fecha);
+						if (fecha == '00/00/0000') { fecha = '' }
+					var nro_ant = data.numero;
+						if (nro_ant == '0') { nro_ant = '' }
+					var km_hastahoy = data.km_hastahoy;
+						if (km_hastahoy == '0') { km_hastahoy = '' }
+
+					$('#fecha_anterior').val(fecha);
+					$('#nro_ant').val(nro_ant);
+					$('#km_hastahoy').val(km_hastahoy);
+				} else {
+					$('#fecha_anterior').val('');
+					$('#nro_ant').val('');
+					$('#km_hastahoy').val('');
 				}
 			});
 		});
 
-		$('#formalta').submit(function (e) {
-			if ($('#fecha').val() === '' || $('#coches').val() === '0') {
-				e.preventDefault()
+		$('#agregar').click(function () {
+			const numero = $('#numero').val();
+
+			if ($('#fecha').val() == '' || $('#coches').val() == '0') {
 				alert("Debe seleccionar un coche e ingresar una fecha")
+			} else {
+				$.getJSON('/get_validar/' + numero, function (data) {
+					if (data == true) {
+						alert("Ya existe una orden con ese número");
+					} else {
+						$('form').submit();
+					}
+				});
 			}
 		});
 	})(jQuery);

@@ -59,17 +59,13 @@
 				<table class="table table-striped">
 			  		<thead>
 			  			<tr>
-			  				<th colspan="6">Opciones</th>
-							<th>Código</th>
-							<th>Denominación</th>
-							<th>Ubicación</th>
-							<th>Fcha. Movimiento</th>
-							<th>N° Recibo</th>
-							<th>Marca</th>
-							<th>Lugar compra</th>
-							<th>Valor</th>
-							<th>Cantidad</th>
-							<th>Fcha. Cambio</th>
+			  				<th colspan="3">Opciones</th>
+							<th>Número</th>
+							<th>Nro Coche</th>
+							<th>Fecha</th>
+							<th>Fecha Anterior</th>
+							<th>Nro Anterior</th>
+							<th>Km Hasta Hoy</th>
 						</tr>
 			  		</thead>
 			  		<tbody id="tbodylisto">
@@ -93,35 +89,6 @@
 									</a>
 								</td>
 								<td>
-									<button type="button" class="btn btn-success menu btn_ubicaciones" title="Modificar Ubicación / Modificar la ubicación de la herramienta" value="[[ d.id_herramientas ]]" onclick="cambiarUbicacion($(this).val())" data-idmenu="21" data-accion="b">
-										<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-									</button>
-								</td>
-									[% if d.fecha_cambio == '0000-00-00' %]
-										<td>
-											<a href="#">
-												<button class="btn btn-info menu herramientas_modificar_fechaCambio" title="Cambiar fecha / Marca la herramienta para ser sacada de curso || NOTA: Esta herramienta NO esta actualmente marcada para ser cambiada" data-paramID="[[ d.id_herramientas ]]" data-paramTF="false" data-idmenu="21" data-accion="m">
-													<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-												</button>
-											</a>
-										</td>
-									[% else %]
-										<td>
-											<a href="#">
-												<button class="btn btn-info menu herramientas_modificar_fechaCambio" title="Cambiar fecha / Marca la herramienta para ser sacada de curso || NOTA: Esta herramienta SI esta actualmente marcada para ser cambiada" data-paramID="[[ d.id_herramientas ]]" data-paramTF="true" data-idmenu="21" data-accion="m">
-													<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-												</button>
-											</a>
-										</td>
-									[% endif %]
-								<td>
-									<a href="#" onclick="alert('No disponible')">
-										<button type="button" class="btn btn-primary menu" title="Imprimir / Imprime recibo" data-idmenu="21" data-accion="b">
-											<span class="glyphicon glyphicon-print" aria-hidden="true"></span>
-										</button>
-									<a/>
-								</td>
-								<td>
 									<a href="/herramientas_eliminar/[[ d.id_herramientas ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;">
 										<button type="button" class="btn btn-danger menu" title="Eliminar / Elimina la herramienta" data-idmenu="21" data-accion="b">
 											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -129,16 +96,12 @@
 									<a/>
 								</td>
 								
-								<td>[[ d.codigo ]]</td>
-								<td>[[ d.nombre ]]</td>
-								<td>[[ d.descripcion ]]</td>
-								<td>[% if d.fecha_movimiento_f != '00/00/0000' %][[ d.fecha_movimiento_f ]][% else %][% endif %]</td>
-								<td>[% if d.nro_recibo == 0 %][% else %][[ d.nro_recibo ]][% endif %]</td>
-								<td>[[ d.marca_herramientas ]]</td>
-								<td>[[ d.lugar_compra ]]</td>
-								<td>$[% if d.valor_herramientas == 0 %][% else %][[ d.valor_herramientas ]][% endif %]</td>
-								<td>[% if d.cantidad == 0 %][% else %][[ d.cantidad ]][% endif %]</td>
-								<td>[% if d.fecha_cambio_f != '00/00/0000' %][[ d.fecha_cambio_f ]][% else %][% endif %]</td>
+								<td>[[ d.numero ]]</td>
+								<td>[[ d.nro_coche ]]</td>
+								<td>[% if d.fecha_f != '00/00/0000' %][[ d.fecha_f ]][% else %][% endif %]</td>
+								<td>[% if d.fecha_ant_f != '00/00/0000' %][[ d.fecha_ant_f ]][% else %][% endif %]</td>
+								<td>[% if d.nro_ant == 0 %][% else %][[ d.nro_ant ]][% endif %]</td>
+								<td>[% if d.km_hastahoy == 0 %][% else %][[ d.km_hastahoy ]][% endif %]</td>
 							</tr>
 						[% endfor %]
 			  		</script>
@@ -166,33 +129,33 @@
     	tagControls: ['[%', '%]']
     });
 
-    function cambiarUbicacion (val) {
-		$.getJSON('/herramientas_ubicaciones', function (ubicaciones) {
-			var html = "";
-			html += "<tr><th>Ubicaciones</th></tr>";
-				for(var i = 0; i < ubicaciones.length; i++){
-					html +="<tr><td><form onsubmit='return submit_ubicaciones()' method='post' class='f_ubi' id='"+val+"' action='/herramientas_cambiar_ubicacion'>" +
-					"<div class='row'><div class='col-sm-6'><input hidden type='text' value='" + val + "' id='id_herramienta_form' name='id_herramienta_form'>" +
-					"<input hidden type='text' value='" + ubicaciones[i].id + "' id='id_ubicacion_form' name='id_ubicacion_form'>" +
-					"<input type='text' value='" + ubicaciones[i].descripcion + "'" +
-					" class='form-control' readonly></div>" +
-					"<div class='col-sm-6'><input type='submit' value='Cambiar ubicación' class='btn btn-success'></div></div>" +
-					"</form></td>";
-				}
+ //    function cambiarUbicacion (val) {
+	// 	$.getJSON('/herramientas_ubicaciones', function (ubicaciones) {
+	// 		var html = "";
+	// 		html += "<tr><th>Ubicaciones</th></tr>";
+	// 			for(var i = 0; i < ubicaciones.length; i++){
+	// 				html +="<tr><td><form onsubmit='return submit_ubicaciones()' method='post' class='f_ubi' id='"+val+"' action='/herramientas_cambiar_ubicacion'>" +
+	// 				"<div class='row'><div class='col-sm-6'><input hidden type='text' value='" + val + "' id='id_herramienta_form' name='id_herramienta_form'>" +
+	// 				"<input hidden type='text' value='" + ubicaciones[i].id + "' id='id_ubicacion_form' name='id_ubicacion_form'>" +
+	// 				"<input type='text' value='" + ubicaciones[i].descripcion + "'" +
+	// 				" class='form-control' readonly></div>" +
+	// 				"<div class='col-sm-6'><input type='submit' value='Cambiar ubicación' class='btn btn-success'></div></div>" +
+	// 				"</form></td>";
+	// 			}
 
-			$("#tabla_ubicaciones").html(html);
-			$("#myModalLabel").text("Selecione una ubicación")
-			$('#myModal').modal('toggle');
-		});
-	}
+	// 		$("#tabla_ubicaciones").html(html);
+	// 		$("#myModalLabel").text("Selecione una ubicación")
+	// 		$('#myModal').modal('toggle');
+	// 	});
+	// }
 
-	function submit_ubicaciones () {
-		if (confirm('¿Seguro desea cambiar la ubicación?')) { 
-			return true
-		} else {
-			return false
-		}
-	}
+	// function submit_ubicaciones () {
+	// 	if (confirm('¿Seguro desea cambiar la ubicación?')) { 
+	// 		return true
+	// 	} else {
+	// 		return false
+	// 	}
+	// }
 
 	var mainReady = function () {
 		var today = generateTodayDateYMD();
@@ -203,11 +166,6 @@
 		$('#btnFiltrar').on('click', function () {
 			var desde = $('#fecha_desde').val();
 			var hasta = $('#fecha_hoy').val();
-			var denominacion = $('#nombre').val();
-
-			if (denominacion === '') {
-				denominacion = 'NoName';
-			}
 
 			if (desde === '') {
 				alert('¡Debe Ingresar una fecha de inicio!')
@@ -217,7 +175,7 @@
 				desde = changeDate3(desde);
 				desde = encodeURIComponent(desde);
 
-				$.getJSON('/herramientas_filtrar/' + desde + '/' + hasta + '/' + denominacion, function (data){
+				$.getJSON('/ordenestrabajo_filtrar/' + desde + '/' + hasta, function (data){
 					if (data.length != 0){
 						$('#tbodylisto > tr').remove();
 						var template = $('#tabla_herramientas').html();
@@ -241,39 +199,39 @@
 	 * (document).on
 	 */
 
-	$(document).on("click", ".herramientas_modificar_fechaCambio", function () {
-		var param1 = $(this).data('paramid');
-		var param2 = $(this).data('paramtf');
-		var today = generateTodayDateYMD();
+	// $(document).on("click", ".herramientas_modificar_fechaCambio", function () {
+	// 	var param1 = $(this).data('paramid');
+	// 	var param2 = $(this).data('paramtf');
+	// 	var today = generateTodayDateYMD();
 		
-		$('#fecha_hoy').val(today);
+	// 	$('#fecha_hoy').val(today);
 
-		var desde = $('#fecha_desde').val();
-		desde = changeDate3(desde);
-		var hasta = $('#fecha_hoy').val();
-		var denominacion = $('#nombre').val();
+	// 	var desde = $('#fecha_desde').val();
+	// 	desde = changeDate3(desde);
+	// 	var hasta = $('#fecha_hoy').val();
+	// 	var denominacion = $('#nombre').val();
 
-		if (denominacion === '') {
-			denominacion = 'NoName';
-		}
+	// 	if (denominacion === '') {
+	// 		denominacion = 'NoName';
+	// 	}
 
-		$.post("/herramientas_modificar_fechaCambio/" + param1 + "/" + param2, function () {
-			$('#tbodylisto').html('<p style="padding-left: 20px; padding-top: 20px;">Cargando...<p>');
-				$.getJSON('/herramientas_filtrar/' + desde + '/' + hasta + '/' + denominacion, function (data){
-					if (data.length != 0){
-						$('#tbodylisto > tr').remove();
-						var template = $('#tabla_herramientas').html();
+	// 	$.post("/herramientas_modificar_fechaCambio/" + param1 + "/" + param2, function () {
+	// 		$('#tbodylisto').html('<p style="padding-left: 20px; padding-top: 20px;">Cargando...<p>');
+	// 			$.getJSON('/herramientas_filtrar/' + desde + '/' + hasta + '/' + denominacion, function (data){
+	// 				if (data.length != 0){
+	// 					$('#tbodylisto > tr').remove();
+	// 					var template = $('#tabla_herramientas').html();
 
-						var output = parseSwig(template, data);
+	// 					var output = parseSwig(template, data);
 
-						$('#tbodylisto').html(output);
+	// 					$('#tbodylisto').html(output);
 
-					}else{
-						$('#tbodylisto > tr').remove();
-						$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-					}
-				});
-		});
-	});
+	// 				}else{
+	// 					$('#tbodylisto > tr').remove();
+	// 					$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+	// 				}
+	// 			});
+	// 	});
+	// });
 </script>
 {% endblock %}

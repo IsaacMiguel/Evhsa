@@ -440,7 +440,9 @@ module.exports = function(app) {
 	app.get("/ordenes_trabajo", auth, acceso, cOrdenesTrabajo.getLista);
 	app.get("/ordenestrabajo_alta", auth, acceso, cOrdenesTrabajo.getAlta);
 	app.get("/get_ultima_ordentrabajo/:nro_coche/:fecha_hoy", auth, acceso, cOrdenesTrabajo.getUltimaOrden);
+	app.get("/get_validar/:numero", auth, acceso, cOrdenesTrabajo.getValidarInsert);
 	app.post("/ordenestrabajo_alta", auth, cOrdenesTrabajo.postAlta);
+	app.get("/ordenestrabajo_filtrar/:desde/:hasta", auth, acceso, cOrdenesTrabajo.getFiltrar);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
