@@ -89,7 +89,7 @@
                         <li><a href="/remitos_lista" class="menu" data-idmenu="19" data-accion="c">* Remitos</a></li>
                         <li><a href="/sereno_lista" class="menu" data-idmenu="20" data-accion="c">* Repuestos en Sereno</a></li>
                         <li><a href="/equipos_lista" class="menu" data-idmenu="21" data-accion="c">* Equipos</a></li>
-                        <li><a href="/ordenes_trabajo" class="menu" data-idmenu="22" data-accion="c">- Ordenes de Trabajo</a></li>
+                        <li><a href="/ordenes_trabajo" id="btnOrdenesTrabajo" class="menu" data-idmenu="22" data-accion="c">- Ordenes de Trabajo</a></li>
                         <li><a href="/reparaciones_lista" class="menu" data-idmenu="23" data-accion="c" id="btnReparaciones">* Reparaciones de Emergencia</a></li>
                         <li><a href="/novedades_lista" class="menu" data-idmenu="24" data-accion="c">- Novedades de Coches</a></li>
                     </ul>
@@ -239,6 +239,28 @@
                     "txtEstante" : txtEstante, 
                     "rubroResumidoDesde" : rubroResumidoDesde, 
                     "rubroResumidoHasta" : rubroResumidoHasta
+                }
+
+                var objDatos_stringified = JSON.stringify(objDatos);
+                localStorage.setItem('objDatos', objDatos_stringified);                
+            } else { 
+                alert('No soporta LocalStorage. Actualize el navegador !!'); 
+            }
+        });
+
+        $("#btnOrdenesTrabajo").on("click", function (){
+            if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                   
+                localStorage.clear();
+
+                const flag = true;
+                var fecha_desde = "";
+                var fecha_hasta = "";
+
+                var objDatos = {
+                    "fecha_desde" : fecha_desde,
+                    "fecha_hasta" : fecha_hasta, 
                 }
 
                 var objDatos_stringified = JSON.stringify(objDatos);

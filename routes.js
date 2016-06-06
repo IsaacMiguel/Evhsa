@@ -443,6 +443,10 @@ module.exports = function(app) {
 	app.get("/get_validar/:numero", auth, acceso, cOrdenesTrabajo.getValidarInsert);
 	app.post("/ordenestrabajo_alta", auth, cOrdenesTrabajo.postAlta);
 	app.get("/ordenestrabajo_filtrar/:desde/:hasta", auth, acceso, cOrdenesTrabajo.getFiltrar);
+	app.get("/ordenestrabajo_modificar/:id", auth, acceso, cOrdenesTrabajo.getModificar);
+	app.post("/ordenestrabajo_modificar", auth, cOrdenesTrabajo.postModificar);
+	app.get("/ordenestrabajo_eliminar/:id", auth, acceso, cOrdenesTrabajo.getEliminar);
+	app.get("/ordenestrabajo_ver/:id", auth, acceso, cOrdenesTrabajo.getVer);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

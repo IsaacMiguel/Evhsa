@@ -8,7 +8,11 @@ module.exports = {
 	getUltimaOrden : getUltimaOrden,
 	postAlta : postAlta,
 	getValidarInsert : getValidarInsert,
-	getFiltrar : getFiltrar
+	getFiltrar : getFiltrar,
+	getModificar : getModificar,
+	postModificar : postModificar,
+	getEliminar : getEliminar,
+	getVer : getVer
 }
 
 function getLista (req, res) {
@@ -63,12 +67,13 @@ function postAlta (req, res) {
 	const numero = params.numero;
 	const nro_coche = params.coches;
 	var fecha = params.fecha;
-	var fecha_anterior = params.fecha_anterior;
+	var fecha_ant = params.fecha_ant;
 	var km_hastahoy = params.km_hastahoy;
 	var nro_ant = params.nro_ant;
-		fecha = tool.changeDate(fecha);
+		
+	fecha = tool.changeDate(fecha);
 
-	if (fecha_anterior !== '') { fecha_anterior = tool.changeDate(fecha_anterior); }
+	if (fecha_ant !== '') { fecha_ant = tool.changeDate(fecha_ant); }
 	if (nro_ant === '') { nro_ant = 0 }
 	if (km_hastahoy === '') { km_hastahoy = 0 }
 
@@ -77,12 +82,12 @@ function postAlta (req, res) {
 			mOrdenesTrabajo.getMax(function (maxNum) {
 				const e_numero = maxNum[0].ultimo + 1;
 
-				mOrdenesTrabajo.insert(e_numero, nro_coche, fecha, fecha_anterior, nro_ant, km_hastahoy, function () {
+				mOrdenesTrabajo.insert(e_numero, nro_coche, fecha, fecha_ant, nro_ant, km_hastahoy, function () {
 					res.redirect('/ordenes_trabajo');
 				});
 			});
 		} else {
-			mOrdenesTrabajo.insert(numero, nro_coche, fecha, fecha_anterior, nro_ant, km_hastahoy, function () {
+			mOrdenesTrabajo.insert(numero, nro_coche, fecha, fecha_ant, nro_ant, km_hastahoy, function () {
 				res.redirect('/ordenes_trabajo');
 			});
 		}
@@ -96,5 +101,53 @@ function getFiltrar (req, res) {
 
 	mOrdenesTrabajo.getAllDesdeHasta(desde, hasta, function (ordenes) {
 		res.send(ordenes);
+	});
+}
+
+function getModificar (req, res) {
+	const params = req.params;
+	const id = params.id;
+
+	mOrdenesTrabajo.getById(id, function (orden) {
+		mVehiculos.getByNumero(orden[0].nro_coche, function (vehiculo) {
+			res.render('ordenestrabajo_modificar', {
+				pagename : 'Modificar Orden de Trabajo',
+				vehiculo : vehiculo[0],
+				orden : orden[0]
+			});
+		});
+	});
+}
+
+function postModificar (req, res) {
+	const params = req.body;
+	const id = params.id_orden;
+	var fecha = params.fecha;
+
+	fecha = tool.changeDate(fecha);
+
+	mOrdenesTrabajo.update(id, fecha, function () {
+		res.redirect('/ordenes_trabajo');
+	});
+}
+
+function getEliminar (req, res) {
+	const params = req.params;
+	const id = params.id;
+
+	mOrdenesTrabajo.del(id, function () {
+		res.send(true);
+	});
+}
+
+function getVer (req, res) {
+	const params = req.params;
+	const id = params.id;
+
+	mOrdenesTrabajo.getById(id, function (orden) {
+		res.render('ordenestrabajo_ver', {
+			pagename : 'Ordenes de Trabajo',
+			orden : orden[0]
+		});
 	});
 }

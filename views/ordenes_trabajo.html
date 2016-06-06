@@ -16,8 +16,69 @@
 	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
 	      </div>
 	      <div id="mainHolder" style="overflow: scroll; max-height: 500px;">
-	      	<table class="table" id="tabla_ubicaciones">
-
+	      	<table class="table" id="tabla_ordenes">
+	      		<form method="post" id="formalta" action="/ordenestrabajo_modificar">
+					<table align="center" class="table table-striped">
+						<input type="number" value="{{ orden.id }}" id="id_orden" name="id_orden" hidden>
+						<tr>
+							<td>Fecha:</td>
+							<td>
+								{% if orden.fecha_f == '00/00/0000' %}
+									<input type="text" name="fecha" id="fecha" class="form-control datepicker" title="Fecha en que será realizado el trabajo" readonly>
+								{% else %}
+									<input type="text" name="fecha" id="fecha" class="form-control datepicker" value="{{ orden.fecha_f }}" title="Fecha en que será realizado el trabajo" readonly>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>Nro Orden:</td>
+							<td>
+								<input value="{{ orden.numero }}" type="number" name="numero" id="numero" class="form-control" readonly>
+							</td>
+						</tr>
+						<tr>
+							<td>Nro. coche:</td>
+							<td>
+								<input type="text" value="{{ vehiculo.numero }}" id="coches" name="coches" hidden />
+								<input type="text" value="{{ vehiculo.numero }} - {{ vehiculo.marca }} - {{ vehiculo.tipo }} - {{ vehiculo.dominio }}" class="form-control" readonly>
+							</td>
+						</tr>
+						<tr>
+							<td>Fecha anterior:</td>
+							<td>
+								{% if orden.fecha_ant_f == '00/00/0000' %}
+									<input type="text" name="fecha_ant" id="fecha_ant" class="form-control" title="Fecha del mantenimiento anterior" readonly>
+								{% else %}
+									<input type="text" value="{{ orden.fecha_ant_f }}" name="fecha_ant" id="fecha_ant" class="form-control" title="Fecha del mantenimiento anterior" readonly>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>Número anterior:</td>
+							<td>
+								{% if orden.nro_ant == 0 %}
+									<input type="text" id="nro_ant" name="nro_ant" class="form-control" readonly>
+								{% else %}
+									<input type="text" value="{{ orden.nro_ant }}" id="nro_ant" name="nro_ant" class="form-control" readonly>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>Km hasta hoy:</td>
+							<td>
+								{% if orden.km_hastahoy == 0 %}
+									<input type="number" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly>
+								{% else %}
+									<input type="number" value="{{ orden.km_hastahoy }}" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td><input type="button" class="btn btn-primary" value="Atras" onclick="history.back()"></td>
+							<td><input type="button" id="agregar" class="btn btn-success" value="Modificar"></td>
+						</tr>
+					</table>
+				</form>
       		</table>
       	  </div>	
 	      <div class="modal-footer">
@@ -34,7 +95,7 @@
 		<table>
 			<tr>	
 				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
-				<td><a href="/ordenestrabajo_alta"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><a href="/ordenestrabajo_alta" class="btnStoreFilter"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 				<td style="width: 100%;">
 					<table class="pull-right">
@@ -44,7 +105,7 @@
 								<input class="form-control datepicker" type="text" id="fecha_desde" name="fecha_desde" readonly />
 							</td>
 							<td>
-								<input class="form-control" type="date" id="fecha_hoy" name="fecha_hoy" readonly/>
+								<input class="form-control datepicker" type="text" id="fecha_hasta" name="fecha_hasta" readonly />
 							</td>
 							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
 						</tr>
@@ -60,8 +121,8 @@
 			  		<thead>
 			  			<tr>
 			  				<th colspan="3">Opciones</th>
-							<th>Número</th>
-							<th>Nro Coche</th>
+							<th>Nro Orden</th>
+							<th>Coche</th>
 							<th>Fecha</th>
 							<th>Fecha Anterior</th>
 							<th>Nro Anterior</th>
@@ -75,29 +136,25 @@
 			  			[% for d in data %]
 			  				<tr>
 								<td>
-									<a href="/herramientas_ver/[[ d.id_herramientas ]]">
-										<button class="btn btn-default" title="Ver Herramienta / Ver información sobre la herramienta">
+									<a href="/ordenestrabajo_ver/[[ d.id_orden ]]" class="btnStoreFilter">
+										<button class="btn btn-default" title="Ver Orden / Ver información sobre la Orden">
 											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 										</button>
 									</a>
 								</td>
 								<td>
-									<a href="/herramientas_modificar/[[ d.id_herramientas ]]">
-										<button class="btn btn-warning menu" title="Modificar Herramienta / Modificar datos sobre la herramienta" data-idmenu="21" data-accion="m">
+									<a href="/ordenestrabajo_modificar/[[ d.id_orden ]]" class="btnStoreFilter">
+										<button class="btn btn-warning menu" title="Modificar Orden" data-idmenu="21" data-accion="m">
 											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 										</button>
 									</a>
 								</td>
 								<td>
-									<a href="/herramientas_eliminar/[[ d.id_herramientas ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;">
-										<button type="button" class="btn btn-danger menu" title="Eliminar / Elimina la herramienta" data-idmenu="21" data-accion="b">
-											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-										</button>
-									<a/>
+									<button class="btn btn-danger menu btnEliminar" data-idmenu="21" data-accion="b" data-idorden="[[ d.id_orden ]]"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
 								</td>
 								
-								<td>[[ d.numero ]]</td>
-								<td>[[ d.nro_coche ]]</td>
+								<td>[[ d.numero_orden ]]</td>
+								<td>[[ d.numero ]] - [[ d.marca ]] - [[ d.tipo ]] - [[ d.dominio ]]</td>
 								<td>[% if d.fecha_f != '00/00/0000' %][[ d.fecha_f ]][% else %][% endif %]</td>
 								<td>[% if d.fecha_ant_f != '00/00/0000' %][[ d.fecha_ant_f ]][% else %][% endif %]</td>
 								<td>[% if d.nro_ant == 0 %][% else %][[ d.nro_ant ]][% endif %]</td>
@@ -129,51 +186,44 @@
     	tagControls: ['[%', '%]']
     });
 
- //    function cambiarUbicacion (val) {
-	// 	$.getJSON('/herramientas_ubicaciones', function (ubicaciones) {
-	// 		var html = "";
-	// 		html += "<tr><th>Ubicaciones</th></tr>";
-	// 			for(var i = 0; i < ubicaciones.length; i++){
-	// 				html +="<tr><td><form onsubmit='return submit_ubicaciones()' method='post' class='f_ubi' id='"+val+"' action='/herramientas_cambiar_ubicacion'>" +
-	// 				"<div class='row'><div class='col-sm-6'><input hidden type='text' value='" + val + "' id='id_herramienta_form' name='id_herramienta_form'>" +
-	// 				"<input hidden type='text' value='" + ubicaciones[i].id + "' id='id_ubicacion_form' name='id_ubicacion_form'>" +
-	// 				"<input type='text' value='" + ubicaciones[i].descripcion + "'" +
-	// 				" class='form-control' readonly></div>" +
-	// 				"<div class='col-sm-6'><input type='submit' value='Cambiar ubicación' class='btn btn-success'></div></div>" +
-	// 				"</form></td>";
-	// 			}
-
-	// 		$("#tabla_ubicaciones").html(html);
-	// 		$("#myModalLabel").text("Selecione una ubicación")
-	// 		$('#myModal').modal('toggle');
-	// 	});
-	// }
-
-	// function submit_ubicaciones () {
-	// 	if (confirm('¿Seguro desea cambiar la ubicación?')) { 
-	// 		return true
-	// 	} else {
-	// 		return false
-	// 	}
-	// }
-
 	var mainReady = function () {
-		var today = generateTodayDateYMD();
-		var desdeSet = generateFirstDateActualMonth();
-		$('#fecha_hoy').val(today);
-		$('#fecha_desde').val(desdeSet);
+		/*
+		 * Load filter from localStorage if exists/existData
+		 */
 
-		$('#btnFiltrar').on('click', function () {
-			var desde = $('#fecha_desde').val();
-			var hasta = $('#fecha_hoy').val();
+		if('localStorage' in window && window['localStorage'] !== null) {
+			const objDatos = localStorage.getItem('objDatos');
+			const objDatos_parsed = JSON.parse(objDatos);
+			
+			const fecha_desde = objDatos_parsed.fecha_desde;
+			const fecha_hasta = objDatos_parsed.fecha_hasta;
 
-			if (desde === '') {
-				alert('¡Debe Ingresar una fecha de inicio!')
-			} else {
-				$('#tbodylisto').html('<p style="padding-left: 20px; padding-top: 20px;">Cargando...<p>');
+			if (fecha_desde != '' && fecha_hasta != '') {
+				$("#fecha_desde").val(fecha_desde);
+				$("#fecha_hasta").val(fecha_hasta);
+
+				filtrar();
+			}
+		}else{
+			// event.preventDefault();
+			alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");		
+		}
+
+
+		/*
+		 * END OF - Load filter from localStorage if exists/existData
+		 */
+
+		function filtrar () {
+			$('#tbodylisto').html('<p style="padding-left: 20px; padding-top: 20px;">Cargando...<p>');
+				var desde = $('#fecha_desde').val();
+				var hasta = $('#fecha_hasta').val();
 
 				desde = changeDate3(desde);
 				desde = encodeURIComponent(desde);
+
+				hasta = changeDate3(hasta);
+				hasta = encodeURIComponent(hasta);
 
 				$.getJSON('/ordenestrabajo_filtrar/' + desde + '/' + hasta, function (data){
 					if (data.length != 0){
@@ -189,49 +239,69 @@
 						$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
 					}
 				});
+		}
+
+		$('#btnFiltrar').on('click', function () {
+			const fecha_desde = $('#fecha_desde').val();
+			const fecha_hasta = $('#fecha_hasta').val();
+
+			if (fecha_desde == '' || fecha_hasta == '') {
+				alert('Debe completar las fechas para la busqueda');
+			} else {
+				filtrar();
 			}
+			
 		})
 	}
 
 	$(document).ready(mainReady);
 
-	/* Seccion
-	 * (document).on
-	 */
+	/*******************************
+	* ON CLICK BUTTON .btnEliminar *
+	********************************/
 
-	// $(document).on("click", ".herramientas_modificar_fechaCambio", function () {
-	// 	var param1 = $(this).data('paramid');
-	// 	var param2 = $(this).data('paramtf');
-	// 	var today = generateTodayDateYMD();
-		
-	// 	$('#fecha_hoy').val(today);
+	$(document).on('click', '.btnEliminar', function () {
+		if (confirm('¿Seguro desea eliminar?')) {
+			const id_orden = $(this).data("idorden")
 
-	// 	var desde = $('#fecha_desde').val();
-	// 	desde = changeDate3(desde);
-	// 	var hasta = $('#fecha_hoy').val();
-	// 	var denominacion = $('#nombre').val();
+			$.getJSON('/ordenestrabajo_eliminar/' + id_orden, function (data) {
+				if (data != true) {
+					alert('Se ha producido un error.')
+				}
 
-	// 	if (denominacion === '') {
-	// 		denominacion = 'NoName';
-	// 	}
+				$('#btnFiltrar').click();
+			})
+		} else {
+			return false
+		}
+	});
 
-	// 	$.post("/herramientas_modificar_fechaCambio/" + param1 + "/" + param2, function () {
-	// 		$('#tbodylisto').html('<p style="padding-left: 20px; padding-top: 20px;">Cargando...<p>');
-	// 			$.getJSON('/herramientas_filtrar/' + desde + '/' + hasta + '/' + denominacion, function (data){
-	// 				if (data.length != 0){
-	// 					$('#tbodylisto > tr').remove();
-	// 					var template = $('#tabla_herramientas').html();
+	/*
+	* Save filter data in localStorage
+	*/
 
-	// 					var output = parseSwig(template, data);
+	$(document).on('click', '.btnStoreFilter', function () {
+		if ('localStorage' in window && window['localStorage'] !== null) {
+			const objDatos = localStorage.getItem('objDatos');
+			var objDatos_parsed = JSON.parse(objDatos);
 
-	// 					$('#tbodylisto').html(output);
+			var fecha_desde = $("#fecha_desde").val();
+			var fecha_hasta = $("#fecha_hasta").val();
 
-	// 				}else{
-	// 					$('#tbodylisto > tr').remove();
-	// 					$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-	// 				}
-	// 			});
-	// 	});
-	// });
+			objDatos_parsed.fecha_desde = fecha_desde;
+			objDatos_parsed.fecha_hasta = fecha_hasta;
+
+			const objDatos_stringified = JSON.stringify(objDatos_parsed);
+			localStorage.setItem('objDatos', objDatos_stringified);
+		} else {
+			// event.preventDefault();
+			alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");		
+		}
+	});
+
+
+	/*
+	* END OF - Save filter data in localStorage
+	*/
 </script>
 {% endblock %}
