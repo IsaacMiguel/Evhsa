@@ -21,6 +21,7 @@ function getIndex(req, res) {
 var formatNumber = {
 	separador: ".", // separador para los miles
 	sepDecimal: ",", // separador para los decimales
+	//changes
 	formatear:function (num){
 		num +='';
 		var splitStr = num.split('.');
