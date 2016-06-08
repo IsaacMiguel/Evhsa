@@ -15,6 +15,10 @@
 body {
 	background-color: #eee !important;
 }
+
+td{
+	text-align: right !important;
+}
 </style>
 <link href="/css/flujodefondos_reporte.css" rel="stylesheet">
 <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -61,6 +65,7 @@ body {
 				<th><h4>29</h4></th>
 				<th><h4>30</h4></th>
 				<th><h4>31</h4></th>
+				<th><h4>TOTAL</h4></th>
 			</tr>
 			{% for i in ingresos %}
 				<tr>
@@ -96,6 +101,7 @@ body {
 					<td>{% if i.suma29 != 0 %}{{ i.suma29 }}{% else %}<font color="#a6a6a6">{{ i.suma29 }}</font>{% endif %}</td>
 					<td>{% if i.suma30 != 0 %}{{ i.suma30 }}{% else %}<font color="#a6a6a6">{{ i.suma30 }}</font>{% endif %}</td>
 					<td>{% if i.suma31 != 0 %}{{ i.suma31 }}{% else %}<font color="#a6a6a6">{{ i.suma31 }}</font>{% endif %}</td>
+					<td style="text-align:right;">{% if i.totalsuma != 0 %}{{ i.totalsuma }}{% else %}<font color="#a6a6a6">{{ i.totalsuma }}</font>{% endif %}</td>
 				</tr>
 			{% endfor %}
 			<tr>
@@ -131,10 +137,11 @@ body {
 				<td>{% if total_ingresos.total29 != 0 %}{{ total_ingresos.total29 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total29 }}</font>{% endif %}</td>
 				<td>{% if total_ingresos.total30 != 0 %}{{ total_ingresos.total30 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total30 }}</font>{% endif %}</td>
 				<td>{% if total_ingresos.total31 != 0 %}{{ total_ingresos.total31 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total31 }}</font>{% endif %}</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td style="test-align: left; padding-bottom: 8px !important; padding-top: 8px !important;"><h2><b>EGRESOS</b></h2></td>
-				<td colspan="31"></td>
+				<td colspan="32"></td>
 			</tr>
 			{% for e in egresos %}
 				<tr>
@@ -170,6 +177,7 @@ body {
 					<td>{% if e.suma29 != 0 %}{{ e.suma29 }}{% else %}<font color="#a6a6a6">{{ e.suma29 }}</font>{% endif %}</td>
 					<td>{% if e.suma30 != 0 %}{{ e.suma30 }}{% else %}<font color="#a6a6a6">{{ e.suma30 }}</font>{% endif %}</td>
 					<td>{% if e.suma31 != 0 %}{{ e.suma31 }}{% else %}<font color="#a6a6a6">{{ e.suma31 }}</font>{% endif %}</td>
+					<td style="text-align:right;">{% if e.totalsuma != 0 %}{{ e.totalsuma }}{% else %}<font color="#a6a6a6">{{ e.totalsuma }}</font>{% endif %}</td>
 				</tr>
 			{% endfor %}
 			<tr>
@@ -205,6 +213,7 @@ body {
 				<td>{% if total_egresos.total29 != 0 %}{{ total_egresos.total29 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total29 }}</font>{% endif %}</td>
 				<td>{% if total_egresos.total30 != 0 %}{{ total_egresos.total30 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total30 }}</font>{% endif %}</td>
 				<td>{% if total_egresos.total31 != 0 %}{{ total_egresos.total31 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total31 }}</font>{% endif %}</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td style="text-align: left !important;"><b>SALDO DIARIO</b></td>
@@ -239,6 +248,7 @@ body {
 				<td>{% if saldos_diarios.saldo29 != 0 %}{{ saldos_diarios.saldo29 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo29 }}</font>{% endif %}</td>
 				<td>{% if saldos_diarios.saldo30 != 0 %}{{ saldos_diarios.saldo30 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo30 }}</font>{% endif %}</td>
 				<td>{% if saldos_diarios.saldo31 != 0 %}{{ saldos_diarios.saldo31 }}{% else %}<font color="#a6a6a6">{{ saldos_diarios.saldo31 }}</font>{% endif %}</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td style="text-align: left !important;"><b>SALDO INICIAL</b></td>
@@ -273,6 +283,7 @@ body {
 				<td>{% if saldo_inicial.saldoi29 != 0 %}{{ saldo_inicial.saldoi29 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi29 }}</font>{% endif %}</td>
 				<td>{% if saldo_inicial.saldoi30 != 0 %}{{ saldo_inicial.saldoi30 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi30 }}</font>{% endif %}</td>
 				<td>{% if saldo_inicial.saldoi31 != 0 %}{{ saldo_inicial.saldoi31 }}{% else %}<font color="#a6a6a6">{{ saldo_inicial.saldoi31 }}</font>{% endif %}</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td style="text-align: left !important;"><b>DEFICIT / SUPERAVIT</b></td>
@@ -307,6 +318,7 @@ body {
 				<td>{{ deficit.def29 }}</td>
 				<td>{{ deficit.def30 }}</td>
 				<td>{{ deficit.def31 }}</td>
+				<td></td>
 			</tr>
 		</table>
 	</div>	

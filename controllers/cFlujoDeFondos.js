@@ -19,8 +19,8 @@ function getIndex(req, res) {
 }
 
 var formatNumber = {
-	separador: ",", // separador para los miles
-	sepDecimal: ".", // separador para los decimales
+	separador: ".", // separador para los miles
+	sepDecimal: ",", // separador para los decimales
 	formatear:function (num){
 		num +='';
 		var splitStr = num.split('.');
@@ -345,36 +345,31 @@ function getGeneracion_Excel(req, res){
 							deficit.def29 = formatNumber.new(deficit.def29.toFixed(2));
 							deficit.def30 = formatNumber.new(deficit.def30.toFixed(2));
 							deficit.def31 = formatNumber.new(deficit.def31.toFixed(2));
-							
+
 							// ARRANCA EL EXCEL
 
 							var conf = {};
 
 							//este tiene una url acá pero en el server es otra....
-							// conf.stylesXmlFile = "D:/Proyectos/Evhsa/style.xml";
-							conf.stylesXmlFile = "C:/Users/leandro/Documents/Evhsa-master/style.xml";
+							conf.stylesXmlFile = "D:/Proyectos/Evhsa/style.xml";
+							// conf.stylesXmlFile = "C:/Users/leandro/Documents/Evhsa-master/style.xml";
 
-							conf.cols = [{caption:'FLUJO DE FONDOS', type:'string'},
-						    {caption:'EVHSA', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}, {caption:'', type:'string'}, {caption:'', type:'string'},
-						    {caption:'', type:'string'}];
+							conf.cols = [{caption:'FLUJO DE FONDOS', type:'string', width:37},
+						    {caption:'EVHSA', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57},
+						    {caption:'', type:'Float', width:13.57}, {caption:'', type:'Float', width:13.57}];
 
 						    var rows = [];
-						    var fila = ['INGRESOS', '01/'+mes+"/"+anio, '02/'+mes+"/"+anio, '03/'+mes+"/"+anio, '04/'+mes+"/"+anio,
-						    '05/'+mes+"/"+anio, '06/'+mes+"/"+anio, '07/'+mes+"/"+anio, '08/'+mes+"/"+anio, '09/'+mes+"/"+anio,
-						    '10/'+mes+"/"+anio, '11/'+mes+"/"+anio, '12/'+mes+"/"+anio, '13/'+mes+"/"+anio, '14/'+mes+"/"+anio,
-						    '15/'+mes+"/"+anio, '16/'+mes+"/"+anio, '17/'+mes+"/"+anio, '18/'+mes+"/"+anio, '19/'+mes+"/"+anio,
-						    '20/'+mes+"/"+anio, '21/'+mes+"/"+anio, '22/'+mes+"/"+anio, '23/'+mes+"/"+anio, '24/'+mes+"/"+anio,
-						    '25/'+mes+"/"+anio, '26/'+mes+"/"+anio, '27/'+mes+"/"+anio, '28/'+mes+"/"+anio, '29/'+mes+"/"+anio,
-						    '30/'+mes+"/"+anio, '31/'+mes+"/"+anio];
+						    var fila = ['INGRESOS', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14',
+						    '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
 
 						    rows.push(fila);
 
@@ -387,7 +382,7 @@ function getGeneracion_Excel(req, res){
 						    	ingresos[i].suma14, ingresos[i].suma15, ingresos[i].suma16, ingresos[i].suma17, ingresos[i].suma18, 
 						    	ingresos[i].suma19, ingresos[i].suma20, ingresos[i].suma21, ingresos[i].suma22, ingresos[i].suma23, 
 						    	ingresos[i].suma24, ingresos[i].suma25, ingresos[i].suma26, ingresos[i].suma27, ingresos[i].suma28, 
-						    	ingresos[i].suma29, ingresos[i].suma30, ingresos[i].suma31];
+						    	ingresos[i].suma29, ingresos[i].suma30, ingresos[i].suma31, ingresos[i].totalsuma];
 
 						    	rows.push(fila);
 						    }
@@ -407,13 +402,8 @@ function getGeneracion_Excel(req, res){
 						    rows.push(fila);
 
 						    // EGRESOS
-						    var fila = ['EGRESOS', '01/'+mes+"/"+anio, '02/'+mes+"/"+anio, '03/'+mes+"/"+anio, '04/'+mes+"/"+anio,
-						    '05/'+mes+"/"+anio, '06/'+mes+"/"+anio, '07/'+mes+"/"+anio, '08/'+mes+"/"+anio, '09/'+mes+"/"+anio,
-						    '10/'+mes+"/"+anio, '11/'+mes+"/"+anio, '12/'+mes+"/"+anio, '13/'+mes+"/"+anio, '14/'+mes+"/"+anio,
-						    '15/'+mes+"/"+anio, '16/'+mes+"/"+anio, '17/'+mes+"/"+anio, '18/'+mes+"/"+anio, '19/'+mes+"/"+anio,
-						    '20/'+mes+"/"+anio, '21/'+mes+"/"+anio, '22/'+mes+"/"+anio, '23/'+mes+"/"+anio, '24/'+mes+"/"+anio,
-						    '25/'+mes+"/"+anio, '26/'+mes+"/"+anio, '27/'+mes+"/"+anio, '28/'+mes+"/"+anio, '29/'+mes+"/"+anio,
-						    '30/'+mes+"/"+anio, '31/'+mes+"/"+anio];
+						    var fila = ['EGRESOS', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14',
+						    '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
 
 						    rows.push(fila);
 
@@ -424,7 +414,7 @@ function getGeneracion_Excel(req, res){
 						    	egresos[i].suma14, egresos[i].suma15, egresos[i].suma16, egresos[i].suma17, egresos[i].suma18, 
 						    	egresos[i].suma19, egresos[i].suma20, egresos[i].suma21, egresos[i].suma22, egresos[i].suma23, 
 						    	egresos[i].suma24, egresos[i].suma25, egresos[i].suma26, egresos[i].suma27, egresos[i].suma28, 
-						    	egresos[i].suma29, egresos[i].suma30, egresos[i].suma31];
+						    	egresos[i].suma29, egresos[i].suma30, egresos[i].suma31, egresos[i].totalsuma];
 
 						    	rows.push(fila);
 						    }

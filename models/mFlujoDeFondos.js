@@ -4,261 +4,189 @@ module.exports = {
 	getIngresos: getIngresos,
 	getEgresos: getEgresos,
 	getTotalIngresos: getTotalIngresos,
-	// getTotalIngresosSinFormat: getTotalIngresosSinFormat,
 	getTotalEgresos: getTotalEgresos,
-	// getTotalEgresosSinFormat: getTotalEgresosSinFormat,
 	getSaldosDiarios: getSaldosDiarios,
 	getSaldosDiariosSinFormat: getSaldosDiariosSinFormat 
 }
 
 function getIngresos(anio, mes, cb){
 	conn("select codigosie.nombre as codigotxt, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma01, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma02, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma03, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma04, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma05, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma06, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma07, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma08, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma09, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma10, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma11, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma12, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma13, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma14, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma15, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma16, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma17, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma18, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma19, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma20, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma21, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma22, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma23, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma24, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma25, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma26, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma27, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma28, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma29, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma30, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2), 0) as suma31 "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma01, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma02, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma03, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma04, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma05, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma06, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma07, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma08, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma09, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma10, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma11, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma12, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma13, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma14, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma15, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma16, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma17, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma18, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma19, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma20, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma21, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma22, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma23, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma24, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma25, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma26, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma27, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma28, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma29, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma30, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as suma31, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha like '"+anio+"-"+mes+"-%' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 2, 'de_DE'), 0) as totalsuma "+
 		"from codigosie where codigosie.tipo = 'I' order by nombre", cb);
 }
 
 function getTotalIngresos(anio, mes, cb){
 	conn("select "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total01, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total02, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total03, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total04, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total05, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total06, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total07, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total08, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total09, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total10, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total11, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total12, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total13, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total14, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total15, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total16, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total17, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total18, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total19, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total20, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total21, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total22, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total23, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total24, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total25, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total26, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total27, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total28, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total29, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total30, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2) as total31 "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total01, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total02, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total03, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total04, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total05, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total06, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total07, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total08, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total09, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total10, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total11, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total12, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total13, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total14, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total15, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total16, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total17, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total18, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total19, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total20, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total21, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total22, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total23, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total24, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total25, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total26, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total27, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total28, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total29, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total30, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total31 "+
 		"from codigosie where codigosie.tipo = 'I'", cb);
 }
 
-// function getTotalIngresosSinFormat(anio, mes, cb){
-// 	conn("select "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total01, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total02, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total03, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total04, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total05, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total06, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total07, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total08, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total09, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total10, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total11, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total12, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total13, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total14, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total15, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total16, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total17, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total18, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total19, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total20, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total21, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total22, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total23, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total24, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total25, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total26, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total27, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total28, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total29, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total30, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)) as total31 "+
-// 		"from codigosie ", cb);
-// }
-
 function getEgresos(anio, mes, cb){
 	conn("select codigosie.nombre as codigotxt, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma01, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma02, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma03, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma04, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma05, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma06, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma07, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma08, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma09, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma10, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma11, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma12, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma13, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma14, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma15, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma16, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma17, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma18, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma19, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma20, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma21, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma22, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma23, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma24, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma25, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma26, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma27, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma28, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma29, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma30, "+
-		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2), 0) as suma31 "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma01, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma02, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma03, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma04, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma05, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma06, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma07, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma08, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma09, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma10, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma11, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma12, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma13, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma14, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma15, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma16, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma17, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma18, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma19, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma20, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma21, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma22, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma23, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma24, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma25, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma26, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma27, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma28, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma29, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma30, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as suma31, "+
+		"ifnull(FORMAT((select sum(ingegr.importe) from ingegr where fecha like '"+anio+"-"+mes+"-%' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 2, 'de_DE'), 0) as totalsuma "+
 		"from codigosie where codigosie.tipo = 'E' order by nombre", cb);
 }
 
 function getTotalEgresos(anio, mes, cb){
 	conn("select "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total01, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total02, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total03, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total04, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total05, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total06, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total07, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total08, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total09, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total10, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total11, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total12, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total13, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total14, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total15, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total16, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total17, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total18, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total19, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total20, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total21, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total22, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total23, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total24, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total25, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total26, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total27, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total28, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total29, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total30, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2) as total31 "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total01, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total02, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total03, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total04, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total05, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total06, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total07, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total08, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total09, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total10, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total11, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total12, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total13, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total14, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total15, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total16, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total17, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total18, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total19, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total20, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total21, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total22, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total23, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total24, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total25, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total26, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total27, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total28, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total29, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total30, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total31 "+
 		"from codigosie where codigosie.tipo = 'E'", cb);
 }
 
-// function getTotalEgresosSinFormat(anio, mes, cb){
-// 	conn("select "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-01' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total01, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-02' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total02, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-03' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total03, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-04' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total04, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-05' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total05, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-06' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total06, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-07' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total07, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-08' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total08, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-09' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total09, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-10' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total10, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-11' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total11, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-12' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total12, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-13' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total13, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-14' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total14, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-15' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total15, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-16' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total16, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-17' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total17, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-18' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total18, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-19' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total19, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-20' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total20, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-21' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total21, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-22' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total22, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-23' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total23, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-24' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total24, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-25' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total25, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-26' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total26, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-27' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total27, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total28, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total29, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total30, "+
-// 		"sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)) as total31 "+
-// 		"from codigosie ", cb);
-// }
-
 function getSaldosDiarios(anio, mes, cb){
-	conn("SELECT FORMAT((a.totali01 - a.totale01), 2) as saldo01, "+
-				"FORMAT((b.totali02 - b.totale02), 2) as saldo02, "+
-				"FORMAT((c.totali03 - c.totale03), 2) as saldo03, "+
-				"FORMAT((d.totali04 - d.totale04), 2) as saldo04, "+
-				"FORMAT((e.totali05 - e.totale05), 2) as saldo05, "+
-				"FORMAT((f.totali06 - f.totale06), 2) as saldo06, "+
-				"FORMAT((g.totali07 - g.totale07), 2) as saldo07, "+
-				"FORMAT((h.totali08 - h.totale08), 2) as saldo08, "+
-				"FORMAT((i.totali09 - i.totale09), 2) as saldo09, "+
-				"FORMAT((j.totali10 - j.totale10), 2) as saldo10, "+
-				"FORMAT((k.totali11 - k.totale11), 2) as saldo11, "+
-				"FORMAT((l.totali12 - l.totale12), 2) as saldo12, "+
-				"FORMAT((m.totali13 - m.totale13), 2) as saldo13, "+
-				"FORMAT((n.totali14 - n.totale14), 2) as saldo14, "+
-				"FORMAT((o.totali15 - o.totale15), 2) as saldo15, "+
-				"FORMAT((p.totali16 - p.totale16), 2) as saldo16, "+
-				"FORMAT((q.totali17 - q.totale17), 2) as saldo17, "+
-				"FORMAT((r.totali18 - r.totale18), 2) as saldo18, "+
-				"FORMAT((s.totali19 - s.totale19), 2) as saldo19, "+
-				"FORMAT((t.totali20 - t.totale20), 2) as saldo20, "+
-				"FORMAT((u.totali21 - u.totale21), 2) as saldo21, "+
-				"FORMAT((v.totali22 - v.totale22), 2) as saldo22, "+
-				"FORMAT((w.totali23 - w.totale23), 2) as saldo23, "+
-				"FORMAT((x.totali24 - x.totale24), 2) as saldo24, "+
-				"FORMAT((y.totali25 - y.totale25), 2) as saldo25, "+
-				"FORMAT((z.totali26 - z.totale26), 2) as saldo26, "+
-				"FORMAT((aa.totali27 - aa.totale27), 2) as saldo27, "+
-				"FORMAT((bb.totali28 - bb.totale28), 2) as saldo28, "+
-				"FORMAT((cc.totali29 - cc.totale29), 2) as saldo29, "+
-				"FORMAT((dd.totali30 - dd.totale30), 2) as saldo30, "+
-				"FORMAT((ee.totali31 - ee.totale31), 2) as saldo31 "+
+	conn("SELECT FORMAT((a.totali01 - a.totale01), 2, 'de_DE') as saldo01, "+
+				"FORMAT((b.totali02 - b.totale02), 2, 'de_DE') as saldo02, "+
+				"FORMAT((c.totali03 - c.totale03), 2, 'de_DE') as saldo03, "+
+				"FORMAT((d.totali04 - d.totale04), 2, 'de_DE') as saldo04, "+
+				"FORMAT((e.totali05 - e.totale05), 2, 'de_DE') as saldo05, "+
+				"FORMAT((f.totali06 - f.totale06), 2, 'de_DE') as saldo06, "+
+				"FORMAT((g.totali07 - g.totale07), 2, 'de_DE') as saldo07, "+
+				"FORMAT((h.totali08 - h.totale08), 2, 'de_DE') as saldo08, "+
+				"FORMAT((i.totali09 - i.totale09), 2, 'de_DE') as saldo09, "+
+				"FORMAT((j.totali10 - j.totale10), 2, 'de_DE') as saldo10, "+
+				"FORMAT((k.totali11 - k.totale11), 2, 'de_DE') as saldo11, "+
+				"FORMAT((l.totali12 - l.totale12), 2, 'de_DE') as saldo12, "+
+				"FORMAT((m.totali13 - m.totale13), 2, 'de_DE') as saldo13, "+
+				"FORMAT((n.totali14 - n.totale14), 2, 'de_DE') as saldo14, "+
+				"FORMAT((o.totali15 - o.totale15), 2, 'de_DE') as saldo15, "+
+				"FORMAT((p.totali16 - p.totale16), 2, 'de_DE') as saldo16, "+
+				"FORMAT((q.totali17 - q.totale17), 2, 'de_DE') as saldo17, "+
+				"FORMAT((r.totali18 - r.totale18), 2, 'de_DE') as saldo18, "+
+				"FORMAT((s.totali19 - s.totale19), 2, 'de_DE') as saldo19, "+
+				"FORMAT((t.totali20 - t.totale20), 2, 'de_DE') as saldo20, "+
+				"FORMAT((u.totali21 - u.totale21), 2, 'de_DE') as saldo21, "+
+				"FORMAT((v.totali22 - v.totale22), 2, 'de_DE') as saldo22, "+
+				"FORMAT((w.totali23 - w.totale23), 2, 'de_DE') as saldo23, "+
+				"FORMAT((x.totali24 - x.totale24), 2, 'de_DE') as saldo24, "+
+				"FORMAT((y.totali25 - y.totale25), 2, 'de_DE') as saldo25, "+
+				"FORMAT((z.totali26 - z.totale26), 2, 'de_DE') as saldo26, "+
+				"FORMAT((aa.totali27 - aa.totale27), 2, 'de_DE') as saldo27, "+
+				"FORMAT((bb.totali28 - bb.totale28), 2, 'de_DE') as saldo28, "+
+				"FORMAT((cc.totali29 - cc.totale29), 2, 'de_DE') as saldo29, "+
+				"FORMAT((dd.totali30 - dd.totale30), 2, 'de_DE') as saldo30, "+
+				"FORMAT((ee.totali31 - ee.totale31), 2, 'de_DE') as saldo31 "+
 			"FROM (SELECT "+
 				"sum( ifnull((select sum(ingegr.importe) "+
 					"from ingegr "+
