@@ -47,16 +47,20 @@ function postGeneracion(req, res){
 	var saldo_inicial = {'saldoi01': 0};
 	var deficit = {};
 
-	mFlujoDeFondos.getIngresos(anio, mes, function (ingresos){
-		// console.log(ingresos)
-		mFlujoDeFondos.getTotalIngresos(anio, mes, function (total_ingresos){
-			// console.log(total_ingresos)
-			mFlujoDeFondos.getEgresos(anio, mes, function (egresos){			
-				mFlujoDeFondos.getTotalEgresos(anio, mes, function (total_egresos){
-					mFlujoDeFondos.getSaldosDiarios(anio, mes, function (saldos_diarios){
-						// console.log(saldos_diarios)
-						mFlujoDeFondos.getSaldosDiariosSinFormat(anio, mes, function (saldos_diarios_sinformat){
+	mFlujoDeFondos.getSP_getIngresos(anio, mes, function (ingresos){
+		var ingresos = ingresos[0];
+		mFlujoDeFondos.getSP_getTotalIngresos(anio, mes, function (total_ingresos){
+			var total_ingresos = total_ingresos[0];
+			mFlujoDeFondos.getSP_getEgresos(anio, mes, function (egresos){
+				var egresos = egresos[0];	
+				mFlujoDeFondos.getSP_getTotalEgresos(anio, mes, function (total_egresos){
+					var total_egresos = total_egresos[0];
+					mFlujoDeFondos.getSP_getSaldosDiarios(anio, mes, function (saldos_diarios){
+						var saldos_diarios = saldos_diarios[0];
+						mFlujoDeFondos.getSP_getSaldosDiariosSinFormat(anio, mes, function (saldos_diarios_sinformat){
 							var saldos_diarios_sinformat = saldos_diarios_sinformat[0];
+							console.log(saldos_diarios_sinformat[0])
+							saldos_diarios_sinformat = saldos_diarios_sinformat[0];
 
 							deficit.def01 = saldos_diarios_sinformat.saldo01 + saldo_inicial.saldoi01;
 							deficit.def01 = deficit.def01;
@@ -370,7 +374,7 @@ function getGeneracion_Excel(req, res){
 
 						    var rows = [];
 						    var fila = ['INGRESOS', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14',
-						    '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+						    '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', ''];
 
 						    rows.push(fila);
 
@@ -398,13 +402,13 @@ function getGeneracion_Excel(req, res){
 						    total_i.total13, total_i.total14, total_i.total15, total_i.total16, total_i.total17, total_i.total18,
 						    total_i.total19, total_i.total20, total_i.total21, total_i.total22, total_i.total23, total_i.total24,
 						    total_i.total25, total_i.total26, total_i.total27, total_i.total28, total_i.total29, total_i.total30,
-						    total_i.total31];
+						    total_i.total31, total_i.sumatotal];
 
 						    rows.push(fila);
 
 						    // EGRESOS
 						    var fila = ['EGRESOS', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14',
-						    '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+						    '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', ''];
 
 						    rows.push(fila);
 
@@ -430,7 +434,7 @@ function getGeneracion_Excel(req, res){
 						    total_e.total13, total_e.total14, total_e.total15, total_e.total16, total_e.total17, total_e.total18,
 						    total_e.total19, total_e.total20, total_e.total21, total_e.total22, total_e.total23, total_e.total24,
 						    total_e.total25, total_e.total26, total_e.total27, total_e.total28, total_e.total29, total_e.total30,
-						    total_e.total31];
+						    total_e.total31, total_e.sumatotal];
 
 						    rows.push(fila);
 

@@ -6,7 +6,13 @@ module.exports = {
 	getTotalIngresos: getTotalIngresos,
 	getTotalEgresos: getTotalEgresos,
 	getSaldosDiarios: getSaldosDiarios,
-	getSaldosDiariosSinFormat: getSaldosDiariosSinFormat 
+	getSaldosDiariosSinFormat: getSaldosDiariosSinFormat,
+	getSP_getIngresos: getSP_getIngresos,
+	getSP_getTotalIngresos: getSP_getTotalIngresos,
+	getSP_getEgresos: getSP_getEgresos,
+	getSP_getTotalEgresos: getSP_getTotalEgresos,
+	getSP_getSaldosDiarios: getSP_getSaldosDiarios,
+	getSP_getSaldosDiariosSinFormat: getSP_getSaldosDiariosSinFormat
 }
 
 function getIngresos(anio, mes, cb){
@@ -78,7 +84,8 @@ function getTotalIngresos(anio, mes, cb){
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total28, "+
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total29, "+
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total30, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total31 "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as total31, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha like '"+anio+"-"+mes+"-%' and ingegr.tipo = 'I'), 0)), 2, 'de_DE') as sumatotal "+
 		"from codigosie where codigosie.tipo = 'I'", cb);
 }
 
@@ -151,7 +158,8 @@ function getTotalEgresos(anio, mes, cb){
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-28' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total28, "+
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-29' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total29, "+
 		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-30' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total30, "+
-		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total31 "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha = '"+anio+"-"+mes+"-31' and ingegr.id_codigoie_fk = codigosie.id and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as total31, "+
+		"FORMAT(sum( ifnull((select sum(ingegr.importe) from ingegr where fecha like '"+anio+"-"+mes+"-%' and ingegr.tipo = 'E'), 0)), 2, 'de_DE') as sumatotal "+
 		"from codigosie where codigosie.tipo = 'E'", cb);
 }
 
@@ -963,4 +971,28 @@ function getSaldosDiariosSinFormat(anio, mes, cb){
 					"where fecha = '"+anio+"-"+mes+"-31' "+
 					"and ingegr.id_codigoie_fk = codigosie.id "+
 					"and ingegr.tipo = 'E'), 0)) as totale31 from codigosie) as ee", cb);
+}
+
+function getSP_getIngresos(anio, mes, cb){
+	conn("call getIngresos('"+anio+"', '"+mes+"');", cb);
+}
+
+function getSP_getTotalIngresos(anio, mes, cb){
+	conn("call getTotalIngresos('"+anio+"', '"+mes+"');", cb);
+}
+
+function getSP_getEgresos(anio, mes, cb){
+	conn("call getEgresos('"+anio+"', '"+mes+"');", cb);
+}
+
+function getSP_getTotalEgresos(anio, mes, cb){
+	conn("call getTotalEgresos('"+anio+"', '"+mes+"');", cb);
+}
+
+function getSP_getSaldosDiarios(anio, mes, cb){
+	conn("call getSaldosDiarios('"+anio+"', '"+mes+"');", cb);
+}
+
+function getSP_getSaldosDiariosSinFormat(anio, mes, cb){
+	conn("call getSaldosDiariosSinFormat('"+anio+"', '"+mes+"');", cb);
 }
