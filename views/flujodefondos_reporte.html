@@ -31,7 +31,7 @@ td{
 		<button id="btnExport" class="btn btn-default btn-lg pull-right" style="margin-top: 15px !important;" title="Descargar Excel"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></button>
 	</div>
 	<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
-		<table class="table table-striped ingresos">
+		<table class="table table-striped ingresos" style="margin-bottom: 0px;">
 			<tr>
 				<th style="padding-bottom: 8px !important; padding-top: 8px !important;"><h2><b>INGRESOS</b></h2></th>
 				<th><h4>01</h4></th>
@@ -138,7 +138,6 @@ td{
 				<td>{% if total_ingresos.total30 != 0 %}{{ total_ingresos.total30 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total30 }}</font>{% endif %}</td>
 				<td>{% if total_ingresos.total31 != 0 %}{{ total_ingresos.total31 }}{% else %}<font color="#a6a6a6">{{ total_ingresos.total31 }}</font>{% endif %}</td>
 				<td>{% if total_ingresos.sumatotal != 0 %}{{ total_ingresos.sumatotal }}{% else %}<font color="#a6a6a6">{{ total_ingresos.sumatotal }}</font>{% endif %}</td>
-				<td></td>
 			</tr>
 			<tr>
 				<td style="test-align: left; padding-bottom: 8px !important; padding-top: 8px !important;"><h2><b>EGRESOS</b></h2></td>
@@ -215,7 +214,6 @@ td{
 				<td>{% if total_egresos.total30 != 0 %}{{ total_egresos.total30 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total30 }}</font>{% endif %}</td>
 				<td>{% if total_egresos.total31 != 0 %}{{ total_egresos.total31 }}{% else %}<font color="#a6a6a6">{{ total_egresos.total31 }}</font>{% endif %}</td>
 				<td>{% if total_egresos.sumatotal != 0 %}{{ total_egresos.sumatotal }}{% else %}<font color="#a6a6a6">{{ total_egresos.sumatotal }}</font>{% endif %}</td>
-				<td></td>
 			</tr>
 			<tr>
 				<td style="text-align: left !important;"><b>SALDO DIARIO</b></td>
