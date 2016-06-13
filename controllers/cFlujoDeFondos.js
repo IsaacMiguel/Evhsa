@@ -59,7 +59,7 @@ function postGeneracion(req, res){
 						var saldos_diarios = saldos_diarios[0];
 						mFlujoDeFondos.getSP_getSaldosDiariosSinFormat(anio, mes, function (saldos_diarios_sinformat){
 							var saldos_diarios_sinformat = saldos_diarios_sinformat[0];
-							console.log(saldos_diarios_sinformat[0])
+							// console.log(saldos_diarios_sinformat[0])
 							saldos_diarios_sinformat = saldos_diarios_sinformat[0];
 
 							deficit.def01 = saldos_diarios_sinformat.saldo01 + saldo_inicial.saldoi01;
@@ -216,13 +216,20 @@ function getGeneracion_Excel(req, res){
 	var saldo_inicial = {'saldoi01': 0};
 	var deficit = {};
 
-	mFlujoDeFondos.getIngresos(anio, mes, function (ingresos){
-		mFlujoDeFondos.getTotalIngresos(anio, mes, function (total_ingresos){
-			mFlujoDeFondos.getEgresos(anio, mes, function (egresos){			
-				mFlujoDeFondos.getTotalEgresos(anio, mes, function (total_egresos){
-					mFlujoDeFondos.getSaldosDiarios(anio, mes, function (saldos_diarios){
-						mFlujoDeFondos.getSaldosDiariosSinFormat(anio, mes, function (saldos_diarios_sinformat){
+	mFlujoDeFondos.getSP_getIngresos(anio, mes, function (ingresos){
+		var ingresos = ingresos[0];
+		mFlujoDeFondos.getSP_getTotalIngresos(anio, mes, function (total_ingresos){
+			var total_ingresos = total_ingresos[0];
+			mFlujoDeFondos.getSP_getEgresos(anio, mes, function (egresos){
+				var egresos = egresos[0];	
+				mFlujoDeFondos.getSP_getTotalEgresos(anio, mes, function (total_egresos){
+					var total_egresos = total_egresos[0];
+					mFlujoDeFondos.getSP_getSaldosDiarios(anio, mes, function (saldos_diarios){
+						var saldos_diarios = saldos_diarios[0];
+						mFlujoDeFondos.getSP_getSaldosDiariosSinFormat(anio, mes, function (saldos_diarios_sinformat){
 							var saldos_diarios_sinformat = saldos_diarios_sinformat[0];
+							// console.log(saldos_diarios_sinformat[0])
+							saldos_diarios_sinformat = saldos_diarios_sinformat[0];
 
 							deficit.def01 = saldos_diarios_sinformat.saldo01 + saldo_inicial.saldoi01;
 							deficit.def01 = deficit.def01;
@@ -445,7 +452,7 @@ function getGeneracion_Excel(req, res){
 						    fila = ['SALDO DIARIO', sd.saldo01, sd.saldo02, sd.saldo03, sd.saldo04, sd.saldo05, sd.saldo06, sd.saldo07, 
 						    sd.saldo08, sd.saldo09, sd.saldo10, sd.saldo11, sd.saldo12, sd.saldo13, sd.saldo14, sd.saldo15, sd.saldo16, 
 						    sd.saldo17, sd.saldo18, sd.saldo19, sd.saldo20, sd.saldo21, sd.saldo22, sd.saldo23, sd.saldo24, sd.saldo25, 
-						    sd.saldo26, sd.saldo27, sd.saldo28, sd.saldo29, sd.saldo30, sd.saldo31];
+						    sd.saldo26, sd.saldo27, sd.saldo28, sd.saldo29, sd.saldo30, sd.saldo31, ''];
 
 						    rows.push(fila);
 
@@ -457,7 +464,7 @@ function getGeneracion_Excel(req, res){
 						    si.saldoi07, si.saldoi08, si.saldoi09, si.saldoi10, si.saldoi11, si.saldoi12, si.saldoi13, si.saldoi14, 
 						    si.saldoi15, si.saldoi16, si.saldoi17, si.saldoi18, si.saldoi19, si.saldoi20, si.saldoi21, si.saldoi22, 
 						    si.saldoi23, si.saldoi24, si.saldoi25, si.saldoi26, si.saldoi27, si.saldoi28, si.saldoi29, si.saldoi30, 
-						    si.saldoi31];
+						    si.saldoi31, ''];
 
 						    rows.push(fila);
 
@@ -468,7 +475,7 @@ function getGeneracion_Excel(req, res){
 						    fila = ['DEFICIT/SUPERAVIT', d.def01, d.def02, d.def03, d.def04, d.def05, d.def06, d.def07, d.def08, 
 						    d.def09, d.def10, d.def11, d.def12, d.def13, d.def14, d.def15, d.def16, d.def17, d.def18, d.def19, 
 						    d.def20, d.def21, d.def22, d.def23, d.def24, d.def25, d.def26, d.def27, d.def28, d.def29, d.def30, 
-						    d.def31];
+						    d.def31, ''];
 
 						    rows.push(fila);
 
