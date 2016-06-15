@@ -1,0 +1,131 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/ordenestrabajo_alta.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+    <div class="bs-example">
+        <div class="panel-group">
+	       	<!-- div acord GENERAL -->
+	            <div class="panel panel-primary" id="accordion_general">
+	                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+	                	<div class="row">
+	                		<div class="col-md-3 pull-left">
+	                			<!-- <div class="panel-title"> -->
+			                        <h4>GENERAL</h4>
+<!-- 			                    </div> -->
+	                		</div>
+		                    <div class="col-md-1 pull-right">
+		                    	<button class="btn btn-warning menu" data-idorden="{{ orden.id }}" id="modificar_general" title="Modificar Orden General">
+									<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+								</button>
+		                    </div>
+	                	</div>
+	                </div>
+	                <div id="collapseOne" class="panel-collapse collapse in">
+		                <div class="row">
+		                	<div class="col-sm-6">
+		                		<div class="row">
+									<div class="col-sm-6 col-xs-6">
+										<strong>Nro de Orden:</strong>
+									</div>
+									<div class="col-sm-6 col-xs-6">
+										{{ orden.numero }}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6 col-xs-6">
+										<strong>Nro de Coche:</strong>
+									</div>
+									<div class="col-sm-6 col-xs-6">
+										{{ orden.nro_coche }}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6 col-xs-6">
+										<strong>Fecha:</strong>
+									</div>
+									<div class="col-sm-6 col-xs-6">
+										{{ orden.fecha_f }}
+									</div>
+								</div>
+		                	</div>
+		                	<div class="col-sm-6">
+		                		<div class="row">
+									<div class="col-sm-6 col-xs-6">
+										<strong>Fecha Anterior:</strong>
+									</div>
+									<div class="col-sm-6 col-xs-6">
+										{% if orden.fecha_ant_f == '00/00/0000' %}
+		                    			{% else %}
+		                    				{{ orden.fecha_ant_f }}
+		                    			{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6 col-xs-6">
+										<strong>Nro Anterior:</strong>
+									</div>
+									<div class="col-sm-6 col-xs-6">
+										{% if orden.nro_ant == 0 %}
+		                    			{% else %}
+		                    				{{ orden.nro_ant }}
+		                    			{% endif %}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6 col-xs-6">
+										<strong>Km hasta hoy:</strong>
+									</div>
+									<div class="col-sm-6 col-xs-6">
+										{% if orden.km_hastahoy == 0 %}
+		                    			{% else %}
+		                    				{{ orden.km_hastahoy }}
+		                    			{% endif %}
+									</div>
+								</div>
+		                	</div>
+		                </div>
+		            </div>
+	            </div>
+	        <!-- /div acord GENERAL -->
+
+	        <!-- div acord FRENOS -->
+	        <div class="panel panel-primary" id="accordion_frenos">
+                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                	<div class="row">
+                		<div class="col-md-3 pull-left">
+                			<!-- <div class="panel-title"> -->
+		                        <h4>FRENOS</h4>
+<!-- 			                    </div> -->
+                		</div>
+	                    <div class="col-md-1 pull-right">
+	                    	<button class="btn btn-warning menu" data-idorden="{{ orden.id }}" id="modificar_general" title="Modificar Orden General">
+								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							</button>
+	                    </div>
+                	</div>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    EVHSA
+                </div>
+            </div>
+            <!-- /div acord FRENOS -->
+
+
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+
+</script>
+
+{% endblock %}

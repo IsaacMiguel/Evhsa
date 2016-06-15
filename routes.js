@@ -26,6 +26,7 @@ const cReparaciones        = require('./controllers/cReparaciones');
 const cRemitos             = require('./controllers/cRemitos');
 const cSerenos             = require('./controllers/cSerenos');
 const cNovedadesCoches     = require('./controllers/cNovedadesCoches');
+const cOrdenesTrabajo			 = require('./controllers/cOrdenesTrabajo');
 
 const mEventos             = require('./models/mEventos');
 const mAccesos             = require('./models/mAccesos');
@@ -434,6 +435,18 @@ module.exports = function(app) {
 	app.post("/serenos_setcoche/:id_sereno/:id_coche/:fecha_colocado", auth, cSerenos.postColocarCoche);
 	app.get("/serenos_eliminar/:id_sereno", auth, cSerenos.getDel);
 	app.post("/serenos_unsetcoche/:id_sereno", auth, cSerenos.postSacarCoche);
+
+	//ORDENES DE TRABAJO
+	app.get("/ordenes_trabajo", auth, acceso, cOrdenesTrabajo.getLista);
+	app.get("/ordenestrabajo_alta", auth, acceso, cOrdenesTrabajo.getAlta);
+	app.get("/get_ultima_ordentrabajo/:nro_coche/:fecha_hoy", auth, acceso, cOrdenesTrabajo.getUltimaOrden);
+	app.get("/get_validar/:numero", auth, acceso, cOrdenesTrabajo.getValidarInsert);
+	app.post("/ordenestrabajo_alta", auth, cOrdenesTrabajo.postAlta);
+	app.get("/ordenestrabajo_filtrar/:desde/:hasta", auth, acceso, cOrdenesTrabajo.getFiltrar);
+	app.get("/ordenestrabajo_modificar/:id", auth, acceso, cOrdenesTrabajo.getModificar);
+	app.post("/ordenestrabajo_modificar", auth, cOrdenesTrabajo.postModificar);
+	app.get("/ordenestrabajo_eliminar/:id", auth, acceso, cOrdenesTrabajo.getEliminar);
+	app.get("/ordenestrabajo_ver/:id", auth, acceso, cOrdenesTrabajo.getVer);
 
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

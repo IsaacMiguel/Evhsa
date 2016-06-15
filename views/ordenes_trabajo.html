@@ -1,0 +1,307 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/herramientas.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+	      	<table class="table" id="tabla_ordenes">
+	      		<form method="post" id="formalta" action="/ordenestrabajo_modificar">
+					<table align="center" class="table table-striped">
+						<input type="number" value="{{ orden.id }}" id="id_orden" name="id_orden" hidden>
+						<tr>
+							<td>Fecha:</td>
+							<td>
+								{% if orden.fecha_f == '00/00/0000' %}
+									<input type="text" name="fecha" id="fecha" class="form-control datepicker" title="Fecha en que será realizado el trabajo" readonly>
+								{% else %}
+									<input type="text" name="fecha" id="fecha" class="form-control datepicker" value="{{ orden.fecha_f }}" title="Fecha en que será realizado el trabajo" readonly>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>Nro Orden:</td>
+							<td>
+								<input value="{{ orden.numero }}" type="number" name="numero" id="numero" class="form-control" readonly>
+							</td>
+						</tr>
+						<tr>
+							<td>Nro. coche:</td>
+							<td>
+								<input type="text" value="{{ vehiculo.numero }}" id="coches" name="coches" hidden />
+								<input type="text" value="{{ vehiculo.numero }} - {{ vehiculo.marca }} - {{ vehiculo.tipo }} - {{ vehiculo.dominio }}" class="form-control" readonly>
+							</td>
+						</tr>
+						<tr>
+							<td>Fecha anterior:</td>
+							<td>
+								{% if orden.fecha_ant_f == '00/00/0000' %}
+									<input type="text" name="fecha_ant" id="fecha_ant" class="form-control" title="Fecha del mantenimiento anterior" readonly>
+								{% else %}
+									<input type="text" value="{{ orden.fecha_ant_f }}" name="fecha_ant" id="fecha_ant" class="form-control" title="Fecha del mantenimiento anterior" readonly>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>Número anterior:</td>
+							<td>
+								{% if orden.nro_ant == 0 %}
+									<input type="text" id="nro_ant" name="nro_ant" class="form-control" readonly>
+								{% else %}
+									<input type="text" value="{{ orden.nro_ant }}" id="nro_ant" name="nro_ant" class="form-control" readonly>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td>Km hasta hoy:</td>
+							<td>
+								{% if orden.km_hastahoy == 0 %}
+									<input type="number" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly>
+								{% else %}
+									<input type="number" value="{{ orden.km_hastahoy }}" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<td><input type="button" class="btn btn-primary" value="Atras" onclick="history.back()"></td>
+							<td><input type="button" id="agregar" class="btn btn-success" value="Modificar"></td>
+						</tr>
+					</table>
+				</form>
+      		</table>
+      	  </div>	
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/ordenestrabajo_alta" class="btnStoreFilter"><button type="button" class="btn btn-success menu" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 100%;">
+					<table class="pull-right">
+						<tr>
+							<td>Filtrar&nbsp;</td>
+							<td>
+								<input class="form-control datepicker" type="text" id="fecha_desde" name="fecha_desde" readonly />
+							</td>
+							<td>
+								<input class="form-control datepicker" type="text" id="fecha_hasta" name="fecha_hasta" readonly />
+							</td>
+							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
+						</tr>
+					</table>					
+				</td>
+			</tr>	
+		</table>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr>
+			  				<th colspan="3">Opciones</th>
+							<th>Nro Orden</th>
+							<th>Coche</th>
+							<th>Fecha</th>
+							<th>Fecha Anterior</th>
+							<th>Nro Anterior</th>
+							<th>Km Hasta Hoy</th>
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tabla_herramientas" />
+			  			[% for d in data %]
+			  				<tr>
+								<td>
+									<a href="/ordenestrabajo_ver/[[ d.id_orden ]]" class="btnStoreFilter">
+										<button class="btn btn-default" title="Ver Orden / Ver información sobre la Orden">
+											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+										</button>
+									</a>
+								</td>
+								<td>
+									<a href="/ordenestrabajo_modificar/[[ d.id_orden ]]" class="btnStoreFilter">
+										<button class="btn btn-warning menu" title="Modificar Orden" data-idmenu="21" data-accion="m">
+											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+										</button>
+									</a>
+								</td>
+								<td>
+									<button class="btn btn-danger menu btnEliminar" data-idmenu="21" data-accion="b" data-idorden="[[ d.id_orden ]]"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+								</td>
+								
+								<td>[[ d.numero_orden ]]</td>
+								<td>[[ d.numero ]] - [[ d.marca ]] - [[ d.tipo ]] - [[ d.dominio ]]</td>
+								<td>[% if d.fecha_f != '00/00/0000' %][[ d.fecha_f ]][% else %][% endif %]</td>
+								<td>[% if d.fecha_ant_f != '00/00/0000' %][[ d.fecha_ant_f ]][% else %][% endif %]</td>
+								<td>[% if d.nro_ant == 0 %][% else %][[ d.nro_ant ]][% endif %]</td>
+								<td>[% if d.km_hastahoy == 0 %][% else %][[ d.km_hastahoy ]][% endif %]</td>
+							</tr>
+						[% endfor %]
+			  		</script>
+				</table>				
+			</div>
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/swig.min.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	/* Seccion
+	 * (document).ready
+	 */
+
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
+
+	var mainReady = function () {
+		/*
+		 * Load filter from localStorage if exists/existData
+		 */
+
+		if('localStorage' in window && window['localStorage'] !== null) {
+			const objDatos = localStorage.getItem('objDatos');
+			const objDatos_parsed = JSON.parse(objDatos);
+			
+			const fecha_desde = objDatos_parsed.fecha_desde;
+			const fecha_hasta = objDatos_parsed.fecha_hasta;
+
+			if (fecha_desde != '' && fecha_hasta != '') {
+				$("#fecha_desde").val(fecha_desde);
+				$("#fecha_hasta").val(fecha_hasta);
+
+				filtrar();
+			}
+		}else{
+			// event.preventDefault();
+			alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");		
+		}
+
+
+		/*
+		 * END OF - Load filter from localStorage if exists/existData
+		 */
+
+		function filtrar () {
+			$('#tbodylisto').html('<p style="padding-left: 20px; padding-top: 20px;">Cargando...<p>');
+				var desde = $('#fecha_desde').val();
+				var hasta = $('#fecha_hasta').val();
+
+				desde = changeDate3(desde);
+				desde = encodeURIComponent(desde);
+
+				hasta = changeDate3(hasta);
+				hasta = encodeURIComponent(hasta);
+
+				$.getJSON('/ordenestrabajo_filtrar/' + desde + '/' + hasta, function (data){
+					if (data.length != 0){
+						$('#tbodylisto > tr').remove();
+						var template = $('#tabla_herramientas').html();
+
+						var output = parseSwig(template, data);
+
+						$('#tbodylisto').html(output);
+
+					}else{
+						$('#tbodylisto > tr').remove();					
+						$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					}
+				});
+		}
+
+		$('#btnFiltrar').on('click', function () {
+			const fecha_desde = $('#fecha_desde').val();
+			const fecha_hasta = $('#fecha_hasta').val();
+
+			if (fecha_desde == '' || fecha_hasta == '') {
+				alert('Debe completar las fechas para la busqueda');
+			} else {
+				filtrar();
+			}
+			
+		})
+	}
+
+	$(document).ready(mainReady);
+
+	/*******************************
+	* ON CLICK BUTTON .btnEliminar *
+	********************************/
+
+	$(document).on('click', '.btnEliminar', function () {
+		if (confirm('¿Seguro desea eliminar?')) {
+			const id_orden = $(this).data("idorden")
+
+			$.getJSON('/ordenestrabajo_eliminar/' + id_orden, function (data) {
+				if (data != true) {
+					alert('Se ha producido un error.')
+				}
+
+				$('#btnFiltrar').click();
+			})
+		} else {
+			return false
+		}
+	});
+
+	/*
+	* Save filter data in localStorage
+	*/
+
+	$(document).on('click', '.btnStoreFilter', function () {
+		if ('localStorage' in window && window['localStorage'] !== null) {
+			const objDatos = localStorage.getItem('objDatos');
+			var objDatos_parsed = JSON.parse(objDatos);
+
+			var fecha_desde = $("#fecha_desde").val();
+			var fecha_hasta = $("#fecha_hasta").val();
+
+			objDatos_parsed.fecha_desde = fecha_desde;
+			objDatos_parsed.fecha_hasta = fecha_hasta;
+
+			const objDatos_stringified = JSON.stringify(objDatos_parsed);
+			localStorage.setItem('objDatos', objDatos_stringified);
+		} else {
+			// event.preventDefault();
+			alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");		
+		}
+	});
+
+
+	/*
+	* END OF - Save filter data in localStorage
+	*/
+</script>
+{% endblock %}

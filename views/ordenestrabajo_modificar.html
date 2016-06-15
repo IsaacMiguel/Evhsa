@@ -8,50 +8,61 @@
 <link href="/css/ordenestrabajo.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
-	<form method="post" id="formalta" action="/ordenestrabajo_alta">
+	<form method="post" id="formalta" action="/ordenestrabajo_modificar">
 		<table align="center" class="table table-striped">
+			<input type="number" value="{{ orden.id }}" id="id_orden" name="id_orden" hidden>
 			<tr>
 				<td>Fecha:</td>
 				<td>
-					<input type="text" name="fecha" id="fecha" class="form-control datepicker width_25" title="Fecha en que será realizado el trabajo" readonly>
+					{% if orden.fecha_f == '00/00/0000' %}
+						<input type="text" name="fecha" id="fecha" class="form-control datepicker width_25" title="Fecha en que será realizado el trabajo" readonly>
+					{% else %}
+						<input type="text" name="fecha" id="fecha" class="form-control datepicker width_25" value="{{ orden.fecha_f }}" title="Fecha en que será realizado el trabajo" readonly>
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>Nro Orden:</td>
 				<td>
-					<input value="{{ maxNum }}" type="number" name="numero" id="numero" class="form-control width_10">
+					{{ orden.numero }}
 				</td>
 			</tr>
 			<tr>
 				<td>Nro. coche:</td>
 				<td>
-					<select class="form-control width_50" id="coches" name="coches">
-						<option value="0" selected>Elija una opción</option>
-						{% for v in vehiculos %}
-							<option value="{{ v.numero }}">[{{ v.numero }}] - {{ v.marca }} - {{ v.tipo }} - {{ v.dominio }}</option>
-						{% endfor %}
-					</select>
+					{{ vehiculo.numero }} - {{ vehiculo.marca }} - {{ vehiculo.tipo }} - {{ vehiculo.dominio }}
 				</td>
 			</tr>
 			<tr>
 				<td>Fecha anterior:</td>
 				<td>
-					<input type="text" name="fecha_ant" id="fecha_ant" class="form-control width_25" title="Fecha del mantenimiento anterior" readonly>
+					{% if orden.fecha_ant_f == '00/00/0000' %}
+					{% else %}
+						{{ orden.fecha_ant_f }}
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>Número anterior:</td>
 				<td>
-					<input type="text" id="nro_ant" name="nro_ant" class="form-control width_10" readonly>
+					{% if orden.nro_ant == 0 %}
+					{% else %}
+						{{ orden.nro_ant }}
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>Km hasta hoy:</td>
-				<td><input type="number" name="km_hastahoy" id="km_hastahoy" class="form-control width_25" readonly></td>
+				<td>
+					{% if orden.km_hastahoy == 0 %}
+					{% else %}
+						{{ orden.km_hastahoy }}
+					{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td><input type="button" class="btn btn-primary" value="Atras" onclick="history.back()"></td>
-				<td><input type="button" id="agregar" class="btn btn-success" value="Agregar"></td>
+				<td><input type="button" id="agregar" class="btn btn-success" value="Modificar"></td>
 			</tr>
 		</table>
 	</form>
@@ -66,13 +77,12 @@
 		dateFormat: 'dd/mm/yy'
 	});
 
-	$('#fecha').val(generateTodayDate());
-
 	//ON JQUERY READY
 	(function($) {
 		$('#coches').on('change', function () {
 			const nro_coche = $('#coches').val();
 			const fecha_hoy = generateTodayDateYMD();
+			console.log(nro_coche)
 
 			$.getJSON('/get_ultima_ordentrabajo/' + nro_coche + '/' + fecha_hoy, function (data) {
 				if (data != null) {
@@ -101,13 +111,7 @@
 			if ($('#fecha').val() == '' || $('#coches').val() == '0') {
 				alert("Debe seleccionar un coche e ingresar una fecha")
 			} else {
-				$.getJSON('/get_validar/' + numero, function (data) {
-					if (data == true) {
-						alert("Ya existe una orden con ese número");
-					} else {
-						$('form').submit();
-					}
-				});
+				$('form').submit();
 			}
 		});
 	})(jQuery);
