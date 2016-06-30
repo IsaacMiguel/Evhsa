@@ -2,13 +2,19 @@
 var mFlujoDeFondos = require('../models/mFlujoDeFondos');
 var mBorro = require('../models/mBorro');
 var mAyuda = require('../models/mAyuda');
+var mCodigosIE = require('../models/mCodigosIE');
+var mIE = require('../models/mIngegr');
 
 var nodeExcel = require('excel-export');
+const tool = require('../public/js/utils');
 
 module.exports = {
 	getIndex: getIndex,
 	postGeneracion: postGeneracion,
-	getGeneracion_Excel: getGeneracion_Excel
+	getGeneracion_Excel: getGeneracion_Excel,
+	getInforme: getInforme,
+	postInforme: postInforme,
+	getDatosEntreFechas: getDatosEntreFechas
 }
 
 function getIndex(req, res) {
@@ -491,4 +497,66 @@ function getGeneracion_Excel(req, res){
 			});
 		});		
 	});
+}
+
+function getInforme(req, res){
+	mCodigosIE.getIngresos(function (ingresos){
+		mCodigosIE.getEgresos(function (egresos){
+			res.render("flujodefondos_informe_form",{
+				pagename: "Generar Informe",
+				ingresos: ingresos,
+				egresos: egresos
+			});
+		});
+	});
+}
+
+function postInforme(req, res){
+	const params = req.body;
+	var desde = params.desde;
+	var hasta = params.hasta;
+	const codigo = params.codigo;
+
+	desde = tool.changeDate(desde);
+	hasta = tool.changeDate(hasta);
+
+	if (codigo == 'ingresos' || codigo == 'egresos'){
+		mIE.getSumTotalEntreFechasByTipo(desde, hasta, codigo.substring(0,1), function(sumTotal){
+			res.render("flujodefondos_informe", {
+				pagename:"Informe",
+				sumTotal: sumTotal,
+				desde: desde,
+				hasta: hasta,
+				codigo: codigo
+			});
+		});
+	}else{
+		mIE.getSumTotalEntreFechasByCodigo(desde, hasta, codigo, function(sumTotal){			
+			res.render("flujodefondos_informe", {
+				pagename:"Informe",
+				sumTotal: sumTotal,
+				desde: desde,
+				hasta: hasta,
+				codigo: codigo
+			});
+		});
+	}
+}
+
+function getDatosEntreFechas(req, res){
+	const params = req.params;
+	var desde = params.desde;
+	var hasta = params.hasta;
+	const codigo = params.codigo;
+
+	if (codigo == 'ingresos' || codigo == 'egresos'){
+		mIE.getDatosEntreFechasByTipo(desde, hasta, codigo.substring(0,1), function(datos){
+			// console.log(datos)
+			res.send(datos);
+		});
+	}else{
+		mIE.getDatosEntreFechasByCodigo(desde, hasta, codigo, function(datos){
+			res.send(datos);
+		});
+	}
 }

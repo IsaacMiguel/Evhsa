@@ -1,0 +1,156 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/ordenestrabajo_frenos_modificar.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/ordenestrabajo_frenos_modificar">
+		<input hidden id="id_orden" name="id_orden" value="{{ id_orden }}">
+		<table class="table table-striped">
+        	<tr>
+        		<td>Valv-Pedalera:</td>
+        		<td><input type="text" class="form-control" id="valv_pedalera" name="valv_pedalera" {% if frenos_general.valv_pedalera != '' %}value="{{ frenos_general.valv_pedalera }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftValvPedalera"></span> caraceteres.</div></small></td>
+        		<td>Ult. Cambio:</td>
+        		<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="valv_pedalera_fecha" name="valv_pedalera_fecha" {% if frenos_general.valv_pedalera_fecha != '' %}value="{{ frenos_general.valv_pedalera_fecha }}"{% else %}{% endif %}></input></td>
+        		<td>Kms:</td>
+        		<td><input type="text" class="form-control" id="valv_pedalera_km" name="valv_pedalera_km" onKeyPress="return soloNumeros(event)" {% if frenos_general.valv_pedalera_km != '' %}value="{{ frenos_general.valv_pedalera_km }}"{% else %}{% endif %}></input></td>
+        	</tr>
+        	<tr>
+        		<td>Valv-Estaciona.:</td>
+        		<td><input type="text" class="form-control" id="valv_estaciona" name="valv_estaciona" {% if frenos_general.valv_estaciona != '' %}value="{{ frenos_general.valv_estaciona }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftValvEstaciona"></span> caraceteres.</div></small></td>
+        		<td>Ult. Cambio:</td>
+        		<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="valv_estaciona_fecha" name="valv_estaciona_fecha" {% if frenos_general.valv_estaciona_fecha != '' %}value="{{ frenos_general.valv_estaciona_fecha }}"{% else %}{% endif %}></input></td>
+        		<td>Kms:</td>
+        		<td><input type="text" class="form-control" id="valv_estaciona_km" name="valv_estaciona_km" onKeyPress="return soloNumeros(event)" {% if frenos_general.valv_estaciona_km != '' %}value="{{ frenos_general.valv_estaciona_km }}"{% else %}{% endif %}></input></td>
+        	</tr>
+        	<tr>
+				<td>Freno Motor:</td>
+				<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="freno_motor" name="freno_motor" {% if frenos_general.freno_motor != '' %}value="{{ frenos_general.freno_motor }}"{% else %}{% endif %}></input></td>
+        		<td>Piston:</td>
+        		<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="piston" name="piston" {% if frenos_general.piston != '' %}value="{{ frenos_general.piston }}"{% else %}{% endif %}></input></td>
+        		<td>Electroválvula:</td>
+        		<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="electrovalvula" name="electrovalvula" {% if frenos_general.electrovalvula != '' %}value="{{ frenos_general.electrovalvula }}"{% else %}{% endif %}></input></td>
+        	</tr>
+        	<tr>
+        		<td>Servo Del:</td>
+        		<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="servo_del" name="servo_del" {% if frenos_general.servo_del != '' %}value="{{ frenos_general.servo_del }}"{% else %}{% endif %}></input></td>
+        		<td>Diafragma Marca N°:</td>
+        		<td><input type="text" class="form-control" id="servo_del_diafragma" name="servo_del_diafragma" {% if frenos_general.servo_del_diafragma != '' %}value="{{ frenos_general.servo_del_diafragma }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftServoDelDiafragma"></span> caraceteres.</div></small></td>
+        		<td>Ctl Fugas:</td>
+        		<td><input type="text" class="form-control" id="servo_del_controlfuga" name="servo_del_controlfuga" {% if frenos_general.servo_del_controlfuga != '' %}value="{{ frenos_general.servo_del_controlfuga }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftServoDelControlFugas"></span> caraceteres.</div></small></td>
+        	</tr>
+        	<tr>
+        		<td>Servo Tra:</td>
+        		<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="servo_tra" name="servo_tra" {% if frenos_general.servo_tra != '' %}value="{{ frenos_general.servo_tra }}"{% else %}{% endif %}></input></td>
+        		<td>Diafragma Marca N°:</td>
+        		<td><input type="text" class="form-control" id="servo_tra_diafragma" name="servo_tra_diafragma" {% if frenos_general.servo_tra_diafragma != '' %}value="{{ frenos_general.servo_tra_diafragma }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftServoTraDiafragma"></span> caraceteres.</div></small></td>
+        		<td>Ctl Fugas:</td>
+        		<td><input type="text" class="form-control" id="servo_tra_controlfuga" name="servo_tra_controlfuga" {% if frenos_general.servo_tra_controlfuga != '' %}value="{{ frenos_general.servo_tra_controlfuga }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftServoTraControlFugas"></span> caraceteres.</div></small></td>
+        	</tr>
+        	<tr>
+        		<td>Bomba Freno Del:</td>
+        		<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="bomba_del" name="bomba_del" {% if frenos_general.bomba_del != '' %}value="{{ frenos_general.bomba_del }}"{% else %}{% endif %}></input></td>
+        		<td>Marca Otros:</td>
+        		<td colspan="3"><input type="text" class="form-control" id="bomba_del_marca" name="bomba_del_marca" {% if frenos_general.bomba_del_marca != '' %}value="{{ frenos_general.bomba_del_marca }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftBombaDelMarca"></span> caraceteres.</div></small></td>
+        	</tr>
+        	<tr>
+        		<td>Bomba Freno Tra:</td>
+        		<td><input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" readonly id="bomba_tra" name="bomba_tra" {% if frenos_general.bomba_tra != '' %}value="{{ frenos_general.bomba_tra }}"{% else %}{% endif %}></input></td>
+        		<td>Marca Otros:</td>
+        		<td colspan="3"><input type="text" class="form-control" id="bomba_tra_marca" name="bomba_tra_marca" {% if frenos_general.bomba_tra_marca != '' %}value="{{ frenos_general.bomba_tra_marca }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftBombaTraMarca"></span> caraceteres.</div></small></td>
+        	</tr>
+        	<tr>
+        		<td>Varios:</td>
+        		<td colspan="5"><input type="text" class="form-control" id="varios" name="varios" {% if frenos_general.varios != '' %}value="{{ frenos_general.varios }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftVarios"></span> caraceteres.</div></small></td>
+        	</tr>
+        	<tr>
+        		<td>Operario 1:</td>
+        		<td><input type="text" class="form-control" id="operario1" name="operario1" {% if frenos_general.operario1 != '' %}value="{{ frenos_general.operario1 }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftOperario1"></span> caraceteres.</div></small></td>
+        		<td>Hs:</td>
+        		<td><input type="text" class="form-control time" id="operario1_hrs" name="operario1_hrs" placeholder="HH:MM" {% if frenos_general.operario1_hrs != '' %}value="{{ frenos_general.operario1_hrs }}"{% else %}{% endif %}></input></td>
+        		<td colspan="2"></td>
+        	</tr>
+        	<tr>
+        		<td>Operario 2:</td>
+        		<td><input type="text" class="form-control" id="operario2" name="operario2" {% if frenos_general.operario2 != '' %}value="{{ frenos_general.operario2 }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftOperario2"></span> caraceteres.</div></small></td>
+        		<td>Hs:</td>
+        		<td><input type="text" class="form-control time" id="operario2_hrs" name="operario2_hrs" placeholder="HH:MM" {% if frenos_general.operario2_hrs != '' %}value="{{ frenos_general.operario2_hrs }}"{% else %}{% endif %}></input></td>
+        		<td colspan="2"></td>
+        	</tr>
+        	<tr>
+        		<td>Operario 3:</td>
+        		<td><input type="text" class="form-control" id="operario3" name="operario3" {% if frenos_general.operario3 != '' %}value="{{ frenos_general.operario3 }}"{% else %}{% endif %}></input><small><div class="aviso">Quedan <span id="charsLeftOperario3"></span> caraceteres.</div></small></td>
+        		<td>Hs:</td>
+        		<td><input type="text" class="form-control time" id="operario3_hrs" name="operario3_hrs" placeholder="HH:MM" {% if frenos_general.operario3_hrs != '' %}value="{{ frenos_general.operario3_hrs }}"{% else %}{% endif %}></input></td>
+        		<td>Total Hs:</td>
+        		<td><input type="text" class="form-control" id="operarios_hrstotal" name="operarios_hrstotal" readonly placeholder="HH:MM" {% if frenos_general.operarios_hrstotal != '' %}value="{{ frenos_general.operarios_hrstotal }}"{% else %}{% endif %}></input></td>
+        	</tr>
+        	<tr>
+        		<td colspan="2"></td>
+        		<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+        		<td><button type="submit" class="btn btn-default">Guardar</button></td>
+        		<td colspan="2"></td>
+        	</tr>
+        </table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+	$('#valv_pedalera').limit('50','#charsLeftValvPedalera');
+	$('#valv_estaciona').limit('50','#charsLeftValvEstaciona');
+	$('#servo_del_diafragma').limit('25','#charsLeftServoDelDiafragma');
+	$('#servo_del_controlfuga').limit('25','#charsLeftServoDelControlFugas');
+	$('#servo_tra_diafragma').limit('25','#charsLeftServoTraDiafragma');
+	$('#servo_tra_controlfuga').limit('25','#charsLeftServoTraControlFugas');
+	$('#bomba_del_marca').limit('50','#charsLeftBombaDelMarca');
+	$('#bomba_tra_marca').limit('50','#charsLeftBombaTraMarca');
+	$('#varios').limit('150','#charsLeftVarios');
+	$('#operario1').limit('20','#charsLeftOperario1');
+	$('#operario2').limit('20','#charsLeftOperario2');
+	$('#operario3').limit('20','#charsLeftOperario3');
+
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+   	$(".time").mask("99:99", {completed: function(){
+			// console.log("sad")
+			const value = $(this).val();
+			const hora = value.substring(0, 2);
+			const min = value.substring(3, 5);
+			var valido = false;
+			if (hora.length == 2 && min.length == 2){
+				const hora_int = parseInt(hora);
+				const min_int = parseInt(min);
+				if ( hora_int < 24 && min_int < 60){
+					valido = true;
+				}
+			}
+
+			if (!valido){
+				alert("Valor de hora INCORRECTO. Maximo: 23:59");
+				$(this).val("");
+			}
+		}
+	});
+
+   	$(".time").on("change", function(){
+   		var hrs1 = $("#operario1_hrs").val();
+   		var hrs2 = $("#operario2_hrs").val();
+   		var hrs3 = $("#operario3_hrs").val();
+   		var total = addtime(hrs1, hrs2);
+   		total = addtime(total, hrs3);
+
+   		$("#operarios_hrstotal").val(total);
+   	});
+	
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/metricsgraphics.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<input hidden id="desde" name="desde" value="{{ desde }}">
+<input hidden id="hasta" name="hasta" value="{{ hasta }}">
+<input hidden id="codigo" name="codigo" value="{{ codigo }}">
+<div class="panel panel-default">
+	<table align="center" class="table table-striped" style="margin-bottom: 0px !important;">
+		<div id="result"></div>
+	</table>
+</div>
+<script src="/js/main.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/d3.min.js"></script>
+<script src="/js/metricsgraphics.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script type="text/javascript">
+	var desde = $("#desde").val();
+	var hasta = $("#hasta").val();
+	var codigo = $("#codigo").val();
+
+	d3.json("/flujodefondos_getDataEntreFechas/"+desde+"/"+hasta+"/"+codigo, function(data) {
+		// console.log(data)
+	    data = MG.convert.date(data, 'fecha');
+	    if (codigo == 'ingresos'){
+	    	titulo = "Ingresos";
+	    } else if (codigo == 'egresos'){
+	    	titulo = "Egresos";
+	    }else{
+	    	titulo = "ASD"
+	    }
+    	MG.data_graphic({
+	        title: titulo,
+	        description: "This is a simple line chart. You can remove the area portion by adding area: false to the arguments list.",
+	        data: data,
+	        full_width: true,
+	        height: 400,
+	        right: 40,
+	        x_axis: true,
+	        xax_count: 30,
+	        x_rug: true,
+	        target: document.getElementById('result'),
+	        x_accessor: 'fecha',
+	        y_accessor: 'totalxdia'
+	    });
+	    // $("svg").css("width", "100%");
+	    // $(".mg-main-area .mg-area1 .mg-area1-color .mg-rollover-rect").css("width", "100%");
+	    // }else{
+	    // 	console.log("todavia no esta hecho")
+	    // }	   
+	});
+</script>
+{% endblock %}

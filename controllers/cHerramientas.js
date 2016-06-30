@@ -37,7 +37,7 @@ function getLista (req, res) {
 function getFiltrar (req, res) {
 	var params = req.params;
 
-	if (params.denominacion === 'NoName') {
+	if (params.denominacion == 'NoName') {
 		var data = {
 			'desde' : params.desde, 
 			'hasta' : params.hasta
@@ -71,12 +71,12 @@ function getRepuestos (req, res) {
 	var codigo = params.codigo;
 	var descripcion = params.descripcion;
 
-	if (codigo === 'false') {
+	if (codigo == 'false') {
 		mRepuestos.getByDescripcion(descripcion, function (repuestos) {
 			res.send(repuestos);
 		});
 	} else {
-		if (descripcion === 'false') { descripcion = ''}
+		if (descripcion == 'false') { descripcion = ''}
 
 		mRepuestos.getByCodigoLike(
 			codigo, 
@@ -115,7 +115,7 @@ function postAlta (req, res) {
 	if (!valor) { var valor = 0 }
 	if (!cantidad) { var cantidad = 0 }
 
-	if (params.fecha_cambio === 'on') {
+	if (params.fecha_cambio == 'on') {
 		var fecha_cambio = tools.generateTodayDateYMD();
 	} else {
 		var fecha_cambio = '0000-00-00';
@@ -182,7 +182,7 @@ function postModificar (req, res) {
 	if (!valor) { var valor = 0 }
 	if (!cantidad) { var cantidad = 0 }
 
-	if (params.fecha_cambio === 'on') {
+	if (params.fecha_cambio == 'on') {
 		var fecha_cambio = tools.generateTodayDateYMD();
 	} else {
 		var fecha_cambio = '0000-00-00';
@@ -236,7 +236,7 @@ function postHerramientasUbicacion (req, res) {
 function postModificarFechaCambio (req, res) {
 	var params = req.params;
 
-	if (params.opcion === 'true') {
+	if (params.opcion == 'true') {
 		var opcion = '0000-00-00';
 	} else {
 		var opcion = tools.generateTodayDateYMD();
@@ -269,7 +269,7 @@ function getOperarios (req, res) {
 	var hasta = params.hasta;
 	var operario = params.operario;
 
-	if (operario === '0') {
+	if (operario == '0') {
 		mHerramientas.getAllOperarios(desde, hasta, function (listado) {
 			res.send(listado);
 		});
@@ -299,7 +299,7 @@ function getListadoReporteUbicacion (req, res) {
 	var hasta = params.hasta;
 	var id_ubicacion = params.id_ubicacion;
 
-	if (id_ubicacion === '0') {
+	if (id_ubicacion == '0') {
 		mUbicacionesHerramientas.getReporteUbicacion(desde, hasta, function (reporte) {
 			res.send(reporte);
 		});

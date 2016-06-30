@@ -13,7 +13,7 @@
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
     <!-- <link href="/css/datepicker.css" rel="stylesheet"> -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="/css/bootstrap.min.css" rel="stylesheet"> -->
     <link href="/css/signin.css" rel="stylesheet">
     <link href="/css/bootstrap-submenu.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css">
@@ -89,7 +89,7 @@
                         <li><a href="/remitos_lista" class="menu" data-idmenu="19" data-accion="c">* Remitos</a></li>
                         <li><a href="/sereno_lista" class="menu" data-idmenu="20" data-accion="c">* Repuestos en Sereno</a></li>
                         <li><a href="/equipos_lista" class="menu" data-idmenu="21" data-accion="c">* Equipos</a></li>
-                        <li><a href="/ordenes_trabajo" id="btnOrdenesTrabajo" class="menu" data-idmenu="22" data-accion="c">- Ordenes de Trabajo</a></li>
+                        <li><a href="/ordenestrabajo_lista" id="btnOrdenesTrabajo" class="menu" data-idmenu="22" data-accion="c">- Ordenes de Trabajo</a></li>
                         <li><a href="/reparaciones_lista" class="menu" data-idmenu="23" data-accion="c" id="btnReparaciones">* Reparaciones de Emergencia</a></li>
                         <li><a href="/novedades_lista" class="menu" data-idmenu="24" data-accion="c">- Novedades de Coches</a></li>
                     </ul>
@@ -124,6 +124,7 @@
                         <li><a href="/codigosie_lista" class="menu" data-idmenu="43" data-accion="c">* Códigos de Ingresos/Egresos [ABM]</a></li>
                         <li><a href="/ingegr_lista" class="menu" data-idmenu="44" data-accion="c" id="btnIngEgrLista">* Ingesos / Egresos Diarios [ABM]</a></li>
                         <li><a href="/flujodefondos_index" class="menu" data-idmenu="45" data-accion="c">* Flujo de Fondos</a></li>
+                        <li><a href="/flujodefondos_informe_form" class="menu" data-idmenu="45" data-accion="c">- Informe</a></li>
                     </ul>
                 </li>
                 <li class="dropdown"><a href="/random" class="menu" data-idmenu="00" data-accion="c">Interno</a></li>
@@ -255,8 +256,16 @@
                 localStorage.clear();
 
                 const flag = true;
-                var fecha_desde = "";
-                var fecha_hasta = "";
+                const myDate = new Date(); 
+                myDate.setFullYear(myDate.getFullYear());
+                day = myDate.getDate();
+                if (day<10)
+                    day = "0"+day;
+                month = myDate.getMonth()+1;
+                if (month<10)
+                    month = "0"+month
+                fecha_hasta = day + "/" + month + "/" + myDate.getFullYear();
+                fecha_desde = "01/"+month+'/'+myDate.getFullYear();
 
                 var objDatos = {
                     "fecha_desde" : fecha_desde,

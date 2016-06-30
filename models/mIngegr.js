@@ -8,7 +8,11 @@ module.exports = {
 	del: del,
 	getByCodigo: getByCodigo,
 	getById_codigoie: getById_codigoie,
-	getDesdeHasta: getDesdeHasta
+	getDesdeHasta: getDesdeHasta,
+	getSumTotalEntreFechasByTipo: getSumTotalEntreFechasByTipo,
+	getDatosEntreFechasByTipo: getDatosEntreFechasByTipo,
+	getSumTotalEntreFechasByCodigo: getSumTotalEntreFechasByCodigo,
+	getDatosEntreFechasByCodigo: getDatosEntreFechasByCodigo
 }
 
 function getAll(cb){
@@ -61,4 +65,20 @@ function getDesdeHasta(desde, hasta, cb){
 		"LEFT JOIN codigosie ON codigosie.id = ingegr.id_codigoie_fk "+
 		"LEFT JOIN secr ON secr.unica = ingegr.id_operador_fk "+
 		"WHERE fecha >= '"+desde+"' AND fecha <= '"+hasta+"' ORDER BY fecha DESC", cb);
+}
+
+function getSumTotalEntreFechasByTipo(desde, hasta, tipo, cb){
+	conn("SELECT *, sum(importe) as total from ingegr WHERE fecha >= '"+desde+"' AND fecha <= '"+hasta+"' AND tipo = '"+tipo+"' ", cb)
+}
+
+function getDatosEntreFechasByTipo(desde, hasta, tipo, cb){
+	conn("SELECT fecha, sum(importe) as totalxdia from ingegr WHERE fecha >= '"+desde+"' AND fecha <= '"+hasta+"' AND tipo = '"+tipo+"' GROUP BY fecha", cb)
+}
+
+function getSumTotalEntreFechasByCodigo(desde, hasta, codigo, cb){
+	conn("SELECT fecha, sum(importe) as totalxdia from ingegr WHERE fecha >= '"+desde+"' AND fecha <= '"+hasta+"' AND id_codigoie_fk = "+codigo+"", cb)
+}
+
+function getDatosEntreFechasByCodigo(desde, hasta, codigo, cb){
+	conn("SELECT * from ingegr WHERE fecha >= '"+desde+"' AND fecha <= '"+hasta+"' AND id_codigoie_fk = "+codigo+" GROUP BY fecha", cb)
 }

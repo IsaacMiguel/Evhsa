@@ -134,7 +134,6 @@ function Validate7EntY2Dec_Neg(e, field) {// ^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$
     return false
 }//onkeypress="return Validate7EntY2Dec_Neg(event,this)"
 
-
 function Validate8EntY2Dec(e, field) {
     key = e.keyCode ? e.keyCode : e.which
     // backspace
@@ -289,48 +288,30 @@ function generateFirstDateActualMonth () {
     return desdeSet;
 }
 
-//testing functions
+function addtime(start_time, end_time){
+    var startArr = start_time.split(':');
+    var endArr = end_time.split(':');
+    
+    var d = new Date();
+    startArr[0] = (startArr[0]) ? parseInt(startArr[0], 10) : 0;
+    startArr[1] = (startArr[1]) ? parseInt(startArr[1], 10) : 0;
+    // startArr[2] = (startArr[2]) ? parseInt(startArr[2], 10) : 0;
+    endArr[0] = (endArr[0]) ? parseInt(endArr[0], 10) : 0;
+    endArr[1] = (endArr[1]) ? parseInt(endArr[1], 10) : 0;
+    // endArr[2] = (endArr[2]) ? parseInt(endArr[2], 10) : 0;
 
-//{1,9} significa 1 digito entero minimo y 9 maximo
-//{1,2} significa 1 digito decimal minimo y 2 maximo
-//signo negativo es opcional
-//valores enteros y decimales entre 0 y 9
-// ^[+-]?[0-9]{1,9}(?:\.[0-9]{1,2})?$
+    d.setHours(startArr[0] + endArr[0]);
+    d.setMinutes(startArr[1] + endArr[1]);
+    // d.setSeconds(startArr[2] + endArr[2]);
 
-// function numbersOnly(Sender, evt, isFloat, isNegative) {
-//     if(Sender.readOnly) return false;       
+    var hours = d.getHours();
+    var minutes = d.getMinutes();
+    // var seconds = d.getSeconds();
+    if (hours < 10)
+        hours = "0"+hours;
 
-//     var key   = evt.which || !window.event ? evt.which : event.keyCode;
-//     var value = Sender.value;
-
-//     if((key == 46 || key == 44) && isFloat){                
-//         var selected = document.selection ? document.selection.createRange().text : "";
-//         if(selected.length == 0 && value.indexOf(".") == -1 && value.length > 0) Sender.value += ".";
-//         return false;
-//     }
-//     if(key == 45) { // minus sign '-'
-//         if(!isNegative) return false;
-//         if(value.indexOf('-')== -1) Sender.value = '-'+value; else Sender.value = value.substring(1);
-//         if(Sender.onchange != null) {
-//             if(Sender.fireEvent){
-//                 Sender.fireEvent('onchange');
-//             } else {
-//                 var e = document.createEvent('HTMLEvents');
-//                     e.initEvent('change', false, false);
-//                 Sender.dispatchEvent(e);
-//             }
-//         }
-
-//         var begin = Sender.value.indexOf('-') > -1 ? 1 : 0;
-//         if(Sender.setSelectionRange){
-//             Sender.setSelectionRange(begin,Sender.value.length);
-//         } else {
-//             var range = Sender.createTextRange();
-//             range.moveStart('character',begin);
-//             range.select();                 
-//         }
-
-//         return false;
-//     }
-//     if(key > 31 && (key < 48 || key > 57)) return false;
-// }//onkeypress='return numbersOnly(this,event,false,true);' asd
+    if (minutes < 10)
+        minutes = "0"+minutes;
+    // return hours+':'+minutes+'.'+seconds+'hrs';
+    return hours+':'+minutes;
+}

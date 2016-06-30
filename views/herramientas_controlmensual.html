@@ -105,79 +105,79 @@
 <script src="/js/main.js"></script>
 <script type="text/javascript">
 	$(".datepicker").datepicker({
-			dateFormat: 'dd/mm/yy'
-		});
+		dateFormat: 'dd/mm/yy'
+	});
 
-		swig.setDefaults({
-	    	varControls: ['[[', ']]'],
-	    	tagControls: ['[%', '%]']
-	    });
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
 
 
-		$("#btnFiltrar").on("click", function () {
-			var desde = $('.fecha_desde').val();			
-			var hasta = $('.fecha_hasta').val();
-			
-			var operario = $('#operador').val();
+	$("#btnFiltrar").on("click", function () {
+		var desde = $('.fecha_desde').val();			
+		var hasta = $('.fecha_hasta').val();
+		
+		var operario = $('#operador').val();
 
-			function imprimirListado (f_desde, f_hasta, u_operario) {
-				var url = '/herramientas_listaoperarios/' + f_desde + '/' + f_hasta + '/' + u_operario;
+		function imprimirListado (f_desde, f_hasta, u_operario) {
+			var url = '/herramientas_listaoperarios/' + f_desde + '/' + f_hasta + '/' + u_operario;
+			$.getJSON(url, function (data){
+				if (data.length != 0){
+						$('#tbodylisto > tr').remove();
+						var template = $('#tabla_operarios').html();
+						var output = parseSwig(template, data);
+						$('#tbodylisto').html(output);
+					}else{
+						$('#tbodylisto > tr').remove();					
+						$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					}
+			});	
+		}
+
+		$(document).on('click', '.verOperario', function () {
+			$('#myModal').modal('hide');
+
+			operario = $(this).val();
+
+			imprimirListado(desde, hasta, operario);
+		})
+
+		if (desde !== '' && hasta !== '') {
+			if (operario === '0') {
+				desde = changeDate3(desde);
+				hasta = changeDate3(hasta);
+
+				var url = '/herramientas_listaoperarios/' + desde + '/' + hasta + '/' + operario;
+
 				$.getJSON(url, function (data){
 					if (data.length != 0){
-							$('#tbodylisto > tr').remove();
-							var template = $('#tabla_operarios').html();
-							var output = parseSwig(template, data);
-							$('#tbodylisto').html(output);
-						}else{
-							$('#tbodylisto > tr').remove();					
-							$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-						}
-				});	
-			}
-
-			$(document).on('click', '.verOperario', function () {
-				$('#myModal').modal('hide');
-
-				operario = $(this).val();
+						var html = "<table class='table' id='tabla_modaloperarios'>";
+						html += "<tr><th>Operario</th><th>Total Cantidad</th><th>Total Valor $</th><th>Opción</th></tr>";
+							for(var i = 0; i < data.length; i++){
+								html += "<tr><td>"+data[i].usuario+"</td><td>"+data[i].cantHerramientas+"</td><td>"+data[i].valorHerramientas+"</td>" +
+								"<td><button class='btn btn-success verOperario' value='"+data[i].unica+"'>Ver</button></td></tr>";
+							}
+							
+						html += "</table>";
+						$("#tabla_modaloperarios").replaceWith(html);
+						$("#myModalLabel").text("Seleccione Conjunto")
+						$('#myModal').modal('toggle');
+					}else{
+						$('#tbodylisto > tr').remove();					
+						$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					}
+				});
+			} else {
+				desde = changeDate3(desde);
+				hasta = changeDate3(hasta);
 
 				imprimirListado(desde, hasta, operario);
-			})
-
-			if (desde !== '' && hasta !== '') {
-				if (operario === '0') {
-					desde = changeDate3(desde);
-					hasta = changeDate3(hasta);
-
-					var url = '/herramientas_listaoperarios/' + desde + '/' + hasta + '/' + operario;
-
-					$.getJSON(url, function (data){
-						if (data.length != 0){
-							var html = "<table class='table' id='tabla_modaloperarios'>";
-							html += "<tr><th>Operario</th><th>Total Cantidad</th><th>Total Valor $</th><th>Opción</th></tr>";
-								for(var i = 0; i < data.length; i++){
-									html += "<tr><td>"+data[i].usuario+"</td><td>"+data[i].cantHerramientas+"</td><td>"+data[i].valorHerramientas+"</td>" +
-									"<td><button class='btn btn-success verOperario' value='"+data[i].unica+"'>Ver</button></td></tr>";
-								}
-								
-							html += "</table>";
-							$("#tabla_modaloperarios").replaceWith(html);
-							$("#myModalLabel").text("Seleccione Conjunto")
-							$('#myModal').modal('toggle');
-						}else{
-							$('#tbodylisto > tr').remove();					
-							$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
-						}
-					});
-				} else {
-					desde = changeDate3(desde);
-					hasta = changeDate3(hasta);
-
-					imprimirListado(desde, hasta, operario);
-				}
-			} else {
-				alert('Debe ingresar las fechas para realizar la busqueda');
 			}
-			
-		});
+		} else {
+			alert('Debe ingresar las fechas para realizar la busqueda');
+		}
+		
+	});
 </script>
 {% endblock %}

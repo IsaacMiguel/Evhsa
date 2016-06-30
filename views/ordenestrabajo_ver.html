@@ -7,7 +7,7 @@
 {% block content %}
 <!-- <link href="/css/ordenestrabajo_alta.css" rel="stylesheet"> -->
 <h2>{{ pagename }}</h2>
-<div class="panel panel-default">
+<!-- <div class="panel panel-default"> -->
     <div class="bs-example">
         <div class="panel-group">
 	       	<!-- div acord GENERAL -->
@@ -15,117 +15,251 @@
 	                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
 	                	<div class="row">
 	                		<div class="col-md-3 pull-left">
-	                			<!-- <div class="panel-title"> -->
-			                        <h4>GENERAL</h4>
-<!-- 			                    </div> -->
+			                    <h4>GENERAL</h4>
 	                		</div>
-		                    <div class="col-md-1 pull-right">
-		                    	<button class="btn btn-warning menu" data-idorden="{{ orden.id }}" id="modificar_general" title="Modificar Orden General">
+		                    <!-- <div class="col-md-1 pull-right">
+		                    	<button class="btn btn-warning mod" data-idorden="{{ orden.id }}" id="modificar_general" title="Modificar Orden General" onclick="foo(event);" href="/ordenestrabajo_general_modificar/{{ orden.id }}">
 									<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 								</button>
-		                    </div>
+		                    </div> -->
 	                	</div>
 	                </div>
 	                <div id="collapseOne" class="panel-collapse collapse in">
-		                <div class="row">
-		                	<div class="col-sm-6">
-		                		<div class="row">
-									<div class="col-sm-6 col-xs-6">
-										<strong>Nro de Orden:</strong>
-									</div>
-									<div class="col-sm-6 col-xs-6">
-										{{ orden.numero }}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6 col-xs-6">
-										<strong>Nro de Coche:</strong>
-									</div>
-									<div class="col-sm-6 col-xs-6">
-										{{ orden.nro_coche }}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6 col-xs-6">
-										<strong>Fecha:</strong>
-									</div>
-									<div class="col-sm-6 col-xs-6">
-										{{ orden.fecha_f }}
-									</div>
-								</div>
-		                	</div>
-		                	<div class="col-sm-6">
-		                		<div class="row">
-									<div class="col-sm-6 col-xs-6">
-										<strong>Fecha Anterior:</strong>
-									</div>
-									<div class="col-sm-6 col-xs-6">
-										{% if orden.fecha_ant_f == '00/00/0000' %}
-		                    			{% else %}
-		                    				{{ orden.fecha_ant_f }}
-		                    			{% endif %}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6 col-xs-6">
-										<strong>Nro Anterior:</strong>
-									</div>
-									<div class="col-sm-6 col-xs-6">
-										{% if orden.nro_ant == 0 %}
-		                    			{% else %}
-		                    				{{ orden.nro_ant }}
-		                    			{% endif %}
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6 col-xs-6">
-										<strong>Km hasta hoy:</strong>
-									</div>
-									<div class="col-sm-6 col-xs-6">
-										{% if orden.km_hastahoy == 0 %}
-		                    			{% else %}
-		                    				{{ orden.km_hastahoy }}
-		                    			{% endif %}
-									</div>
-								</div>
-		                	</div>
-		                </div>
+		                <table class="table table-striped">
+		                	<tr>
+		                		<th>Nro. Orden:</th>
+		                		<td>{{ orden.numero }}</td>
+		                		<th>Fecha Anterior:</th>
+		                		<td>
+		                			{% if orden.fecha_ant_f != '00/00/0000' %}
+	                    				{{ orden.fecha_ant_f }}
+	                    			{% else %}	                    				
+	                    			{% endif %}
+	                    		</td>
+		                	</tr>
+		                	<tr>
+		                		<th>Nro. Coche:</th>
+		                		<td>{{ orden.nro_coche }}</td>
+		                		<th>Nro Anterior:</th>
+		                		<td>
+		                			{% if orden.nro_ant != 0 %}
+			                    		{{ orden.nro_ant }}
+			                    	{% else %}			                    				
+			                    	{% endif %}
+			                    </td>
+		                	</tr>
+		                	<tr>
+		                		<th>Fecha:</th>
+		                		<td>{{ orden.fecha_f }}</td>
+		                		<th>Kms Hasta Hoy:</th>
+		                		<td>
+		                			{% if orden.km_hastahoy != 0 %}
+			                    		{{ orden.km_hastahoy }}
+			                    	{% else %}
+			                    	{% endif %}
+			                    </td>
+		                	</tr>
+		                </table>
 		            </div>
 	            </div>
 	        <!-- /div acord GENERAL -->
-
 	        <!-- div acord FRENOS -->
 	        <div class="panel panel-primary" id="accordion_frenos">
                 <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                 	<div class="row">
                 		<div class="col-md-3 pull-left">
-                			<!-- <div class="panel-title"> -->
-		                        <h4>FRENOS</h4>
-<!-- 			                    </div> -->
+		                    <h4>FRENOS</h4>
                 		</div>
 	                    <div class="col-md-1 pull-right">
-	                    	<button class="btn btn-warning menu" data-idorden="{{ orden.id }}" id="modificar_general" title="Modificar Orden General">
+	                    	<button class="btn btn-warning mod" data-idorden="{{ orden.id }}" data-seccion="Frenos_General" id="modificar_general" title="Modificar Frenos General" onclick="foo(event);">
 								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 							</button>
 	                    </div>
                 	</div>
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse">
-                    EVHSA
-                </div>
+		            <table class="table table-striped">
+		            	<tr>
+		            		<th style="width: 150px;">Valv-Pedalera:</th>
+		            		<td>{{ frenos_general.valv_pedalera }}</td>
+		            		<th style="width: 160px;">Ult. Cambio:</th>
+		            		<td>{{ frenos_general.valv_pedalera_fecha }}</td>
+		            		<th style="width: 110px;">Kms:</th>
+		            		<td>{{ frenos_general.valv_pedalera_km }}</td>
+		            	</tr>
+		            	<tr>
+		            		<th>Valv-Estaciona.:</th>
+		            		<td>{{ frenos_general.valv_estaciona }}</td>
+		            		<th>Ult. Cambio:</th>
+		            		<td>{{ frenos_general.valv_estaciona_fecha }}</td>
+		            		<th>Kms:</th>
+		            		<td>{{ frenos_general.valv_estaciona_km }}</td>
+		            	</tr>
+		            	<tr>
+		            		<th>Freno Motor:</th>
+		            		<td>{{ frenos_general.freno_motor }}</td>
+		            		<th>Piston:</th>
+		            		<td>{{ frenos_general.piston }}</td>
+		            		<th>Electroválvula:</th>
+		            		<td>{{ frenos_general.electrovalvula }}</td>
+		            	</tr>
+		            	<tr>
+		            		<th>Servo Del:</th>
+		            		<td>{{ frenos_general.servo_del }}</td>
+		            		<th>Diafragma Marca N°:</th>
+		            		<td>{{ frenos_general.servo_del_diafragma }}</td>
+		            		<th>Ctl Fugas:</th>
+		            		<td>{{ frenos_general.servo_del_controlfuga }}</td>
+		            	</tr>
+		            	<tr>
+		            		<th>Servo Tra:</th>
+		            		<td>{{ frenos_general.servo_tra }}</td>
+		            		<th>Diafragma Marca N°:</th>
+		            		<td>{{ frenos_general.servo_tra_diafragma }}</td>
+		            		<th>Ctl Fugas:</th>
+		            		<td>{{ frenos_general.servo_tra_controlfugas }}</td>
+		            	</tr>
+		            	<tr>
+		            		<th>Bomba Freno Del:</th>
+		            		<td>{{ frenos_general.bomba_del }}</td>
+		            		<th>Marca Otros:</th>
+		            		<td colspan="3">{{ frenos_general.bomba_del_marca }}</td>
+		            	</tr>
+		            	<tr>
+		            		<th>Bomba Freno Tra:</th>
+		            		<td>{{ frenos_general.bomba_tra }}</td>
+		            		<th>Marca Otros:</th>
+		            		<td colspan="3">{{ frenos_general.bomba_tra_marca }}</td>
+		            	</tr>
+		            	<tr>
+		            		<th>Varios:</th>
+		            		<td colspan="5">{{ frenos_general.varios }}</td>
+		            	</tr>
+		            	<tr>
+		            		<th>Operario 1:</th>
+		            		<td>{{ frenos_general.operario1 }}</td>
+		            		<th>Hs:</th>
+		            		<td>{{ frenos_general.operario1_hrs }}</td>
+		            		<td></td>
+		            		<td></td>
+		            	</tr>
+		            	<tr>
+		            		<th>Operario 2:</th>
+		            		<td>{{ frenos_general.operario2 }}</td>
+		            		<th>Hs:</th>
+		            		<td>{{ frenos_general.operario2_hrs }}</td>
+		            		<td></td>
+		            		<td></td>
+		            	</tr>
+		            	<tr>
+		            		<th>Operario 3:</th>
+		            		<td>{{ frenos_general.operario3 }}</td>
+		            		<th>Hs:</th>
+		            		<td>{{ frenos_general.operario3_hrs }}</td>
+		            		<th>Total Hs:</th>
+		            		<td>{{ frenos_general.operarios_hrstotal }}</td>
+		            	</tr>
+		            </table>
+		            {% for f in frenos_ubica %}
+				        <div class="panel panel-primary" id="accordion_frenos_ubica">
+			                <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ f.id_orden_fk }}{{ f.id_ubica_freno_fk }}">
+			                	<div class="row">
+			                		<div class="col-xs-6 col-md-3 pull-left">
+					                    <h5>FRENO {{ f.ubicatxtmayus }}</h5>
+			                		</div>
+				                    <div class="col-md-1 pull-right">
+				                    	<button class="btn btn-warning mod" data-idorden="{{ orden.id }}" id="modificar_general" title="Modificar Freno {{ f.ubicatxt }}" onclick="foo(event);">
+											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+										</button>
+				                    </div>
+			                	</div>
+			                </div>
+			                <div id="collapse{{ f.id_orden_fk }}{{ f.id_ubica_freno_fk }}" class="panel-collapse collapse">
+			                	<table class="table table-striped">
+			                		<tr>
+			                			<td>Ult. Rep.:</td>
+			                			<td>{{ f.fecha_ultima_reparacion }}</td>
+			                			<td>Km:</td>
+			                			<td>{{ f.km }}</td>
+			                			<td>Equipo N°:</td>
+			                			<td>{{ f.nro_equipo }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Cinta-Medida/Marca:</td>
+			                			<td colspan="3">{{ f.cinta }}</td>
+			                			<td>Rodillo mm:</td>
+			                			<td>{{ f.rodillomm }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Diafrag.Marca/N°:</td>
+			                			<td colspan="3">{{ f.diafragma }}</td>
+			                			<td>Ult. Cbio:</td>
+			                			<td>{{ f.diafragma_fecha }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Ctrl. Fugas:</td>
+			                			<td colspan="5">{{ f.control_fugas }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Campana/Marca/Rectif/Medida:</td>
+			                			<td colspan="5">{{ f.campana }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Regular/Registro:</td>
+			                			<td colspan="3">{{ f.regulador }}</td>
+			                			<td>Ult. Cbio:</td>
+			                			<td>{{ f.regulador_fecha }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Leva/Retenes/Bujes (Equipo N°):</td>
+			                			<td colspan="3">{{ f.leva }}</td>
+			                			<td>Ult. Cbio:</td>
+			                			<td>{{ f.leva_fecha }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Pulmon Tipo:</td>
+			                			<td colspan="3">{{ f.pulmon }}</td>
+			                			<td>Ult. Cbio:</td>
+			                			<td>{{ f.pulmon_fecha }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Otros:</td>
+			                			<td colspan="5">{{ f.otros }}</td>
+			                		</tr>
+			                		<tr>
+			                			<td>Probado Apoyo Tiza:</td>
+			                			<td colspan="5">{{ f.probado_apoyo_tiza }}</td>
+			                		</tr>
+			                	</table>
+			                </div>
+			            </div>
+			        {% endfor %}
+                </div> <!-- asd -->
             </div>
             <!-- /div acord FRENOS -->
-
-
         </div>
     </div>
-</div>
+<!-- </div> -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
 <script src="/js/main.js"></script>
 <script type="text/javascript">
+$(".mod").on("click", function(){
+    const seccion = $(this).data("seccion");
+    const id_orden = $(this).data("idorden");
 
+    switch (seccion){
+    	case "Frenos_General":
+    		window.location = "/ordenestrabajo_frenos_modificar/"+id_orden;
+    		break;
+    	// case "Frenos_Ubica"
+    }
+});
+
+window.foo = function(e) {
+    e.stopPropagation();
+}
 </script>
 
 {% endblock %}

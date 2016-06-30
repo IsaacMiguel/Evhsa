@@ -26,7 +26,7 @@ const cReparaciones        = require('./controllers/cReparaciones');
 const cRemitos             = require('./controllers/cRemitos');
 const cSerenos             = require('./controllers/cSerenos');
 const cNovedadesCoches     = require('./controllers/cNovedadesCoches');
-const cOrdenesTrabajo			 = require('./controllers/cOrdenesTrabajo');
+const cOrdenesTrabajo      = require('./controllers/cOrdenesTrabajo');
 
 const mEventos             = require('./models/mEventos');
 const mAccesos             = require('./models/mAccesos');
@@ -334,6 +334,9 @@ module.exports = function(app) {
 	app.get("/flujodefondos_index", auth, acceso, cFlujoDeFondos.getIndex);
 	app.post("/flujodefondos_generacion", auth, cFlujoDeFondos.postGeneracion);
 	app.get("/flujodefondos_generacion_excel/:anio/:mes", auth, cFlujoDeFondos.getGeneracion_Excel);
+	app.get("/flujodefondos_informe_form", auth, cFlujoDeFondos.getInforme);
+	app.post("/flujodefondos_informe_form", auth, cFlujoDeFondos.postInforme);
+	app.get("/flujodefondos_getDataEntreFechas/:desde/:hasta/:codigo", auth, cFlujoDeFondos.getDatosEntreFechas);
 	// CONJUNTOS: Definicion de Conjunto y Fichas de Conjunto
 	app.get("/conjuntos_alta", auth, acceso, cConjunto.getAlta);
 	app.get("/conjunto_buscar_repuesto_por_codigo/:codigo", auth, cConjunto.getBuscar_Repuesto_x_Codigo);
@@ -437,7 +440,7 @@ module.exports = function(app) {
 	app.post("/serenos_unsetcoche/:id_sereno", auth, cSerenos.postSacarCoche);
 
 	//ORDENES DE TRABAJO
-	app.get("/ordenes_trabajo", auth, acceso, cOrdenesTrabajo.getLista);
+	app.get("/ordenestrabajo_lista", auth, acceso, cOrdenesTrabajo.getLista);
 	app.get("/ordenestrabajo_alta", auth, acceso, cOrdenesTrabajo.getAlta);
 	app.get("/get_ultima_ordentrabajo/:nro_coche/:fecha_hoy", auth, acceso, cOrdenesTrabajo.getUltimaOrden);
 	app.get("/get_validar/:numero", auth, acceso, cOrdenesTrabajo.getValidarInsert);
@@ -447,7 +450,8 @@ module.exports = function(app) {
 	app.post("/ordenestrabajo_modificar", auth, cOrdenesTrabajo.postModificar);
 	app.get("/ordenestrabajo_eliminar/:id", auth, acceso, cOrdenesTrabajo.getEliminar);
 	app.get("/ordenestrabajo_ver/:id", auth, acceso, cOrdenesTrabajo.getVer);
-
+	app.get("/ordenestrabajo_frenos_modificar/:id", auth, acceso, cOrdenesTrabajo.getModificarFrenosGeneral);
+	app.post("/ordenestrabajo_frenos_modificar", auth, cOrdenesTrabajo.postModificarFrenosGeneral);
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
 	// //random

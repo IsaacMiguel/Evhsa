@@ -53,19 +53,19 @@ function getFiltro (req, res) {
 	const numero_coche = params.numero_coche;
 	const sin_reparar = params.sinreparar;
 
-	if (numero_coche === "0" && sin_reparar === "false") {
+	if (numero_coche == "0" && sin_reparar == "false") {
 		novedadesCoches.getByDateRange(desde, hasta, function (novedades) {
 			res.send(novedades);
 		})
-	} else if (numero_coche !== "0" && sin_reparar === "true") {
+	} else if (numero_coche !== "0" && sin_reparar == "true") {
 		novedadesCoches.getByDateRange_NroCoche_SinReparar(desde, hasta, numero_coche, function (novedades) {
 			res.send(novedades);
 		})
-	} else if (numero_coche !== "0" && sin_reparar === "false") {
+	} else if (numero_coche !== "0" && sin_reparar == "false") {
 		novedadesCoches.getByDateRange_IdCoche(desde, hasta, numero_coche, function (novedades) {
 			res.send(novedades);
 		})
-	} else if (numero_coche === "0" && sin_reparar === "true") {
+	} else if (numero_coche == "0" && sin_reparar == "true") {
 		novedadesCoches.getByDateRange_SinReparar(desde, hasta, function (novedades) {
 			res.send(novedades);
 		})

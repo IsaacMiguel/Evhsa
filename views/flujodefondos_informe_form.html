@@ -1,0 +1,58 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/flujodefondos_informe_form.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/flujodefondos_informe_form">
+		<table align="center" class="table table-striped" style="margin-bottom: 0px !important;">
+			<tr>				
+				<td>Fecha Desde:</td>
+				<td><input type="text" name="desde" id="desde" class="form-control datepicker"></td>
+				<td>Fecha Hasta:</td>
+				<td><input type="text" name="hasta" id="hasta" class="form-control datepicker"></td>
+			</tr>
+			<tr>
+				<td>Informe de:</td>
+				<td colspan="3">
+					<select class="form-control" id="codigo" name="codigo">
+						<option value="ingresos">---------------- INGREOS ----------------</option>
+						{% for i in ingresos %}
+							<option value="{{ i.id }}">{{ i.nombre }}</option>
+						{% endfor %}
+						<option value="egresos">---------------- EGRESOS ----------------</option>
+						{% for e in egresos %}
+							<option value="{{ e.id }}">{{ e.nombre }}</option>
+						{% endfor %}
+					</select>
+				</td>			
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="button" class="btn btn-default" value="Atras" onclick="history.back()"></td>
+				<td><input type="submit" class="btn btn-primary" value="Generar"></td>
+				<td></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/main.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	const today = generateTodayDate();
+	const first = generateFirstDateActualMonth();
+
+	$("#desde").val(first);
+	$("#hasta").val(today);
+</script>
+
+{% endblock %}

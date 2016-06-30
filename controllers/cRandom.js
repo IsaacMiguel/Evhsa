@@ -847,7 +847,7 @@ function updateRemitos (req, res) {
 			);
 
 			var hora = remito.hora;
-				if (hora === '') {
+				if (hora == '') {
 					hora = '00:00';
 				} else {
 					hora = hora.replace(/,/g, ":");

@@ -5,7 +5,9 @@ module.exports = {
 	getById: getById,
 	insert: insert,
 	update: update,
-	del: del
+	del: del,
+	getIngresos: getIngresos,
+	getEgresos: getEgresos
 }
 
 function getAll(cb){
@@ -26,4 +28,12 @@ function update(id, nombre, tipo, activo, cuenta, cb){
 
 function del(id, cb){
 	conn("delete from codigosie where id = "+id, cb);
+}
+
+function getIngresos(cb){
+	conn("SELECT * FROM codigosie WHERE tipo = 'I' ORDER BY nombre", cb);
+}
+
+function getEgresos(cb){
+	conn("SELECT * FROM codigosie WHERE tipo = 'E' ORDER BY nombre", cb);
 }

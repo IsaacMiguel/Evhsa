@@ -9,83 +9,83 @@
 <h2>{{ pagename }}</h2>
 <!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
-	      </div>
-	      <div id="mainHolder" style="overflow: scroll; max-height: 500px;">
-	      	<table class="table" id="tabla_ordenes">
-	      		<form method="post" id="formalta" action="/ordenestrabajo_modificar">
-					<table align="center" class="table table-striped">
-						<input type="number" value="{{ orden.id }}" id="id_orden" name="id_orden" hidden>
-						<tr>
-							<td>Fecha:</td>
-							<td>
-								{% if orden.fecha_f == '00/00/0000' %}
-									<input type="text" name="fecha" id="fecha" class="form-control datepicker" title="Fecha en que será realizado el trabajo" readonly>
-								{% else %}
-									<input type="text" name="fecha" id="fecha" class="form-control datepicker" value="{{ orden.fecha_f }}" title="Fecha en que será realizado el trabajo" readonly>
-								{% endif %}
-							</td>
-						</tr>
-						<tr>
-							<td>Nro Orden:</td>
-							<td>
-								<input value="{{ orden.numero }}" type="number" name="numero" id="numero" class="form-control" readonly>
-							</td>
-						</tr>
-						<tr>
-							<td>Nro. coche:</td>
-							<td>
-								<input type="text" value="{{ vehiculo.numero }}" id="coches" name="coches" hidden />
-								<input type="text" value="{{ vehiculo.numero }} - {{ vehiculo.marca }} - {{ vehiculo.tipo }} - {{ vehiculo.dominio }}" class="form-control" readonly>
-							</td>
-						</tr>
-						<tr>
-							<td>Fecha anterior:</td>
-							<td>
-								{% if orden.fecha_ant_f == '00/00/0000' %}
-									<input type="text" name="fecha_ant" id="fecha_ant" class="form-control" title="Fecha del mantenimiento anterior" readonly>
-								{% else %}
-									<input type="text" value="{{ orden.fecha_ant_f }}" name="fecha_ant" id="fecha_ant" class="form-control" title="Fecha del mantenimiento anterior" readonly>
-								{% endif %}
-							</td>
-						</tr>
-						<tr>
-							<td>Número anterior:</td>
-							<td>
-								{% if orden.nro_ant == 0 %}
-									<input type="text" id="nro_ant" name="nro_ant" class="form-control" readonly>
-								{% else %}
-									<input type="text" value="{{ orden.nro_ant }}" id="nro_ant" name="nro_ant" class="form-control" readonly>
-								{% endif %}
-							</td>
-						</tr>
-						<tr>
-							<td>Km hasta hoy:</td>
-							<td>
-								{% if orden.km_hastahoy == 0 %}
-									<input type="number" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly>
-								{% else %}
-									<input type="number" value="{{ orden.km_hastahoy }}" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly>
-								{% endif %}
-							</td>
-						</tr>
-						<tr>
-							<td><input type="button" class="btn btn-primary" value="Atras" onclick="history.back()"></td>
-							<td><input type="button" id="agregar" class="btn btn-success" value="Modificar"></td>
-						</tr>
-					</table>
-				</form>
-      		</table>
-      	  </div>	
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-	      </div>
-	    </div>
-	  </div>
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        		<h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      		</div>
+	      		<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+	      			<table class="table" id="tabla_ordenes" style="margin:0px;">
+	      				<form method="post" id="formalta" action="/ordenestrabajo_modificar">
+							<table align="center" class="table table-striped">
+								<input type="number" value="{{ orden.id }}" id="id_orden" name="id_orden" hidden>
+								<tr>
+									<td>Fecha:</td>
+									<td>
+										{% if orden.fecha_f == '00/00/0000' %}
+											<input type="text" name="fecha" id="fecha" class="form-control datepicker" title="Fecha en que será realizado el trabajo" readonly>
+										{% else %}
+											<input type="text" name="fecha" id="fecha" class="form-control datepicker" value="{{ orden.fecha_f }}" title="Fecha en que será realizado el trabajo" readonly>
+										{% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td>Nro Orden:</td>
+									<td>
+										<input value="{{ orden.numero }}" type="number" name="numero" id="numero" class="form-control" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td>Nro. coche:</td>
+									<td>
+										<input type="text" value="{{ vehiculo.numero }}" id="coches" name="coches" hidden />
+										<input type="text" value="{{ vehiculo.numero }} - {{ vehiculo.marca }} - {{ vehiculo.tipo }} - {{ vehiculo.dominio }}" class="form-control" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td>Fecha anterior:</td>
+									<td>
+										{% if orden.fecha_ant_f == '00/00/0000' %}
+											<input type="text" name="fecha_ant" id="fecha_ant" class="form-control" title="Fecha del mantenimiento anterior" readonly>
+										{% else %}
+											<input type="text" value="{{ orden.fecha_ant_f }}" name="fecha_ant" id="fecha_ant" class="form-control" title="Fecha del mantenimiento anterior" readonly>
+										{% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td>Número anterior:</td>
+									<td>
+										{% if orden.nro_ant == 0 %}
+											<input type="text" id="nro_ant" name="nro_ant" class="form-control" readonly>
+										{% else %}
+											<input type="text" value="{{ orden.nro_ant }}" id="nro_ant" name="nro_ant" class="form-control" readonly>
+										{% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td>Km hasta hoy:</td>
+									<td>
+										{% if orden.km_hastahoy == 0 %}
+											<input type="number" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly>
+										{% else %}
+											<input type="number" value="{{ orden.km_hastahoy }}" name="km_hastahoy" id="km_hastahoy" class="form-control" readonly>
+										{% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td><input type="button" class="btn btn-primary" value="Atras" onclick="history.back()"></td>
+									<td><input type="button" id="agregar" class="btn btn-success" value="Modificar"></td>
+								</tr>
+							</table>
+						</form>
+      				</table>
+      	  		</div>	
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      		</div>
+	    	</div>
+	  	</div>
 	</div>
 <!-- Fin Modal -->
 <div class="panel panel-default">
@@ -102,10 +102,10 @@
 						<tr>
 							<td>Filtrar&nbsp;</td>
 							<td>
-								<input class="form-control datepicker" type="text" id="fecha_desde" name="fecha_desde" readonly />
+								<input class="form-control datepicker" type="text" id="fecha_desde" name="fecha_desde" readonly style="width: 100px !important; margin-right: 10px; text-align:center;"/>
 							</td>
 							<td>
-								<input class="form-control datepicker" type="text" id="fecha_hasta" name="fecha_hasta" readonly />
+								<input class="form-control datepicker" type="text" id="fecha_hasta" name="fecha_hasta" readonly style="width: 100px !important; text-align:center;margin-right: 10px;"/>
 							</td>
 							<td><button type="button" class="btn btn-default" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
 						</tr>
@@ -151,8 +151,7 @@
 								</td>
 								<td>
 									<button class="btn btn-danger menu btnEliminar" data-idmenu="21" data-accion="b" data-idorden="[[ d.id_orden ]]"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-								</td>
-								
+								</td>								
 								<td>[[ d.numero_orden ]]</td>
 								<td>[[ d.numero ]] - [[ d.marca ]] - [[ d.tipo ]] - [[ d.dominio ]]</td>
 								<td>[% if d.fecha_f != '00/00/0000' %][[ d.fecha_f ]][% else %][% endif %]</td>
@@ -191,7 +190,7 @@
 		 * Load filter from localStorage if exists/existData
 		 */
 
-		if('localStorage' in window && window['localStorage'] !== null) {
+		if('localStorage' in window && window['localStorage'] != null) {
 			const objDatos = localStorage.getItem('objDatos');
 			const objDatos_parsed = JSON.parse(objDatos);
 			
@@ -281,7 +280,7 @@
 	*/
 
 	$(document).on('click', '.btnStoreFilter', function () {
-		if ('localStorage' in window && window['localStorage'] !== null) {
+		if ('localStorage' in window && window['localStorage'] != null) {
 			const objDatos = localStorage.getItem('objDatos');
 			var objDatos_parsed = JSON.parse(objDatos);
 
