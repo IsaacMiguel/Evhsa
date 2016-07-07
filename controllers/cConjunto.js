@@ -92,7 +92,16 @@ function getBuscar_Repuesto_x_Codigo(req, res){
 	var codigo = params.codigo;
 
 	mRepuestos.getByCodigo(codigo, function (rep){
-		res.send(rep[0]);
+
+		if (rep[0] === undefined) {			
+			const data = {
+				"nombre" : "Código Inexistente"
+			}
+
+			res.send(data);
+		} else {
+			res.send(rep[0]);
+		}
 	});
 }
 

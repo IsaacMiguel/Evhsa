@@ -1,0 +1,280 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/facturas.css" rel="stylesheet"> -->
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+	      	<table class="table" id="tabla_ubicaciones">
+
+      		</table>
+      	  </div>	
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+				<td><a href="/facturas/nueva"><button type="button" class="btn btn-success menu btnStoreFilter" data-idmenu="21" data-accion="a">Agregar Nuevo</button></a></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 100%;">
+					<table class="pull-right">
+						<tr>
+							<td>Filtrar&nbsp;</td>
+							<td>
+								<input class="form-control datepicker" type="text" id="desde" name="desde" readonly />
+							</td>
+							<td>
+								<input class="form-control datepicker" type="text" id="hasta" name="hasta" readonly/>
+							</td>
+							<td>
+								<select class="form-control" id="filtro">
+									<option value="3" class="active" selected>Todo</option>
+									<option value="1" class="success" style="background-color: #d0e9c6">Altas</option>
+									<option value="2" class="danger" style="background-color: #ebcccc">Bajas</option>
+								</select>
+							</td>
+							<td><button type="button" class="btn btn-default btnStoreFilter" id="btnFiltrar" name="btnFiltrar">Filtrar</button></td>
+						</tr>
+					</table>					
+				</td>
+			</tr>	
+		</table>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr>
+			  				<th colspan="3">Opciones</th>
+							<th>Fecha</th>
+							<th>Comprobante</th>
+							<th>Proveedor</th>
+							<th>Código Pañol</th>
+							<th>Cantidad</th>
+							<th>Nombre</th>
+							<th>Detalle</th>
+							<th>Valor Unitario</th>
+							<th>Valor Total</th>
+							<th>Mueve Stock</th>
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tabla_facturas" />
+			  			[% for d in data %]
+			  				<tr>
+								<td>
+									<a href="/facturas_ver/[[ d.id_facturas ]]" class="btnStoreFilter">
+										<button class="btn btn-default" title="Ver Herramienta / Ver información sobre la herramienta">
+											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+										</button>
+									</a>
+								</td>
+								<td>
+									<a href="/facturas_modificar/[[ d.id_facturas ]]" class="btnStoreFilter">
+										<button class="btn btn-warning menu" title="Modificar Herramienta / Modificar datos sobre la herramienta" data-idmenu="21" data-accion="m">
+											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+										</button>
+									</a>
+								</td>
+								<td>
+									<a href="/facturas_eliminar/[[ d.id_facturas ]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" class="btnStoreFilter">
+										<button type="button" class="btn btn-danger menu" title="Eliminar / Elimina la herramienta" data-idmenu="21" data-accion="b">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										</button>
+									<a/>
+								</td>
+								
+								<td>[[ d.fecha_f ]]</td>
+								<td>[[ d.nro_comprobante ]]</td>
+								<td>[[ d.razonsocial ]]</td>
+								<td>[[ d.codigo_articulo_fk ]]</td>
+								<td>[[ d.cantidad ]]</td>
+								<td>
+									[% if d.nombre != "0,00" %]
+										[[ d.nombre ]]
+									[% endif %]
+								</td>
+								<td>[[ d.detalle ]]</td>
+								<td>
+									[% if d.valor != "0" %]
+										[[ d.valor ]]
+									[% endif %]
+								</td>
+								<td>[[ d.importe ]]</td>
+								<td>[[ d.mueve ]]</td>
+							</tr>
+						[% endfor %]
+			  		</script>
+				</table>				
+			</div>
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/swig.min.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	/* Seccion
+	 * (document).ready
+	 */
+
+	swig.setDefaults({
+    	varControls: ['[[', ']]'],
+    	tagControls: ['[%', '%]']
+    });
+
+
+	(function ($) {
+		/*
+		 * Load filter from localStorage if exists/existData
+		 */
+
+		if('localStorage' in window && window['localStorage'] !== null) {
+			const objDatos = localStorage.getItem('objDatos');
+			const objDatos_parsed = JSON.parse(objDatos);
+			const desde = objDatos_parsed.desde;
+			const hasta = objDatos_parsed.hasta;
+			const filtro = objDatos_parsed.filtro;
+
+			if (desde == "") {
+				var desdeSet = generateFirstDateActualMonth();
+				$('#desde').val(desdeSet);
+			} else {
+				$("#desde").val(desde);
+			}
+
+			if (hasta == "") {
+				var today = generateTodayDateDMY();
+				$('#hasta').val(today);
+			} else {
+				$("#hasta").val(hasta);
+			}
+
+			if (filtro != 0) {
+				$("#filtro").val(filtro);
+			}
+
+			if (desde != "" && hasta != "" && filtro != 0) {
+				filtrar(filtro);
+			}
+		}else{
+			// event.preventDefault();
+			alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");		
+		}
+
+
+		/*
+		 * END OF - Load filter from localStorage if exists/existData
+		 */
+		
+	})(jQuery);
+
+	/*
+	 * Save filter data in localStorage
+	 */
+
+	$(document).on('click', '.btnStoreFilter', function () {
+		if ('localStorage' in window && window['localStorage'] !== null) {
+			const objDatos = localStorage.getItem('objDatos');
+			var objDatos_parsed = JSON.parse(objDatos);
+
+			var desde = $("#desde").val();
+			var hasta = $("#hasta").val();
+			var filtro = $("#filtro").val();
+
+			objDatos_parsed.desde = desde;
+			objDatos_parsed.hasta = hasta;
+			objDatos_parsed.filtro = filtro;
+
+			const objDatos_stringified = JSON.stringify(objDatos_parsed);
+			localStorage.setItem('objDatos', objDatos_stringified);
+		} else {
+			// event.preventDefault();
+			alert("Su navegador es obsoleto, por favor actualízelo para utilizar este sistema correctamente.");		
+		}
+	});
+
+
+	/*
+	 * END OF - Save filter data in localStorage
+	 */
+
+
+    /*
+     *
+     */
+
+    $("#btnFiltrar").on("click", function () {
+    	var desde = $("#desde").val();
+		var hasta = $("#hasta").val();
+		var filtro = $("#filtro").val();
+
+    	if (desde != "" && hasta != "" && filtro != 0) {
+    		filtrar(filtro);
+    	}
+    });
+
+    function filtrar (filtro) {
+    	$('#tbodylisto').html('<p style="padding-left: 20px; padding-top:20px;">Cargando...<p>');
+
+    	var desde = $("#desde").val();
+    	var hasta = $("#hasta").val();
+
+    	desde = changeDate3(desde);
+    	hasta = changeDate3(hasta);
+
+    	$.ajax({
+    		method : "GET",
+    		url : "/facturas/filtro/"+desde+"/"+hasta+"/"+filtro
+    	})
+    	.done(function (data) {
+    		if (data.length != 0){
+					$('#tbodylisto > tr').remove();
+					var template = $('#tabla_facturas').html();
+					var output = parseSwig(template, data);
+					$('#tbodylisto').html(output);
+				}else{
+					$('#tbodylisto > tr').remove();					
+					$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+				}
+    	})
+    	.fail(function () {
+    		$('#tbodylisto > tr').remove();					
+			$("#tbodylisto").html("<tr><td colspan='20' style='padding-left: 20px; padding-top: 20px;'>Se ha producido un error</td></tr>");
+    	});
+    }
+
+    /*
+     *
+     */
+</script>
+{% endblock %}

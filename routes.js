@@ -27,6 +27,7 @@ const cRemitos             = require('./controllers/cRemitos');
 const cSerenos             = require('./controllers/cSerenos');
 const cNovedadesCoches     = require('./controllers/cNovedadesCoches');
 const cOrdenesTrabajo      = require('./controllers/cOrdenesTrabajo');
+const cFacturas						 = require('./controllers/cFacturas');
 
 const mEventos             = require('./models/mEventos');
 const mAccesos             = require('./models/mAccesos');
@@ -452,6 +453,18 @@ module.exports = function(app) {
 	app.get("/ordenestrabajo_ver/:id", auth, acceso, cOrdenesTrabajo.getVer);
 	app.get("/ordenestrabajo_frenos_modificar/:id", auth, acceso, cOrdenesTrabajo.getModificarFrenosGeneral);
 	app.post("/ordenestrabajo_frenos_modificar", auth, cOrdenesTrabajo.postModificarFrenosGeneral);
+
+	//FACTURAS
+	app.get("/facturas", auth, acceso, cFacturas.getLista);
+	app.get("/facturas/filtro/:desde/:hasta/:filtro", auth, acceso, cFacturas.getByFiltro);
+	app.get("/facturas/nueva", auth, acceso, cFacturas.getAlta);
+	app.post("/facturas_nueva", auth, cFacturas.postAlta);
+	app.get("/facturas/repuesto/:codigo", auth, acceso, cFacturas.getRepuesto);
+	app.get("/facturas_modificar/:id", auth, acceso, cFacturas.getModFactura);
+	app.post("/facturas/modificar", auth, acceso, cFacturas.postModificar);
+	app.get("/facturas_eliminar/:id", auth, acceso, cFacturas.getDelete);
+	app.get("/facturas_ver/:id", auth, acceso, cFacturas.getVer);
+
 	//pruebasql
 	// app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
 	// //random

@@ -1,0 +1,296 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/facturas.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div id="mainHolder" style="max-height: 500px;">
+	      	<table class="table" id="tabla_facturas">
+	      		
+      		</table>
+      	  </div>	
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+	<form method="POST" id="formalta" action="/facturas/modificar">
+		<table align="center" class="table table-striped">
+			<input type="number" value="{{ factura.id }}" name="id_factura" hidden>
+			<tr>
+				<td>Fecha:</td>
+				<td>
+					<input type="text" value="{{ factura.fecha_f}}" class="form-control datepicker width_35" id="fecha" name="fecha" required readonly>
+				</td>
+			</tr>
+			<tr>
+				<td>Nro de Comprobante:</td>
+				<td>
+					<input type="text" value="{{ factura.nro_comprobante }}" id="nro_comprobante" name="nro_comprobante" class="form-control width_35" required><div class="aviso">Quedan <span id="charsLeftNroComprobante"></span> caraceteres.</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Proveedor</td>
+				<td>
+					<select id="id_proveedor" name="id_proveedor" class="form-control width_60">
+						<option value="0">---- ELIJA PROVEEDOR / SIN PROVEEDOR ----</option>
+						{% for p in proveedores %}
+							{% if factura.id_proveedor_fk != '' %}
+								{% if factura.id_proveedor_fk == p.id %}
+									<option value="{{ p.id }}" selected>{{ p.razonsocial }}</option>
+								{% endif %}
+							{% endif %}
+							<option value="{{ p.id }}">{{ p.razonsocial }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Código de Repuesto:</td>
+				<td>
+					<table style="display: inline-block;">
+						<tr>
+							<td>
+								<input type="text" value="{{ codigo1 }}" id="codigo1" name="codigo1" maxlength="4" class="form-control codigo" style="width: 70px; text-align: center;  text-transform:uppercase">
+							</td>
+							<td>.</td>
+							<td>
+								<input type="text" value="{{ codigo2 }}" id="codigo2" name="codigo2" maxlength="3" class="form-control codigo" style="width: 70px; text-align: center;" onkeypress="return soloNumeros(event)">
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>Denominacion:</td>
+				<td>
+					<input type="text" value="{{ repuesto.nombre }}" id="denominacion" data-precio="" name="denominacion" readonly class="form-control  width_60">
+				</td>
+			</tr>
+			<tr>
+				<td>Cantidad:</td>
+				<td>
+					<input type="number" value="{{ factura.cantidad }}" id="cantidad" name="cantidad" class="form-control width_35 valorTotal" required>
+				</td>
+			</tr>
+			<tr>
+				<td>Valor Unitario $:</td>
+				<td>
+					<input type="number" value="{{ repuesto.valor }}" id="valor_u" name="valor_u" class="form-control width_35 valorTotal" required>
+				</td>
+			</tr>
+			<tr>
+				<td>Valor Total $:</td>
+				<td>
+					<input type="number" value="{{ factura.importe }}" id="valor_t" name="valor_t" class="form-control width_35" readonly>
+				</td>
+			</tr>
+			<tr>
+				<td>Precio con IVA:</td>
+				<td><input type="checkbox" id="iva"></td>
+			</tr>
+			<tr>
+				<td>Mueve Stock:</td>
+				<td>
+					{% if factura.mueve == "S" %}
+						<input type="checkbox" id="mueve" name="mueve" checked>
+					{% else %}
+						<input type="checkbox" id="mueve" name="mueve">
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>Detalle:</td>
+				<td>
+					<input type="text" value="{{ factura.detalle }}" id="detalle" name="detalle" class="form-control" /><div class="aviso">Quedan <span id="charsLeftDetalle"></span> caraceteres.</div>
+				</td>
+			</tr>
+			<tr>
+				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
+				<td><center><input class="btn btn-default" type="submit" value="Modificar"></center></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+
+	$('#nro_comprobante').limit('13','#charsLeftNroComprobante');
+	$('#detalle').limit('45','#charsLeftDetalle');
+
+	(function ($) {
+		calculoTotal();
+	})(jQuery);
+
+	/*
+	 * CALCULO VALOR TOTAL START
+	 */
+
+	$(".codigo").on("keyup",function (){
+		var codigo1 = $("#codigo1").val();
+		var codigo2 = $("#codigo2").val();
+		var codigo = codigo1 + "."+ codigo2;
+		codigo = codigo.toUpperCase();
+
+		if (codigo1.length > 0){
+			if (codigo1.length == 4 && codigo2.length == 3){
+				$.getJSON("/conjunto_buscar_repuesto_por_codigo/"+codigo, function (repuesto){
+			   		$("#denominacion").val(repuesto.nombre);
+			   		$("#valor_u").val(repuesto.valor);
+
+			   		calculoTotal();
+			  	});
+			}else{
+				console.log("codigo1 length menor a 4 y/o codigo2 length menor a 3");
+			}
+		}else{
+			console.log("codigo1 length menor o igual a 0");
+		}
+	});
+
+	function calculoTotal () {
+		const valor_u = $("#valor_u").val();
+		const cantidad = $("#cantidad").val();
+		const iva = $("#iva").is(":checked");
+		var total = 0;
+
+		if (valor_u != "") { 
+			total = valor_u * cantidad; 
+		} else {
+			$("#valor_u").val(0);
+		}
+
+		if (iva) { total = total * 1.21; }
+
+		total = parseFloat(total.toFixed(2));
+
+		$("#valor_t").val(total);
+	}
+
+	$(".valorTotal").on("keyup", function () {
+		calculoTotal();
+	});
+
+	$("#iva").on("click", function () {
+		calculoTotal();
+	});
+
+	/*
+	 * CALCULO VALOR TOTAL END
+	 */
+
+
+	/*
+	 * SUBMIT FORMULARIO START
+	 */
+
+	$('#formalta').submit(function (e) {
+		e.preventDefault();
+
+		const codigo1 = $("#codigo1").val();
+		const codigo2 = $("#codigo2").val();
+		
+		if (codigo1 === "" || codigo2 === "") {
+			guardar();
+		} else {
+			var codigo = codigo1 + "."+ codigo2;
+			codigo = codigo.toUpperCase();
+
+			const valorUnitario = $("#valor_u").val();
+			const fecha = $("#fecha").val();
+
+			$.ajax({
+				url : "/facturas/repuesto/" + codigo,
+				method : "GET"
+			})
+			.done(function (data) {
+				if (data.valor == valorUnitario || data.valor === undefined) {
+					guardar();
+				} else {
+					var html = '<tr><td><b>Precio Anterior</b></td><td>$ - ' + data.valor + '</td>';
+		      		html += '</tr><tr><td><b>Precio Nuevo</b></td><td>$ - ' + valorUnitario + '</td></tr>';
+		      		html += '<tr><td><input type="button" class="btn btn-success" id="btnNuevo" value="PRECIO NUEVO" name=""> - <input type="button" class="btn btn-success" id="btnAnterior" value="PRECIO ANTERIOR" name=""></td></tr>';
+
+					$("#tabla_facturas").html(html);
+					$("#myModalLabel").text("Altas de Repuestos");
+					$('#myModal').modal('toggle');
+				}
+			})
+			.fail(function (err) {
+				alert("Se produjo un error, vuelva a intentarlo", err);
+			});
+		}
+	});
+
+	// handle modal submit
+	$(document).on("click", "#btnNuevo", function () {
+		guardar();
+	});
+
+	$(document).on("click", "#btnAnterior", function () {
+		const codigo1 = $("#codigo1").val();
+		const codigo2 = $("#codigo2").val();
+		var codigo = codigo1 + "."+ codigo2;
+		codigo = codigo.toUpperCase();
+
+		$.ajax({
+			url : "/facturas/repuesto/" + codigo,
+			method : "GET"
+		})
+		.done(function (data) {
+			$("#valor_u").val(data.valor);
+			calculoTotal();
+
+			guardar();
+		})
+		.fail(function (err) {
+			alert("Se produjo un error, vuelva a intentarlo", err);
+		});
+	});
+
+	//calling submit
+	function guardar () {
+		const fecha = $("#fecha").val();
+		const proveedor = $("#id_proveedor").val();
+		const codigo1 = $("#codigo1").val();
+		const codigo2 = $("#codigo2").val();
+		const detalle = $("#detalle").val();
+
+		if (fecha === "") {
+			alert("Debe ingresar una fecha");
+			$("#fecha").val();
+		} else if ((codigo1 === "" || codigo2 === "" || proveedor == 0) && detalle === "") {
+			alert("Debe ingresar un detalle del articulo sin codigo o proveedor");
+			$("#detalle").focus();
+		} else {
+			$("#formalta").submit();
+		}
+	}
+
+	/*
+	 * SUBMIT FORMULARIO END
+	 */
+</script>
+
+{% endblock %}

@@ -112,6 +112,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/proveedoreslista" class="menu" data-idmenu="37" data-accion="c">* Proveedores</a></li>
                         <li><a href="/agendalista" class="menu" data-idmenu="38" data-accion="c">* Agenda Diaria</a></li>
+                        <li><a href="/facturas" id="btnFacturas" class="menu" data-idmenu="45" data-accion="c">- Factura</a></li>
                         <li><a href="/otrosgastoslista" class="menu" data-idmenu="39" data-accion="c">* Otros Gastos</a></li>
                         <li><a href="/vehiculoslista" class="menu" data-idmenu="40" data-accion="c">* Vehículos</a></li>
                         <li><a href="/usuarioslista" class="menu" data-idmenu="1" data-accion="c">* Operarios/Usuarios</a></li>
@@ -340,6 +341,29 @@
                 
             } else { 
                 alert('No soporta LocalStorage. Use Chrome o Actualize el navegador !!'); 
+            }
+        });
+
+        $("#btnFacturas").on("click", function (){
+            if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                   
+                localStorage.clear();
+
+                var desde = "";
+                var hasta = "";
+                var filtro = 0;
+
+                var objDatos = {
+                    "desde" : desde,
+                    "hasta" : hasta,
+                    "filtro" : filtro
+                }
+
+                var objDatos_stringified = JSON.stringify(objDatos);
+                localStorage.setItem('objDatos', objDatos_stringified);                
+            } else { 
+                alert('No soporta LocalStorage. Actualize el navegador !!'); 
             }
         });
     });

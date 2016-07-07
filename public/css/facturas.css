@@ -25,3 +25,7 @@ input[type=number]{
 .hidders{
 	display: none;
 }
+
+#nro_comprobante{
+	text-transform: uppercase;
+}

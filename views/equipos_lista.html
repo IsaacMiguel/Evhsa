@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<link href="/css/equipos.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -129,8 +130,6 @@
 	$(".datepicker").datepicker({
 		dateFormat: 'dd/mm/yy'
 	});
-
-	$('.hidders').hide();
 
 	swig.setDefaults({
     	varControls: ['[[', ']]'],

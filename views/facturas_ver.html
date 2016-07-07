@@ -1,0 +1,117 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/facturas.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div id="mainHolder" style="max-height: 500px;">
+	      	<table class="table" id="tabla_facturas">
+	      		
+      		</table>
+      	  </div>	
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
+<div class="panel panel-default">
+	<form method="POST" id="formalta" action="/facturas/modificar">
+		<table align="center" class="table table-striped">
+			<input type="number" value="{{ factura.id }}" name="id_factura" hidden>
+			<tr>
+				<td>Fecha:</td>
+				<td>
+					{{ factura.fecha_f}}
+				</td>
+			</tr>
+			<tr>
+				<td>Nro de Comprobante:</td>
+				<td>
+					{{ factura.nro_comprobante }}
+				</td>
+			</tr>
+			<tr>
+				<td>Proveedor</td>
+				<td>
+					{{ factura.razonsocial }}
+				</td>
+			</tr>
+			<tr>
+				<td>Código de Repuesto:</td>
+				<td>
+					{{ factura.codigo_articulo_fk }}
+				</td>
+			</tr>
+			<tr>
+				<td>Denominacion:</td>
+				<td>
+					{{ factura.denominacion }}
+				</td>
+			</tr>
+			<tr>
+				<td>Cantidad:</td>
+				<td>
+					{{ factura.cantidad }}
+				</td>
+			</tr>
+			<tr>
+				<td>Valor Unitario $:</td>
+				<td>
+					{% if factura.valor != 0 %}
+						{{ factura.valor }}
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>Valor Total $:</td>
+				<td>	
+					{% if factura.importe != 0 %}
+						{{ factura.importe }}
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>Mueve Stock:</td>
+				<td>
+					{% if factura.mueve == "S" %}
+						S
+					{% else %}
+						N
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>Detalle:</td>
+				<td>
+					{{ factura.detalle }}
+				</td>
+			</tr>
+			<tr>
+				<td><center><input class="btn btn-default" type="button" value="Atras" onclick="history.back()"></center></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript">
+	
+</script>
+
+{% endblock %}
